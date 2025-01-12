@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For New Users of GitHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css">
+    <style>
+        /* Additional custom styles to mimic Microsoft 2017 Light theme */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji" !important;
+            line-height: 1.6 !important;
+            padding: 2rem !important;
+            background-color: #ffffff !important; /* Background */
+            color: #333333 !important; /* Foreground */
+        }
+        blockquote {
+            border-left: 5px solid #007acc80 !important; /* Blockquote border */
+            padding: 0 16px 0 10px !important;
+            margin: 0;    /* Blockquote margin */
+            border-radius: 2px; /* Blockquote border radius */
+            color: #171718 !important; /* Blockquote text */
+            background-color: #f2f2f2 !important; /* Blockquote background */
+        }
+        code {
+            background-color: rgba(27, 31, 35, 0.156) !important; /* Code background */
+            padding: 0.2rem 0.4rem !important;
+            border-radius: 3px !important;
+            color: #a5101f !important; /* Code foreground */
+        }
+        pre {
+            background-color: #f6f8fa !important; /* Preformatted text background */
+            padding: 1rem !important;
+            border-radius: 3px !important;
+            overflow: auto !important;
+            color: #333333 !important; /* Preformatted text foreground */
+        }
+        a {
+            color: #0366d6 !important; /* Link */
+            text-decoration: none !important;
+        }
+        a:hover {
+            text-decoration: underline !important;
+        }
+        table {
+            border-collapse: collapse !important;
+            width: 100% !important;
+        }
+        th, td {
+            border: 1px solid #d1d5da !important; /* Table border */
+            padding: 0.5rem !important;
+            text-align: left !important;
+        }
+        th {
+            background-color: #f6f8fa !important; /* Table header background */
+        }
+        tr:nth-child(even) {
+            background-color: #f6f8fa !important; /* Table row background (even) */
+        }
+    </style>
+</head>
+<body class="markdown-body"> 
+        <h1 id="for-new-users-of-github">For New Users of GitHub</h1>
+<p>Created: <code>02/13/2022 Yuiln (yulinli@bu.edu)</code></p>
+<p>Updated: <code>01/10/2025 Yuiln (yl2021@stat.rutgers.edu)</code></p>
+<h2 id="initialize-your-github-folder-a-step-by-step-instruction">Initialize Your GitHub Folder: A Step-by-Step Instruction</h2>
+<ol>
+<li>Download the software <strong>GitHub Desktop</strong>
+<ul>
+<li>available <a href="https://desktop.github.com">here</a></li>
+<li>or <a href="https://linuxhint.com/install-and-use-github-desktop-on-ubuntu/">here for linux</a></li>
+</ul>
+</li>
+<li>Inside <strong>GitHub Desktop</strong>, click on <code>Current Repository</code> &gt;&gt; <code>Add</code> &gt;&gt; <code>Clone Repository...</code></li>
+<li>Under <code>URL</code>:
+<ul>
+<li>Input the web URL to your target repository
+<ul>
+<li>For the ML Fairness project: <a href="https://github.com/yulinl2/FaiREE_Missing_Data.git">https://github.com/yulinl2/FaiREE_Missing_Data.git</a></li>
+</ul>
+</li>
+<li>Choose a <code>local path</code>, where you'd like to keep your local copy of the code
+<ul>
+<li>For me, e.g., it is <code>/Users/liyulin/Github/FaiREE_Missing_Data</code>.</li>
+<li><strong>Tips</strong>: You'd better NOT have the GitHub folder under a cloud-synced folder traced by another agent, e.g., OneDrive, Dropbox, etc., just in case of syncing conflicts...(though this should be rare)</li>
+</ul>
+</li>
+<li>Click on <code>clone</code></li>
+</ul>
+</li>
+<li>Click on <code>Fetch origin</code> &gt;&gt; <code>pull origin</code> to download the entire remote repository.</li>
+</ol>
+<h2 id="what-to-know-about-version-control">What To Know about Version Control</h2>
+<h3 id="basic-operations-terms-and-meanings">Basic Operations: Terms and Meanings</h3>
+<blockquote>
+<p><strong>fetch/pull</strong> = download</p>
+</blockquote>
+<ul>
+<li>Syncs everything from the remote code base</li>
+</ul>
+<blockquote>
+<p><strong>commit</strong> = cache</p>
+</blockquote>
+<ul>
+<li>Wraps up local changes in batches and</li>
+<li>Buffers it to be ready to be uploaded</li>
+</ul>
+<blockquote>
+<p><strong>push</strong> = upload</p>
+</blockquote>
+<ul>
+<li>Publishes the patches buffered changes</li>
+</ul>
+<h3 id="warning-changes-can-be-lost-if-not-submitted-correctly">WARNING: CHANGES CAN BE LOST, if not submitted correctly</h3>
+<p>For changes to be saved on the remote repo, <strong>commit</strong> alone is NOT enough!</p>
+<blockquote>
+<p>Do always remember to <em>also</em> <strong>PUSH</strong> after <strong>commit</strong>!</p>
+</blockquote>
+<p>For changes to be saved on the remote repo, <strong>commit</strong> alone is NOT enough!</p>
+<blockquote>
+<p>Do always remember to <em>also</em> <strong>PUSH</strong> after <strong>commit</strong>!</p>
+</blockquote>
+<p>For changes to be saved on the remote repo, <strong>commit</strong> alone is NOT enough!</p>
+<blockquote>
+<p>Do always remember to <em>also</em> <strong>PUSH</strong> after <strong>commit</strong>!</p>
+</blockquote>
+<h3 id="tips-extra-backups-can-save-lives">Tips: Extra Backups Can Save Lives</h3>
+<p>Whenever you're about to make a <em>huge</em> change,
+e.g.,</p>
+<ul>
+<li>switching branches (this one is often overlooked),</li>
+<li>renaming / deleting a number of files,</li>
+<li>merging codes, etc.,</li>
+</ul>
+<p>it is always wise to do the following before you take any further actions, even when it looks unnecessary:</p>
+<blockquote>
+<ol>
+<li><strong>COPY the entire local folder</strong> you currently have (<strong>compress</strong> it if necessary), and</li>
+<li><strong>PASTE it somewhere else</strong> on your computer,</li>
+</ol>
+</blockquote>
+<p>so that you have an <em>extra local copy</em> of <em>everything</em> in the older version you're about to <em>lose</em>!</p>
+<p>(Keep in mind: sh*t happens.)</p>
+<p>Once you're done with everything and have pulled all remote changes and verified they're fine, you'll be safe to remove that extra copy.</p>
+<h2 id="what-to-know-about-collaborations">What To Know about Collaborations</h2>
+<h3 id="warning-version-conflicts-can-happen">WARNING: Version conflicts can happen</h3>
+<p>For students editing codes, it's always safer to</p>
+<ul>
+<li>
+<p>EITHER</p>
+<blockquote>
+<ol>
+<li>Create a <strong>new copy</strong> of any file you intended to edit,</li>
+<li><strong>Rename</strong> the new copy to include your name, and</li>
+<li>Make whatever changes you'd like to make <strong>inside</strong> that new copy.</li>
+</ol>
+</blockquote>
+<p>This way, your modifications will appear on your supervisor's end as a new file, which minimizes confusions among different versions of the same script.</p>
+<p>(And you can discuss merging your code later.)</p>
+</li>
+<li>
+<p>OR</p>
+<blockquote>
+<ol>
+<li>Create a <strong>new branch</strong>,</li>
+<li>Make changes <strong>under</strong> that branch, and</li>
+<li><strong>Merge</strong> that branch later into the main branch when we're certain.</li>
+</ol>
+</blockquote>
+</li>
+</ul>
+<p>...all of these just in case that multiple people happen to be changing the same script at the same time - even though GitHub is usually able to handle such conflicts, with some efforts.</p>
+<h3 id="rule-of-thumb-use-branches">Rule of Thumb: Use BRANCHES</h3>
+<p>To keep track of changes and be able to revert to an older version, you might want to <strong>commit</strong> and <strong>push</strong> frequently.</p>
+<p>However, to reduce conflicts (and avoid the insignificant commit messages piling up) in your <strong>main branch</strong>, it's always a good practice to <strong>make our own branches</strong> when editing code, and keep the <strong>main branch</strong> untouched during active development!</p>
+<p>When the latest version of files has been discussed and agreed upon among yourselves, we can go ahead and <strong>merge</strong> our branches into the master branch.</p>
+<h4 id="how-to">HOW-TO</h4>
+<ol>
+<li>
+<p>Everything mentioned above can be easily done in the graphical interface on <strong>GitHub Desktop</strong>.</p>
+</li>
+<li>
+<p>Besides, you can also <strong>view</strong> and <strong>download</strong> contents from others' branches if you go to the repo webpage.</p>
+</li>
+</ol>
+<h3 id="warning-switching-branches-overrides-all-your-local-changes">WARNING: Switching Branches OVERRIDES All Your Local Changes</h3>
+<p>Doing a <strong>pull</strong> from another branch will download <strong>everything</strong> in it into your local directory, which will <em><strong>OVERWRITE</strong></em> any changes you have not yet <strong>committed+pushed</strong>, which means</p>
+<ul>
+<li><em><strong>PERMANENTLY REMOVING</strong></em> any <em><strong>local data files</strong></em> that
+<ul>
+<li>you have saved under your <strong>local</strong> GitHub folder</li>
+<li>but were <strong>unable to upload</strong> to the <strong>remote</strong> code base
+<ul>
+<li>due to, e.g., file size limit (see details in the next section)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>with <em><strong>NO WARNING MESSAGES</strong></em>,</li>
+</ul>
+<p>so be careful and</p>
+<ul>
+<li>EITHER</li>
+</ul>
+<blockquote>
+<p>store local data files <strong>outside</strong> the traced GitHub folder (recommended),</p>
+</blockquote>
+<ul>
+<li>OR</li>
+</ul>
+<blockquote>
+<p>follow previous tips on making <strong>extra local backups</strong> BEFORE switching branches.</p>
+</blockquote>
+<h2 id="handling-large-data-files">Handling Large Data Files</h2>
+<p><strong>Example Project</strong>: Remote Sensing - Deforestation Detection</p>
+<h3 id="a-step-by-step-instruction">A Step-by-Step Instruction</h3>
+<p>For those who haven't had the following data files downloaded</p>
+<ul>
+<li><code>Fusion/Code/data/Combined</code></li>
+<li><s>Fusion/GUIDATA/SentinelProcessedStart71.mat</s></li>
+</ul>
+<p>please</p>
+<ol>
+<li><strong>clone</strong> this GitHub repository first, to create a local copy of the GitHub directory on your computer, and then</li>
+<li><strong>download</strong> the above data files/folders from the Dropbox shared folder (provide by Prof. Julio Castrillon)</li>
+<li><strong>place</strong> the downloaded data files/folders at the designated locations on your local machine, under the local directory of this GitHub repository (for example, copy the downloaded folder <code>Combined</code> and paste it under <code>Fusion/Code/data/</code>).</li>
+</ol>
+<p>Once your local directory is initialized as instructed above, all the source control operations (commit/push/pull) can go on as usual, without any special attention to the above data files (unless additional data is added by @Julio).</p>
+<h3 id="rationales">Rationales</h3>
+<p>In this project, some (large) data files are intentionally disabled from GitHub syncing.</p>
+<ul>
+<li>
+<p>When you &quot;commit&quot; new changes, the files specified in <code>.gitignore</code> will be ignored, i.e., not traced by GitHub, but you can still have those files sitting in your local GitHub folder untouched.</p>
+<ul>
+<li>For those interested in how this is done, see <code>.gitignore</code> located at the root directory of this repo.</li>
+<li><code>.gitignore</code> is most likely a hidden file on your local directory; for Mac users, press <code>command</code>+<code>shift</code>+<code>.</code> to see them.</li>
+</ul>
+</li>
+<li>
+<p>We do so because large files <strong>cannot be uploaded to <a href="http://GitHub.com">GitHub.com</a></strong> due to the <strong>100-MB file size limit</strong>.</p>
+</li>
+</ul>
+<p>With all the above considerations:</p>
+<ul>
+<li>When you just need the large data files to sit under your GitHub code directory, e.g., for the codes to run on your local machine, you should follow the step-by-step instructions above to manually download them and place them at the correct locations.</li>
+</ul>
+<h1 id="feel-free-to-write-anything-in-this-readmemd-for-notice">Feel free to write anything in this <code>README.md</code> for notice</h1>
+<p>Just click on the pencil icon up there 👆 on the webpage! (And click on the commit button at the bottom 👇 to publish changes)</p>
+
+        
+        
+    </body>
+</html>

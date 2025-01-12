@@ -12,7 +12,7 @@ This is Yulin's personal space to document her journeys in **math**, **science**
 
 > ***Here I am in**: Jan 2025*
 > 
-><img src="./assets/images/2024-rutgers-profile.png" alt="Yulin: Sep 2023" max.width="20rem" width=30%/>
+><img src="../../../assets/images/2024-rutgers-profile.png" alt="Yulin: Sep 2023" max.width="20rem" width=30%/>
 >Ph.D. Candidate  
 >
 >**Department of Statistics, Rutgers--New Brunswick**
@@ -36,7 +36,7 @@ This is Yulin's personal space to document her journeys in **math**, **science**
     >
     > Last update: 02/04/2019
     ><div style="padding-left: 3rem">
-    >  <img src="./assets/images/2017-lunch-salon.jpeg" alt="Lunch Salon: 2017"  style="max-height: 10rem" />
+    >  <img src="../../../assets/images/2017-lunch-salon.jpeg" alt="Lunch Salon: 2017"  style="max-height: 10rem" />
     ></div>
     >
     
@@ -103,8 +103,8 @@ This is Yulin's personal space to document her journeys in **math**, **science**
     
     > 
     ><div style="padding-left: 3rem">
-    >  <img src="./assets/images/2019-choir-on-stage.jpeg" alt="Choir: 2019"  style="max-height: 100%" />
-    >  <img src="./assets/images/2019-choir.jpeg" alt="Choir: 2019"  style="max-height: 150px" />
+    >  <img src="../../../assets/images/2019-choir-on-stage.jpeg" alt="Choir: 2019"  style="max-height: 100%" />
+    >  <img src="../../../assets/images/2019-choir.jpeg" alt="Choir: 2019"  style="max-height: 150px" />
     ></div>
     > 
 
@@ -117,9 +117,9 @@ This is Yulin's personal space to document her journeys in **math**, **science**
     > 
     > **Concert Programme**: 
     ><div style="padding-left: 3rem">
-    >  <img src="./assets/images/2020-concert-programme-1.jpeg" alt="Concert: 2020"  style="max-width: 30%" />
-    >  <img src="./assets/images/2020-concert-programme-2.jpeg" alt="Concert: 2020"  style="max-width: 30%" />
-    >  <img src="./assets/images/2020-concert-programme-3.jpeg" alt="Concert: 2020"  style="max-width: 30%" />
+    >  <img src="../../../assets/images/2020-concert-programme-1.jpeg" alt="Concert: 2020"  style="max-width: 30%" />
+    >  <img src="../../../assets/images/2020-concert-programme-2.jpeg" alt="Concert: 2020"  style="max-width: 30%" />
+    >  <img src="../../../assets/images/2020-concert-programme-3.jpeg" alt="Concert: 2020"  style="max-width: 30%" />
     ></div>
     
   - **Zhejiang University Freshmen Choral Competition** Aug 2019
