@@ -13,9 +13,9 @@ This is Yulin's personal space to document her journeys in **math**, **science**
 > ***Here I am in**: Jan 2025*
 > 
 ><img src="./assets/images/2024-rutgers-profile.png" alt="Yulin: Sep 2023" max.width="20rem" width=30%/>
->Ph.D. Candidate  
+> Ph.D. Candidate  
 >
->**Department of Statistics, Rutgers--New Brunswick**
+> **Department of Statistics, Rutgers--New Brunswick**
 > 
 
 ## Resources
@@ -27,7 +27,7 @@ This is Yulin's personal space to document her journeys in **math**, **science**
   - [**StatsUp AI** (https://statsupai.org)](https://statsupai.org): A frontier information platform for statisticians in AI research and revolution.
   - [**Lunch Salon**](https://mp.weixin.qq.com/s/yIelqWgUyHuEE4iSJwFYGw): A student-organized media for scientific knowledge sharing.
   
-    ` TO-DO: include article links `
+    `TO-DO: include article links`
 
     > **Bio**:
     > Joint work by 7 of the [ZH1Z](https://en.wikipedia.org/wiki/Zhuhai_No.1_High_School) 2017 graduates.
