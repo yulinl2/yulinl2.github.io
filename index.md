@@ -12,7 +12,7 @@ This is Yulin's personal space to document her journeys in **math**, **science**
 
 > ***Here I am in**: Jan 2025*
 >
-> <img src="./assets/images/2024-rutgers-profile.png" alt="Yulin: Sep 2023" max.width="18rem" width="30%"/>
+> <img src="./assets/images/2024-rutgers-profile.png" alt="Yulin: Sep 2023" style="max-width: 18rem; width: 30%"/>
 > Ph.D. Candidate  
 > 
 > **Department of Statistics, Rutgers--New Brunswick**
