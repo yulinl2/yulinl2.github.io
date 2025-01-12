@@ -57,44 +57,34 @@ This is Yulin's personal space to document her journeys in **math**, **science**
 
 ## My Teaching Journey
 ### Math & Statistics
-  - PhD-level courses
-    - **STAT 596: Advanced Applied Statistics I** 
-        
-        Teaching Assistant, Fall 2024
-        
-        Department of Statistics, Rutgers University
+#### PhD-level courses
+  - **STAT 596: Advanced Applied Statistics I** Fall 2024
+      
+      Teaching Assistant, Department of Statistics, Rutgers University
 
-    - **MA 751: Statistical Machine Learning** (Section A2, A3)
-        
-        Teaching Assistant, Spring 2023
+  - **MA 751: Statistical Machine Learning** (Section A2, A3) Spring 2023
+      
+      Teaching Assistant, Department of Math & Statistics, Boston University
 
-        Department of Math & Statistics, Boston University
+      Recitations: 2 hr/wk; Total Class Size: 20
 
-        Recitations: 2 hr/wk; Total Class Size: 20
-
-  - Graduate-level courses
-    - **MA 575: Linear Models** (Section B1, B2, B3, B4, B5)
-        
-        Teaching Assistant, Spring 2022
-
-        Department of Math & Statistics, Boston University
-        
-        Recitations: 5 hr/wk; Total Class Size: 80
-  - Undergraduate-level courses
-    - **MATH 241: Calculus III** (Section ?, ?)
-        
-        Teaching Assistant, Fall 2020
-
-        ZJU-UIUC Institute, Zhejiang University
-        
-        Recitations: 4 hr/wk; Total Class Size: 40
-    - **MATH 241: Calculus III** (Section ?, ?)
-        
-        Teaching Assistant, Fall 2019
-
-        ZJU-UIUC Institute, Zhejiang University
-        
-        Recitations: 4 hr/wk; Total Class Size: 40
+#### Graduate-level courses
+  - **MA 575: Linear Models** (Section B1, B2, B3, B4, B5) Spring 2022
+      
+      Teaching Assistant, Department of Math & Statistics, Boston University
+      
+      Recitations: 5 hr/wk; Total Class Size: 80
+#### Undergraduate-level courses
+  - **MATH 241: Calculus III** (Section ?, ?) Fall 2020
+      
+      Teaching Assistant, ZJU-UIUC Institute, Zhejiang University
+      
+      Recitations: 4 hr/wk; Total Class Size: 40
+  - **MATH 241: Calculus III** (Section ?, ?) Fall 2019
+      
+      Teaching Assistant, ZJU-UIUC Institute, Zhejiang University
+      
+      Recitations: 4 hr/wk; Total Class Size: 40
         
 ### Music
   - **ZJU - International Campus Student Choir** 2017-2020
