@@ -6,13 +6,11 @@ Welcome to my literature reading section. This is where I document thoughts, com
 
 ### Inference on Inference
 
-- [Confidence Guarantees](./paper-templates/example-paper-1.md)
+- [Confidence set for discrete argmin](./2025-01-12-argmin-inference.md): 
+**Zhang et al. (2024)**: *Winners with Confidence: Discrete Argmin Inference with an Application to Model Selection*. [arXiv:2408.02060](https://arxiv.org/abs/2408.02060).
 
-    - **Zhang et al. (2024)**: *Winners with Confidence: Discrete Argmin Inference with an Application to Model Selection*. [arXiv:2408.02060](https://arxiv.org/abs/2408.02060).
-
-- [Experimental Design](./paper-templates/example-paper-2.md)
-
-    - **Su et al. (2024)**: *Analysis of the ICML 2023 Ranking Data: Can Authors' Opinions of Their Own Papers Assist Peer Review in Machine Learning?*. [arXiv:2408.13430](https://arxiv.org/abs/2408.13430).
+- [Experimental Design](./paper-templates/example-paper-2.md): 
+**Su et al. (2024)**: *Analysis of the ICML 2023 Ranking Data: Can Authors' Opinions of Their Own Papers Assist Peer Review in Machine Learning?*. [arXiv:2408.13430](https://arxiv.org/abs/2408.13430).
 
 
 
