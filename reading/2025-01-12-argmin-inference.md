@@ -13,10 +13,18 @@
 
 2025-01-13: 噢DP mechanism确实是一个data augmentation的好办法！！（而且还提供了noise要加多大才够的指导！！）……某种程度上是否可以解决一些lack of independence的问题呢？？只要变得足够高斯+足够uncorrelated!就有independence了！！（或许可以作为一种proof technique??实际加不加noise不一定，但至少可以把证明的时候需要的independence给凑出来） 
 
+## Questions
+- [ ] CLT是怎么用到discrete variable of interest上的？？
+- [ ] 
 
-## Review by GPT-4o
+## Key Takeaways
+* Cross-Val + DP for double-dipping issues! (dependency/sensitivity reduction)
 
+## Current Gaps
+- [ ] Rank inference (since 1996) cannot handle ties
 ---
+
+## GPT-4o
 
 **Abstract Summary**  
 This paper introduces a novel framework for performing inference on discrete argmin estimators, which are commonly encountered in model selection problems. The authors propose methods for constructing confidence sets around the selected model, ensuring valid coverage probabilities.
