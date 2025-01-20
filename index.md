@@ -87,23 +87,15 @@ This is Yulin's personal space to document her journeys in **math**, **science**
       Recitations: 4 hr/wk; Total Class Size: 40
         
 ### Music
-  - **ZJU - International Campus Student Choir** 2017-2020
-    
-    Director, Conductor, Piano Accompanist
-    
-    > 
-    ><div style="padding-left: 3rem">
-    >  <img src="./assets/images/2019-choir-on-stage.jpeg" alt="Choir: 2019"  style="max-height: 100%" />
-    >  <img src="./assets/images/2019-choir.jpeg" alt="Choir: 2019"  style="max-height: 150px" />
-    ></div>
-    > 
 
-  - **ZJU - International Campus Chamber Concert** Fall 2020
+  - **1st Chamber Concert of International Campus, ZJU** Fall 2020
     
     Director, Musical Director, Piano Accompanist
 
     > 
     > **Event Schedule**: Sunday Dec 6, 2020 `18:30-21:00`
+    > 
+    > *Event Highlights:* **[*Intl-ZJU News*](https://mp.weixin.qq.com/s/4tOWEFEcM4L6ZsTlfMB37w)**
     > 
     > **Concert Programme**: 
     ><div style="padding-left: 3rem">
@@ -111,28 +103,54 @@ This is Yulin's personal space to document her journeys in **math**, **science**
     >  <img src="./assets/images/2020-concert-programme-2.jpeg" alt="Concert: 2020"  style="max-width: 30%" />
     >  <img src="./assets/images/2020-concert-programme-3.jpeg" alt="Concert: 2020"  style="max-width: 30%" />
     ></div>
+  
+  - **Student Choir of International Campus, ZJU** 2017-2020
     
-  - **Zhejiang University Freshmen Choral Competition** Aug 2019
+    Musical Director, Conductor, Piano Accompanist
+    
+    > ***Team members***: ~30 students from all schools, years, ages, and nationalities at the *International Campus of Zhejiang University*.
+    > 
+    > ***Performed***: 
+    > * ***Can't Help Falling in Love*** (A cappella) Dec 2020
+    > * ***菊花台*** (SATB) Dec 2019 
+    > * ***Seasons of Love*** (SATB) Dec 2019
+    ><div style="padding-left: 3rem">
+    >  <img src="./assets/images/2019-choir-on-stage.jpeg" alt="Choir: 2019"  style="max-height: 100%" />
+    >  <img src="./assets/images/2019-choir.jpeg" alt="Choir: 2019"  style="max-height: 150px" />
+    ></div>
+    > 
+
+  - **2019 Freshmen Choral Competition of Zhejiang University** Aug 2019
     
     Music Arranger, Instrument & Vocal Coach
     
-    Team Size: 100 (representing ZJU-UoE Institute)
-    
-    **Placement**: 2nd-Place Finalist
+    - Team Size: 100+ (representing ZJU-UoE Institute)
+    - Total Participants: 4000+
+    - Performed: 
+      - ***University Anthem***（SATB), arr. Yulin Li (2019)
+      - ***汪峰：我爱你中国***（SATB)
+    - Placement: ***2nd-Place** Finalist*
 
-  - **Zhejiang University Freshmen Choral Competition** Aug 2018
+  - **2018 Freshmen Choral Competition of Zhejiang University** Aug 2018
     
     Music Arranger, Instrument & Vocal Coach
     
-    Team Size: 100 (representing ZJU-UoE Institute)
+    - Team Size: 80+ (representing ZJU-UoE Institute)
+    - Total Participants: 4000+
+    - Performed: 
+      - ***University Anthem***（SATB), arr. Yulin Li (2018)
+      - ***少年中国说***（SATB), arr. Yulin Li (2018)
 
-  - **Zhejiang University Freshmen Choral Competition** Aug 2017
+  - **2017 Freshmen Choral Competition of Zhejiang University** Aug 2017
     
     Music Arranger, Instrument & Vocal Coach, Conductor
     
-    Team Size: 200 (representing ZJU-UIUC Institute)
-    
-    **Placement**: 2nd-Place Finalist
+    - Team Size: 180+ (representing ZJU-UIUC Institute)
+    - Total Participants: 4000+
+    - Performed: 
+      - ***University Anthem***（SATB), arr. Xinhai Zhu (2017)
+      - ***生来倔强***（SATB), arr. Yulin Li (2017)
+    - Placement: ***2nd-Place** Finalist*
 
 
 
