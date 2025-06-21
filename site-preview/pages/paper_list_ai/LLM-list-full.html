@@ -583,6 +583,22 @@
     const win = window.open(parentURL, 'aiListTab');
     win.focus();
   }
+
+  // --------------------------- JS: Scroll to Hash on Load ---------------------------
+  window.addEventListener("DOMContentLoaded", () => {
+    if (location.hash) {
+      const tryScroll = () => {
+        const target = window.querySelector(location.hash);
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        } else {
+          // Retry after short delay
+          setTimeout(tryScroll, 100);
+        }
+      };
+      tryScroll();
+    }
+  });
 </script>
 
 </body>
