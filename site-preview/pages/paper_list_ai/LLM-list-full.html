@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>window.name = 'LLMTab';</script>
   <meta charset="UTF-8" />
   <title>LLM Review Papers</title>
   <style>
@@ -369,7 +370,7 @@
 
   <!-- --------------------------- HTML: Sidebar --------------------------- -->
   <aside class="floating-sidebar">
-  <h2><a href="#top">LLM Review Papers</a></h2>
+  <h2><a href='../../article_list_ai.html' target="aiListTab">LLM Review Papers</a></h2>
     <p class="sidebar-desc">
         This section focuses on the development, applications, and challenges of <strong>Large Language Models</strong> (LLMs) with an emphasis on their implications for <strong>statistical</strong> research and practice.
     </p>
@@ -574,6 +575,14 @@
       backToTop.style.display = 'none';
     }
   });
+
+  // --------------------------- JS: Back to Parent Functionality ---------------------------
+  function goBackToParent() {
+    const parentURL = '../../article_list_ai.html';
+
+    const win = window.open(parentURL, 'aiListTab');
+    win.focus();
+  }
 </script>
 
 </body>
