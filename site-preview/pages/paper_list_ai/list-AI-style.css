@@ -362,14 +362,14 @@ section:target {
     font-weight: bold;
     padding: 2px 8px 3px 7px;
     border: 0.1px solid #bbb;
-    border-radius: 3px;
+    border-radius: 1px;
     background-color: #f1f1f1;
     color: #3a3a3aec;
     position: absolute; /* Change to absolute positioning */
     right: 0; /* Align to the right of the sidebar */
     margin-top: 50px; /* Add spacing from the sidebar content */
     margin-right: 20px; /* Add spacing from the right edge */
-    box-shadow: 3px 2px 5px rgba(0, 0, 0, 0.05);
+    /* box-shadow: 3px 2px 5px rgba(0, 0, 0, 0.05); */
     transition: background 0.3s ease;
     display: none;
     text-align: center;
