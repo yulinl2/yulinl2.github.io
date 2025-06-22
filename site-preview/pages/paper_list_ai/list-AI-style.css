@@ -20,6 +20,8 @@
     }
 }
 
+
+
 /* --------------------------- CSS: Layout --------------------------- */
 .layout-container {
     display: flex;
@@ -55,6 +57,7 @@
     font-size: 1.2em;
     color: #007072;
     margin-bottom: 10px;
+    white-space: pre-wrap; /* allow long titles to wrap */
 }
 
 .floating-sidebar ul {
@@ -264,13 +267,15 @@ a:hover {
     display: inline-block;
     font-family: 'Courier New', monospace;  /* or 'JetBrains Mono', 'Fira Code', etc. */
     font-size: 0.50em;
-    margin-left: 10px; 
+    /* margin-left: 10px;  */
+    margin-left: -5px;
     padding: 2px 6px 3px 5px;
     border: 0.1px solid #bbb;
     border-radius: 4px;
     background-color: #f1f1f1;
     color: #09090988;
-    vertical-align: text-bottom;
+    /* vertical-align: text-bottom; */
+    vertical-align: text-top;
     cursor: pointer;
     white-space: nowrap;
 }

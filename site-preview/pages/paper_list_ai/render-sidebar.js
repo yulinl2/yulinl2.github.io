@@ -11,10 +11,9 @@ function renderSidebar() {
   // --------------------------- JS: Render Sidebar Heading ---------------------------
   // Title and description
   const heading = document.createElement("h2");
-  
-  if (meta.backLink) {
-    heading.innerHTML = meta.title || "Navigation";
+  heading.innerHTML = meta.title || "Navigation";
 
+  if (meta.backLink) {
     // Back link from the button
     const link = document.createElement("a");
     link.href = meta.backLink;
@@ -29,11 +28,11 @@ function renderSidebar() {
         </span>
     `;
     link.appendChild(backButton);
-    heading.appendChild(link);
-  } else {
-    // No back link, just set the title
-    heading.innerHTML = meta.title || "Navigation";
+
+    // Add the back link above the heading
+    nav.appendChild(link);
   }
+
 
   const desc = document.createElement("p");
   desc.className = "sidebar-desc";
