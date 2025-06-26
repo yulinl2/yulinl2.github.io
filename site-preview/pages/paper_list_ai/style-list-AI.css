@@ -149,6 +149,14 @@ h3 {
 .item-title a {
     color: #17447f;
 }
+.thin {
+    font-weight: normal;
+    font-size: smaller;
+    color: #555555cc;
+    vertical-align: text-top;
+    display: inline-block;
+    margin-top: 2px;
+}
 .item-title:hover .link-badge {
     background-color: #e0e0e0;
     border-color: #999;
@@ -291,6 +299,7 @@ a:hover {
 .abstract-container {
     margin-top: 5px;
     margin-bottom: 10px;
+    width: 100%;
 }
 .abstract-text {
     color: #777;
