@@ -1,0 +1,179 @@
+---
+title: "Why Logarithms Rule Statistics"
+subtitle: "From Score Functions to Shannon’s Uniqueness Theorem (with Proof)"
+author: "ChatGPT5 Thinking, Yulin Li"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-fold: false
+    smooth-scroll: true
+    link-external-newwindow: true
+execute:
+  echo: false
+  warning: false
+  message: false
+editor: visual
+---
+
+> *“The logarithm is not just a convenient trick — it is the natural coordinate system of probability itself.”* — E.T. Jaynes
+
+## Score function: definition and intuition
+
+**Definition (parameter score).** For data $x$ and parameter $\theta$ with likelihood $L(\theta)=p(x\mid\theta)$,
+$$
+U(\theta) \equiv \frac{\partial}{\partial\theta}\log L(\theta).
+$$
+
+**Intuition.**  
+- $L(\theta)$ (or $\log L$) gives a **level**: “how well does $\theta$ fit now?”  
+- $U(\theta)$ gives a **directional signal**: “which way should $\theta$ move to improve fit?”
+
+At an MLE $\hat\theta$, $U(\hat\theta)=0$. The sign of $U(\theta)$ tells whether nudging $\theta$ up or down increases fit.
+
+### Core identities (under standard regularity, expectation under the true $\theta_0$)
+
+$$
+\mathbb E_{\theta_0}\big[U(\theta_0)\big]=0,
+\qquad
+\mathcal I(\theta_0)\equiv -\mathbb E_{\theta_0}\!\left[\frac{\partial^2}{\partial\theta^2}\log L(\theta_0)\right]
+= \mathrm{Var}_{\theta_0}\!\big[U(\theta_0)\big].
+$$
+
+These underpin MLE asymptotics, the Cramér–Rao bound, and Wilks’ theorem.
+
+## Why take logs? (More than “same maximizer”)
+
+While any strictly increasing transform shares the same maximizer, **only the natural log** yields the full theory:
+
+- **Products → sums:** 
+  $$
+  \log \prod_{i=1}^n p(x_i\mid\theta)=\sum_{i=1}^n \log p(x_i\mid\theta)
+  $$
+  (per-observation additive evidence).  
+- **Relative derivative:** 
+  $$
+  \frac{\partial}{\partial\theta}\log L(\theta)=\frac{1}{L(\theta)}\frac{\partial L(\theta)}{\partial\theta}
+  $$
+  is **scale-free**.  
+- **Clean moments:** $\mathbb E[U(\theta_0)]=0$ and $\mathrm{Var}(U)=\mathcal I$.  
+- **Exponential families linearize:** 
+  $$
+  \log p(x\mid\theta)=\theta^\top T(x)-A(\theta)+\text{const}
+  $$
+  ⇒ the score is linear in sufficient statistics.  
+- **Numerical stability:** avoids underflow for large $n$.
+
+Historically, Fisher called $U(\theta)$ a **score** because it measures how strongly the data “cheers” for $\theta$ to move up or down.
+
+## Why only the logarithm?
+
+The log is the **unique** (smooth) map turning multiplication into addition:
+$$
+f(ab)=f(a)+f(b)\quad\Longrightarrow\quad f(x)=C\log x.
+$$
+This makes $\log$ the canonical homomorphism between $(\mathbb R^+,\times)$ and $(\mathbb R,+)$.
+
+**Consequences.**  
+- **Information geometry:** KL divergence
+  $$
+  D_{\mathrm{KL}}(P\|Q)=\int p(x)\log\frac{p(x)}{q(x)}\,dx
+  $$
+  is additive over i.i.d. samples and convex in $Q$ — properties that break with non-log transforms.  
+- **Exponential duality:** $\exp$–$\log$ invert each other, exactly matching exponential-family structure.
+
+## Bridges beyond $+$ and $\times$
+
+Statistics repeatedly uses **canonical transforms** to linearize hard operations:
+
+| Operation A | Operation B | Bridge | Why it matters |
+|---|---|---|---|
+| Multiplication | Addition | **Logarithm** | Log-likelihood, score, entropy, KL |
+| Convolution (sum of RVs) | Multiplication | **Fourier/Characteristic transform** | CLT, spectral methods |
+| Composition (MGF) | Addition | **Log MGF ⇒ CGF** | Cumulants add under independence |
+| Multiplication | Differentiation | **Log-derivative** | Score = sensitivity of log-density |
+| Max | Sum | **Log-sum-exp** | Softmax, smooth model averaging |
+
+These “bridges” turn nonlinear combination rules into additive/linear ones where calculus works.
+
+## Score matching (data-gradient score)
+
+In generative modeling, **score** often means the gradient of log-density **w.r.t. data**:
+$$
+s_\theta(x) \equiv \nabla_x \log p_\theta(x).
+$$
+**Score matching** (Hyvärinen, 2005) estimates $p_\theta$ by minimizing
+$$
+\mathbb E_p\!\left[\tfrac12\big\|s_\theta(x)-\nabla_x\log p(x)\big\|^2\right],
+$$
+which, via integration by parts, yields an objective computable **without** knowing $\log p(x)$. This enables unnormalized (energy-based) modeling and underlies score-based diffusion models.
+
+## Why addition is fundamental (not just convenience)
+
+- **Independence ⇒ extensivity:** information from independent sources must **add** (non-interference).  
+- **Physics:** energy, entropy, and action **add** across non-interacting subsystems (locality).  
+- **Cognition:** Weber–Fechner — perception encodes proportional changes **additively** (logarithmically).
+
+Thus logs “feel natural” because probability, physics, and perception all share additive structure.
+
+## Shannon’s uniqueness theorem (single-event form, with proof)
+
+We seek $I:(0,1]\to\mathbb R$ satisfying:
+
+1. **Continuity** in $p$.  
+2. **Monotonicity:** if $p_1<p_2$ then $I(p_1)>I(p_2)$.  
+3. **Additivity for independent events:** $I(pq)=I(p)+I(q)$.
+
+**Theorem.** The only continuous solutions are
+$$
+I(p)=-k\log p,\qquad k>0\ \ (\text{units: nats if }k=1,\ \text{bits if }k=\log_2 e).
+$$
+
+**Proof (concise).**  
+Let $g(x)=-I(e^{-x})$ for $x\ge0$. Then $g(x+y)=g(x)+g(y)$ and $g$ is continuous, so $g(x)=cx$. Hence $I(p)=c\log p$. Monotonicity forces $c=-k<0$. $\square$
+
+**Entropy (distribution form).** With the standard grouping axiom,
+$$
+H(p_1,\dots,p_n)=-k\sum_{i=1}^n p_i\log p_i
+$$
+uniquely (up to $k$). Hence entropy, KL, log-likelihood ratios, etc., are **inevitable**, not conventions.
+
+## Key likelihood identities (one-liners)
+
+Let $L(\theta)=\prod_{i=1}^n p(x_i\mid\theta)$ and $\ell(\theta)=\log L(\theta)$.
+
+- **Zero-mean score**
+  $$
+  \mathbb E_{\theta_0}\big[U(\theta_0)\big]
+  =\mathbb E_{\theta_0}\!\left[\partial_\theta \log p(X\mid\theta)\Big|_{\theta=\theta_0}\right]
+  =\partial_\theta \int p(x\mid\theta)\,dx\Big|_{\theta=\theta_0}=0.
+  $$
+- **Information = score variance**
+  $$
+  \mathcal I(\theta)
+  = -\mathbb E\!\left[\partial_\theta^2 \ell(\theta)\right]
+  = \mathrm{Var}\!\big(U(\theta)\big).
+  $$
+- **Why log in LRT (Wilks):** a quadratic expansion of $\ell$ around $\theta_0$ yields
+  $$
+  2\big\{\ell(\hat\theta)-\ell(\theta_0)\big\}\ \overset{d}{\longrightarrow}\ \chi^2_{\text{df}},
+  $$
+  with curvature given by the information.
+
+## Cheat-sheet
+
+- **Score (parameter):** $U(\theta)=\partial_\theta \log L(\theta)$.  
+- **Fisher info:** $\mathcal I(\theta)=\mathrm{Var}\!\big[U(\theta)\big]$.  
+- **Score (data):** $s_\theta(x)=\nabla_x\log p_\theta(x)$.  
+- **Entropy:** $H=-\sum p\log p$.  
+- **KL:** $D_{\mathrm{KL}}(P\|Q)=\int p\log\frac{p}{q}$.  
+- **Cumulants add:** derivatives of the CGF $K(t)=\log \mathbb E[e^{tX}]$.  
+- **Bridges:** log, Fourier, log-sum-exp.
+
+## References (classics)
+
+- R.A. Fisher (1922). *On the Mathematical Foundations of Theoretical Statistics.*  
+- C.E. Shannon (1948). *A Mathematical Theory of Communication.*  
+- E.T. Jaynes. *Probability Theory: The Logic of Science.*  
+- A. Hyvärinen (2005). *Estimation of Non-Normalized Statistical Models by Score Matching.*
