@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.30">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="ChatGPT5 Thinking, Yulin Li">
+
+<title>Why Logarithms Rule Statistics (A Deeper View)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="2025-10-26-why-logarithms-rule-statistics_files/libs/clipboard/clipboard.min.js"></script>
+<script src="2025-10-26-why-logarithms-rule-statistics_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="2025-10-26-why-logarithms-rule-statistics_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="2025-10-26-why-logarithms-rule-statistics_files/libs/quarto-html/popper.min.js"></script>
+<script src="2025-10-26-why-logarithms-rule-statistics_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="2025-10-26-why-logarithms-rule-statistics_files/libs/quarto-html/anchor.min.js"></script>
+<link href="2025-10-26-why-logarithms-rule-statistics_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="2025-10-26-why-logarithms-rule-statistics_files/libs/quarto-html/quarto-syntax-highlighting-de070a7b0ab54f8780927367ac907214.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="2025-10-26-why-logarithms-rule-statistics_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="2025-10-26-why-logarithms-rule-statistics_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="2025-10-26-why-logarithms-rule-statistics_files/libs/bootstrap/bootstrap-81267100e462c21b3d6c0d5bf76a3417.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#thesis-statistics-succeeds-when-we-compute-in-the-right-coordinates" id="toc-thesis-statistics-succeeds-when-we-compute-in-the-right-coordinates" class="nav-link active" data-scroll-target="#thesis-statistics-succeeds-when-we-compute-in-the-right-coordinates"><span class="header-section-number">1</span> 1. Thesis: statistics succeeds when we compute in the <strong>right coordinates</strong></a></li>
+  <li><a href="#lan-in-one-page-why-wilks-and-cramérrao-are-inevitable" id="toc-lan-in-one-page-why-wilks-and-cramérrao-are-inevitable" class="nav-link" data-scroll-target="#lan-in-one-page-why-wilks-and-cramérrao-are-inevitable"><span class="header-section-number">2</span> 2. LAN in one page (why Wilks and Cramér–Rao are inevitable)</a></li>
+  <li><a href="#why-the-score-is-the-right-differential" id="toc-why-the-score-is-the-right-differential" class="nav-link" data-scroll-target="#why-the-score-is-the-right-differential"><span class="header-section-number">3</span> 3. Why the <strong>score</strong> is the right differential</a></li>
+  <li><a href="#the-bridge-principle-from-hard-compositions-to-additive-space" id="toc-the-bridge-principle-from-hard-compositions-to-additive-space" class="nav-link" data-scroll-target="#the-bridge-principle-from-hard-compositions-to-additive-space"><span class="header-section-number">4</span> 4. The <strong>Bridge Principle</strong>: from hard compositions to additive space</a>
+  <ul class="collapse">
+  <li><a href="#canonical-bridges-statisticians-already-rely-on" id="toc-canonical-bridges-statisticians-already-rely-on" class="nav-link" data-scroll-target="#canonical-bridges-statisticians-already-rely-on"><span class="header-section-number">4.1</span> 4.1 Canonical bridges statisticians already rely on</a></li>
+  <li><a href="#large-deviations-macroscopic-mle" id="toc-large-deviations-macroscopic-mle" class="nav-link" data-scroll-target="#large-deviations-macroscopic-mle"><span class="header-section-number">4.2</span> 4.2 Large deviations: macroscopic MLE</a></li>
+  </ul></li>
+  <li><a href="#information-geometry-in-practice-metric-volume-duality" id="toc-information-geometry-in-practice-metric-volume-duality" class="nav-link" data-scroll-target="#information-geometry-in-practice-metric-volume-duality"><span class="header-section-number">5</span> 5. Information geometry in practice: metric, volume, duality</a></li>
+  <li><a href="#score-matching-stein-operators-and-diffusion-one-lens" id="toc-score-matching-stein-operators-and-diffusion-one-lens" class="nav-link" data-scroll-target="#score-matching-stein-operators-and-diffusion-one-lens"><span class="header-section-number">6</span> 6. Score matching, Stein operators, and diffusion: one lens</a></li>
+  <li><a href="#why-the-log-is-inevitable-proof-sketch" id="toc-why-the-log-is-inevitable-proof-sketch" class="nav-link" data-scroll-target="#why-the-log-is-inevitable-proof-sketch"><span class="header-section-number">7</span> 7. Why the log is inevitable (proof sketch)</a></li>
+  <li><a href="#case-studies-the-bridge-viewpoint-in-familiar-models" id="toc-case-studies-the-bridge-viewpoint-in-familiar-models" class="nav-link" data-scroll-target="#case-studies-the-bridge-viewpoint-in-familiar-models"><span class="header-section-number">8</span> 8. Case studies: the bridge viewpoint in familiar models</a></li>
+  <li><a href="#a-practical-recipe-for-bridge-aware-learning" id="toc-a-practical-recipe-for-bridge-aware-learning" class="nav-link" data-scroll-target="#a-practical-recipe-for-bridge-aware-learning"><span class="header-section-number">9</span> 9. A practical recipe for <strong>bridge-aware learning</strong></a></li>
+  <li><a href="#where-the-log-playbook-cracks-and-what-to-do" id="toc-where-the-log-playbook-cracks-and-what-to-do" class="nav-link" data-scroll-target="#where-the-log-playbook-cracks-and-what-to-do"><span class="header-section-number">10</span> 10. Where the log playbook cracks (and what to do)</a></li>
+  <li><a href="#concrete-research-directions-actionable" id="toc-concrete-research-directions-actionable" class="nav-link" data-scroll-target="#concrete-research-directions-actionable"><span class="header-section-number">11</span> 11. Concrete research directions (actionable)</a></li>
+  <li><a href="#essential-derivations-kept-terse" id="toc-essential-derivations-kept-terse" class="nav-link" data-scroll-target="#essential-derivations-kept-terse"><span class="header-section-number">12</span> 12. Essential derivations (kept terse)</a></li>
+  <li><a href="#where-to-test-these-ideas-low-friction-experiments" id="toc-where-to-test-these-ideas-low-friction-experiments" class="nav-link" data-scroll-target="#where-to-test-these-ideas-low-friction-experiments"><span class="header-section-number">13</span> 13. Where to test these ideas (low-friction experiments)</a></li>
+  <li><a href="#closing" id="toc-closing" class="nav-link" data-scroll-target="#closing"><span class="header-section-number">14</span> 14. Closing</a></li>
+  <li><a href="#references-classics-and-context" id="toc-references-classics-and-context" class="nav-link" data-scroll-target="#references-classics-and-context"><span class="header-section-number">15</span> References (classics and context)</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Why Logarithms Rule Statistics (A Deeper View)</h1>
+<p class="subtitle lead">Score, Information Geometry, and the Canonical Bridges Behind Modern Inference</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>ChatGPT5 Thinking, Yulin Li </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+<div>
+  <div class="abstract">
+    <div class="block-title">Abstract</div>
+    <p>Independent events <strong>multiply</strong> in probability but <strong>add</strong> up in information. The <strong>logarithm</strong> is the unique smooth homomorphism that converts the <strong>multiplicative</strong> algebra of likelihoods into an <strong>additive, linear space</strong> where calculus, convexity, and asymptotics align. This yields the <em>score</em> as the correct differential, <em>Fisher information</em> as the local metric, and <em>entropy/KL</em> as canonical divergences. A broader <strong>Bridge Principle</strong> emerges: whenever inference relies on a hard composition law (product, convolution, max, transport, group action), there exists or can be designed a transform (“bridge”) that makes it additive (log, Fourier, log–MGF, log-sum-exp, entropic OT, group Fourier). Building models and algorithms in the right additive coordinates explains classical statistics and suggests <strong>new research</strong>: design/learn task-specific bridges, geometry-aware optimization, singular-model asymptotics, and manifold-aware score learning.</p>
+  </div>
+</div>
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-tip callout-titled" title="TL;DR">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+TL;DR
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Pick the composition law your data <strong>naturally</strong> uses, then move through a <strong>bridge</strong> into an additive/linear space to compute. For independence the algebra is <span class="math inline">\((\mathbb{R}^+,\times)\)</span> and the bridge is <span class="math inline">\(\log\)</span>, making the score <span class="math inline">\(U(\theta)=\partial_\theta \log L(\theta)\)</span> central with <span class="math inline">\(\mathbb{E}[U]=0\)</span> and <span class="math inline">\(\mathrm{Var}(U)=\mathcal{I}\)</span>. The same pattern yields Fourier for convolution <span class="math inline">\(\to\)</span> product, log–MGF for moments <span class="math inline">\(\to\)</span> cumulants, and log-sum-exp for sum <span class="math inline">\(\to\)</span> softmax/max. <strong>Program:</strong> identify new operation pairs in your domain and build or learn their bridges to obtain linear features, convex losses, and stable asymptotics.</p>
+</div>
+</div>
+<section id="thesis-statistics-succeeds-when-we-compute-in-the-right-coordinates" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="thesis-statistics-succeeds-when-we-compute-in-the-right-coordinates"><span class="header-section-number">1</span> 1. Thesis: statistics succeeds when we compute in the <strong>right coordinates</strong></h2>
+<p>Two pillars of uncertainty:</p>
+<ul>
+<li><strong>Independence <span class="math inline">\(\Rightarrow\)</span> multiplication</strong> of densities/likelihoods.<br>
+</li>
+<li><strong>Extensivity <span class="math inline">\(\Rightarrow\)</span> addition</strong> of information/evidence.</li>
+</ul>
+<p>We therefore seek a smooth map <span class="math inline">\(f\)</span> so that <span class="math display">\[
+f(ab)=f(a)+f(b).
+\]</span> Continuity/measurability forces <span class="math display">\[
+f(x)=C\log x,
+\]</span> the <strong>only</strong> smooth homomorphism <span class="math inline">\((\mathbb{R}^+,\times)\to(\mathbb{R},+)\)</span> up to scale. Passing to log coordinates is thus <strong>forced</strong>, not chosen.</p>
+<p><strong>Immediate geometric consequences.</strong> With <span class="math inline">\(\ell(\theta)=\log L(\theta)\)</span>: - the <strong>score</strong> <span class="math display">\[
+  U(\theta)=\partial_\theta \ell(\theta)
+  \]</span> is a <strong>tangent vector</strong> on the parameter manifold;<br>
+- the <strong>Fisher information</strong> <span class="math display">\[
+  \mathcal I(\theta)=\mathrm{Var}_\theta\!\big[U(\theta)\big]
+  = -\mathbb E_\theta\!\left[\partial_\theta^2 \ell(\theta)\right]
+  \]</span> defines a <strong>Riemannian metric</strong>.</p>
+<p>These yield <strong>Local Asymptotic Normality (LAN)</strong>: locally (in <span class="math inline">\(\theta\)</span>), log-likelihood is quadratic, the score is Gaussian, and MLE is asymptotically efficient.</p>
+<hr>
+</section>
+<section id="lan-in-one-page-why-wilks-and-cramérrao-are-inevitable" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="lan-in-one-page-why-wilks-and-cramérrao-are-inevitable"><span class="header-section-number">2</span> 2. LAN in one page (why Wilks and Cramér–Rao are inevitable)</h2>
+<p>A quadratic expansion at the truth <span class="math inline">\(\theta_0\)</span> gives <span class="math display">\[
+\ell(\theta_0+h)-\ell(\theta_0) = h\,U(\theta_0) - \tfrac12 h^2\,\mathcal I(\theta_0) + o_p(1).
+\]</span> Because <span class="math inline">\(\mathbb E_{\theta_0}[U(\theta_0)]=0\)</span> and <span class="math inline">\(\mathrm{Var}_{\theta_0}[U(\theta_0)]=\mathcal I(\theta_0)\)</span>, maximization of this quadratic yields <span class="math display">\[
+\hat\theta-\theta_0 \approx \frac{U(\theta_0)}{\mathcal I(\theta_0)},
+\qquad
+\sqrt{n}\,(\hat\theta-\theta_0)\ \Rightarrow\ \mathcal N\!\big(0,\ \mathcal I(\theta_0)^{-1}\big).
+\]</span> Likewise, the log-likelihood ratio is asymptotically a <strong>squared Fisher length</strong>: <span class="math display">\[
+2\big\{\ell(\hat\theta)-\ell(\theta_0)\big\}
+\ \Rightarrow\ \chi^2_{\mathrm{df}}.
+\]</span> This works <strong>because</strong> log provides a linear differential and a curvature (the metric) in which quadratic approximations are faithful.</p>
+<blockquote class="blockquote">
+<p><strong>Practical signal.</strong> If the quadratic looks bad (flat valleys, ridges, multimodality), you’re outside the regular regime; expect singular behavior and non-<span class="math inline">\(\chi^2\)</span> limits (see §10).</p>
+</blockquote>
+<hr>
+</section>
+<section id="why-the-score-is-the-right-differential" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="why-the-score-is-the-right-differential"><span class="header-section-number">3</span> 3. Why the <strong>score</strong> is the right differential</h2>
+<ul>
+<li><strong>Relative change:</strong> <span class="math inline">\(\partial_\theta \log L = (\partial_\theta L)/L\)</span> is dimensionless and scale-free.<br>
+</li>
+<li><strong>Coordinate-free:</strong> <span class="math inline">\(U\)</span> transforms contravariantly under reparametrizations; its second moment is the intrinsic metric.<br>
+</li>
+<li><strong>Steepest ascent in the right geometry:</strong> Amari’s <strong>natural gradient</strong> uses <span class="math display">\[
+\Delta\theta \propto \mathcal I(\theta)^{-1}\,\nabla_\theta \ell(\theta),
+\]</span> the steepest ascent measured in the Fisher metric, not Euclidean length. This underlies K-FAC and modern preconditioners.</li>
+</ul>
+<p><strong>Opportunities.</strong> Scalable approximations to <span class="math inline">\(\mathcal I^{-1}\)</span> beyond diagonal/Kronecker; learning-rate schedules keyed to the spectrum of <span class="math inline">\(\mathcal I\)</span>; Fisher-aware trust-region methods for nonconvex training.</p>
+<hr>
+</section>
+<section id="the-bridge-principle-from-hard-compositions-to-additive-space" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="the-bridge-principle-from-hard-compositions-to-additive-space"><span class="header-section-number">4</span> 4. The <strong>Bridge Principle</strong>: from hard compositions to additive space</h2>
+<p>Real pipelines compose uncertainty in <strong>nonlinear algebras</strong>: products (independence), <strong>convolutions</strong> (sums of RVs), <strong>maxima</strong> (decisions), <strong>compositions</strong> (multi-stage), <strong>optimal transport</strong> (cost-addition), <strong>group actions</strong> (symmetries).</p>
+<p>The recipe: find a transform <span class="math inline">\(B\)</span> so that a hard operation <span class="math inline">\(\circledast\)</span> becomes addition: <span class="math display">\[
+B(a\circledast b)=B(a)+B(b).
+\]</span> Then differentiate/average/optimize in <span class="math inline">\(B\)</span>-space (linear), and map back if needed.</p>
+<section id="canonical-bridges-statisticians-already-rely-on" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="canonical-bridges-statisticians-already-rely-on"><span class="header-section-number">4.1</span> 4.1 Canonical bridges statisticians already rely on</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Composition law (hard)</th>
+<th>Bridge <span class="math inline">\(B\)</span></th>
+<th>Becomes additive</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Product (independence)</td>
+<td><span class="math inline">\(\log\)</span></td>
+<td>sums</td>
+<td>score/Fisher, entropy/KL, LRT, stability</td>
+</tr>
+<tr class="even">
+<td>Convolution (sum of RVs)</td>
+<td>Fourier/Characteristic <span class="math inline">\(\mathcal F\)</span></td>
+<td>multiplication in freq.</td>
+<td>CLT, spectral methods, fast convolution</td>
+</tr>
+<tr class="odd">
+<td>Moment composition</td>
+<td>log–MGF/CGF <span class="math inline">\(K_X(t)=\log \mathbb E[e^{tX}]\)</span></td>
+<td>cumulants</td>
+<td>cumulants add; saddlepoint approximations</td>
+</tr>
+<tr class="even">
+<td>Max / hard alignment</td>
+<td>log-sum-exp <span class="math inline">\(\operatorname{LSE}(x)=\log\sum_i e^{x_i}\)</span></td>
+<td>soft-add</td>
+<td>smooth <span class="math inline">\(\max\)</span>; softmax/attention</td>
+</tr>
+<tr class="odd">
+<td>Optimal transport</td>
+<td>Entropic regularization (Sinkhorn)</td>
+<td>matrix scaling (log-domain)</td>
+<td>differentiable OT; barycenters</td>
+</tr>
+<tr class="even">
+<td>Group convolution</td>
+<td>Group Fourier (e.g., on <span class="math inline">\(\mathrm{SO}(3)\)</span>)</td>
+<td>spectral product</td>
+<td>steerable/equivariant nets</td>
+</tr>
+<tr class="odd">
+<td>Min-/Max-plus algebra</td>
+<td>Log transform (tropical limit)</td>
+<td><span class="math inline">\((\min,+)\)</span> or <span class="math inline">\((\max,+)\)</span></td>
+<td>dynamic programming; shortest paths</td>
+</tr>
+<tr class="even">
+<td>Bayesian evidence</td>
+<td>Add log-odds / log-likelihood ratio</td>
+<td>additive logits</td>
+<td>calibrated ensembling; stacking</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Key limit:</strong> For temperature <span class="math inline">\(\tau&gt;0\)</span>, <span class="math display">\[
+\operatorname{LSE}_\tau(x)=\tau\log\sum_i e^{x_i/\tau},\quad
+\lim_{\tau\to0}\operatorname{LSE}_\tau(x)=\max_i x_i,\quad
+\nabla \operatorname{LSE}_\tau(x)=\mathrm{softmax}(x/\tau).
+\]</span></p>
+</section>
+<section id="large-deviations-macroscopic-mle" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="large-deviations-macroscopic-mle"><span class="header-section-number">4.2</span> 4.2 Large deviations: macroscopic MLE</h3>
+<p>Let <span class="math inline">\(K_X(t)=\log \mathbb E[e^{tX}]\)</span>. The <strong>rate function</strong> <span class="math display">\[
+I(x)=\sup_t\{t x - K_X(t)\}
+\]</span> controls tail probabilities <span class="math display">\[
+\mathbb P\!\left(\frac1n\sum_{i=1}^n X_i\approx x\right)\approx e^{-n\,I(x)}.
+\]</span> It is a <strong>Legendre transform of a log</strong>, again pushing a nonlinear composition into additive convex geometry.</p>
+<hr>
+</section>
+</section>
+<section id="information-geometry-in-practice-metric-volume-duality" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="information-geometry-in-practice-metric-volume-duality"><span class="header-section-number">5</span> 5. Information geometry in practice: metric, volume, duality</h2>
+<ul>
+<li><strong>Metric:</strong> <span class="math inline">\(g=\mathcal I(\theta)\)</span>; geodesics give least-distortion paths in model space.<br>
+</li>
+<li><strong>Volume:</strong> Jeffreys prior <span class="math inline">\(\pi_J(\theta)\propto \sqrt{\det \mathcal I(\theta)}\)</span> is invariant to reparametrization.<br>
+</li>
+<li><strong>Dual connections:</strong> exponential/moment coordinates yield dual-flat connections <span class="math inline">\((\nabla^{(e)},\nabla^{(m)})\)</span>; KL is a <strong>Bregman divergence</strong> of negative entropy <span class="math display">\[
+F(p)=\sum_i p_i\log p_i,\quad
+D_{\mathrm{KL}}(p\|q)=F(p)-F(q)-\langle \nabla F(q), p-q\rangle.
+\]</span></li>
+</ul>
+<p><strong>Payoff.</strong> Geometry clarifies why some parametrizations train easily (flat coordinates), how priors stabilize posteriors (volume matching), and why curvature controls generalization.</p>
+<hr>
+</section>
+<section id="score-matching-stein-operators-and-diffusion-one-lens" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="score-matching-stein-operators-and-diffusion-one-lens"><span class="header-section-number">6</span> 6. Score matching, Stein operators, and diffusion: one lens</h2>
+<p><strong>Score matching</strong> learns <span class="math inline">\(s(x)=\nabla_x \log p(x)\)</span> by minimizing Fisher divergence <span class="math display">\[
+\mathbb E\!\left[\tfrac12\|s_\theta(x)-s(x)\|^2\right],
+\]</span> converted via integration by parts into an objective without <span class="math inline">\(s(x)\)</span>—ideal for <strong>unnormalized</strong> models.</p>
+<p><strong>Stein’s method</strong> provides operator identities whose nulls characterize a target <span class="math inline">\(p\)</span>. Kernel Stein discrepancies measure how far a model deviates in <strong>score space</strong>.</p>
+<p><strong>Score-based diffusion</strong> trains <span class="math inline">\(s_\sigma(x)\)</span> across noise scales <span class="math inline">\(\sigma\)</span> and integrates a reverse SDE to generate data; this is literally <strong>learning the tangent field</strong> of log-density over scales.</p>
+<p><strong>Geometric reading.</strong> We are aligning <strong>vector fields</strong> (scores), not only densities. Failure modes often reflect <strong>non-integrability</strong>: a learned field may not be a gradient of any <span class="math inline">\(\log p_\theta\)</span>.</p>
+<p><strong>Opportunities.</strong> Integrability diagnostics (Helmholtz decomposition, Poincaré inequalities on data manifolds), Fisher-geometry-aware losses, and boundary-aware score matching on manifolds-with-boundary.</p>
+<hr>
+</section>
+<section id="why-the-log-is-inevitable-proof-sketch" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="why-the-log-is-inevitable-proof-sketch"><span class="header-section-number">7</span> 7. Why the log is inevitable (proof sketch)</h2>
+<p>Single-event information <span class="math inline">\(I:(0,1]\to\mathbb R\)</span> should satisfy: continuity, monotonicity (rarer <span class="math inline">\(\Rightarrow\)</span> larger), and additivity <span class="math inline">\(I(pq)=I(p)+I(q)\)</span>. Define <span class="math inline">\(g(x)=-I(e^{-x})\)</span> for <span class="math inline">\(x\ge0\)</span>; then <span class="math inline">\(g(x+y)=g(x)+g(y)\)</span> and <span class="math inline">\(g\)</span> is continuous, hence <span class="math inline">\(g(x)=cx\)</span>. Therefore <span class="math inline">\(I(p)=c\log p\)</span>; monotonicity forces <span class="math inline">\(c=-k&lt;0\)</span>: <span class="math display">\[
+I(p)=-k\log p.
+\]</span> Entropy and KL follow by averaging and the grouping axiom.</p>
+<hr>
+</section>
+<section id="case-studies-the-bridge-viewpoint-in-familiar-models" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="case-studies-the-bridge-viewpoint-in-familiar-models"><span class="header-section-number">8</span> 8. Case studies: the bridge viewpoint in familiar models</h2>
+<p><strong>Logistic regression = log-odds as a bridge.</strong><br>
+The class posterior is additive in <strong>log-odds</strong>: <span class="math display">\[
+\log\frac{\Pr(Y=1\mid x)}{\Pr(Y=0\mid x)} = w^\top x + b.
+\]</span> Fitting in logit space is linear; the cross-entropy is a Bregman loss for negative entropy.</p>
+<p><strong>Naïve Bayes = product of conditionals <span class="math inline">\(\to\)</span> sum of logs.</strong><br>
+Assuming conditional independence, the MAP decision boils down to <span class="math display">\[
+\arg\max_c \left\{\log \Pr(c) + \sum_j \log \Pr(x_j\mid c)\right\}.
+\]</span> Product of evidences becomes sum of <strong>log-likelihood contributions</strong>.</p>
+<p><strong>GLMs and exponential families.</strong><br>
+With natural parameter <span class="math inline">\(\eta=\theta^\top x\)</span>, the log-likelihood is <span class="math display">\[
+\ell(\theta)=\sum_i \big[\eta_i y_i - A(\eta_i)\big] + \text{const},
+\]</span> and the score is linear in sufficient statistics; Fisher equals the Hessian of the log-partition <span class="math inline">\(A\)</span>—a convex geometry in natural coordinates.</p>
+<hr>
+</section>
+<section id="a-practical-recipe-for-bridge-aware-learning" class="level2" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="a-practical-recipe-for-bridge-aware-learning"><span class="header-section-number">9</span> 9. A practical recipe for <strong>bridge-aware learning</strong></h2>
+<ol type="1">
+<li><strong>Map the algebra.</strong> What truly composes: products, sums (convolution), maxima, matchings, group actions, transport?<br>
+</li>
+<li><strong>Pick/learn a bridge.</strong> Use closed-form bridges (log, Fourier, LSE, Sinkhorn) or parameterize <span class="math inline">\(B_\phi\)</span> and regularize toward a homomorphism: <span class="math display">\[
+\|B_\phi(a\circledast b)-B_\phi(a)-B_\phi(b)\|\ \text{small}.
+\]</span></li>
+<li><strong>Choose the geometry</strong> in <span class="math inline">\(B\)</span>-space (Bregman/inner-product) to make optimization convex or nearly so.<br>
+</li>
+<li><strong>Precondition by curvature.</strong> Use natural gradients or Fisher-aware trust regions.<br>
+</li>
+<li><strong>Probe limits.</strong> Anneal temperature to move between hard ops and smooth bridges (e.g., LSE <span class="math inline">\(\to\)</span> max).<br>
+</li>
+<li><strong>Audit integrability/invariance.</strong> Check that learned fields are gradients (if required) and respect symmetries.</li>
+</ol>
+<p><strong>Quick checklist for day-to-day work</strong> - Optimize <span class="math inline">\(\ell\)</span> (not <span class="math inline">\(L\)</span>); monitor curvature via the spectrum of <span class="math inline">\(\mathcal I(\theta)\)</span>.<br>
+- Use log-odds to combine classifiers; average logits rather than probabilities for calibration.<br>
+- For long convolutions, go spectral (FFT) to exploit multiplicativity.<br>
+- Replace max-pool with LSE-pool (temperature-tunable) for robustness.<br>
+- For distributional tasks, consider entropic OT distances (Sinkhorn) and barycenters.</p>
+<hr>
+</section>
+<section id="where-the-log-playbook-cracks-and-what-to-do" class="level2" data-number="10">
+<h2 data-number="10" class="anchored" data-anchor-id="where-the-log-playbook-cracks-and-what-to-do"><span class="header-section-number">10</span> 10. Where the log playbook cracks (and what to do)</h2>
+<p><strong>Singular models.</strong> Mixtures, HMMs, deep nets can have rank-deficient Fisher and cusp-like likelihoods. Classical <span class="math inline">\(\chi^2\)</span> theory fails; <strong>learning coefficients</strong> replace dimension; MDL penalties change.<br>
+<em>Targets:</em> diagnostics for LAN failure; practical penalties and corrected LRTs; stratified-manifold bootstrap.</p>
+<p><strong>Non-extensive composition.</strong> Long-range dependence or networks may break additivity. Rényi/Tsallis “<span class="math inline">\(q\)</span>-logs” <span class="math display">\[
+\log_q(x)=\frac{x^{1-q}-1}{1-q}
+\]</span> recover Shannon at <span class="math inline">\(q\to1\)</span> but alter geometry and bounds.<br>
+<em>Targets:</em> operational axioms for when generalized logs/divergences are canonical; robust-loss interpolation via power means.</p>
+<p><strong>Group-invariant inference.</strong> When data live on Lie groups (rotations, SPD cones), the correct bridge is the <strong>matrix log/exponential</strong> and the right volume is Haar-invariant.<br>
+<em>Targets:</em> LAN/Wilks analogs on homogeneous spaces; Jeffreys-like priors from group geometry; equivariant score matching.</p>
+<hr>
+</section>
+<section id="concrete-research-directions-actionable" class="level2" data-number="11">
+<h2 data-number="11" class="anchored" data-anchor-id="concrete-research-directions-actionable"><span class="header-section-number">11</span> 11. Concrete research directions (actionable)</h2>
+<ol type="1">
+<li><strong>Natural-gradient schedules at scale.</strong> Online spectral sketches of <span class="math inline">\(\mathcal I\)</span> for adaptive steps in LLM training.<br>
+</li>
+<li><strong>Curvature-matched priors.</strong> Priors <span class="math inline">\(\propto \sqrt{\det(\alpha I+\mathcal I(\theta))}\)</span>; study posterior contraction and calibration.<br>
+</li>
+<li><strong>Singular-LAN diagnostics.</strong> Data-driven tests to estimate learning coefficients and flag non-<span class="math inline">\(\chi^2\)</span> regimes.<br>
+</li>
+<li><strong>Geometric bootstrap.</strong> Resample in <strong>natural</strong> coordinates to preserve Fisher distances.<br>
+</li>
+<li><strong>Score integrability meters.</strong> Quantify “distance to integrable gradient field” for learned scores; corrective projections.<br>
+</li>
+<li><strong>Boundary-aware diffusion.</strong> Reverse SDEs on manifolds-with-boundary with consistent Neumann/Dirichlet conditions.<br>
+</li>
+<li><strong>Bridge-learning.</strong> Parameterize <span class="math inline">\(B_\phi\)</span> families that approximately linearize domain ops; learn <span class="math inline">\(\phi\)</span> with homomorphism penalties.<br>
+</li>
+<li><strong>OT-attention.</strong> Replace dot-product attention with entropic OT blocks; analyze geometry and generalization.<br>
+</li>
+<li><strong>Large-deviation regularizers.</strong> Train with penalties derived from desired rate functions <span class="math inline">\(I(x)\)</span> to shape tails.<br>
+</li>
+<li><strong>Temperature homotopies.</strong> Understand log-sum-exp <span class="math inline">\(\to\)</span> max continuations as algorithms with curvature guarantees.</li>
+</ol>
+<hr>
+</section>
+<section id="essential-derivations-kept-terse" class="level2" data-number="12">
+<h2 data-number="12" class="anchored" data-anchor-id="essential-derivations-kept-terse"><span class="header-section-number">12</span> 12. Essential derivations (kept terse)</h2>
+<p><strong>Score identities</strong> <span class="math display">\[
+\mathbb E_{\theta_0}\!\big[\partial_\theta \log p(X\mid\theta_0)\big]
+=\partial_\theta \int p(x\mid\theta)\,dx\Big|_{\theta_0}=0,
+\]</span> <span class="math display">\[
+\mathcal I(\theta)
+=-\mathbb E\big[\partial_\theta^2 \log p(X\mid\theta)\big]
+=\mathrm{Var}\big(\partial_\theta \log p(X\mid\theta)\big).
+\]</span></p>
+<p><strong>Shannon uniqueness (single-event)</strong> <span class="math display">\[
+I(pq)=I(p)+I(q)\ \&amp;\ \text{continuity/monotonicity} \ \Rightarrow\ I(p)=-k\log p.
+\]</span></p>
+<p><strong>KL as Bregman</strong> <span class="math display">\[
+D_{\mathrm{KL}}(p\|q)=\sum_i p_i\log\frac{p_i}{q_i}
+=\underbrace{\sum_i p_i\log p_i}_{F(p)}-\underbrace{\sum_i q_i\log q_i}_{F(q)}-\langle \nabla F(q), p-q\rangle.
+\]</span></p>
+<p><strong>CGF <span class="math inline">\(\to\)</span> cumulants</strong><br>
+<span class="math inline">\(K_X(t)=\log \mathbb E[e^{tX}]\)</span>; the <span class="math inline">\(m\)</span>-th cumulant is <span class="math inline">\(K_X^{(m)}(0)\)</span> and <strong>adds</strong> over independent sums.</p>
+<p><strong>LSE temperature limits</strong> <span class="math display">\[
+\operatorname{LSE}_\tau(x)=\tau \log\sum_i e^{x_i/\tau},\quad
+\lim_{\tau\to 0}\operatorname{LSE}_\tau(x)=\max_i x_i,\quad
+\lim_{\tau\to\infty}\operatorname{LSE}_\tau(x)=\text{mean}(x).
+\]</span></p>
+<hr>
+</section>
+<section id="where-to-test-these-ideas-low-friction-experiments" class="level2" data-number="13">
+<h2 data-number="13" class="anchored" data-anchor-id="where-to-test-these-ideas-low-friction-experiments"><span class="header-section-number">13</span> 13. Where to test these ideas (low-friction experiments)</h2>
+<ul>
+<li><strong>Soft-tropical CNN block:</strong> swap max-pool for <span class="math inline">\(\operatorname{LSE}_\tau\)</span>-pool; measure robustness to misalignment/occlusion; sweep <span class="math inline">\(\tau\)</span>.<br>
+</li>
+<li><strong><span class="math inline">\(\mathrm{SO}(3)\)</span> score matching:</strong> learn densities on rotations with group Fourier features; compare to Euclidean baselines on pose data.<br>
+</li>
+<li><strong>Sinkhorn attention:</strong> entropic-OT attention in cross-modal matching; study calibration and sample efficiency.<br>
+</li>
+<li><strong>Power-mean losses:</strong> interpolate cross-entropy with Rényi/Tsallis-inspired losses under heavy-tailed/noisy labels.</li>
+</ul>
+<hr>
+</section>
+<section id="closing" class="level2" data-number="14">
+<h2 data-number="14" class="anchored" data-anchor-id="closing"><span class="header-section-number">14</span> 14. Closing</h2>
+<p>Logs are inevitable <strong>because independence is multiplicative</strong> and log is the <strong>only</strong> smooth bridge to additivity. The larger lesson is methodological:</p>
+<blockquote class="blockquote">
+<p><strong>Find the bridge</strong> that linearizes your problem’s native composition; compute, optimize, and reason in that additive space; map back only at the end.</p>
+</blockquote>
+<p>That perspective unifies score/Fisher/entropy with Fourier/LSE/OT/group-Fourier—and it opens the door to <strong>bridge-aware representation learning</strong> and new asymptotic theory beyond the regular textbook cases.</p>
+<hr>
+</section>
+<section id="references-classics-and-context" class="level2" data-number="15">
+<h2 data-number="15" class="anchored" data-anchor-id="references-classics-and-context"><span class="header-section-number">15</span> References (classics and context)</h2>
+<ul>
+<li>R.A. Fisher (1922). <em>On the Mathematical Foundations of Theoretical Statistics.</em><br>
+</li>
+<li>C.E. Shannon (1948). <em>A Mathematical Theory of Communication.</em><br>
+</li>
+<li>E.T. Jaynes. <em>Probability Theory: The Logic of Science.</em><br>
+</li>
+<li>S.-i. Amari (1998). <em>Natural Gradient Works Efficiently in Learning.</em><br>
+</li>
+<li>A. Hyvärinen (2005). <em>Estimation of Non-Normalized Statistical Models by Score Matching.</em><br>
+</li>
+<li>M. Cuturi (2013). <em>Sinkhorn Distances: Lightspeed Computation of Optimal Transport.</em><br>
+</li>
+<li>I. Csiszár (1967). <em>Information-type measures of difference of probability distributions.</em></li>
+</ul>
+
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="2025-10-26-why-logarithms-rule-statistics_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

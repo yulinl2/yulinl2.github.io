@@ -17,6 +17,17 @@ execute:
 editor: visual
 ---
 
+::: {.callout-tip title="TL;DR"}
+The **log** is the only function that converts *multiplicative* probability into *additive*
+evidence, so the **score** $U(\theta)=\partial_\theta \log L(\theta)$ is the correct
+directional signal with $\mathbb{E}[U]=0$ and $\mathrm{Var}(U)=\mathcal{I}$.
+Shannon’s axioms force $I(p)=-k\log p$, yielding entropy and KL. The same “bridge”
+pattern appears with Fourier (convolution→product), log-MGF→cumulants, and
+log-sum-exp (softmax). **Do inference in log space**, read the score as proportional
+change, and remember modern generative models learn the **data score**
+$\nabla_x \log p(x)$.
+:::
+
 > *“The logarithm is not just a convenient trick — it is the natural coordinate system of probability itself.”* — E.T. Jaynes
 
 ## Score function: definition and intuition

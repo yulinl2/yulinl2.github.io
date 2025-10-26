@@ -1,0 +1,154 @@
+---
+title: "Why Logarithms Rule Statistics (A Deeper View)"
+subtitle: "Score, Information Geometry, and the Canonical Bridges Behind Modern Inference"
+author: "ChatGPT5 Thinking, Yulin Li"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-fold: false
+    smooth-scroll: true
+    link-external-newwindow: true
+execute:
+  echo: false
+  warning: false
+  message: false
+editor: visual
+abstract: >
+  **TL;DR.** The logarithm is not a convenience; it is the unique smooth homomorphism that translates
+  multiplicative probability into additive information. In that coordinate system, the **score**
+  $U(\theta)=\partial_\theta \log L(\theta)$ is a tangent vector on the parameter manifold whose mean is $0$
+  and variance equals the Fisher metric, making MLE locally optimal (LAN) and LRTs $\chi^2$.
+  The same “bridge” idea explains cumulants (log-MGF), softmax (log-sum-exp), characteristic functions
+  (Fourier), and large deviations (Legendre of CGFs). This note surfaces the structural reasons behind these
+  facts and points to **research directions** where the log formalism bends or breaks: singular models,
+  non-extensive composition, manifold mismatch in score-based generative models, and geometry-aware optimization.
+---
+
+> *“The logarithm is the natural coordinate system of probability.”* — (paraphrasing Jaynes)
+
+## 1. Thesis: statistics lives on a manifold where log is the right coordinate
+
+Two composition laws govern uncertainty:
+
+-   **Independence ⇒ multiplication** of densities/likelihoods.\
+-   **Extensivity ⇒ addition** of information/evidence.
+
+Demand a smooth map $f$ that turns products into sums: $f(ab)=f(a)+f(b)$. Continuity/measurability forces\
+$f(x)=C\log x$. Passing to log coordinates is therefore **forced**, not chosen.
+
+**Immediate geometric consequence.** With $\ell(\theta)=\log L(\theta)$, - the **score** $U(\theta)=\partial_\theta \ell(\theta)$ is a **tangent vector** at $\theta$, - the **Fisher information** $\mathcal I(\theta) = \mathrm{Var}_\theta\!\big[U(\theta)\big] = -\mathbb E_\theta[\ell''(\theta)]$ is a **Riemannian metric** on the parameter manifold.
+
+These two objects (tangent + metric) make asymptotics a statement of **local Euclideanity**: *Local Asymptotic Normality (LAN)*.
+
+## 2. LAN in one line (why Wilks and Cramér–Rao are inevitable)
+
+Taylor expand $\ell(\theta)$ around the truth $\theta_0$: $$
+\ell(\theta_0+h) - \ell(\theta_0)
+= h\,U(\theta_0) - \tfrac12 h^2 \mathcal I(\theta_0) + o_p(1),
+$$ with $\mathbb E[U(\theta_0)]=0$ and $\mathrm{Var}(U)=\mathcal I(\theta_0)$. Maximizing the quadratic gives $\hat\theta - \theta_0 \approx U(\theta_0)/\mathcal I(\theta_0)$, hence $$
+\sqrt{n}\,(\hat\theta-\theta_0)\ \Rightarrow\ \mathcal N\!\big(0,\ \mathcal I^{-1}(\theta_0)\big),
+\qquad
+2\{\ell(\hat\theta)-\ell(\theta_0)\}\ \Rightarrow\ \chi^2_{\text{df}}.
+$$ This is not “because $\log$ is convenient” but because $\log$ supplies the metric and the linearization.
+
+**Research angle.** Where LAN fails (mixtures, neural nets, hidden variables), the geometry is **singular**. Rates, limiting laws, and penalties change (learning coefficients instead of dimension). See §7.
+
+## 3. Score as the right differential: relative, invariant, geometric
+
+Why the **derivative of** $\log L$ (not of $L$)?
+
+-   **Relative change.** $\partial_\theta \log L = (\partial_\theta L)/L$ is scale-free and dimensionless.
+-   **Coordinate-free direction.** As a tangent vector, $U$ transforms contravariantly under reparametrizations; its second moment defines the intrinsic metric.\
+-   **Natural gradient.** Steepest ascent under the Fisher metric is $$
+    \Delta\theta \propto \mathcal I(\theta)^{-1}\,\partial_\theta \ell(\theta),
+    $$ i.e., precondition the Euclidean gradient by the geometry. (This underlies Amari’s natural gradient, K-FAC, etc.)
+
+**Research angles.** 1) Scalable, stable **approximate natural gradients** beyond block-diagonal/Kronecker assumptions.\
+2) **Curvature-aware learning-rate schedules** keyed off spectral properties of $\mathcal I(\theta)$ in deep models.
+
+## 4. The bridge catalog (and why they’re all “logs in disguise”)
+
+Many “statistical miracles” are just **homomorphisms** that linearize a hard operation.
+
+| Hard composition | Linearized via | What becomes additive | Deep link |
+|------------------|------------------|------------------|------------------|
+| Product of densities | **Log** | Log-likelihood, evidence | Group homomorphism $\times\to+$ |
+| Sum of RVs (convolution) | **Fourier/characteristic** | Phases exponents add | CLT; stability in frequency |
+| Moment comp. | **Log MGF ⇒ CGF** | **Cumulants** add | Legendre dual ⇒ large deviations |
+| Soft maximum | **Log-sum-exp** | Smooths max into sum | Tropical limit as $T\to0$ |
+| Constraints $\leftrightarrow$ parameters | **Legendre transform** | $A(\theta)\leftrightarrow$ entropy | Exponential families as Gibbs states |
+
+**Large deviations as the “macroscopic” version of MLE.**\
+Let $K_X(t)=\log \mathbb E[e^{tX}]$ and $I(x)=\sup_t\{tx-K_X(t)\}$. Then $$
+\mathbb P\Big(\tfrac1n\sum X_i\approx x\Big)\approx e^{-n\,I(x)}.
+$$ The rate function is a **Legendre transform of a log**—again, additivity in the right coordinates.
+
+**Research angles.** - **Temperature homotopies:** use log-sum-exp with a temperature to anneal between combinatorial max and probabilistic sum; analyze geometry of the path.\
+- **LD-inspired regularizers:** design penalties from $I(x)$ to shape rare-event behavior of estimators.
+
+## 5. Information geometry in practice: metric, volume, duality
+
+-   **Metric:** $g=\mathcal I(\theta)$; geodesics = *least-distortion* parameter changes for distributions.\
+-   **Volume form:** Jeffreys prior $\pi_J(\theta)\propto\sqrt{\det \mathcal I(\theta)}$ is the invariant density.\
+-   **Dual connections:** $(\nabla^{(e)},\nabla^{(m)})$ are flat in exponential/moment coordinates; KL is a **Bregman divergence** generated by the log-partition $A(\theta)$.
+
+**Research angles.** - **Geometry of modern architectures:** characterize approximate flatness/curvature of the induced statistical manifold for transformers or diffusion models.\
+- **Prior design by geometry:** priors that match local volume and curvature to stabilize posteriors in high dimension.
+
+## 6. Score matching, Stein operators, and diffusion: a unified view
+
+**Score matching** learns the **data score** $s(x)=\nabla_x \log p(x)$ by minimizing Fisher divergence $\mathbb E\big[\|s_\theta(x)-s(x)\|^2\big]$; integration by parts eliminates the unknown $s(x)$. This aligns with **Stein identities** (kernel Stein discrepancy) and powers **score-based diffusion**: learn $s_{\sigma}(x)$ across noise scales and integrate a reverse SDE.
+
+**Geometric reading.** Training aligns model and data **tangent fields** on ambient space, not just densities. Failure modes often reflect **manifold mismatch** (learning a score field not integrable to any normalized density).
+
+**Research angles.** - **Integrability diagnostics:** detect when a learned score field is near the gradient of some $\log p_\theta$ (Poincaré-type conditions on data manifolds).\
+- **Information-geometric losses:** penalize discrepancy in Fisher geometry rather than $L^2$ alone.\
+- **Boundary-aware score matching:** robust integration by parts on manifolds-with-boundary (images, meshes).
+
+## 7. Where the log playbook cracks: singular and non-extensive worlds
+
+1)  **Singular models.** Mixtures, HMMs, deep nets often violate regularity: Fisher is rank-deficient; likelihood has cusps. Classical $\chi^2$ limits fail; **learning coefficients** replace dimension; MDL penalties change. *Opportunity:* bring algebraic geometry (stratified manifolds, resolution of singularities) to practical criteria for model selection and valid uncertainty.
+
+2)  **Non-extensive composition.** Long-range dependence or networked interactions can break additivity. Rényi/Tsallis “$q$-logs” alter composition rules: $$\log_q(x)=\frac{x^{1-q}-1}{1-q}.$$ They recover Shannon as $q\to1$ but change everything (entropy, divergences, CR bounds). *Opportunity:* identify **operational axioms** (what kind of “independence”) under which non-log divergences are actually canonical.
+
+3)  **Group-invariant inference on manifolds.** Many problems live on Lie groups (rotations, SPD cones). Replace Euclidean log with **matrix log/exponential**; likelihoods are **Gibbs on groups** with Haar measure. *Opportunity:* generalize LAN and Wilks to curved homogeneous spaces; devise Jeffreys-like priors from group geometry.
+
+## 8. Why the LRT uses logs (and how to go beyond)
+
+The log-likelihood ratio is a **Bregman distance** in disguise: $$
+2\big\{\ell(\hat\theta)-\ell(\theta_0)\big\}
+\approx (\hat\theta-\theta_0)^\top \mathcal I(\theta_0)\,(\hat\theta-\theta_0),
+$$ i.e., squared length in the Fisher metric. That is why the limit is $\chi^2$ under regularity.
+
+**Beyond regularity (open problems).** - Consistent, *computable* corrections to LRTs under near-singularity (mixtures at/near boundary, overparametrized nets).\
+- Information-geometric bootstrap: resample in **natural coordinates** to stabilize finite-sample distortions.
+
+## 9. Practical rules you can use tomorrow
+
+-   **Always work in log space.** Optimize $\ell$, check curvature (eigenvalues of $\mathcal I$), and precondition by it.\
+-   **Parametrize by sufficiency.** In exponential families, use natural/expectation coordinates; they are flat for one of the dual connections.\
+-   **Check LAN.** If quadratic expansion looks bad (multi-modal, flat valleys), suspect singularity; change model or use geometry-aware penalties.\
+-   **For generative models, test integrability.** Ensure learned scores correspond to an actual density (Helmholtz decomposition, spectral tests).
+
+## 10. Concrete research questions (actionable)
+
+1.  **Natural-gradient schedules at scale.** Can we derive adaptive learning rates from online spectra of $\mathcal I$ for LLMs that outperform Adam/K-FAC hybrids?\
+2.  **Curvature-matched priors.** For deep hierarchical models, design priors proportional to $\sqrt{\det(\alpha I + \mathcal I(\theta))}$ and study posterior contraction.\
+3.  **Singular-LAN diagnostics.** A practical test to flag when LAN fails and estimate the learning coefficient from data.\
+4.  **Geometric bootstrap.** A resampling scheme that preserves Fisher distances rather than Euclidean ones in parameter space.\
+5.  **Score integrability meters.** Given a learned $s_\phi(x)$, produce a scalar “integrability gap” with certificates and corrections.\
+6.  **Boundary-aware diffusion.** Diffusions on manifolds with reflecting/absorbing boundaries that keep score training consistent.\
+7.  **Operational axioms for non-extensive inference.** Precisely state the composition rule and prove the corresponding “uniqueness” of the generalized log.\
+8.  **Group-aware MLE theory.** LAN/Wilks analogs on compact/semisimple groups; consequences for robotics/vision likelihoods.\
+9.  **Large-deviation regularizers.** Turn desired tail behavior into rate-function penalties inside empirical risk.\
+10. **Temperature-homotopy optimization.** Analyze continuation from log-sum-exp to max as an algorithm with curvature guarantees.
+
+------------------------------------------------------------------------
+
+### Appendix: one-line uniqueness of the log (single-event information)
+
+Assume continuity, monotonicity, and additivity for independent events: $$
+I(pq)=I(p)+I(q),\quad 0<p,q\le1.
+$$ Set $g(x)=-I(e^{-x})$ for $x\ge0$. Then $g(x+y)=g(x)+g(y)$ and $g$ is continuous ⇒ $g(x)=cx$. Thus $I(p)=c\log p$, and monotonicity forces $c=-k<0$. Hence $I(p)=-k\log p$ (units set by $k$).

@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.30">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="ChatGPT5 Thinking, Yulin Li">
+
+<title>Why Logarithms Rule Statistics (A Deeper View)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="2025-10-23-why-logarithms-rule-statistics_files/libs/clipboard/clipboard.min.js"></script>
+<script src="2025-10-23-why-logarithms-rule-statistics_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="2025-10-23-why-logarithms-rule-statistics_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="2025-10-23-why-logarithms-rule-statistics_files/libs/quarto-html/popper.min.js"></script>
+<script src="2025-10-23-why-logarithms-rule-statistics_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="2025-10-23-why-logarithms-rule-statistics_files/libs/quarto-html/anchor.min.js"></script>
+<link href="2025-10-23-why-logarithms-rule-statistics_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="2025-10-23-why-logarithms-rule-statistics_files/libs/quarto-html/quarto-syntax-highlighting-de070a7b0ab54f8780927367ac907214.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="2025-10-23-why-logarithms-rule-statistics_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="2025-10-23-why-logarithms-rule-statistics_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="2025-10-23-why-logarithms-rule-statistics_files/libs/bootstrap/bootstrap-81267100e462c21b3d6c0d5bf76a3417.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#thesis-statistics-lives-on-a-manifold-where-log-is-the-right-coordinate" id="toc-thesis-statistics-lives-on-a-manifold-where-log-is-the-right-coordinate" class="nav-link active" data-scroll-target="#thesis-statistics-lives-on-a-manifold-where-log-is-the-right-coordinate"><span class="header-section-number">1</span> 1. Thesis: statistics lives on a manifold where log is the right coordinate</a></li>
+  <li><a href="#lan-in-one-line-why-wilks-and-cramérrao-are-inevitable" id="toc-lan-in-one-line-why-wilks-and-cramérrao-are-inevitable" class="nav-link" data-scroll-target="#lan-in-one-line-why-wilks-and-cramérrao-are-inevitable"><span class="header-section-number">2</span> 2. LAN in one line (why Wilks and Cramér–Rao are inevitable)</a></li>
+  <li><a href="#score-as-the-right-differential-relative-invariant-geometric" id="toc-score-as-the-right-differential-relative-invariant-geometric" class="nav-link" data-scroll-target="#score-as-the-right-differential-relative-invariant-geometric"><span class="header-section-number">3</span> 3. Score as the right differential: relative, invariant, geometric</a></li>
+  <li><a href="#the-bridge-catalog-and-why-theyre-all-logs-in-disguise" id="toc-the-bridge-catalog-and-why-theyre-all-logs-in-disguise" class="nav-link" data-scroll-target="#the-bridge-catalog-and-why-theyre-all-logs-in-disguise"><span class="header-section-number">4</span> 4. The bridge catalog (and why they’re all “logs in disguise”)</a></li>
+  <li><a href="#information-geometry-in-practice-metric-volume-duality" id="toc-information-geometry-in-practice-metric-volume-duality" class="nav-link" data-scroll-target="#information-geometry-in-practice-metric-volume-duality"><span class="header-section-number">5</span> 5. Information geometry in practice: metric, volume, duality</a></li>
+  <li><a href="#score-matching-stein-operators-and-diffusion-a-unified-view" id="toc-score-matching-stein-operators-and-diffusion-a-unified-view" class="nav-link" data-scroll-target="#score-matching-stein-operators-and-diffusion-a-unified-view"><span class="header-section-number">6</span> 6. Score matching, Stein operators, and diffusion: a unified view</a></li>
+  <li><a href="#where-the-log-playbook-cracks-singular-and-non-extensive-worlds" id="toc-where-the-log-playbook-cracks-singular-and-non-extensive-worlds" class="nav-link" data-scroll-target="#where-the-log-playbook-cracks-singular-and-non-extensive-worlds"><span class="header-section-number">7</span> 7. Where the log playbook cracks: singular and non-extensive worlds</a></li>
+  <li><a href="#why-the-lrt-uses-logs-and-how-to-go-beyond" id="toc-why-the-lrt-uses-logs-and-how-to-go-beyond" class="nav-link" data-scroll-target="#why-the-lrt-uses-logs-and-how-to-go-beyond"><span class="header-section-number">8</span> 8. Why the LRT uses logs (and how to go beyond)</a></li>
+  <li><a href="#practical-rules-you-can-use-tomorrow" id="toc-practical-rules-you-can-use-tomorrow" class="nav-link" data-scroll-target="#practical-rules-you-can-use-tomorrow"><span class="header-section-number">9</span> 9. Practical rules you can use tomorrow</a></li>
+  <li><a href="#concrete-research-questions-actionable" id="toc-concrete-research-questions-actionable" class="nav-link" data-scroll-target="#concrete-research-questions-actionable"><span class="header-section-number">10</span> 10. Concrete research questions (actionable)</a>
+  <ul class="collapse">
+  <li><a href="#appendix-one-line-uniqueness-of-the-log-single-event-information" id="toc-appendix-one-line-uniqueness-of-the-log-single-event-information" class="nav-link" data-scroll-target="#appendix-one-line-uniqueness-of-the-log-single-event-information"><span class="header-section-number">10.1</span> Appendix: one-line uniqueness of the log (single-event information)</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Why Logarithms Rule Statistics (A Deeper View)</h1>
+<p class="subtitle lead">Score, Information Geometry, and the Canonical Bridges Behind Modern Inference</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>ChatGPT5 Thinking, Yulin Li </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+<div>
+  <div class="abstract">
+    <div class="block-title">Abstract</div>
+    <p><strong>TL;DR.</strong> The logarithm is not a convenience; it is the unique smooth homomorphism that translates multiplicative probability into additive information. In that coordinate system, the <strong>score</strong> <span class="math inline">\(U(\theta)=\partial_\theta \log L(\theta)\)</span> is a tangent vector on the parameter manifold whose mean is <span class="math inline">\(0\)</span> and variance equals the Fisher metric, making MLE locally optimal (LAN) and LRTs <span class="math inline">\(\chi^2\)</span>. The same “bridge” idea explains cumulants (log-MGF), softmax (log-sum-exp), characteristic functions (Fourier), and large deviations (Legendre of CGFs). This note surfaces the structural reasons behind these facts and points to <strong>research directions</strong> where the log formalism bends or breaks: singular models, non-extensive composition, manifold mismatch in score-based generative models, and geometry-aware optimization.</p>
+  </div>
+</div>
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p><em>“The logarithm is the natural coordinate system of probability.”</em> — (paraphrasing Jaynes)</p>
+</blockquote>
+<section id="thesis-statistics-lives-on-a-manifold-where-log-is-the-right-coordinate" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="thesis-statistics-lives-on-a-manifold-where-log-is-the-right-coordinate"><span class="header-section-number">1</span> 1. Thesis: statistics lives on a manifold where log is the right coordinate</h2>
+<p>Two composition laws govern uncertainty:</p>
+<ul>
+<li><strong>Independence ⇒ multiplication</strong> of densities/likelihoods.<br>
+</li>
+<li><strong>Extensivity ⇒ addition</strong> of information/evidence.</li>
+</ul>
+<p>Demand a smooth map <span class="math inline">\(f\)</span> that turns products into sums: <span class="math inline">\(f(ab)=f(a)+f(b)\)</span>. Continuity/measurability forces<br>
+<span class="math inline">\(f(x)=C\log x\)</span>. Passing to log coordinates is therefore <strong>forced</strong>, not chosen.</p>
+<p><strong>Immediate geometric consequence.</strong> With <span class="math inline">\(\ell(\theta)=\log L(\theta)\)</span>, - the <strong>score</strong> <span class="math inline">\(U(\theta)=\partial_\theta \ell(\theta)\)</span> is a <strong>tangent vector</strong> at <span class="math inline">\(\theta\)</span>, - the <strong>Fisher information</strong> <span class="math inline">\(\mathcal I(\theta) = \mathrm{Var}_\theta\!\big[U(\theta)\big] = -\mathbb E_\theta[\ell''(\theta)]\)</span> is a <strong>Riemannian metric</strong> on the parameter manifold.</p>
+<p>These two objects (tangent + metric) make asymptotics a statement of <strong>local Euclideanity</strong>: <em>Local Asymptotic Normality (LAN)</em>.</p>
+</section>
+<section id="lan-in-one-line-why-wilks-and-cramérrao-are-inevitable" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="lan-in-one-line-why-wilks-and-cramérrao-are-inevitable"><span class="header-section-number">2</span> 2. LAN in one line (why Wilks and Cramér–Rao are inevitable)</h2>
+<p>Taylor expand <span class="math inline">\(\ell(\theta)\)</span> around the truth <span class="math inline">\(\theta_0\)</span>: <span class="math display">\[
+\ell(\theta_0+h) - \ell(\theta_0)
+= h\,U(\theta_0) - \tfrac12 h^2 \mathcal I(\theta_0) + o_p(1),
+\]</span> with <span class="math inline">\(\mathbb E[U(\theta_0)]=0\)</span> and <span class="math inline">\(\mathrm{Var}(U)=\mathcal I(\theta_0)\)</span>. Maximizing the quadratic gives <span class="math inline">\(\hat\theta - \theta_0 \approx U(\theta_0)/\mathcal I(\theta_0)\)</span>, hence <span class="math display">\[
+\sqrt{n}\,(\hat\theta-\theta_0)\ \Rightarrow\ \mathcal N\!\big(0,\ \mathcal I^{-1}(\theta_0)\big),
+\qquad
+2\{\ell(\hat\theta)-\ell(\theta_0)\}\ \Rightarrow\ \chi^2_{\text{df}}.
+\]</span> This is not “because <span class="math inline">\(\log\)</span> is convenient” but because <span class="math inline">\(\log\)</span> supplies the metric and the linearization.</p>
+<p><strong>Research angle.</strong> Where LAN fails (mixtures, neural nets, hidden variables), the geometry is <strong>singular</strong>. Rates, limiting laws, and penalties change (learning coefficients instead of dimension). See §7.</p>
+</section>
+<section id="score-as-the-right-differential-relative-invariant-geometric" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="score-as-the-right-differential-relative-invariant-geometric"><span class="header-section-number">3</span> 3. Score as the right differential: relative, invariant, geometric</h2>
+<p>Why the <strong>derivative of</strong> <span class="math inline">\(\log L\)</span> (not of <span class="math inline">\(L\)</span>)?</p>
+<ul>
+<li><strong>Relative change.</strong> <span class="math inline">\(\partial_\theta \log L = (\partial_\theta L)/L\)</span> is scale-free and dimensionless.</li>
+<li><strong>Coordinate-free direction.</strong> As a tangent vector, <span class="math inline">\(U\)</span> transforms contravariantly under reparametrizations; its second moment defines the intrinsic metric.<br>
+</li>
+<li><strong>Natural gradient.</strong> Steepest ascent under the Fisher metric is <span class="math display">\[
+\Delta\theta \propto \mathcal I(\theta)^{-1}\,\partial_\theta \ell(\theta),
+\]</span> i.e., precondition the Euclidean gradient by the geometry. (This underlies Amari’s natural gradient, K-FAC, etc.)</li>
+</ul>
+<p><strong>Research angles.</strong> 1) Scalable, stable <strong>approximate natural gradients</strong> beyond block-diagonal/Kronecker assumptions.<br>
+2) <strong>Curvature-aware learning-rate schedules</strong> keyed off spectral properties of <span class="math inline">\(\mathcal I(\theta)\)</span> in deep models.</p>
+</section>
+<section id="the-bridge-catalog-and-why-theyre-all-logs-in-disguise" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="the-bridge-catalog-and-why-theyre-all-logs-in-disguise"><span class="header-section-number">4</span> 4. The bridge catalog (and why they’re all “logs in disguise”)</h2>
+<p>Many “statistical miracles” are just <strong>homomorphisms</strong> that linearize a hard operation.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Hard composition</th>
+<th>Linearized via</th>
+<th>What becomes additive</th>
+<th>Deep link</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Product of densities</td>
+<td><strong>Log</strong></td>
+<td>Log-likelihood, evidence</td>
+<td>Group homomorphism <span class="math inline">\(\times\to+\)</span></td>
+</tr>
+<tr class="even">
+<td>Sum of RVs (convolution)</td>
+<td><strong>Fourier/characteristic</strong></td>
+<td>Phases exponents add</td>
+<td>CLT; stability in frequency</td>
+</tr>
+<tr class="odd">
+<td>Moment comp.</td>
+<td><strong>Log MGF ⇒ CGF</strong></td>
+<td><strong>Cumulants</strong> add</td>
+<td>Legendre dual ⇒ large deviations</td>
+</tr>
+<tr class="even">
+<td>Soft maximum</td>
+<td><strong>Log-sum-exp</strong></td>
+<td>Smooths max into sum</td>
+<td>Tropical limit as <span class="math inline">\(T\to0\)</span></td>
+</tr>
+<tr class="odd">
+<td>Constraints <span class="math inline">\(\leftrightarrow\)</span> parameters</td>
+<td><strong>Legendre transform</strong></td>
+<td><span class="math inline">\(A(\theta)\leftrightarrow\)</span> entropy</td>
+<td>Exponential families as Gibbs states</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Large deviations as the “macroscopic” version of MLE.</strong><br>
+Let <span class="math inline">\(K_X(t)=\log \mathbb E[e^{tX}]\)</span> and <span class="math inline">\(I(x)=\sup_t\{tx-K_X(t)\}\)</span>. Then <span class="math display">\[
+\mathbb P\Big(\tfrac1n\sum X_i\approx x\Big)\approx e^{-n\,I(x)}.
+\]</span> The rate function is a <strong>Legendre transform of a log</strong>—again, additivity in the right coordinates.</p>
+<p><strong>Research angles.</strong> - <strong>Temperature homotopies:</strong> use log-sum-exp with a temperature to anneal between combinatorial max and probabilistic sum; analyze geometry of the path.<br>
+- <strong>LD-inspired regularizers:</strong> design penalties from <span class="math inline">\(I(x)\)</span> to shape rare-event behavior of estimators.</p>
+</section>
+<section id="information-geometry-in-practice-metric-volume-duality" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="information-geometry-in-practice-metric-volume-duality"><span class="header-section-number">5</span> 5. Information geometry in practice: metric, volume, duality</h2>
+<ul>
+<li><strong>Metric:</strong> <span class="math inline">\(g=\mathcal I(\theta)\)</span>; geodesics = <em>least-distortion</em> parameter changes for distributions.<br>
+</li>
+<li><strong>Volume form:</strong> Jeffreys prior <span class="math inline">\(\pi_J(\theta)\propto\sqrt{\det \mathcal I(\theta)}\)</span> is the invariant density.<br>
+</li>
+<li><strong>Dual connections:</strong> <span class="math inline">\((\nabla^{(e)},\nabla^{(m)})\)</span> are flat in exponential/moment coordinates; KL is a <strong>Bregman divergence</strong> generated by the log-partition <span class="math inline">\(A(\theta)\)</span>.</li>
+</ul>
+<p><strong>Research angles.</strong> - <strong>Geometry of modern architectures:</strong> characterize approximate flatness/curvature of the induced statistical manifold for transformers or diffusion models.<br>
+- <strong>Prior design by geometry:</strong> priors that match local volume and curvature to stabilize posteriors in high dimension.</p>
+</section>
+<section id="score-matching-stein-operators-and-diffusion-a-unified-view" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="score-matching-stein-operators-and-diffusion-a-unified-view"><span class="header-section-number">6</span> 6. Score matching, Stein operators, and diffusion: a unified view</h2>
+<p><strong>Score matching</strong> learns the <strong>data score</strong> <span class="math inline">\(s(x)=\nabla_x \log p(x)\)</span> by minimizing Fisher divergence <span class="math inline">\(\mathbb E\big[\|s_\theta(x)-s(x)\|^2\big]\)</span>; integration by parts eliminates the unknown <span class="math inline">\(s(x)\)</span>. This aligns with <strong>Stein identities</strong> (kernel Stein discrepancy) and powers <strong>score-based diffusion</strong>: learn <span class="math inline">\(s_{\sigma}(x)\)</span> across noise scales and integrate a reverse SDE.</p>
+<p><strong>Geometric reading.</strong> Training aligns model and data <strong>tangent fields</strong> on ambient space, not just densities. Failure modes often reflect <strong>manifold mismatch</strong> (learning a score field not integrable to any normalized density).</p>
+<p><strong>Research angles.</strong> - <strong>Integrability diagnostics:</strong> detect when a learned score field is near the gradient of some <span class="math inline">\(\log p_\theta\)</span> (Poincaré-type conditions on data manifolds).<br>
+- <strong>Information-geometric losses:</strong> penalize discrepancy in Fisher geometry rather than <span class="math inline">\(L^2\)</span> alone.<br>
+- <strong>Boundary-aware score matching:</strong> robust integration by parts on manifolds-with-boundary (images, meshes).</p>
+</section>
+<section id="where-the-log-playbook-cracks-singular-and-non-extensive-worlds" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="where-the-log-playbook-cracks-singular-and-non-extensive-worlds"><span class="header-section-number">7</span> 7. Where the log playbook cracks: singular and non-extensive worlds</h2>
+<ol type="1">
+<li><p><strong>Singular models.</strong> Mixtures, HMMs, deep nets often violate regularity: Fisher is rank-deficient; likelihood has cusps. Classical <span class="math inline">\(\chi^2\)</span> limits fail; <strong>learning coefficients</strong> replace dimension; MDL penalties change. <em>Opportunity:</em> bring algebraic geometry (stratified manifolds, resolution of singularities) to practical criteria for model selection and valid uncertainty.</p></li>
+<li><p><strong>Non-extensive composition.</strong> Long-range dependence or networked interactions can break additivity. Rényi/Tsallis “<span class="math inline">\(q\)</span>-logs” alter composition rules: <span class="math display">\[\log_q(x)=\frac{x^{1-q}-1}{1-q}.\]</span> They recover Shannon as <span class="math inline">\(q\to1\)</span> but change everything (entropy, divergences, CR bounds). <em>Opportunity:</em> identify <strong>operational axioms</strong> (what kind of “independence”) under which non-log divergences are actually canonical.</p></li>
+<li><p><strong>Group-invariant inference on manifolds.</strong> Many problems live on Lie groups (rotations, SPD cones). Replace Euclidean log with <strong>matrix log/exponential</strong>; likelihoods are <strong>Gibbs on groups</strong> with Haar measure. <em>Opportunity:</em> generalize LAN and Wilks to curved homogeneous spaces; devise Jeffreys-like priors from group geometry.</p></li>
+</ol>
+</section>
+<section id="why-the-lrt-uses-logs-and-how-to-go-beyond" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="why-the-lrt-uses-logs-and-how-to-go-beyond"><span class="header-section-number">8</span> 8. Why the LRT uses logs (and how to go beyond)</h2>
+<p>The log-likelihood ratio is a <strong>Bregman distance</strong> in disguise: <span class="math display">\[
+2\big\{\ell(\hat\theta)-\ell(\theta_0)\big\}
+\approx (\hat\theta-\theta_0)^\top \mathcal I(\theta_0)\,(\hat\theta-\theta_0),
+\]</span> i.e., squared length in the Fisher metric. That is why the limit is <span class="math inline">\(\chi^2\)</span> under regularity.</p>
+<p><strong>Beyond regularity (open problems).</strong> - Consistent, <em>computable</em> corrections to LRTs under near-singularity (mixtures at/near boundary, overparametrized nets).<br>
+- Information-geometric bootstrap: resample in <strong>natural coordinates</strong> to stabilize finite-sample distortions.</p>
+</section>
+<section id="practical-rules-you-can-use-tomorrow" class="level2" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="practical-rules-you-can-use-tomorrow"><span class="header-section-number">9</span> 9. Practical rules you can use tomorrow</h2>
+<ul>
+<li><strong>Always work in log space.</strong> Optimize <span class="math inline">\(\ell\)</span>, check curvature (eigenvalues of <span class="math inline">\(\mathcal I\)</span>), and precondition by it.<br>
+</li>
+<li><strong>Parametrize by sufficiency.</strong> In exponential families, use natural/expectation coordinates; they are flat for one of the dual connections.<br>
+</li>
+<li><strong>Check LAN.</strong> If quadratic expansion looks bad (multi-modal, flat valleys), suspect singularity; change model or use geometry-aware penalties.<br>
+</li>
+<li><strong>For generative models, test integrability.</strong> Ensure learned scores correspond to an actual density (Helmholtz decomposition, spectral tests).</li>
+</ul>
+</section>
+<section id="concrete-research-questions-actionable" class="level2" data-number="10">
+<h2 data-number="10" class="anchored" data-anchor-id="concrete-research-questions-actionable"><span class="header-section-number">10</span> 10. Concrete research questions (actionable)</h2>
+<ol type="1">
+<li><strong>Natural-gradient schedules at scale.</strong> Can we derive adaptive learning rates from online spectra of <span class="math inline">\(\mathcal I\)</span> for LLMs that outperform Adam/K-FAC hybrids?<br>
+</li>
+<li><strong>Curvature-matched priors.</strong> For deep hierarchical models, design priors proportional to <span class="math inline">\(\sqrt{\det(\alpha I + \mathcal I(\theta))}\)</span> and study posterior contraction.<br>
+</li>
+<li><strong>Singular-LAN diagnostics.</strong> A practical test to flag when LAN fails and estimate the learning coefficient from data.<br>
+</li>
+<li><strong>Geometric bootstrap.</strong> A resampling scheme that preserves Fisher distances rather than Euclidean ones in parameter space.<br>
+</li>
+<li><strong>Score integrability meters.</strong> Given a learned <span class="math inline">\(s_\phi(x)\)</span>, produce a scalar “integrability gap” with certificates and corrections.<br>
+</li>
+<li><strong>Boundary-aware diffusion.</strong> Diffusions on manifolds with reflecting/absorbing boundaries that keep score training consistent.<br>
+</li>
+<li><strong>Operational axioms for non-extensive inference.</strong> Precisely state the composition rule and prove the corresponding “uniqueness” of the generalized log.<br>
+</li>
+<li><strong>Group-aware MLE theory.</strong> LAN/Wilks analogs on compact/semisimple groups; consequences for robotics/vision likelihoods.<br>
+</li>
+<li><strong>Large-deviation regularizers.</strong> Turn desired tail behavior into rate-function penalties inside empirical risk.<br>
+</li>
+<li><strong>Temperature-homotopy optimization.</strong> Analyze continuation from log-sum-exp to max as an algorithm with curvature guarantees.</li>
+</ol>
+<hr>
+<section id="appendix-one-line-uniqueness-of-the-log-single-event-information" class="level3" data-number="10.1">
+<h3 data-number="10.1" class="anchored" data-anchor-id="appendix-one-line-uniqueness-of-the-log-single-event-information"><span class="header-section-number">10.1</span> Appendix: one-line uniqueness of the log (single-event information)</h3>
+<p>Assume continuity, monotonicity, and additivity for independent events: <span class="math display">\[
+I(pq)=I(p)+I(q),\quad 0&lt;p,q\le1.
+\]</span> Set <span class="math inline">\(g(x)=-I(e^{-x})\)</span> for <span class="math inline">\(x\ge0\)</span>. Then <span class="math inline">\(g(x+y)=g(x)+g(y)\)</span> and <span class="math inline">\(g\)</span> is continuous ⇒ <span class="math inline">\(g(x)=cx\)</span>. Thus <span class="math inline">\(I(p)=c\log p\)</span>, and monotonicity forces <span class="math inline">\(c=-k&lt;0\)</span>. Hence <span class="math inline">\(I(p)=-k\log p\)</span> (units set by <span class="math inline">\(k\)</span>).</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="2025-10-23-why-logarithms-rule-statistics_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

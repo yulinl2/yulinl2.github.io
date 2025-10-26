@@ -121,6 +121,19 @@ window.Quarto = {
 </header>
 
 
+<div class="callout callout-style-default callout-tip callout-titled" title="TL;DR">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+TL;DR
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <strong>log</strong> is the only function that converts <em>multiplicative</em> probability into <em>additive</em> evidence, so the <strong>score</strong> <span class="math inline">\(U(\theta)=\partial_\theta \log L(\theta)\)</span> is the correct directional signal with <span class="math inline">\(\mathbb{E}[U]=0\)</span> and <span class="math inline">\(\mathrm{Var}(U)=\mathcal{I}\)</span>. Shannon’s axioms force <span class="math inline">\(I(p)=-k\log p\)</span>, yielding entropy and KL. The same “bridge” pattern appears with Fourier (convolution→product), log-MGF→cumulants, and log-sum-exp (softmax). <strong>Do inference in log space</strong>, read the score as proportional change, and remember modern generative models learn the <strong>data score</strong> <span class="math inline">\(\nabla_x \log p(x)\)</span>.</p>
+</div>
+</div>
 <blockquote class="blockquote">
 <p><em>“The logarithm is not just a convenient trick — it is the natural coordinate system of probability itself.”</em> — E.T. Jaynes</p>
 </blockquote>
