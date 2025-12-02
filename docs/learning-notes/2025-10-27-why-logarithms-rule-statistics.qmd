@@ -31,7 +31,7 @@ editor: visual
 
 > *“The logarithm is not just a convenient trick — it is the natural coordinate system of probability itself.”* — E.T. Jaynes
 
-**TL;DR:**
+::: {.callout-tip title="**TL;DR:**"}
 
 Independent events **multiply** in probability but **add** up in information. The *logarithm* is the
 **unique** smooth homomorphism that converts the *multiplicative algebra* of likelihoods into an *additive, linear
@@ -44,23 +44,9 @@ This yields the *score* as the correct **differential**,
 
 A broader **Bridge Principle** emerges: whenever inference relies on a **hard composition law** (product, convolution, max, transport,
 group action), there exists or can be designed a transform (“bridge”) that makes it **linear/additive** (log, Fourier,
-log–MGF, log-sum-exp, entropic OT, group Fourier). 
-
-
-
-::: {.callout-tip title="A General Recipe"}
-
-Pick the composition law your data **naturally** uses, then move through a **bridge** into an additive/linear space to compute. 
-
-**Example:** For independence the algebra is $(\mathbb{R}^+,\times)$ and the bridge is $\log$, making the score $U(\theta)=\partial_\theta \log L(\theta)$ central with $\mathbb{E}[U]=0$ and $\mathrm{Var}(U)=\mathcal{I}$. 
-The same pattern yields Fourier for convolution $\to$ product, log–MGF for moments $\to$ cumulants, and log-sum-exp for sum $\to$ softmax/max.
+log–MGF, log-sum-exp, entropic OT, group Fourier), enabling calculus, convex losses, and stable asymptotics.
 
 :::
-
-Building models and algorithms in the right additive
-coordinates explains classical statistics and suggests new research:
-identify new operation pairs in your domain, 
-design/learn task-specific bridges to obtain linear features, convex losses, and stable asymptotics.
 
 
 ## Thesis: statistics succeeds when we compute in the **right coordinates**
@@ -76,7 +62,9 @@ $$ Continuity/measurability forces $$
 f(x)=C\log x,
 $$ the **only** smooth homomorphism $(\mathbb{R}^+,\times)\to(\mathbb{R},+)$ up to scale. Passing to log coordinates is thus **forced**, not chosen.
 
-**Immediate geometric consequences.** With $\ell(\theta)=\log L(\theta)$: - the **score** $$
+**Immediate geometric consequences.** With $\ell(\theta)=\log L(\theta)$: 
+
+- the **score** $$
   U(\theta)=\partial_\theta \ell(\theta)
   $$ is a **tangent vector** on the parameter manifold;\
 - the **Fisher information** $$

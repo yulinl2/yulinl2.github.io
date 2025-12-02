@@ -128,26 +128,22 @@ window.Quarto = {
 <blockquote class="blockquote">
 <p><em>“The logarithm is not just a convenient trick — it is the natural coordinate system of probability itself.”</em> — E.T. Jaynes</p>
 </blockquote>
-<p><strong>TL;DR:</strong></p>
-<p>Independent events <strong>multiply</strong> in probability but <strong>add</strong> up in information. The <em>logarithm</em> is the <strong>unique</strong> smooth homomorphism that converts the <em>multiplicative algebra</em> of likelihoods into an <em>additive, linear space</em> where calculus, convexity, and asymptotics align.</p>
-<p>This yields the <em>score</em> as the correct <strong>differential</strong>, <em>Fisher information</em> as the local <strong>metric</strong>, and <em>entropy/KL</em> as canonical <strong>divergences</strong>.</p>
-<hr>
-<p>A broader <strong>Bridge Principle</strong> emerges: whenever inference relies on a <strong>hard composition law</strong> (product, convolution, max, transport, group action), there exists or can be designed a transform (“bridge”) that makes it <strong>linear/additive</strong> (log, Fourier, log–MGF, log-sum-exp, entropic OT, group Fourier).</p>
-<div class="callout callout-style-default callout-tip callout-titled" title="A General Recipe">
+<div class="callout callout-style-default callout-tip callout-titled" title="**TL;DR:**">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-A General Recipe
+<strong>TL;DR:</strong>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Pick the composition law your data <strong>naturally</strong> uses, then move through a <strong>bridge</strong> into an additive/linear space to compute.</p>
-<p><strong>Example:</strong> For independence the algebra is <span class="math inline">\((\mathbb{R}^+,\times)\)</span> and the bridge is <span class="math inline">\(\log\)</span>, making the score <span class="math inline">\(U(\theta)=\partial_\theta \log L(\theta)\)</span> central with <span class="math inline">\(\mathbb{E}[U]=0\)</span> and <span class="math inline">\(\mathrm{Var}(U)=\mathcal{I}\)</span>. The same pattern yields Fourier for convolution <span class="math inline">\(\to\)</span> product, log–MGF for moments <span class="math inline">\(\to\)</span> cumulants, and log-sum-exp for sum <span class="math inline">\(\to\)</span> softmax/max.</p>
+<p>Independent events <strong>multiply</strong> in probability but <strong>add</strong> up in information. The <em>logarithm</em> is the <strong>unique</strong> smooth homomorphism that converts the <em>multiplicative algebra</em> of likelihoods into an <em>additive, linear space</em> where calculus, convexity, and asymptotics align.</p>
+<p>This yields the <em>score</em> as the correct <strong>differential</strong>, <em>Fisher information</em> as the local <strong>metric</strong>, and <em>entropy/KL</em> as canonical <strong>divergences</strong>.</p>
+<hr>
+<p>A broader <strong>Bridge Principle</strong> emerges: whenever inference relies on a <strong>hard composition law</strong> (product, convolution, max, transport, group action), there exists or can be designed a transform (“bridge”) that makes it <strong>linear/additive</strong> (log, Fourier, log–MGF, log-sum-exp, entropic OT, group Fourier), enabling calculus, convex losses, and stable asymptotics.</p>
 </div>
 </div>
-<p>Building models and algorithms in the right additive coordinates explains classical statistics and suggests new research: identify new operation pairs in your domain, design/learn task-specific bridges to obtain linear features, convex losses, and stable asymptotics.</p>
 <section id="thesis-statistics-succeeds-when-we-compute-in-the-right-coordinates" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="thesis-statistics-succeeds-when-we-compute-in-the-right-coordinates"><span class="header-section-number">1</span> Thesis: statistics succeeds when we compute in the <strong>right coordinates</strong></h2>
 <p>Two pillars of uncertainty:</p>
@@ -161,13 +157,17 @@ f(ab)=f(a)+f(b).
 \]</span> Continuity/measurability forces <span class="math display">\[
 f(x)=C\log x,
 \]</span> the <strong>only</strong> smooth homomorphism <span class="math inline">\((\mathbb{R}^+,\times)\to(\mathbb{R},+)\)</span> up to scale. Passing to log coordinates is thus <strong>forced</strong>, not chosen.</p>
-<p><strong>Immediate geometric consequences.</strong> With <span class="math inline">\(\ell(\theta)=\log L(\theta)\)</span>: - the <strong>score</strong> <span class="math display">\[
-  U(\theta)=\partial_\theta \ell(\theta)
-  \]</span> is a <strong>tangent vector</strong> on the parameter manifold;<br>
-- the <strong>Fisher information</strong> <span class="math display">\[
-  \mathcal I(\theta)=\mathrm{Var}_\theta\!\big[U(\theta)\big]
-  = -\mathbb E_\theta\!\left[\partial_\theta^2 \ell(\theta)\right]
-  \]</span> defines a <strong>Riemannian metric</strong>.</p>
+<p><strong>Immediate geometric consequences.</strong> With <span class="math inline">\(\ell(\theta)=\log L(\theta)\)</span>:</p>
+<ul>
+<li>the <strong>score</strong> <span class="math display">\[
+U(\theta)=\partial_\theta \ell(\theta)
+\]</span> is a <strong>tangent vector</strong> on the parameter manifold;<br>
+</li>
+<li>the <strong>Fisher information</strong> <span class="math display">\[
+\mathcal I(\theta)=\mathrm{Var}_\theta\!\big[U(\theta)\big]
+= -\mathbb E_\theta\!\left[\partial_\theta^2 \ell(\theta)\right]
+\]</span> defines a <strong>Riemannian metric</strong>.</li>
+</ul>
 <p>These yield <strong>Local Asymptotic Normality (LAN)</strong>: locally (in <span class="math inline">\(\theta\)</span>), log-likelihood is quadratic, the score is Gaussian, and MLE is asymptotically efficient.</p>
 <hr>
 </section>
