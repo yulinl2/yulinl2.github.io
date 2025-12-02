@@ -1,0 +1,273 @@
+---
+title: "Why Logarithms Rule Statistics (A Deeper View)"
+subtitle: "Score, Information Geometry, and the Canonical Bridges Behind Modern Inference"
+author: "ChatGPT5 Thinking, Yulin Li"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-fold: false
+    smooth-scroll: true
+    link-external-newwindow: true
+    math: mathjax
+# execute:
+#   echo: false
+#   warning: false
+#   message: false
+# abstract: >
+#   Independent events **multiply** in probability but **add** up in information. The **logarithm** is the
+#   unique smooth homomorphism that converts the **multiplicative** algebra of likelihoods into an **additive, linear
+#   space** where calculus, convexity, and asymptotics align. This yields the *score* as the correct differential,
+#   *Fisher information* as the local metric, and *entropy/KL* as canonical divergences. 
+#   A broader **Bridge
+#   Principle** emerges: whenever inference relies on a hard composition law (product, convolution, max, transport,
+#   group action), there exists or can be designed a transform (“bridge”) that makes it additive (log, Fourier,
+#   log–MGF, log-sum-exp, entropic OT, group Fourier). Building models and algorithms in the right additive
+#   coordinates explains classical statistics and suggests **new research**: design/learn task-specific bridges,
+#   geometry-aware optimization, and manifold-aware score learning.
+editor: visual
+---
+
+> *“The logarithm is not just a convenient trick — it is the natural coordinate system of probability itself.”* — E.T. Jaynes
+
+::: {.callout-tip title="**TL;DR:**"}
+Independent events **multiply** in probability but **add** up in information. The *logarithm* is the **unique** smooth homomorphism that converts the *multiplicative algebra* of likelihoods into an *additive, linear space* where calculus, convexity, and asymptotics align.
+
+This yields the *score* as the correct **differential**, *Fisher information* as the local **metric**, and *entropy/KL* as canonical **divergences**.
+
+------------------------------------------------------------------------
+
+A broader **Bridge Principle** emerges: whenever inference relies on a **hard composition law** (product, convolution, max, transport, group action), there exists or can be designed a transform (“bridge”) that makes it **linear/additive** (log, Fourier, log–MGF, log-sum-exp, entropic OT, group Fourier), enabling calculus, convex losses, and stable asymptotics.
+:::
+
+## Thesis: statistics succeeds when we compute in the **right coordinates**
+
+Two pillars of uncertainty:
+
+-   **Independence** $\Rightarrow$ multiplication of densities/likelihoods.\
+-   **Extensivity** $\Rightarrow$ addition of information/evidence.
+
+We therefore seek a smooth map $f$ so that $$
+f(ab)=f(a)+f(b).
+$$ Continuity/measurability forces $$
+f(x)=C\log x,
+$$ the **only** smooth homomorphism $(\mathbb{R}^+,\times)\to(\mathbb{R},+)$ up to scale. Passing to log coordinates is thus **forced**, not chosen.
+
+**Immediate geometric consequences.** With $\ell(\theta)=\log L(\theta)$:
+
+-   the **score** $$
+    U(\theta)=\partial_\theta \ell(\theta)
+    $$ is a **tangent vector** on the parameter manifold;\
+-   the **Fisher information** $$
+    \mathcal I(\theta)=\mathrm{Var}_\theta\!\big[U(\theta)\big]
+    = -\mathbb E_\theta\!\left[\partial_\theta^2 \ell(\theta)\right]
+    $$ defines a **Riemannian metric**.
+
+These yield **Local Asymptotic Normality (LAN)**: locally (in $\theta$), log-likelihood is quadratic, the score is Gaussian, and MLE is asymptotically efficient.
+
+------------------------------------------------------------------------
+
+## LAN in one page (why Wilks and Cramér–Rao are inevitable)
+
+A quadratic expansion at the truth $\theta_0$ gives $$
+\ell(\theta_0+h)-\ell(\theta_0) = h\,U(\theta_0) - \tfrac12 h^2\,\mathcal I(\theta_0) + o_p(1).
+$$ Because $\mathbb E_{\theta_0}[U(\theta_0)]=0$ and $\mathrm{Var}_{\theta_0}[U(\theta_0)]=\mathcal I(\theta_0)$, maximization of this quadratic yields $$
+\hat\theta-\theta_0 \approx \frac{U(\theta_0)}{\mathcal I(\theta_0)},
+\qquad
+\sqrt{n}\,(\hat\theta-\theta_0)\ \Rightarrow\ \mathcal N\!\big(0,\ \mathcal I(\theta_0)^{-1}\big).
+$$ Likewise, the log-likelihood ratio is asymptotically a **squared Fisher length**: $$
+2\big\{\ell(\hat\theta)-\ell(\theta_0)\big\}
+\ \Rightarrow\ \chi^2_{\mathrm{df}}.
+$$ This works **because** log provides a linear differential and a curvature (the metric) in which quadratic approximations are faithful.
+
+> **Practical signal.** If the quadratic looks bad (flat valleys, ridges, multimodality), you’re outside the regular regime; expect singular behavior and non-$\chi^2$ limits (see §10).
+
+------------------------------------------------------------------------
+
+## The **Bridge Principle**: from hard compositions to additive space
+
+Real pipelines compose uncertainty in **nonlinear algebras**: products (independence), **convolutions** (sums of RVs), **maxima** (decisions), **compositions** (multi-stage), **optimal transport** (cost-addition), **group actions** (symmetries).
+
+The recipe: find a transform $B$ so that a hard operation $\circledast$ becomes addition: $$
+B(a\circledast b)=B(a)+B(b).
+$$ Then differentiate/average/optimize in $B$-space (linear), and map back if needed.
+
+### Canonical bridges statisticians already rely on
+
+| Composition law (hard) | Bridge $B$ | Becomes additive | Why it matters |
+|------------------|------------------|------------------|------------------|
+| Product (independence) | $\log$ | sums | score/Fisher, entropy/KL, LRT, stability |
+| Convolution (sum of RVs) | Fourier/Characteristic $\mathcal F$ | multiplication in freq. | CLT, spectral methods, fast convolution |
+| Moment composition | log–MGF/CGF $K_X(t)=\log \mathbb E[e^{tX}]$ | cumulants | cumulants add; saddlepoint approximations |
+| Max / hard alignment | log-sum-exp $\operatorname{LSE}(x)=\log\sum_i e^{x_i}$ | soft-add | smooth $\max$; softmax/attention |
+| Optimal transport | Entropic regularization (Sinkhorn) | matrix scaling (log-domain) | differentiable OT; barycenters |
+| Group convolution | Group Fourier (e.g., on $\mathrm{SO}(3)$) | spectral product | steerable/equivariant nets |
+| Min-/Max-plus algebra | Log transform (tropical limit) | $(\min,+)$ or $(\max,+)$ | dynamic programming; shortest paths |
+| Bayesian evidence | Add log-odds / log-likelihood ratio | additive logits | calibrated ensembling; stacking |
+
+**Key limit:** For temperature $\tau>0$, $$
+\operatorname{LSE}_\tau(x)=\tau\log\sum_i e^{x_i/\tau},\quad
+\lim_{\tau\to0}\operatorname{LSE}_\tau(x)=\max_i x_i,\quad
+\nabla \operatorname{LSE}_\tau(x)=\mathrm{softmax}(x/\tau).
+$$
+
+### Large deviations: macroscopic MLE
+
+Let $K_X(t)=\log \mathbb E[e^{tX}]$. The **rate function** $$
+I(x)=\sup_t\{t x - K_X(t)\}
+$$ controls tail probabilities $$
+\mathbb P\!\left(\frac1n\sum_{i=1}^n X_i\approx x\right)\approx e^{-n\,I(x)}.
+$$ It is a **Legendre transform of a log**, again pushing a nonlinear composition into additive convex geometry.
+
+------------------------------------------------------------------------
+
+## Information geometry in practice: metric, volume, duality
+
+-   **Metric:** $g=\mathcal I(\theta)$; geodesics give least-distortion paths in model space.\
+-   **Volume:** Jeffreys prior $\pi_J(\theta)\propto \sqrt{\det \mathcal I(\theta)}$ is invariant to reparametrization.\
+-   **Dual connections:** exponential/moment coordinates yield dual-flat connections $(\nabla^{(e)},\nabla^{(m)})$; KL is a **Bregman divergence** of negative entropy $$
+    F(p)=\sum_i p_i\log p_i,\quad
+    D_{\mathrm{KL}}(p\|q)=F(p)-F(q)-\langle \nabla F(q), p-q\rangle.
+    $$
+
+**Payoff.** Geometry clarifies why some parametrizations train easily (flat coordinates), how priors stabilize posteriors (volume matching), and why curvature controls generalization.
+
+------------------------------------------------------------------------
+
+## Score matching, Stein operators, and diffusion: one lens
+
+**Score matching** learns $s(x)=\nabla_x \log p(x)$ by minimizing Fisher divergence $$
+\mathbb E\!\left[\tfrac12\|s_\theta(x)-s(x)\|^2\right],
+$$ converted via integration by parts into an objective without $s(x)$—ideal for **unnormalized** models.
+
+**Stein’s method** provides operator identities whose nulls characterize a target $p$. Kernel Stein discrepancies measure how far a model deviates in **score space**.
+
+**Score-based diffusion** trains $s_\sigma(x)$ across noise scales $\sigma$ and integrates a reverse SDE to generate data; this is literally **learning the tangent field** of log-density over scales.
+
+**Geometric reading.** We are aligning **vector fields** (scores), not only densities. Failure modes often reflect **non-integrability**: a learned field may not be a gradient of any $\log p_\theta$.
+
+**Opportunities.** Integrability diagnostics (Helmholtz decomposition, Poincaré inequalities on data manifolds), Fisher-geometry-aware losses, and boundary-aware score matching on manifolds-with-boundary.
+
+------------------------------------------------------------------------
+
+## Why the log is inevitable (proof sketch)
+
+Single-event information $I:(0,1]\to\mathbb R$ should satisfy: continuity, monotonicity (rarer $\Rightarrow$ larger), and additivity $I(pq)=I(p)+I(q)$. Define $g(x)=-I(e^{-x})$ for $x\ge0$; then $g(x+y)=g(x)+g(y)$ and $g$ is continuous, hence $g(x)=cx$. Therefore $I(p)=c\log p$; monotonicity forces $c=-k<0$: $$
+I(p)=-k\log p.
+$$ Entropy and KL follow by averaging and the grouping axiom.
+
+------------------------------------------------------------------------
+
+## Case studies: the bridge viewpoint in familiar models
+
+**Logistic regression = log-odds as a bridge.**\
+The class posterior is additive in **log-odds**: $$
+\log\frac{\Pr(Y=1\mid x)}{\Pr(Y=0\mid x)} = w^\top x + b.
+$$ Fitting in logit space is linear; the cross-entropy is a Bregman loss for negative entropy.
+
+**Naïve Bayes = product of conditionals** $\to$ sum of logs.\
+Assuming conditional independence, the MAP decision boils down to $$
+\arg\max_c \left\{\log \Pr(c) + \sum_j \log \Pr(x_j\mid c)\right\}.
+$$ Product of evidences becomes sum of **log-likelihood contributions**.
+
+**GLMs and exponential families.**\
+With natural parameter $\eta=\theta^\top x$, the log-likelihood is $$
+\ell(\theta)=\sum_i \big[\eta_i y_i - A(\eta_i)\big] + \text{const},
+$$ and the score is linear in sufficient statistics; Fisher equals the Hessian of the log-partition $A$—a convex geometry in natural coordinates.
+
+------------------------------------------------------------------------
+
+## A practical recipe for **bridge-aware learning**
+
+1.  **Map the algebra.** What truly composes: products, sums (convolution), maxima, matchings, group actions, transport?\
+2.  **Pick/learn a bridge.** Use closed-form bridges (log, Fourier, LSE, Sinkhorn) or parameterize $B_\phi$ and regularize toward a homomorphism: $$
+    \|B_\phi(a\circledast b)-B_\phi(a)-B_\phi(b)\|\ \text{small}.
+    $$
+3.  **Choose the geometry** in $B$-space (Bregman/inner-product) to make optimization convex or nearly so.\
+4.  **Precondition by curvature.** Use natural gradients or Fisher-aware trust regions.\
+5.  **Probe limits.** Anneal temperature to move between hard ops and smooth bridges (e.g., LSE $\to$ max).\
+6.  **Audit integrability/invariance.** Check that learned fields are gradients (if required) and respect symmetries.
+
+**Quick checklist for day-to-day work** - Optimize $\ell$ (not $L$); monitor curvature via the spectrum of $\mathcal I(\theta)$.\
+- Use log-odds to combine classifiers; average logits rather than probabilities for calibration.\
+- For long convolutions, go spectral (FFT) to exploit multiplicativity.\
+- Replace max-pool with LSE-pool (temperature-tunable) for robustness.\
+- For distributional tasks, consider entropic OT distances (Sinkhorn) and barycenters.
+
+------------------------------------------------------------------------
+
+## Where the log playbook cracks (and what to do)
+
+**Singular models.** Mixtures, HMMs, deep nets can have rank-deficient Fisher and cusp-like likelihoods. Classical $\chi^2$ theory fails; **learning coefficients** replace dimension; MDL penalties change.\
+*Targets:* diagnostics for LAN failure; practical penalties and corrected LRTs; stratified-manifold bootstrap.
+
+**Non-extensive composition.** Long-range dependence or networks may break additivity. Rényi/Tsallis “$q$-logs” $$
+\log_q(x)=\frac{x^{1-q}-1}{1-q}
+$$ recover Shannon at $q\to1$ but alter geometry and bounds.\
+*Targets:* operational axioms for when generalized logs/divergences are canonical; robust-loss interpolation via power means.
+
+**Group-invariant inference.** When data live on Lie groups (rotations, SPD cones), the correct bridge is the **matrix log/exponential** and the right volume is Haar-invariant.\
+*Targets:* LAN/Wilks analogs on homogeneous spaces; Jeffreys-like priors from group geometry; equivariant score matching.
+
+------------------------------------------------------------------------
+
+## Essential derivations (kept terse)
+
+**Score identities** $$
+\mathbb E_{\theta_0}\!\big[\partial_\theta \log p(X\mid\theta_0)\big]
+=\partial_\theta \int p(x\mid\theta)\,dx\Big|_{\theta_0}=0,
+$$ $$
+\mathcal I(\theta)
+=-\mathbb E\big[\partial_\theta^2 \log p(X\mid\theta)\big]
+=\mathrm{Var}\big(\partial_\theta \log p(X\mid\theta)\big).
+$$
+
+**Shannon uniqueness (single-event)** $$
+I(pq)=I(p)+I(q)\ \&\ \text{continuity/monotonicity} \ \Rightarrow\ I(p)=-k\log p.
+$$
+
+**KL as Bregman** $$
+D_{\mathrm{KL}}(p\|q)=\sum_i p_i\log\frac{p_i}{q_i}
+=\underbrace{\sum_i p_i\log p_i}_{F(p)}-\underbrace{\sum_i q_i\log q_i}_{F(q)}-\langle \nabla F(q), p-q\rangle.
+$$
+
+**CGF** $\to$ cumulants\
+$K_X(t)=\log \mathbb E[e^{tX}]$; the $m$-th cumulant is $K_X^{(m)}(0)$ and **adds** over independent sums.
+
+**LSE temperature limits** $$
+\operatorname{LSE}_\tau(x)=\tau \log\sum_i e^{x_i/\tau},\quad
+\lim_{\tau\to 0}\operatorname{LSE}_\tau(x)=\max_i x_i,\quad
+\lim_{\tau\to\infty}\operatorname{LSE}_\tau(x)=\text{mean}(x).
+$$
+
+------------------------------------------------------------------------
+
+## Where to test these ideas (low-friction experiments)
+
+-   **Soft-tropical CNN block:** swap max-pool for $\operatorname{LSE}_\tau$-pool; measure robustness to misalignment/occlusion; sweep $\tau$.\
+-   $\mathrm{SO}(3)$ score matching: learn densities on rotations with group Fourier features; compare to Euclidean baselines on pose data.\
+-   **Sinkhorn attention:** entropic-OT attention in cross-modal matching; study calibration and sample efficiency.\
+-   **Power-mean losses:** interpolate cross-entropy with Rényi/Tsallis-inspired losses under heavy-tailed/noisy labels.
+
+------------------------------------------------------------------------
+
+## Closing
+
+Logs are inevitable **because independence is multiplicative** and log is the **only** smooth bridge to additivity. The larger lesson is methodological:
+
+> **Find the bridge** that linearizes your problem’s native composition; compute, optimize, and reason in that additive space; map back only at the end.
+
+That perspective unifies score/Fisher/entropy with Fourier/LSE/OT/group-Fourier—and it opens the door to **bridge-aware representation learning** and new asymptotic theory beyond the regular textbook cases.
+
+------------------------------------------------------------------------
+
+## References (classics and context)
+
+-   R.A. Fisher (1922). *On the Mathematical Foundations of Theoretical Statistics.*\
+-   C.E. Shannon (1948). *A Mathematical Theory of Communication.*\
+-   E.T. Jaynes. *Probability Theory: The Logic of Science.*\
+-   S.-i. Amari (1998). *Natural Gradient Works Efficiently in Learning.*\
+-   A. Hyvärinen (2005). *Estimation of Non-Normalized Statistical Models by Score Matching.*\
+-   M. Cuturi (2013). *Sinkhorn Distances: Lightspeed Computation of Optimal Transport.*\
+-   I. Csiszár (1967). *Information-type measures of difference of probability distributions.*

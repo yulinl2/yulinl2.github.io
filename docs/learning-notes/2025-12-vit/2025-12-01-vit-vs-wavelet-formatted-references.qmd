@@ -1,0 +1,468 @@
+---
+title: "ViT vs. Wavelet Intuition (With References)"
+subtitle: "Patch scale, multiresolution, and shift robustness in ViT backbones"
+author: "ChatGPT-5.1 Thinking, Claude Sonnet 4.5, Yulin Li"
+date: "2025-12-01"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-fold: false
+    smooth-scroll: true
+    link-external-newwindow: true
+    theme: cosmo
+bibliography: references.bib
+csl: https://raw.githubusercontent.com/citation-style-language/styles/master/chicago-author-date.csl
+---
+
+## Background: What is ViT?
+
+::: {.callout-tip icon=false}
+### Question
+*What is CLIP in LLM? What is ViT? One-line definitions plz.*
+:::
+
+**CLIP (Contrastive Language–Image Pre-training)**
+: A vision-language model that jointly trains an image encoder and a text encoder so their embeddings live in the same space, letting models "match" pictures to natural-language descriptions [@radford2021learning].
+
+**ViT (Vision Transformer)**
+: A vision backbone that treats an image as a sequence of patches and runs a Transformer over them, analogous to how LLMs process token sequences [@dosovitskiy2020image].
+
+---
+
+## ViT: Adaptivity to Scale
+
+::: {.callout-tip icon=false}
+### Questions
+- *How does ViT decide the scale to look at?*
+- *How do you know if your visual vocab is expressive enough for the whole space of natural images?*
+- *Usually for image processing we'd need to look at a picture at different scales—like Haar wavelets. Was multi-resolution decomposition ever involved in ViT-based architectures?*
+:::
+
+This is exactly the right thing to worry about with "image as tokens." Let me break this down:
+
+### How Scale Selection Works
+
+In a plain ViT (like the original Dosovitskiy et al. [@dosovitskiy2020image]), the process is:
+
+1. **Pick a fixed patch size** (e.g., 16×16 pixels)
+2. Split the image into non-overlapping patches of that size
+3. Each patch → linearly projected → one token
+4. A Transformer with **global self-attention** lets every patch interact with every other patch
+
+#### Local vs. Global Information
+
+- **Local detail**: Each token only "sees" its own 16×16 pixels before attention
+- **Global structure**: Self-attention across *all* tokens lets the model integrate information over the full image
+
+::: {.callout-note}
+There's no explicit "pyramid of scales" like in classical wavelets or CNN feature pyramids. The *scale* is implicitly controlled by:
+
+1. **Patch size** — how local each token is
+2. **Depth of the Transformer** — how many layers of attention you get to mix local→global information
+:::
+
+**Key insight:** Vanilla ViT has **one native resolution** (fixed patch size), but attention is global, so the *effective* receptive field of each token grows as you go deeper.
+
+### Visual Vocabulary Expressiveness
+
+Here "visual vocab" refers to the space of patch embeddings and learned features.
+
+#### ViT's Learning Approach
+
+Unlike traditional methods:
+
+- **No fixed, pre-defined dictionary** like SIFT/Haar
+- The model learns an embedding function `f(patch)` from data, analogous to how word embeddings learn from corpus statistics
+- Trained on **huge, diverse datasets** (e.g., ImageNet-21k [@deng2009imagenet], JFT [@sun2017revisiting], LAION [@schuhmann2022laion]) with strong objectives (supervised or contrastive)
+
+#### Validation Methods
+
+**Empirically**
+: If a ViT backbone works well across **many downstream tasks** (classification, detection, segmentation, retrieval) with moderate fine-tuning, that's evidence the visual "vocab" is rich enough [@dosovitskiy2020image].
+
+**Theoretically**
+: There's no guarantee it perfectly spans "the space of natural images"—same as LLM token embeddings don't guarantee coverage of "all possible meanings." Expressiveness improves with:
+
+  - Model capacity (width/depth)
+  - Better objectives (contrastive, masked prediction)
+  - More diverse data
+
+::: {.callout-note}
+#### CLIP as an Example
+CLIP **anchors visual embeddings to language** [@radford2021learning]. If the text encoder can name "tuxedo cat," "MRI slice," "anime screencap," etc., then the image encoder is pressured to carve up visual space in a way that aligns with those concepts—a kind of *semantic* visual vocabulary.
+:::
+
+### Multi-Resolution and Wavelet-Like Behavior
+
+#### Vanilla ViT Limitations
+
+- **No explicit multiscale decomposition** like Haar wavelets or image pyramids
+- Single-scale patches + global attention
+- Multiscale behavior is *implicit* via depth and attention patterns
+
+#### Hierarchical ViT Variants
+
+The ViT ecosystem quickly introduced **hierarchical/multiscale variants** because tasks like detection and segmentation benefit from multi-resolution features:
+
+| Architecture | Approach | Result | Reference |
+|--------------|----------|--------|-----------|
+| **Swin Transformer** | Local windows + patch merging between stages | Feature pyramid (high-res shallow layers, low-res deep layers) | @liu2021swin |
+| **PVT** (Pyramid Vision Transformer) | Hierarchical multi-resolution feature maps | Similar to FPN/ResNet pyramids | @wang2021pyramid |
+| **MViT** (Multiscale ViT) | Explicit multiscale structure | CNN-like multi-stride outputs | @fan2021multiscale |
+
+Many modern ViT-based backbones for detection/segmentation provide outputs at multiple strides (e.g., 1/4, 1/8, 1/16 of input), like CNNs.
+
+::: {.callout-important}
+#### Summary
+- **Original ViT**: One-scale patches, global attention; implicit multiscale behavior
+- **Modern ViT backbones**: Incorporate multi-resolution structures (patch merging, pyramids, windowed attention) to act more like classical multiscale vision systems
+:::
+
+### Connection to the LLM Analogy
+
+When we say ViT "treats an image as a sequence of patches and runs a Transformer over them, analogous to how LLMs process token sequences" [@dosovitskiy2020image], more precisely:
+
+| Component | Image (ViT) | Text (LLM) |
+|-----------|-------------|------------|
+| Basic unit | Image patches | Text tokens |
+| Embedding | Patch embedding layer | Token embedding layer |
+| Processing | Self-attention over **sequence** | Self-attention over **sequence** |
+| Granularity | One token granularity (patch size) | One token granularity (subword) |
+
+::: {.callout-note}
+Multiscale ViT variants correspond to **multi-resolution representations** (like CNN pyramids or wavelets), layered on top of this "image-as-sequence" idea.
+:::
+
+---
+
+## How Attention Grows with Depth
+
+::: {.callout-tip icon=false}
+### Question
+*How does attention grow in depth? Do you stack Transformers somehow?*
+:::
+
+Yes—you stack Transformer blocks, and that's how "mixing over larger scales" happens [@vaswani2017attention].
+
+### Stacking Transformer Blocks
+
+A ViT (and an LLM) has this structure:
+
+```text
+tokens → [Block 1] → [Block 2] → ... → [Block L] → head
+```
+
+Each **Block** consists of:
+
+- LayerNorm
+- Multi-Head Self-Attention
+- MLP
+- Residual connections
+
+All blocks have the **same structure**, but their weights are different and learned jointly. You're literally stacking self-attention layers, one on top of another [@dosovitskiy2020image].
+
+### How Attention "Grows"
+
+Two cases: **global attention** (plain ViT) vs. **local/windowed attention** (e.g., Swin).
+
+#### Vanilla ViT (Global Self-Attention)
+
+In *one* layer, each token can already attend to **all** other tokens—the receptive field is "global" in one hop.
+
+**Why does depth still matter?**
+
+| Layer Stage | Function | Example |
+|-------------|----------|----------|
+| **Early layers** | Encode local, low-level features | Edges, textures within and near patches |
+| **Later layers** | Process already-computed features | • Attend to summaries ("cat ear," "text column")<br>• Combine into global concepts ("whole cat")<br>• Refine interactions iteratively |
+
+::: {.callout-note}
+**Key insight:** Depth ≈ more rounds of "who should I pay attention to, given what I've learned so far?"
+
+Even though every layer can see the whole sequence, what they *do* with that view becomes more global and abstract as you go deeper [@raghu2021vision].
+:::
+
+#### Windowed/Local Attention (Swin, etc.)
+
+Here it's more literally "growing receptive field":
+
+1. **Layer 1**: Each token attends only within a small window (e.g., 7×7 patches)
+2. **Layer 2**: Windows shift / patches merge → each token now indirectly depends on a **bigger neighborhood**
+3. **After several layers**: The "communication radius" expands; tokens end up influenced by faraway regions
+
+This is the Transformer analogue of: **more conv layers → larger effective receptive field** [@liu2021swin].
+
+### Core Intuition
+
+::: {.callout-important icon=false}
+We stack many Transformer blocks; each self-attention layer lets tokens re-mix information based on what they've already computed. As you go deeper, tokens' representations fold in more context and more abstract structure—even if each layer is "just" the same attention mechanism repeated.
+:::
+
+---
+
+## ViT: Recognition and Generation
+
+::: {.callout-tip icon=false}
+### Question
+*Is ViT used only for recognition? Or generation as well?*
+:::
+
+Definitely **not** only for recognition—ViT is used for **both**.
+
+### Recognition/Perception
+
+The original ViT was for image classification [@dosovitskiy2020image]. ViT-style backbones are now everywhere:
+
+- Image classification
+- Object detection
+- Semantic segmentation
+- Image retrieval
+- CLIP-style encoders [@radford2021learning]
+
+### Generation
+
+ViTs are used in two ways:
+
+**As encoders feeding generators**
+: Examples: ViT → LLM → text, or ViT → diffusion model → edited image
+
+**As image generators themselves**
+: When you treat image patches as tokens and train a Transformer to *predict or denoise* them:
+
+- Masked image modeling [@he2022masked]
+- Autoregressive image token models [@ramesh2021zero; @yu2021vector]
+- Diffusion Transformers ("DiT"-style models) [@peebles2023scalable]
+
+::: {.callout-note}
+**Key takeaway:** ViT = a general-purpose vision backbone. Whether it "recognizes" or "generates" depends on the head + training objective, not the architecture itself.
+:::
+
+---
+
+## ViT: Efficiency of Representation 🔍
+
+::: {.callout-warning icon=false}
+### Concern
+*The naive ViT idea seems very weird. Without multi-resolution adaptability, the function from image to visual tokens/image embedding looks very non-smooth. If you shift the image by 1 column of pixels to the right, then the whole message flow changes—unless you heavily overparametrize...?*
+:::
+
+This intuition is on point: **a strictly "naive" ViT is problematic from a shift-invariance/smoothness standpoint** [@xu2021you]. However, there are important caveats that make it *less bad* than it sounds, plus architectural improvements used in practice.
+
+### Vanilla ViT is Not Shift Equivariant
+
+#### Setup
+
+1. Image → split into **non-overlapping** patches (e.g., 16×16)
+2. Each patch → linear projection → token + **absolute positional embedding**
+3. Tokens → Transformer
+
+#### What Happens with a 1-Pixel Shift?
+
+- Patch boundaries change
+- Almost *all* token inputs change
+- The same visual blob that was at "patch 5" now lands at "patch 6" with a different positional embedding
+
+::: {.callout-warning}
+#### The Problem
+
+- The mapping is **not** translation equivariant like a CNN
+- A 1-pixel shift is *not* guaranteed to correspond to a simple permutation of internal states
+- The "whole message flow changes" intuition is conceptually correct [@xu2021you]
+:::
+
+### But It's Not "Combinatorially Non-Smooth"
+
+#### Smoothness (Continuity)
+
+As a function $f : \mathbb{R}^{H\times W\times 3} \to \mathbb{R}^d$ (image → embedding), a ViT is:
+
+- **Linear** at the patchification + projection stage
+- Followed by attention + MLPs with smooth activations (GELU, etc.)
+
+In the strict mathematical sense:
+
+> Small change in pixel values ⇒ small change in embeddings (assuming bounded weights)
+
+It's not "non-smooth" like a hash function; it's just **not invariant/equivariant to translations**.
+
+#### Why 1-Pixel Shifts Aren't Catastrophic
+
+Even with non-overlapping patches:
+
+**Natural image redundancy**
+: Shifting by 1 px changes patches at boundaries, but content remains similar in local neighborhoods
+
+**Learnable tolerance**
+: The linear patch projector can learn to tolerate small misalignments (like a 1-layer conv with a large kernel)
+
+**Overparameterization helps**
+: A sufficiently large Transformer can approximate convolutional behavior if data/augmentations encourage it [@dosovitskiy2020image]
+
+::: {.callout-note}
+In practice, the embedding space **wiggles**, but not in an arbitrarily wild way.
+:::
+
+### How ViTs Achieve Approximate Invariance
+
+Three key mechanisms:
+
+#### Data Augmentation
+
+Training uses aggressive augmentation [@touvron2021training]:
+
+- Random crops
+- Random resize
+- Random horizontal flips
+- Small translations/jitters
+
+When the model must produce the *same label* for many slightly shifted/cropped versions, gradient descent nudges it toward **approximate shift robustness**, even without a built-in equivariance prior.
+
+::: {.callout-important}
+**Key difference:** CNNs *bake in* translation equivariance. ViTs *learn* approximate invariance from data [@xu2021you].
+:::
+
+#### Positional Encoding Choices
+
+| Encoding Type | Shift Invariance | Reference |
+|---------------|------------------|-----------|
+| **Absolute 2D embeddings** (original ViT) | ❌ Worst—hard-codes positions | @dosovitskiy2020image |
+| **Relative positional embeddings** | ✓ Better—encodes offsets between tokens | @shaw2018self |
+| **Rotary embeddings (RoPE)** | ✓ Better—rotation-based encoding | @su2024roformer |
+| **Learned 2D biases** | ✓ Better—depends on token offsets | @liu2021swin |
+
+Modern approaches are friendlier to "if I move this thing a bit, relationships stay similar."
+
+#### Convolutional or Overlapping Stems
+
+Many "ViT" backbones are now *hybrids* [@xiao2021early; @graham2021levit]:
+
+**Conv stem**
+: A few conv layers at the input produce feature maps, then patchify those
+
+**Overlapping patches**
+: Sliding windows instead of strict disjoint patches
+
+Both approaches soften the "1-px shift → totally different patches" issue.
+
+### Multi-Resolution Gets Added Back
+
+Multi-resolution helps smoothness and invariance. The ecosystem evolved to include:
+
+**Hierarchical architectures** (Swin, PVT, MViT):
+
+- Patch merging/pooling layers (downsampling)
+- Multiple feature scales (like CNN pyramids)
+- Local windows + shifting for gradually expanding receptive fields
+
+These are much closer in spirit to multiresolution analysis (though not literally wavelets) [@liu2021swin; @wang2021pyramid; @fan2021multiscale].
+
+#### Evolution Timeline
+
+::: {.panel-tabset}
+
+## Original ViT
+
+- Very "naive"
+- Single patch scale
+- Absolute positions
+- No built-in shift equivariance
+- **Your discomfort is valid** ✓
+
+## Practice
+
+- Overparameterization
+- Massive data
+- Heavy augmentation
+- → Surprisingly robust anyway
+
+## Modern Designs
+
+Add back:
+
+- Conv stems
+- Overlapping patches
+- Multi-scale hierarchies
+- Relative positions
+
+→ Much more well-behaved w.r.t. translations and local distortions
+
+:::
+
+### TL;DR
+
+::: {.callout-note appearance="minimal"}
+
+✓ **Yes:** Naive ViT has an *ugly* inductive bias; tiny shifts can rearrange the entire tokenization and attention graph
+
+✓ **But:** The mapping is still continuous, and with enough data + augmentations + parameters, it *learns* an approximately smooth, translation-robust embedding
+
+✓ **In practice:** The community patched the worst issues by adding multi-resolution and conv-ish components, so "real" ViTs in the wild are much less naive than the toy mental model
+
+:::
+
+
+
+## Appendix {.appendix}
+
+::: {.panel-tabset}
+
+## References
+
+::: {#refs}
+:::
+
+## Verification Status
+
+This document has been systematically fact-checked against original research papers. All major claims have been verified with proper citations.
+
+### ✅ Verified Claims
+
+**Definitions & Architecture:**
+
+- CLIP and ViT definitions [@radford2021learning; @dosovitskiy2020image]
+- ViT architecture: patch embedding, fixed patch size (16×16), global self-attention
+- Transformer stacking and attention depth mechanisms [@vaswani2017attention]
+
+**Hierarchical Variants:**
+
+- Swin Transformer with shifted windows and patch merging [@liu2021swin]
+- Pyramid Vision Transformer (PVT) with multi-resolution features [@wang2021pyramid]
+- Multiscale Vision Transformer (MViT) [@fan2021multiscale]
+
+**Generation Applications:**
+
+- Masked Autoencoders (MAE) for self-supervised learning [@he2022masked]
+- Autoregressive image generation (DALL-E) [@ramesh2021zero; @yu2021vector]
+- Diffusion Transformers (DiT) [@peebles2023scalable]
+
+**Shift Invariance & Solutions:**
+
+- Lack of translation equivariance in vanilla ViT [@xu2021you]
+- Data augmentation strategies [@touvron2021training]
+- Positional encoding variants [@shaw2018self; @su2024roformer]
+- Hybrid architectures with convolutional stems [@xiao2021early; @graham2021levit]
+
+### Key Reference Papers
+
+1. **Original ViT**: Dosovitskiy et al. (2020) - "An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale"
+2. **CLIP**: Radford et al. (2021) - "Learning Transferable Visual Models From Natural Language Supervision"
+3. **Swin Transformer**: Liu et al. (2021) - "Hierarchical Vision Transformer using Shifted Windows"
+4. **MAE**: He et al. (2022) - "Masked Autoencoders Are Scalable Vision Learners"
+5. **DiT**: Peebles & Xie (2023) - "Scalable Diffusion Models with Transformers"
+
+### Verification Method
+
+All claims were verified by:
+
+1. Fetching and reading original arxiv papers
+2. Confirming architectural details and mechanisms
+3. Cross-referencing multiple sources for consistency
+4. Adding inline citations throughout the document
+
+:::
+
+
+📅 *Last modified: `Monday, December 1, 2025`*
+
