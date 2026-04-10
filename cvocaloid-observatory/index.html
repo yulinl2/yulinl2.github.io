@@ -317,7 +317,7 @@
     animation: spin .8s linear infinite; margin-bottom: 12px;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
-  .loading-status { margin-top: 8px; font-size: 11px; color: var(--border); transition: color .3s; }
+  .loading-status { margin-top: 8px; font-size: 11px; color: var(--muted); }
   .load-error {
     text-align: center; padding: 60px 20px;
     font-family: 'JetBrains Mono', monospace; font-size: 13px;
@@ -807,17 +807,22 @@ async function loadData() {
   `;
   document.getElementById('last-updated').textContent = '加载中...';
 
-  // Timeout: if fetch takes >12s, it's probably stuck
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 12000);
-
+  let timeout;
   try {
     setLoadingStatus('连接服务器...');
     // Cache-bust: append hour-level timestamp so browsers don't serve stale data
     // but identical requests within the same hour still hit cache
     const cacheBust = Math.floor(Date.now() / 3600000);
-    const res = await fetch(`./data.json?v=${cacheBust}`, { signal: controller.signal });
-    clearTimeout(timeout);
+
+    // AbortController for timeout — graceful fallback for older browsers (WeChat etc.)
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const fetchOpts = controller ? { signal: controller.signal } : {};
+    if (controller) {
+      timeout = setTimeout(() => controller.abort(), 12000);
+    }
+
+    const res = await fetch(`./data.json?v=${cacheBust}`, fetchOpts);
+    if (timeout) clearTimeout(timeout);
 
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
@@ -831,7 +836,7 @@ async function loadData() {
     setLoadingStatus('渲染中...');
     renderApp(data);
   } catch (err) {
-    clearTimeout(timeout);
+    if (timeout) clearTimeout(timeout);
     if (err.name === 'AbortError') {
       showError('请求超时 — 网络连接可能不稳定');
     } else if (err.message && err.message.startsWith('HTTP')) {
