@@ -56,6 +56,14 @@
           "like": 268257,
           "pubdate": "2016-11-18T10:02:37"
         }
+      ],
+      "definition": "Hatsune Miku — Crypton 出品的初代 VOCALOID 角色，全球最具知名度的虚拟歌手。",
+      "group": "vocaloid_jp",
+      "related": [
+        "鏡音リン",
+        "鏡音レン",
+        "巡音ルカ",
+        "術力口"
       ]
     },
     {
@@ -108,6 +116,13 @@
           "like": 185899,
           "pubdate": "2025-07-15T10:00:00"
         }
+      ],
+      "definition": "Luo Tianyi — 中国第一位 VOCALOID 角色，上海禾念出品。",
+      "group": "vocaloid_cn",
+      "related": [
+        "言和",
+        "乐正绫",
+        "虚拟歌手"
       ]
     },
     {
@@ -160,6 +175,13 @@
           "like": 397738,
           "pubdate": "2026-02-20T15:39:37"
         }
+      ],
+      "definition": "Kasane Teto — 原为愚人节恶搞角色，后成为最知名的 UTAU 角色。现拥有 SynthV 音源。",
+      "group": "utau",
+      "related": [
+        "UTAU",
+        "欲音レイ",
+        "Synthesizer V"
       ]
     },
     {
@@ -212,6 +234,12 @@
           "like": 163284,
           "pubdate": "2024-03-02T04:09:02"
         }
+      ],
+      "definition": "KAFU — CeVIO AI 角色，花譜的音源，人气急升中。",
+      "group": "vocaloid_jp",
+      "related": [
+        "flower",
+        "Synthesizer V"
       ]
     },
     {
@@ -264,6 +292,13 @@
           "like": 29945,
           "pubdate": "2023-04-05T16:20:59"
         }
+      ],
+      "definition": "v flower — ガイノイド 出品，中性嗓音 VOCALOID 角色。",
+      "group": "vocaloid_jp",
+      "related": [
+        "GUMI",
+        "IA",
+        "可不"
       ]
     },
     {
@@ -316,6 +351,12 @@
           "like": 22939,
           "pubdate": "2025-08-27T10:33:07"
         }
+      ],
+      "definition": "Yan He — 上海禾念出品的中文 VOCALOID 角色。",
+      "group": "vocaloid_cn",
+      "related": [
+        "洛天依",
+        "乐正绫"
       ]
     },
     {
@@ -368,6 +409,12 @@
           "like": 13546,
           "pubdate": "2024-09-14T10:00:00"
         }
+      ],
+      "definition": "Chiha — SynthV 中文女声音源。",
+      "group": "synthv",
+      "related": [
+        "Synthesizer V",
+        "星尘"
       ]
     },
     {
@@ -420,6 +467,13 @@
           "like": 10926,
           "pubdate": "2025-09-12T12:35:00"
         }
+      ],
+      "definition": "Megpoid GUMI — Internet Co. 出品的 VOCALOID 角色。",
+      "group": "vocaloid_jp",
+      "related": [
+        "IA",
+        "flower",
+        "初音ミク"
       ]
     },
     {
@@ -472,6 +526,13 @@
           "like": 35895,
           "pubdate": "2023-08-12T08:30:00"
         }
+      ],
+      "definition": "Stardust — Quadimension 出品，同时拥有 SynthV 和 VOCALOID 音源。",
+      "group": "synthv",
+      "related": [
+        "Synthesizer V",
+        "赤羽",
+        "洛天依"
       ]
     },
     {
@@ -524,6 +585,12 @@
           "like": 18397,
           "pubdate": "2024-06-22T15:48:58"
         }
+      ],
+      "definition": "Kagamine Rin — Crypton 双子角色之一，活泼少女音色。",
+      "group": "vocaloid_jp",
+      "related": [
+        "鏡音レン",
+        "初音ミク"
       ]
     },
     {
@@ -576,6 +643,13 @@
           "like": 29300,
           "pubdate": "2026-03-14T03:00:00"
         }
+      ],
+      "definition": "Yuezheng Ling — 上海禾念出品的中文 VOCALOID 角色。",
+      "group": "vocaloid_cn",
+      "related": [
+        "洛天依",
+        "言和",
+        "徵羽摩柯"
       ]
     },
     {
@@ -628,6 +702,13 @@
           "like": 8235,
           "pubdate": "2011-12-27T11:09:33"
         }
+      ],
+      "definition": "Megurine Luka — Crypton 出品，日英双语 VOCALOID 角色。",
+      "group": "vocaloid_jp",
+      "related": [
+        "初音ミク",
+        "GUMI",
+        "IA"
       ]
     },
     {
@@ -680,6 +761,12 @@
           "like": 17396,
           "pubdate": "2025-12-10T04:00:00"
         }
+      ],
+      "definition": "Zhiyu Moke — 上海禾念出品的男声中文 VOCALOID 角色。",
+      "group": "vocaloid_cn",
+      "related": [
+        "乐正绫",
+        "墨清弦"
       ]
     },
     {
@@ -732,6 +819,13 @@
           "like": 12753,
           "pubdate": "2025-03-20T10:40:20"
         }
+      ],
+      "definition": "以虚拟形象呈现的合成歌声角色的统称。",
+      "group": "umbrella",
+      "related": [
+        "術力口",
+        "初音ミク",
+        "洛天依"
       ]
     },
     {
@@ -784,6 +878,13 @@
           "like": 18416,
           "pubdate": "2023-04-03T03:33:31"
         }
+      ],
+      "definition": "Synthesizer V 的常用缩写。",
+      "group": "synthv",
+      "related": [
+        "Synthesizer V",
+        "星尘",
+        "赤羽"
       ]
     },
     {
@@ -836,6 +937,12 @@
           "like": 7397,
           "pubdate": "2018-09-22T04:18:07"
         }
+      ],
+      "definition": "Yuzuki Yukari — AH-Software 出品，同时拥有 VOICEROID 语音库。",
+      "group": "vocaloid_jp",
+      "related": [
+        "flower",
+        "初音ミク"
       ]
     },
     {
@@ -888,6 +995,14 @@
           "like": 3839,
           "pubdate": "2026-04-05T12:24:54"
         }
+      ],
+      "definition": "VOCALOID 的中文谐音/代称，B站最常用的总称标签。",
+      "group": "umbrella",
+      "related": [
+        "电子人声",
+        "人声合成",
+        "VOCALOID",
+        "虚拟歌手"
       ]
     },
     {
@@ -940,6 +1055,12 @@
           "like": 3497,
           "pubdate": "2025-07-24T09:36:08"
         }
+      ],
+      "definition": "1st Place 出品的 VOCALOID 角色，以空灵音色著称。",
+      "group": "vocaloid_jp",
+      "related": [
+        "GUMI",
+        "flower"
       ]
     },
     {
@@ -992,6 +1113,12 @@
           "like": 3917,
           "pubdate": "2025-05-18T09:32:44"
         }
+      ],
+      "definition": "Mo Qingxian — 上海禾念出品的中文 VOCALOID 角色。",
+      "group": "vocaloid_cn",
+      "related": [
+        "洛天依",
+        "徵羽摩柯"
       ]
     },
     {
@@ -1044,6 +1171,14 @@
           "like": 2409,
           "pubdate": "2022-03-15T03:37:35"
         }
+      ],
+      "definition": "Dreamtonics 开发的新一代 AI 歌声合成引擎，音质接近真人。",
+      "group": "synthv",
+      "related": [
+        "SynthV",
+        "星尘",
+        "赤羽",
+        "重音テト"
       ]
     },
     {
@@ -1096,6 +1231,12 @@
           "like": 615,
           "pubdate": "2020-02-24T07:22:43"
         }
+      ],
+      "definition": "语音合成技术的通用术语，包括歌声和语音。",
+      "group": "umbrella",
+      "related": [
+        "術力口",
+        "电子人声"
       ]
     },
     {
@@ -1148,6 +1289,13 @@
           "like": 1494,
           "pubdate": "2023-07-07T11:27:20"
         }
+      ],
+      "definition": "泛指所有电子合成人声技术及作品。",
+      "group": "umbrella",
+      "related": [
+        "術力口",
+        "人声合成",
+        "虚拟歌手"
       ]
     },
     {
@@ -1200,6 +1348,13 @@
           "like": 968,
           "pubdate": "2025-12-28T07:04:04"
         }
+      ],
+      "definition": "免费歌声合成软件，支持用户自制音源，社区驱动。",
+      "group": "utau",
+      "related": [
+        "重音テト",
+        "欲音レイ",
+        "術力口"
       ]
     },
     {
@@ -1252,6 +1407,12 @@
           "like": 1714,
           "pubdate": "2026-04-03T09:00:00"
         }
+      ],
+      "definition": "AI 歌声合成引擎，以高质量免费音源闻名。",
+      "group": "other",
+      "related": [
+        "DeepVocal",
+        "Synthesizer V"
       ]
     },
     {
@@ -1304,6 +1465,12 @@
           "like": 470,
           "pubdate": "2023-02-12T01:00:00"
         }
+      ],
+      "definition": "字节跳动旗下 AI 歌声合成平台。",
+      "group": "other",
+      "related": [
+        "AiSingers",
+        "虚拟歌手"
       ]
     },
     {
@@ -1356,6 +1523,12 @@
           "like": 512,
           "pubdate": "2025-02-28T09:30:00"
         }
+      ],
+      "definition": "AI 歌声合成平台，支持多种音色。",
+      "group": "other",
+      "related": [
+        "ACE虚拟歌手",
+        "DeepVocal"
       ]
     },
     {
@@ -1408,9 +1581,41 @@
           "like": 391,
           "pubdate": "2019-10-10T12:02:08"
         }
+      ],
+      "definition": "Boxstar 开发的免费歌声合成软件，被称为新一代 UTAU。",
+      "group": "other",
+      "related": [
+        "UTAU",
+        "AiSingers"
       ]
     }
   ],
+  "keyword_groups": {
+    "umbrella": {
+      "label": "总称/通用",
+      "color": "#4fd1c7"
+    },
+    "vocaloid_jp": {
+      "label": "日系 VOCALOID",
+      "color": "#63b3ed"
+    },
+    "vocaloid_cn": {
+      "label": "中文 VOCALOID",
+      "color": "#fc8181"
+    },
+    "utau": {
+      "label": "UTAU",
+      "color": "#f6ad55"
+    },
+    "synthv": {
+      "label": "Synthesizer V",
+      "color": "#b794f4"
+    },
+    "other": {
+      "label": "其他引擎",
+      "color": "#68d391"
+    }
+  },
   "anomalies": [],
   "latest_report": {
     "week": "—",

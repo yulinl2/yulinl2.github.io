@@ -167,6 +167,102 @@
     color: var(--muted); white-space: nowrap;
   }
 
+  /* Bar chart overview */
+  .bar-chart-wrap {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 20px; margin-bottom: 40px;
+    height: 420px;
+  }
+
+  /* Author line in video rows */
+  .video-author {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--muted); margin-top: 2px;
+  }
+  .video-author a { color: var(--muted); text-decoration: none; }
+  .video-author a:hover { color: var(--accent); }
+
+  /* Keyword definition in expanded card */
+  .kw-definition {
+    font-size: 12px; color: var(--muted); line-height: 1.6;
+    margin-bottom: 12px; padding: 8px 12px;
+    background: rgba(79,209,199,.04);
+    border-left: 2px solid rgba(79,209,199,.3);
+    border-radius: 0 4px 4px 0;
+  }
+
+  /* Bubble cloud */
+  .bubble-cloud-wrap {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 24px; margin-bottom: 40px;
+    position: relative; overflow: hidden;
+  }
+  .bubble-legend {
+    display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--muted);
+  }
+  .bubble-legend-item {
+    display: flex; align-items: center; gap: 4px;
+  }
+  .bubble-legend-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+  .bubble-field {
+    display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+    gap: 10px; min-height: 200px; padding: 10px;
+  }
+  .bubble {
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; cursor: default; position: relative;
+    font-size: 11px; font-weight: 600; text-align: center;
+    line-height: 1.2; padding: 8px;
+    transition: transform .25s, box-shadow .25s;
+    animation: bubble-float 6s ease-in-out infinite;
+    word-break: keep-all;
+  }
+  .bubble:hover {
+    transform: scale(1.15);
+    z-index: 5;
+  }
+  .bubble .bubble-tip {
+    visibility: hidden; opacity: 0;
+    position: absolute; bottom: calc(100% + 10px); left: 50%;
+    transform: translateX(-50%);
+    background: #1a1d26; border: 1px solid var(--border);
+    border-radius: 6px; padding: 10px 14px;
+    font-size: 11px; font-weight: 400; color: var(--text);
+    line-height: 1.5; white-space: normal; width: 200px;
+    z-index: 20; pointer-events: none;
+    transition: opacity .15s;
+    text-align: left;
+  }
+  .bubble:hover .bubble-tip { visibility: visible; opacity: 1; }
+  .bubble-tip-play { color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+  .bubble-tip-def { margin-top: 4px; color: var(--muted); }
+  .bubble-related {
+    margin-top: 6px; display: flex; flex-wrap: wrap; gap: 3px;
+  }
+  .bubble-related-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+    border-radius: 3px; padding: 1px 5px; color: var(--text);
+  }
+  @keyframes bubble-float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  .bubble:nth-child(2n) { animation-delay: -1.5s; }
+  .bubble:nth-child(3n) { animation-delay: -3s; animation-duration: 7s; }
+  .bubble:nth-child(5n) { animation-delay: -4.5s; animation-duration: 8s; }
+  .bubble:nth-child(7n) { animation-delay: -2s; animation-duration: 5s; }
+
+  /* AI-generated label */
+  .ai-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: var(--muted); opacity: .6; font-style: italic;
+  }
+
   /* Anomaly feed */
   .anomaly-feed { margin-bottom: 40px; }
   .anomaly-item {
@@ -230,6 +326,13 @@
     .stats-grid { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; }
     .stat-card { padding: 12px; }
     .stat-value { font-size: 18px; }
+
+    /* Bar chart shorter on mobile */
+    .bar-chart-wrap { height: 300px; padding: 12px; }
+
+    /* Bubbles smaller on mobile */
+    .bubble { font-size: 9px; }
+    .bubble .bubble-tip { width: 160px; left: auto; right: -8px; transform: none; }
   }
 </style>
 </head>
@@ -342,20 +445,38 @@ function infoIcon(text) {
   return `<span class="info-tip">?<span class="tip-text">${text}</span></span>`;
 }
 
+// Group color map (fallback for demo/missing config)
+const DEFAULT_GROUPS = {
+  umbrella:    { label: '总称/通用',     color: '#4fd1c7' },
+  vocaloid_jp: { label: '日系 VOCALOID', color: '#63b3ed' },
+  vocaloid_cn: { label: '中文 VOCALOID', color: '#fc8181' },
+  utau:        { label: 'UTAU',          color: '#f6ad55' },
+  synthv:      { label: 'Synthesizer V', color: '#b794f4' },
+  other:       { label: '其他引擎',       color: '#68d391' },
+};
+
+function escapeHtml(str) {
+  const el = document.createElement('span');
+  el.textContent = str;
+  return el.innerHTML;
+}
+
 function renderApp(data) {
   const app = document.getElementById('app');
   const lu = new Date(data.last_updated);
   document.getElementById('last-updated').textContent =
     '更新于 ' + lu.toLocaleString('zh-CN', {timeZone:'Asia/Tokyo', hour12:false}) + ' JST';
 
+  const groups = data.keyword_groups || DEFAULT_GROUPS;
+
   const anomalyHtml = data.anomalies.length > 0
     ? data.anomalies.map(a => `
         <div class="anomaly-item">
           <div class="anomaly-date">${a.date}</div>
           <div class="anomaly-desc">
-            <span class="anomaly-kw">${a.keyword}</span>
+            <span class="anomaly-kw">${escapeHtml(a.keyword)}</span>
             <span class="anomaly-mult"> ↑${a.multiplier} </span>
-            ${a.description}
+            ${escapeHtml(a.description)}
           </div>
         </div>
       `).join('')
@@ -383,6 +504,17 @@ function renderApp(data) {
       </div>
     </div>
 
+    <!-- Bar chart: play count by keyword -->
+    <div class="section-title">今日播放量排行 ${infoIcon('各关键词今日搜索结果中视频播放量总和对比。数据来源：Bilibili 公开搜索 API。')}</div>
+    <div class="bar-chart-wrap"><canvas id="bar-chart"></canvas></div>
+
+    <!-- Bubble cloud -->
+    <div class="section-title">关键词关联图谱 ${infoIcon('气泡大小 = 播放量，颜色 = 所属分类，悬停查看释义与关联词。<br><span class=\\'ai-label\\'>释义由 AI 生成，仅供参考。</span>')}</div>
+    <div class="bubble-cloud-wrap">
+      <div class="bubble-legend" id="bubble-legend"></div>
+      <div class="bubble-field" id="bubble-field"></div>
+    </div>
+
     <!-- Keywords -->
     <div class="section-title">关键词热度（近7日）</div>
     <div class="keyword-grid" id="kw-grid"></div>
@@ -399,7 +531,107 @@ function renderApp(data) {
     </div>
   `;
 
-  // Render sparkline charts + expandable cards
+  // ── Bar chart ──────────────────────────────────────────────────────────
+  const top15 = data.keywords.slice(0, 15);
+  const barColors = top15.map(kw => {
+    const g = groups[kw.group] || groups.other || { color: '#4fd1c7' };
+    return g.color;
+  });
+  new Chart(document.getElementById('bar-chart'), {
+    type: 'bar',
+    data: {
+      labels: top15.map(kw => kw.name),
+      datasets: [{
+        data: top15.map(kw => kw.total_play_today),
+        backgroundColor: barColors.map(c => c + '33'),
+        borderColor: barColors,
+        borderWidth: 1,
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: { label: ctx => fmt(ctx.raw) + ' 播放' },
+          backgroundColor: '#1a1d26', borderColor: '#1e2330', borderWidth: 1,
+          titleFont: { family: 'Noto Serif SC' },
+          bodyFont: { family: 'JetBrains Mono', size: 11 },
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(255,255,255,.04)' },
+          ticks: { color: '#718096', font: { family: 'JetBrains Mono', size: 10 },
+                   callback: v => fmt(v) }
+        },
+        y: {
+          grid: { display: false },
+          ticks: { color: '#e2e8f0', font: { family: 'Noto Serif SC', size: 12 } }
+        }
+      },
+      animation: { duration: 1000, easing: 'easeOutQuart' }
+    }
+  });
+
+  // ── Bubble cloud ───────────────────────────────────────────────────────
+  const legendEl = document.getElementById('bubble-legend');
+  const fieldEl = document.getElementById('bubble-field');
+
+  // Render legend
+  for (const [gid, g] of Object.entries(groups)) {
+    legendEl.innerHTML += `<div class="bubble-legend-item">
+      <div class="bubble-legend-dot" style="background:${g.color}"></div>
+      ${escapeHtml(g.label)}
+    </div>`;
+  }
+
+  // Compute bubble sizes (normalize play counts to 36px..110px diameter)
+  const plays = data.keywords.map(kw => kw.total_play_today);
+  const maxPlay = Math.max(...plays, 1);
+  const minPlay = Math.min(...plays, 0);
+  const range = maxPlay - minPlay || 1;
+
+  data.keywords.forEach(kw => {
+    const norm = (kw.total_play_today - minPlay) / range;  // 0..1
+    const size = Math.round(36 + norm * 74);                // 36..110px
+    const g = groups[kw.group] || groups.other || { color: '#4fd1c7' };
+    const color = g.color;
+    // Higher play = more opaque
+    const opacity = 0.25 + norm * 0.55;
+
+    const relatedTags = (kw.related || []).map(r =>
+      `<span class="bubble-related-tag">${escapeHtml(r)}</span>`
+    ).join('');
+    const defText = kw.definition
+      ? `<div class="bubble-tip-def">${escapeHtml(kw.definition)}
+           <span class="ai-label">(AI 生成释义)</span></div>`
+      : '';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.style.cssText = `
+      width:${size}px; height:${size}px;
+      background: radial-gradient(circle at 35% 35%, ${color}${Math.round(opacity*255).toString(16).padStart(2,'0')}, ${color}11);
+      border: 1px solid ${color}55;
+      box-shadow: 0 0 ${Math.round(8 + norm*20)}px ${color}22, inset 0 0 ${Math.round(6+norm*12)}px ${color}11;
+      color: ${color};
+    `;
+    bubble.innerHTML = `
+      <span style="font-size:${Math.max(9, Math.round(9 + norm * 4))}px">${escapeHtml(kw.name)}</span>
+      <div class="bubble-tip">
+        <div><strong>${escapeHtml(kw.name)}</strong></div>
+        <div class="bubble-tip-play">今日 ${fmt(kw.total_play_today)} 播放</div>
+        ${defText}
+        ${relatedTags ? `<div class="bubble-related">${relatedTags}</div>` : ''}
+      </div>
+    `;
+    fieldEl.appendChild(bubble);
+  });
+
+  // ── Keyword cards ──────────────────────────────────────────────────────
   const kwGrid = document.getElementById('kw-grid');
   data.keywords.forEach((kw, idx) => {
     const card = document.createElement('div');
@@ -407,27 +639,50 @@ function renderApp(data) {
     const deltaClass = kw.delta_pct >= 0 ? 'up' : 'down';
     const deltaSign = kw.delta_pct >= 0 ? '+' : '';
     const canvasId = 'chart-' + idx;
+    const g = groups[kw.group] || groups.other || { color: '#4fd1c7' };
 
-    // Build top videos HTML
+    // Build top videos HTML with author info
     const videos = (kw.top_videos || []).filter(v => v.bvid && /^BV[\w]+$/.test(v.bvid));
     let videosHtml = '';
     if (videos.length > 0) {
       videosHtml = videos.map(v => {
         const url = 'https://www.bilibili.com/video/' + encodeURIComponent(v.bvid);
-        const safeTitle = document.createElement('span');
-        safeTitle.textContent = v.title || '(无标题)';
-        return `<div class="video-row">
-          <div class="video-title"><a href="${url}" target="_blank" rel="noopener">${safeTitle.innerHTML}</a></div>
-          <div class="video-stats">${fmt(v.play_count)} 播放 · ${fmt(v.like)} 赞</div>
+        const authorHtml = v.mid && v.author
+          ? `<div class="video-author">UP: <a href="https://space.bilibili.com/${encodeURIComponent(v.mid)}" target="_blank" rel="noopener">${escapeHtml(v.author)}</a></div>`
+          : '';
+        return `<div class="video-row" style="flex-wrap:wrap">
+          <div class="video-title" style="width:100%">
+            <a href="${url}" target="_blank" rel="noopener">${escapeHtml(v.title || '(无标题)')}</a>
+            ${authorHtml}
+          </div>
+          <div class="video-stats">${fmt(v.play_count)} 播放 · ${fmt(v.like)} 赞${v.danmaku ? ' · ' + fmt(v.danmaku) + ' 弹幕' : ''}${v.comment ? ' · ' + fmt(v.comment) + ' 评论' : ''}</div>
         </div>`;
       }).join('');
     } else {
       videosHtml = '<div style="color:var(--muted);font-size:12px">暂无视频数据</div>';
     }
 
+    // Keyword definition
+    const defHtml = kw.definition
+      ? `<div class="kw-definition">${escapeHtml(kw.definition)} <span class="ai-label">(AI 生成释义)</span></div>`
+      : '';
+
+    // Related keywords as bubbles
+    const relatedHtml = (kw.related || []).length > 0
+      ? `<div style="margin-bottom:12px">
+           <div class="kw-details-title">关联词</div>
+           <div class="bubble-related">${kw.related.map(r =>
+             `<span class="bubble-related-tag" style="font-size:10px;padding:2px 8px;border-color:${g.color}44;color:${g.color}">${escapeHtml(r)}</span>`
+           ).join('')}</div>
+         </div>`
+      : '';
+
     card.innerHTML = `
       <div class="kw-header">
-        <div class="kw-name">${kw.name}</div>
+        <div class="kw-name">
+          <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${g.color};margin-right:8px;box-shadow:0 0 6px ${g.color}"></span>
+          ${escapeHtml(kw.name)}
+        </div>
         <div class="kw-count">搜索结果 ${fmtResultCount(kw.result_count)}
           ${infoIcon('Bilibili 搜索 API 返回的结果数量。API 上限为 1,000，显示 ≥1,000 表示实际结果可能更多。')}
         </div>
@@ -440,27 +695,26 @@ function renderApp(data) {
       </div>
       ${kw.has_anomaly ? '<div class="anomaly-tag">⚡ 异常</div>' : ''}
       <div class="kw-expand-hint">
-        <span class="hint-collapsed">▼ 点击展开热门视频</span>
+        <span class="hint-collapsed">▼ 点击展开详情</span>
         <span class="hint-expanded">▲ 收起</span>
       </div>
       <div class="kw-details">
         <div class="kw-details-inner">
+          ${defHtml}
+          ${relatedHtml}
           <div class="kw-details-title">热门视频 TOP ${videos.length}</div>
           ${videosHtml}
         </div>
       </div>
     `;
 
-    // Click to expand/collapse
     card.addEventListener('click', (e) => {
-      // Don't toggle when clicking links or info tooltips
       if (e.target.closest('a, .info-tip')) return;
       card.classList.toggle('expanded');
     });
 
     kwGrid.appendChild(card);
 
-    // Sparkline — generate labels to match trend length
     const trend = kw.trend || [];
     const labels = trend.map((_, i) => {
       const daysAgo = trend.length - 1 - i;
@@ -473,8 +727,8 @@ function renderApp(data) {
         labels: labels,
         datasets: [{
           data: trend,
-          borderColor: kw.has_anomaly ? '#fc8181' : '#4fd1c7',
-          backgroundColor: kw.has_anomaly ? 'rgba(252,129,129,.08)' : 'rgba(79,209,199,.08)',
+          borderColor: kw.has_anomaly ? '#fc8181' : g.color,
+          backgroundColor: kw.has_anomaly ? 'rgba(252,129,129,.08)' : g.color + '14',
           borderWidth: 2, pointRadius: 0, tension: 0.4, fill: true
         }]
       },
