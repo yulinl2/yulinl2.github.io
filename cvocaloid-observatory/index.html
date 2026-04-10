@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>術力口观察日志</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #0a0c10;
+    --surface: #111318;
+    --border: #1e2330;
+    --accent: #4fd1c7;
+    --accent2: #f6ad55;
+    --danger: #fc8181;
+    --text: #e2e8f0;
+    --muted: #718096;
+    --grid: rgba(78,201,196,0.06);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Serif SC', serif;
+    min-height: 100vh;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 24px 16px 60px; }
+
+  /* Header */
+  header { padding: 40px 0 32px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
+  .header-top { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
+  h1 { font-size: clamp(18px, 4vw, 26px); font-weight: 700; letter-spacing: .02em; }
+  .subtitle { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 6px; letter-spacing: .08em; text-transform: uppercase; }
+  .last-updated { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); text-align: right; }
+  .live-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(79,209,199,.12); border: 1px solid rgba(79,209,199,.3);
+    color: var(--accent); font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; padding: 3px 8px; border-radius: 4px; letter-spacing: .08em;
+  }
+
+  /* Section titles */
+  .section-title {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--accent); letter-spacing: .15em; text-transform: uppercase;
+    margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::after { content:''; flex:1; height:1px; background: var(--border); }
+
+  /* Stat cards */
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 40px; }
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 16px;
+    transition: border-color .2s;
+  }
+  .stat-card:hover { border-color: var(--accent); }
+  .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-bottom:8px; }
+  .stat-value { font-size: 22px; font-weight: 700; color: var(--accent); }
+  .stat-delta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .stat-delta.up { color: #68d391; }
+  .stat-delta.down { color: var(--danger); }
+
+  /* Keyword cards */
+  .keyword-grid { display: grid; gap: 16px; margin-bottom: 40px; }
+  .kw-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 20px; transition: border-color .2s;
+  }
+  .kw-card:hover { border-color: rgba(79,209,199,.4); }
+  .kw-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .kw-name { font-size: 16px; font-weight: 700; }
+  .kw-count { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); }
+  .kw-chart-wrap { height: 60px; }
+  .anomaly-tag {
+    display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    background: rgba(252,129,129,.12); border: 1px solid rgba(252,129,129,.3);
+    color: var(--danger); padding: 2px 7px; border-radius: 4px; margin-top: 10px;
+  }
+
+  /* Anomaly feed */
+  .anomaly-feed { margin-bottom: 40px; }
+  .anomaly-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 3px solid var(--danger);
+    border-radius: 0 8px 8px 0; padding: 14px 16px; margin-bottom: 10px;
+  }
+  .anomaly-date { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+  .anomaly-desc { font-size: 14px; line-height: 1.6; }
+  .anomaly-kw { color: var(--accent2); font-weight: 700; }
+  .anomaly-mult { color: var(--danger); font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+  /* Report embed */
+  .report-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 20px; margin-bottom: 40px;
+  }
+  .report-box h3 { font-size: 15px; margin-bottom: 10px; color: var(--accent2); }
+  .report-box p { font-size: 13px; color: var(--muted); line-height: 1.8; }
+
+  /* Footer */
+  footer { border-top: 1px solid var(--border); padding-top: 20px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); text-align: center; }
+
+  .demo-banner {
+    background: repeating-linear-gradient(
+      45deg, rgba(246,173,85,.08), rgba(246,173,85,.08) 10px,
+      transparent 10px, transparent 20px
+    );
+    border: 1px solid rgba(246,173,85,.4);
+    border-radius: 6px; padding: 10px 16px; margin-bottom: 28px;
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color: var(--accent2); display: flex; align-items: center; gap: 8px;
+  }
+  .loading { text-align: center; padding: 80px 20px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="header-top">
+      <div>
+        <div class="logo">
+          <div class="logo-dot"></div>
+          <h1>術力口观察日志</h1>
+        </div>
+        <div class="subtitle">中文社区电子人声软件趋势监测 · Vocaloid / UTAU / SynthV</div>
+      </div>
+      <div style="text-align:right">
+        <div class="live-badge">● LIVE</div>
+        <div class="last-updated" id="last-updated" style="margin-top:6px">加载中...</div>
+      </div>
+    </div>
+  </header>
+
+  <div id="demo-banner" class="demo-banner" style="display:none">
+    ⚠ 演示数据 — 图表数字为虚构样本，真实数据将由爬虫自动填入
+  </div>
+  <div id="app"><div class="loading">正在加载数据...</div></div>
+
+  <footer>
+    大中文圈術力口观察日志 · 数据来源：Bilibili · 每日 09:00 JST 自动更新
+  </footer>
+</div>
+
+<script>
+// ─── Demo data (replace with fetch('./data.json') in production) ───────────────
+const DEMO_DATA = {
+  last_updated: "2026-04-10T00:05:12Z",
+  summary: {
+    total_keywords: 10,
+    total_play_week: 4820000,
+    anomaly_count: 2
+  },
+  keywords: [
+    {
+      name: "術力口",
+      total_play_today: 340000,
+      result_count: 12800,
+      delta_pct: +18,
+      has_anomaly: true,
+      trend: [210,195,230,280,260,310,340]
+    },
+    {
+      name: "重音テト",
+      total_play_today: 185000,
+      result_count: 6400,
+      delta_pct: +5,
+      has_anomaly: false,
+      trend: [160,170,155,180,175,190,185]
+    },
+    {
+      name: "洛天依",
+      total_play_today: 420000,
+      result_count: 31000,
+      delta_pct: -3,
+      has_anomaly: false,
+      trend: [450,440,410,430,425,415,420]
+    },
+    {
+      name: "Synthesizer V",
+      total_play_today: 95000,
+      result_count: 4100,
+      delta_pct: +42,
+      has_anomaly: true,
+      trend: [60,58,62,65,70,88,95]
+    },
+  ],
+  anomalies: [
+    {
+      date: "2026-04-10",
+      keyword: "術力口",
+      multiplier: "3.8×",
+      description: "術力口 播放量突增 3.8× 周均值，疑似大V视频或社区热门事件驱动。"
+    },
+    {
+      date: "2026-04-09",
+      keyword: "Synthesizer V",
+      multiplier: "4.2×",
+      description: "Synthesizer V 搜索量激增 4.2×，可能与新版本发布或相关话题炎上有关。"
+    }
+  ],
+  latest_report: {
+    week: "2026-W15",
+    range: "2026-04-06 ~ 2026-04-12",
+    summary: "本周中文圈電子人声社区整体热度上升约 12%。術力口相关内容在4月10日出现显著峰值，Synthesizer V社区亦见异常活跃。洛天依相关播放量保持稳定，无明显异常。"
+  }
+};
+
+// ─── Render ────────────────────────────────────────────────────────────────────
+function fmt(n) {
+  if (n >= 1e6) return (n/1e6).toFixed(1) + 'M';
+  if (n >= 1e4) return (n/1e4).toFixed(1) + 'w';
+  return n.toLocaleString();
+}
+
+function renderApp(data) {
+  const app = document.getElementById('app');
+  const lu = new Date(data.last_updated);
+  document.getElementById('last-updated').textContent =
+    '更新于 ' + lu.toLocaleString('zh-CN', {timeZone:'Asia/Tokyo', hour12:false}) + ' JST';
+
+  const anomalyHtml = data.anomalies.length > 0
+    ? data.anomalies.map(a => `
+        <div class="anomaly-item">
+          <div class="anomaly-date">${a.date}</div>
+          <div class="anomaly-desc">
+            <span class="anomaly-kw">${a.keyword}</span>
+            <span class="anomaly-mult"> ↑${a.multiplier} </span>
+            ${a.description}
+          </div>
+        </div>
+      `).join('')
+    : '<div style="color:var(--muted);font-size:13px;padding:12px 0">暂无异常事件</div>';
+
+  const reportWeek = data.latest_report ? data.latest_report.week : '—';
+  const reportRange = data.latest_report ? data.latest_report.range : '—';
+  const reportSummary = data.latest_report ? data.latest_report.summary : '尚无周报数据。';
+
+  app.innerHTML = `
+    <!-- Stats -->
+    <div class="section-title">总览</div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">追踪关键词</div>
+        <div class="stat-value">${data.summary.total_keywords}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">本周总播放</div>
+        <div class="stat-value">${fmt(data.summary.total_play_week)}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">异常事件</div>
+        <div class="stat-value" style="color:var(--danger)">${data.summary.anomaly_count}</div>
+      </div>
+    </div>
+
+    <!-- Keywords -->
+    <div class="section-title">关键词热度（近7日）</div>
+    <div class="keyword-grid" id="kw-grid"></div>
+
+    <!-- Anomalies -->
+    <div class="section-title">异常事件</div>
+    <div class="anomaly-feed">${anomalyHtml}</div>
+
+    <!-- Weekly report -->
+    <div class="section-title">本周简报 · ${reportWeek}</div>
+    <div class="report-box">
+      <h3>${reportRange}</h3>
+      <p>${reportSummary}</p>
+    </div>
+  `;
+
+  // Render sparkline charts
+  const kwGrid = document.getElementById('kw-grid');
+  data.keywords.forEach((kw, idx) => {
+    const card = document.createElement('div');
+    card.className = 'kw-card';
+    const deltaClass = kw.delta_pct >= 0 ? 'up' : 'down';
+    const deltaSign = kw.delta_pct >= 0 ? '+' : '';
+    const canvasId = 'chart-' + idx;
+    card.innerHTML = `
+      <div class="kw-header">
+        <div class="kw-name">${kw.name}</div>
+        <div class="kw-count">搜索结果 ${fmt(kw.result_count)}</div>
+      </div>
+      <div class="kw-chart-wrap"><canvas id="${canvasId}"></canvas></div>
+      <div class="stat-delta ${deltaClass}" style="margin-top:10px">
+        今日播放 ${fmt(kw.total_play_today)} &nbsp;|&nbsp; 昨日对比 ${deltaSign}${kw.delta_pct}%
+      </div>
+      ${kw.has_anomaly ? '<div class="anomaly-tag">⚡ 异常</div>' : ''}
+    `;
+    kwGrid.appendChild(card);
+
+    // Sparkline — generate labels to match trend length
+    const trend = kw.trend || [];
+    const labels = trend.map((_, i) => {
+      const daysAgo = trend.length - 1 - i;
+      return daysAgo === 0 ? '今日' : daysAgo === 1 ? '昨日' : `Day-${daysAgo}`;
+    });
+
+    new Chart(document.getElementById(canvasId), {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: trend,
+          borderColor: kw.has_anomaly ? '#fc8181' : '#4fd1c7',
+          backgroundColor: kw.has_anomaly ? 'rgba(252,129,129,.08)' : 'rgba(79,209,199,.08)',
+          borderWidth: 2, pointRadius: 0, tension: 0.4, fill: true
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { enabled: false } },
+        scales: {
+          x: { display: false },
+          y: { display: false, beginAtZero: false }
+        },
+        animation: { duration: 800, easing: 'easeInOutQuart' }
+      }
+    });
+  });
+}
+
+// ─── Load data ─────────────────────────────────────────────────────────────────
+async function loadData() {
+  try {
+    const res = await fetch('./data.json');
+    if (!res.ok) throw new Error('no data.json');
+    const data = await res.json();
+    renderApp(data);
+  } catch {
+    document.getElementById('demo-banner').style.display = 'flex';
+    renderApp(DEMO_DATA);
+  }
+}
+
+loadData();
+</script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+{
+  "last_updated": "2026-04-10T15:16:31Z",
+  "summary": {
+    "total_keywords": 27,
+    "total_play_week": 478147087,
+    "anomaly_count": 0
+  },
+  "keywords": [
+    {
+      "name": "初音ミク",
+      "total_play_today": 97332673,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        97332673
+      ]
+    },
+    {
+      "name": "洛天依",
+      "total_play_today": 75778882,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        75778882
+      ]
+    },
+    {
+      "name": "重音テト",
+      "total_play_today": 60441319,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        60441319
+      ]
+    },
+    {
+      "name": "可不",
+      "total_play_today": 42510987,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        42510987
+      ]
+    },
+    {
+      "name": "flower",
+      "total_play_today": 29995642,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        29995642
+      ]
+    },
+    {
+      "name": "言和",
+      "total_play_today": 27798923,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        27798923
+      ]
+    },
+    {
+      "name": "赤羽",
+      "total_play_today": 26335990,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        26335990
+      ]
+    },
+    {
+      "name": "GUMI",
+      "total_play_today": 25427818,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        25427818
+      ]
+    },
+    {
+      "name": "星尘",
+      "total_play_today": 23895606,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        23895606
+      ]
+    },
+    {
+      "name": "鏡音リン",
+      "total_play_today": 13084041,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        13084041
+      ]
+    },
+    {
+      "name": "乐正绫",
+      "total_play_today": 12667823,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        12667823
+      ]
+    },
+    {
+      "name": "巡音ルカ",
+      "total_play_today": 9343040,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        9343040
+      ]
+    },
+    {
+      "name": "徵羽摩柯",
+      "total_play_today": 5418623,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        5418623
+      ]
+    },
+    {
+      "name": "虚拟歌手",
+      "total_play_today": 5026172,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        5026172
+      ]
+    },
+    {
+      "name": "SynthV",
+      "total_play_today": 4896628,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        4896628
+      ]
+    },
+    {
+      "name": "結月ゆかり",
+      "total_play_today": 4027813,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        4027813
+      ]
+    },
+    {
+      "name": "術力口",
+      "total_play_today": 2379267,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        2379267
+      ]
+    },
+    {
+      "name": "IA",
+      "total_play_today": 2310211,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        2310211
+      ]
+    },
+    {
+      "name": "墨清弦",
+      "total_play_today": 1976401,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        1976401
+      ]
+    },
+    {
+      "name": "Synthesizer V",
+      "total_play_today": 1689826,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        1689826
+      ]
+    },
+    {
+      "name": "人声合成",
+      "total_play_today": 1449602,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        1449602
+      ]
+    },
+    {
+      "name": "电子人声",
+      "total_play_today": 1184371,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        1184371
+      ]
+    },
+    {
+      "name": "UTAU",
+      "total_play_today": 1148029,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        1148029
+      ]
+    },
+    {
+      "name": "NEUTRINO",
+      "total_play_today": 1098022,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        1098022
+      ]
+    },
+    {
+      "name": "ACE虚拟歌手",
+      "total_play_today": 414137,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        414137
+      ]
+    },
+    {
+      "name": "AiSingers",
+      "total_play_today": 368805,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        368805
+      ]
+    },
+    {
+      "name": "DeepVocal",
+      "total_play_today": 146436,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        146436
+      ]
+    }
+  ],
+  "anomalies": [],
+  "latest_report": {
+    "week": "—",
+    "range": "—",
+    "summary": "尚无周报数据。"
+  }
+}
