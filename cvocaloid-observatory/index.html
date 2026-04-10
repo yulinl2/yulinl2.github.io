@@ -250,8 +250,7 @@
   }
   .bubble .bubble-tip {
     visibility: hidden; opacity: 0;
-    position: absolute; bottom: calc(100% + 10px); left: 50%;
-    transform: translateX(-50%);
+    position: absolute;
     background: #1a1d26; border: 1px solid var(--border);
     border-radius: 6px; padding: 10px 14px;
     font-size: 11px; font-weight: 400; color: var(--text);
@@ -264,7 +263,7 @@
   .bubble:focus .bubble-tip,
   .bubble:focus-within .bubble-tip { visibility: visible; opacity: 1; }
   .bubble-tip-play { color: var(--accent); font-family: 'JetBrains Mono', monospace; }
-  .bubble-tip-def { margin-top: 4px; color: var(--muted); }
+  .bubble-tip-def { margin-top: 4px; color: var(--muted); position: relative; }
   .bubble-related {
     margin-top: 6px; display: flex; flex-wrap: wrap; gap: 3px;
   }
@@ -282,10 +281,11 @@
   .bubble:nth-child(5n) { animation-delay: -4.5s; animation-duration: 8s; }
   .bubble:nth-child(7n) { animation-delay: -2s; animation-duration: 5s; }
 
-  /* AI-generated label */
+  /* AI-generated label — subtle watermark */
   .ai-label {
-    font-family: 'JetBrains Mono', monospace; font-size: 9px;
-    color: var(--muted); opacity: .6; font-style: italic;
+    font-family: 'JetBrains Mono', monospace; font-size: 8px;
+    color: var(--muted); opacity: .4;
+    float: right; margin: -2px 0 0 6px;
   }
 
   /* Anomaly feed */
@@ -371,7 +371,7 @@
 
     /* Bubbles smaller on mobile */
     .bubble { font-size: 9px; }
-    .bubble .bubble-tip { width: 160px; left: 0; right: auto; transform: none; }
+    .bubble .bubble-tip { width: 160px; }
   }
 </style>
 </head>
@@ -729,8 +729,7 @@ function renderApp(data) {
       `<span class="bubble-related-tag">${escapeHtml(r)}</span>`
     ).join('');
     const defText = kw.definition
-      ? `<div class="bubble-tip-def">${escapeHtml(kw.definition)}
-           <span class="ai-label">(AI 生成释义)</span></div>`
+      ? `<div class="bubble-tip-def"><span class="ai-label">\u24D8 AI\u91CA\u4E49</span>${escapeHtml(kw.definition)}</div>`
       : '';
 
     const el = document.createElement('div');
@@ -744,9 +743,25 @@ function renderApp(data) {
       box-shadow: 0 0 ${Math.round(8 + norm*20)}px ${color}22, inset 0 0 ${Math.round(6+norm*12)}px ${color}11;
       color: ${color};
     `;
+    // Dynamic tooltip positioning: avoid overflow on edges
+    const tipW = 200;
+    const bLeft = Math.round(b.x - r);
+    let tipLeft, tipTransform;
+    if (b.x + tipW / 2 > fw) {
+      // Near right edge: anchor tooltip to right
+      tipLeft = 'auto'; tipTransform = 'none';
+      el.style.setProperty('--tip-right', '0px');
+    } else if (b.x - tipW / 2 < 0) {
+      // Near left edge: anchor tooltip to left
+      tipLeft = '0px'; tipTransform = 'none';
+    } else {
+      // Centered
+      tipLeft = '50%'; tipTransform = 'translateX(-50%)';
+    }
+
     el.innerHTML = `
       <span style="font-size:${Math.max(9, Math.round(9 + norm * 4))}px">${escapeHtml(kw.name)}</span>
-      <div class="bubble-tip">
+      <div class="bubble-tip" style="bottom:calc(100% + 10px); left:${tipLeft}; transform:${tipTransform}; ${tipLeft === 'auto' ? 'right:0;' : ''}">
         <div><strong>${escapeHtml(kw.name)}</strong></div>
         <div class="bubble-tip-play">今日 ${fmt(kw.total_play_today)} 播放</div>
         ${defText}
@@ -791,7 +806,7 @@ function renderApp(data) {
 
     // Keyword definition
     const defHtml = kw.definition
-      ? `<div class="kw-definition">${escapeHtml(kw.definition)} <span class="ai-label">(AI 生成释义)</span></div>`
+      ? `<div class="kw-definition"><span class="ai-label">\u24D8 AI\u91CA\u4E49</span>${escapeHtml(kw.definition)}</div>`
       : '';
 
     // Related keywords as bubbles
