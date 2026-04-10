@@ -230,12 +230,14 @@
     width: 8px; height: 8px; border-radius: 50%;
   }
   .bubble-field {
-    display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
-    gap: 10px; min-height: 200px; padding: 10px;
+    position: relative;
+    min-height: 320px;
+    margin: 0 auto;
   }
   .bubble {
     display: flex; align-items: center; justify-content: center;
-    border-radius: 50%; cursor: default; position: relative;
+    border-radius: 50%; cursor: default;
+    position: absolute;
     font-size: 11px; font-weight: 600; text-align: center;
     line-height: 1.2; padding: 8px;
     transition: transform .25s, box-shadow .25s;
@@ -258,7 +260,9 @@
     transition: opacity .15s;
     text-align: left;
   }
-  .bubble:hover .bubble-tip { visibility: visible; opacity: 1; }
+  .bubble:hover .bubble-tip,
+  .bubble:focus .bubble-tip,
+  .bubble:focus-within .bubble-tip { visibility: visible; opacity: 1; }
   .bubble-tip-play { color: var(--accent); font-family: 'JetBrains Mono', monospace; }
   .bubble-tip-def { margin-top: 4px; color: var(--muted); }
   .bubble-related {
@@ -367,7 +371,7 @@
 
     /* Bubbles smaller on mobile */
     .bubble { font-size: 9px; }
-    .bubble .bubble-tip { width: 160px; left: auto; right: -8px; transform: none; }
+    .bubble .bubble-tip { width: 160px; left: 0; right: auto; transform: none; }
   }
 </style>
 </head>
@@ -641,12 +645,79 @@ function renderApp(data) {
   const minPlay = Math.min(...plays, 0);
   const range = maxPlay - minPlay || 1;
 
-  data.keywords.forEach(kw => {
-    const norm = (kw.total_play_today - minPlay) / range;  // 0..1
-    const size = Math.round(36 + norm * 74);                // 36..110px
+  // Build bubble data with sizes
+  const bubbles = data.keywords.map(kw => {
+    const norm = (kw.total_play_today - minPlay) / range;
+    const r = Math.round(18 + norm * 37);  // radius 18..55px
     const g = groups[kw.group] || groups.other || { color: '#4fd1c7' };
+    return { kw, norm, r, g, x: 0, y: 0 };
+  });
+
+  // Sort largest first for better packing
+  bubbles.sort((a, b) => b.r - a.r);
+
+  // Simple circle-packing: place in spiral, then run force iterations
+  const fw = fieldEl.offsetWidth || 600;
+  const cx = fw / 2, cy = 160;
+  bubbles.forEach((b, i) => {
+    const angle = i * 2.4;  // golden angle spiral
+    const dist = 12 * Math.sqrt(i);
+    b.x = cx + Math.cos(angle) * dist;
+    b.y = cy + Math.sin(angle) * dist;
+  });
+
+  // Force simulation: push overlapping bubbles apart
+  // Larger bubbles resist displacement more (mass-weighted)
+  const pad = 4;
+  const maxR = bubbles.length ? bubbles[0].r : 1;
+  for (let iter = 0; iter < 150; iter++) {
+    for (let i = 0; i < bubbles.length; i++) {
+      for (let j = i + 1; j < bubbles.length; j++) {
+        const a = bubbles[i], bub = bubbles[j];
+        const dx = bub.x - a.x, dy = bub.y - a.y;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        const minDist = a.r + bub.r + pad;
+        if (dist < minDist) {
+          const overlap = minDist - dist;
+          // Mass ratio: bigger bubble moves less
+          const totalR = a.r + bub.r;
+          const aRatio = bub.r / totalR;  // a moves less if a is bigger
+          const bRatio = a.r / totalR;
+          const nx = dx / dist, ny = dy / dist;
+          a.x -= nx * overlap * aRatio;
+          a.y -= ny * overlap * aRatio;
+          bub.x += nx * overlap * bRatio;
+          bub.y += ny * overlap * bRatio;
+        }
+      }
+      // Centering force: stronger for larger bubbles
+      const strength = 0.02 + (bubbles[i].r / maxR) * 0.04;
+      bubbles[i].x += (cx - bubbles[i].x) * strength;
+      bubbles[i].y += (cy - bubbles[i].y) * strength;
+    }
+  }
+
+  // Clamp bubbles within container width
+  bubbles.forEach(b => {
+    b.x = Math.max(b.r, Math.min(fw - b.r, b.x));
+  });
+
+  // Find bounds and adjust container height
+  let minY = Infinity, maxY = -Infinity;
+  bubbles.forEach(b => {
+    minY = Math.min(minY, b.y - b.r);
+    maxY = Math.max(maxY, b.y + b.r);
+  });
+  const fieldH = maxY - minY + 20;
+  fieldEl.style.minHeight = fieldH + 'px';
+  // Shift all bubbles so they start from top
+  const shiftY = -minY + 10;
+
+  // Create DOM elements
+  bubbles.forEach(b => {
+    const { kw, norm, r, g } = b;
+    const size = r * 2;
     const color = g.color;
-    // Higher play = more opaque
     const opacity = 0.25 + norm * 0.55;
 
     const relatedTags = (kw.related || []).map(r =>
@@ -657,16 +728,18 @@ function renderApp(data) {
            <span class="ai-label">(AI 生成释义)</span></div>`
       : '';
 
-    const bubble = document.createElement('div');
-    bubble.className = 'bubble';
-    bubble.style.cssText = `
+    const el = document.createElement('div');
+    el.className = 'bubble';
+    el.tabIndex = 0;
+    el.style.cssText = `
       width:${size}px; height:${size}px;
+      left:${Math.round(b.x - r)}px; top:${Math.round(b.y + shiftY - r)}px;
       background: radial-gradient(circle at 35% 35%, ${color}${Math.round(opacity*255).toString(16).padStart(2,'0')}, ${color}11);
       border: 1px solid ${color}55;
       box-shadow: 0 0 ${Math.round(8 + norm*20)}px ${color}22, inset 0 0 ${Math.round(6+norm*12)}px ${color}11;
       color: ${color};
     `;
-    bubble.innerHTML = `
+    el.innerHTML = `
       <span style="font-size:${Math.max(9, Math.round(9 + norm * 4))}px">${escapeHtml(kw.name)}</span>
       <div class="bubble-tip">
         <div><strong>${escapeHtml(kw.name)}</strong></div>
@@ -675,7 +748,7 @@ function renderApp(data) {
         ${relatedTags ? `<div class="bubble-related">${relatedTags}</div>` : ''}
       </div>
     `;
-    fieldEl.appendChild(bubble);
+    fieldEl.appendChild(el);
   });
 
   // ── Keyword cards ──────────────────────────────────────────────────────
