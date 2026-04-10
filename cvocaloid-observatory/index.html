@@ -350,10 +350,10 @@
     .video-title { width: 100%; white-space: normal; }
     .video-stats { font-size: 10px; }
 
-    /* Keep tooltips within viewport */
+    /* Keep tooltips within viewport — anchor left on mobile */
     .info-tip .tip-text {
       width: 180px;
-      left: auto; right: -8px;
+      left: 0; right: auto;
       transform: none;
     }
 
@@ -363,7 +363,7 @@
     .stat-value { font-size: 18px; }
 
     /* Bar chart shorter on mobile */
-    .bar-chart-wrap { height: 300px; padding: 12px; }
+    .bar-chart-wrap { height: 420px; padding: 12px; }
 
     /* Bubbles smaller on mobile */
     .bubble { font-size: 9px; }
@@ -616,7 +616,7 @@ function renderApp(data) {
         y: {
           stacked: true,
           grid: { display: false },
-          ticks: { color: '#e2e8f0', font: { family: 'Noto Serif SC', size: 12 } }
+          ticks: { autoSkip: false, color: '#e2e8f0', font: { family: 'Noto Serif SC', size: 12 } }
         }
       },
       animation: { duration: 1000, easing: 'easeOutQuart' }
