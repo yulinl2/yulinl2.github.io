@@ -201,6 +201,36 @@
     color: var(--accent2); display: flex; align-items: center; gap: 8px;
   }
   .loading { text-align: center; padding: 80px 20px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+
+  /* Mobile responsive */
+  @media (max-width: 480px) {
+    .wrap { padding: 16px 12px 40px; }
+    .kw-card { padding: 16px; }
+
+    /* Stack keyword name above search count */
+    .kw-header { flex-wrap: wrap; gap: 4px; }
+    .kw-name { width: 100%; }
+
+    /* Wrap play count + delta onto separate lines if needed */
+    .stat-delta { word-break: break-word; line-height: 1.6; }
+
+    /* Stack video row: title above stats */
+    .video-row { flex-wrap: wrap; }
+    .video-title { width: 100%; white-space: normal; }
+    .video-stats { font-size: 10px; }
+
+    /* Keep tooltips within viewport */
+    .info-tip .tip-text {
+      width: 180px;
+      left: auto; right: -8px;
+      transform: none;
+    }
+
+    /* Smaller stat cards */
+    .stats-grid { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 8px; }
+    .stat-card { padding: 12px; }
+    .stat-value { font-size: 18px; }
+  }
 </style>
 </head>
 <body>
