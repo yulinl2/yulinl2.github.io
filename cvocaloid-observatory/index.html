@@ -670,7 +670,16 @@ function renderApp(data) {
   // Larger bubbles resist displacement more (mass-weighted)
   const pad = 4;
   const maxR = bubbles.length ? bubbles[0].r : 1;
-  for (let iter = 0; iter < 150; iter++) {
+  for (let iter = 0; iter < 200; iter++) {
+    // 1. Centering force FIRST — pull everything toward center
+    for (let i = 0; i < bubbles.length; i++) {
+      const sizeRatio = bubbles[i].r / maxR;  // 0..1
+      // Big bubbles: up to 0.15 strength; small: 0.01
+      const strength = 0.01 + sizeRatio * sizeRatio * 0.14;
+      bubbles[i].x += (cx - bubbles[i].x) * strength;
+      bubbles[i].y += (cy - bubbles[i].y) * strength;
+    }
+    // 2. Collision resolution — push overlapping bubbles apart
     for (let i = 0; i < bubbles.length; i++) {
       for (let j = i + 1; j < bubbles.length; j++) {
         const a = bubbles[i], bub = bubbles[j];
@@ -680,9 +689,9 @@ function renderApp(data) {
         if (dist < minDist) {
           const overlap = minDist - dist;
           // Mass ratio: bigger bubble moves less
-          const totalR = a.r + bub.r;
-          const aRatio = bub.r / totalR;  // a moves less if a is bigger
-          const bRatio = a.r / totalR;
+          const totalMass = a.r * a.r + bub.r * bub.r;
+          const aRatio = bub.r * bub.r / totalMass;
+          const bRatio = a.r * a.r / totalMass;
           const nx = dx / dist, ny = dy / dist;
           a.x -= nx * overlap * aRatio;
           a.y -= ny * overlap * aRatio;
@@ -690,10 +699,6 @@ function renderApp(data) {
           bub.y += ny * overlap * bRatio;
         }
       }
-      // Centering force: stronger for larger bubbles
-      const strength = 0.02 + (bubbles[i].r / maxR) * 0.04;
-      bubbles[i].x += (cx - bubbles[i].x) * strength;
-      bubbles[i].y += (cy - bubbles[i].y) * strength;
     }
   }
 
