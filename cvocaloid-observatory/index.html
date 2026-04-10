@@ -4,9 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>術力口观察日志</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<!-- CDN preconnect -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Non-blocking font load — falls back to system serif if unavailable -->
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"></noscript>
+<!-- Chart.js: jsdelivr (China CDN) primary, cdnjs fallback -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"
+        onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js'"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap');
 
   :root {
     --bg: #0a0c10;
@@ -94,7 +103,7 @@
     color: var(--muted); border: 1px solid var(--border);
     margin-left: 4px; vertical-align: middle; flex-shrink: 0;
   }
-  .info-tip:hover { color: var(--accent); border-color: var(--accent); }
+  .info-tip:hover, .info-tip:focus { color: var(--accent); border-color: var(--accent); outline: none; }
   .info-tip .tip-text {
     visibility: hidden; opacity: 0;
     position: absolute; bottom: calc(100% + 8px); left: 50%;
@@ -106,7 +115,9 @@
     z-index: 10; pointer-events: none;
     transition: opacity .15s;
   }
-  .info-tip:hover .tip-text { visibility: visible; opacity: 1; }
+  .info-tip:hover .tip-text,
+  .info-tip:focus .tip-text,
+  .info-tip:focus-within .tip-text { visibility: visible; opacity: 1; }
 
   /* Keyword cards */
   .keyword-grid { display: grid; gap: 16px; margin-bottom: 40px; }
@@ -137,7 +148,7 @@
     max-height: 0; overflow: hidden;
     transition: max-height .3s ease;
   }
-  .kw-card.expanded .kw-details { max-height: 600px; }
+  .kw-card.expanded .kw-details { max-height: 2000px; }
   .kw-details-inner {
     padding-top: 14px; margin-top: 14px;
     border-top: 1px solid var(--border);
@@ -181,6 +192,16 @@
   }
   .video-author a { color: var(--muted); text-decoration: none; }
   .video-author a:hover { color: var(--accent); }
+
+  /* Off-topic warning badge */
+  .off-topic-badge {
+    display: inline-block; font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; color: var(--accent2); border: 1px solid rgba(246,173,85,.3);
+    background: rgba(246,173,85,.08); padding: 1px 6px; border-radius: 3px;
+    margin-left: 6px; vertical-align: middle; white-space: nowrap;
+  }
+  .video-row.off-topic { opacity: .6; }
+  .video-row.off-topic .video-title a { color: var(--muted); }
 
   /* Keyword definition in expanded card */
   .kw-definition {
@@ -286,17 +307,31 @@
   /* Footer */
   footer { border-top: 1px solid var(--border); padding-top: 20px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); text-align: center; }
 
-  .demo-banner {
-    background: repeating-linear-gradient(
-      45deg, rgba(246,173,85,.08), rgba(246,173,85,.08) 10px,
-      transparent 10px, transparent 20px
-    );
-    border: 1px solid rgba(246,173,85,.4);
-    border-radius: 6px; padding: 10px 16px; margin-bottom: 28px;
-    font-family: 'JetBrains Mono', monospace; font-size: 12px;
-    color: var(--accent2); display: flex; align-items: center; gap: 8px;
+  .loading {
+    text-align: center; padding: 80px 20px;
+    color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 13px;
   }
-  .loading { text-align: center; padding: 80px 20px; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+  .loading-spinner {
+    display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border);
+    border-top-color: var(--accent); border-radius: 50%;
+    animation: spin .8s linear infinite; margin-bottom: 12px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-status { margin-top: 8px; font-size: 11px; color: var(--border); transition: color .3s; }
+  .load-error {
+    text-align: center; padding: 60px 20px;
+    font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  }
+  .load-error .error-icon { font-size: 28px; margin-bottom: 12px; opacity: .6; }
+  .load-error .error-msg { color: var(--muted); line-height: 1.8; margin-bottom: 20px; }
+  .load-error .error-detail { font-size: 11px; color: var(--border); margin-bottom: 16px; }
+  .retry-btn {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    color: var(--accent); background: rgba(79,209,199,.08);
+    border: 1px solid rgba(79,209,199,.3); border-radius: 6px;
+    padding: 8px 20px; cursor: pointer; transition: all .2s;
+  }
+  .retry-btn:hover { background: rgba(79,209,199,.16); border-color: var(--accent); }
 
   /* Mobile responsive */
   @media (max-width: 480px) {
@@ -354,10 +389,13 @@
     </div>
   </header>
 
-  <div id="demo-banner" class="demo-banner" style="display:none">
-    ⚠ 演示数据 — 图表数字为虚构样本，真实数据将由爬虫自动填入
+  <div id="app">
+    <div class="loading" id="loading-state">
+      <div class="loading-spinner"></div>
+      <div>正在加载数据...</div>
+      <div class="loading-status" id="loading-status"></div>
+    </div>
   </div>
-  <div id="app"><div class="loading">正在加载数据...</div></div>
 
   <footer>
     大中文圈術力口观察日志 · 数据来源：Bilibili · 每日 09:00 JST 自动更新
@@ -365,68 +403,40 @@
 </div>
 
 <script>
-// ─── Demo data (replace with fetch('./data.json') in production) ───────────────
-const DEMO_DATA = {
-  last_updated: "2026-04-10T00:05:12Z",
-  summary: {
-    total_keywords: 10,
-    total_play_week: 4820000,
-    anomaly_count: 2
-  },
-  keywords: [
-    {
-      name: "術力口",
-      total_play_today: 340000,
-      result_count: 12800,
-      delta_pct: +18,
-      has_anomaly: true,
-      trend: [210,195,230,280,260,310,340]
-    },
-    {
-      name: "重音テト",
-      total_play_today: 185000,
-      result_count: 6400,
-      delta_pct: +5,
-      has_anomaly: false,
-      trend: [160,170,155,180,175,190,185]
-    },
-    {
-      name: "洛天依",
-      total_play_today: 420000,
-      result_count: 31000,
-      delta_pct: -3,
-      has_anomaly: false,
-      trend: [450,440,410,430,425,415,420]
-    },
-    {
-      name: "Synthesizer V",
-      total_play_today: 95000,
-      result_count: 4100,
-      delta_pct: +42,
-      has_anomaly: true,
-      trend: [60,58,62,65,70,88,95]
-    },
-  ],
-  anomalies: [
-    {
-      date: "2026-04-10",
-      keyword: "術力口",
-      multiplier: "3.8×",
-      description: "術力口 播放量突增 3.8× 周均值，疑似大V视频或社区热门事件驱动。"
-    },
-    {
-      date: "2026-04-09",
-      keyword: "Synthesizer V",
-      multiplier: "4.2×",
-      description: "Synthesizer V 搜索量激增 4.2×，可能与新版本发布或相关话题炎上有关。"
-    }
-  ],
-  latest_report: {
-    week: "2026-W15",
-    range: "2026-04-06 ~ 2026-04-12",
-    summary: "本周中文圈電子人声社区整体热度上升约 12%。術力口相关内容在4月10日出现显著峰值，Synthesizer V社区亦见异常活跃。洛天依相关播放量保持稳定，无明显异常。"
+// ─── Loading state helpers ─────────────────────────────────────────────────────
+function setLoadingStatus(msg) {
+  const el = document.getElementById('loading-status');
+  if (el) el.textContent = msg;
+}
+
+function showError(detail) {
+  const app = document.getElementById('app');
+  app.textContent = '';
+  const container = document.createElement('div');
+  container.className = 'load-error';
+  const icon = document.createElement('div');
+  icon.className = 'error-icon';
+  icon.textContent = '⚠';
+  container.appendChild(icon);
+  const msg = document.createElement('div');
+  msg.className = 'error-msg';
+  msg.textContent = '数据加载失败，请稍后重试。';
+  container.appendChild(msg);
+  if (detail) {
+    const detailEl = document.createElement('div');
+    detailEl.className = 'error-detail';
+    detailEl.textContent = detail;
+    container.appendChild(detailEl);
   }
-};
+  const btn = document.createElement('button');
+  btn.className = 'retry-btn';
+  btn.type = 'button';
+  btn.textContent = '重新加载';
+  btn.addEventListener('click', loadData);
+  container.appendChild(btn);
+  app.appendChild(container);
+  document.getElementById('last-updated').textContent = '加载失败';
+}
 
 // ─── Render ────────────────────────────────────────────────────────────────────
 function fmt(n) {
@@ -442,7 +452,7 @@ function fmtResultCount(n) {
 }
 
 function infoIcon(text) {
-  return `<span class="info-tip">?<span class="tip-text">${text}</span></span>`;
+  return `<span class="info-tip" tabindex="0" role="button" aria-label="说明">?<span class="tip-text">${text}</span></span>`;
 }
 
 // Group color map (fallback for demo/missing config)
@@ -467,7 +477,9 @@ function renderApp(data) {
   document.getElementById('last-updated').textContent =
     '更新于 ' + lu.toLocaleString('zh-CN', {timeZone:'Asia/Tokyo', hour12:false}) + ' JST';
 
-  const groups = data.keyword_groups || DEFAULT_GROUPS;
+  const groups = data.keyword_groups && Object.keys(data.keyword_groups).length > 0
+    ? data.keyword_groups
+    : DEFAULT_GROUPS;
 
   const anomalyHtml = data.anomalies.length > 0
     ? data.anomalies.map(a => `
@@ -532,22 +544,42 @@ function renderApp(data) {
   `;
 
   // ── Bar chart ──────────────────────────────────────────────────────────
+  // ── Stacked bar chart: top 5 video breakdown per keyword ─────────────
+  const chartAvailable = typeof Chart !== 'undefined';
   const top15 = data.keywords.slice(0, 15);
-  const barColors = top15.map(kw => {
-    const g = groups[kw.group] || groups.other || { color: '#4fd1c7' };
-    return g.color;
-  });
-  new Chart(document.getElementById('bar-chart'), {
+  const stackOpacities = ['cc', 'aa', '88', '66', '44', '22'];  // #1..#5, rest
+  const stackLabels = ['#1', '#2', '#3', '#4', '#5', '其他'];
+
+  // Pre-sort videos once per keyword (on a copy to avoid mutating data)
+  const top15Sorted = top15.map(kw => ({
+    kw,
+    vids: (kw.top_videos || []).slice().sort((a,b) => (b.play_count||0) - (a.play_count||0)),
+    g: groups[kw.group] || groups.other || { color: '#4fd1c7' },
+  }));
+
+  // Build 6 datasets: video #1 through #5, then "remaining"
+  const barDatasets = [];
+  for (let s = 0; s < 6; s++) {
+    barDatasets.push({
+      label: stackLabels[s],
+      data: top15Sorted.map(({ kw, vids }) => {
+        if (s < 5) return vids[s] ? vids[s].play_count : 0;
+        const top5sum = vids.slice(0,5).reduce((a,v) => a + (v.play_count||0), 0);
+        return Math.max(0, kw.total_play_today - top5sum);
+      }),
+      backgroundColor: top15Sorted.map(({ g }) => g.color + stackOpacities[s]),
+      borderColor: top15Sorted.map(({ g }) => s === 0 ? g.color : 'transparent'),
+      borderWidth: s === 0 ? 1 : 0,
+      borderRadius: s === 0 ? { topLeft: 4, bottomLeft: 4 } : (s === 5 ? { topRight: 4, bottomRight: 4 } : 0),
+      _videoData: top15Sorted.map(({ vids }) => s < 5 ? (vids[s] || null) : null),
+    });
+  }
+
+  if (chartAvailable) new Chart(document.getElementById('bar-chart'), {
     type: 'bar',
     data: {
       labels: top15.map(kw => kw.name),
-      datasets: [{
-        data: top15.map(kw => kw.total_play_today),
-        backgroundColor: barColors.map(c => c + '33'),
-        borderColor: barColors,
-        borderWidth: 1,
-        borderRadius: 4,
-      }]
+      datasets: barDatasets
     },
     options: {
       indexAxis: 'y',
@@ -555,19 +587,34 @@ function renderApp(data) {
       plugins: {
         legend: { display: false },
         tooltip: {
-          callbacks: { label: ctx => fmt(ctx.raw) + ' 播放' },
           backgroundColor: '#1a1d26', borderColor: '#1e2330', borderWidth: 1,
           titleFont: { family: 'Noto Serif SC' },
           bodyFont: { family: 'JetBrains Mono', size: 11 },
+          callbacks: {
+            label: ctx => {
+              const vid = ctx.dataset._videoData?.[ctx.dataIndex];
+              if (vid) {
+                const flag = vid.off_topic ? ' ⚠ 可能偏题' : '';
+                const title = (vid.title || '').substring(0, 30);
+                return ` ${title}… ${fmt(vid.play_count)}${flag}`;
+              }
+              if (ctx.dataset.label === '其他') {
+                return ` 其他视频合计 ${fmt(ctx.raw)}`;
+              }
+              return '';
+            }
+          }
         }
       },
       scales: {
         x: {
+          stacked: true,
           grid: { color: 'rgba(255,255,255,.04)' },
           ticks: { color: '#718096', font: { family: 'JetBrains Mono', size: 10 },
                    callback: v => fmt(v) }
         },
         y: {
+          stacked: true,
           grid: { display: false },
           ticks: { color: '#e2e8f0', font: { family: 'Noto Serif SC', size: 12 } }
         }
@@ -650,9 +697,11 @@ function renderApp(data) {
         const authorHtml = v.mid && v.author
           ? `<div class="video-author">UP: <a href="https://space.bilibili.com/${encodeURIComponent(v.mid)}" target="_blank" rel="noopener">${escapeHtml(v.author)}</a></div>`
           : '';
-        return `<div class="video-row" style="flex-wrap:wrap">
+        const offTopicClass = v.off_topic ? ' off-topic' : '';
+        const offTopicBadge = v.off_topic ? '<span class="off-topic-badge">⚠ 可能偏题</span>' : '';
+        return `<div class="video-row${offTopicClass}" style="flex-wrap:wrap">
           <div class="video-title" style="width:100%">
-            <a href="${url}" target="_blank" rel="noopener">${escapeHtml(v.title || '(无标题)')}</a>
+            <a href="${url}" target="_blank" rel="noopener">${escapeHtml(v.title || '(无标题)')}</a>${offTopicBadge}
             ${authorHtml}
           </div>
           <div class="video-stats">${fmt(v.play_count)} 播放 · ${fmt(v.like)} 赞${v.danmaku ? ' · ' + fmt(v.danmaku) + ' 弹幕' : ''}${v.comment ? ' · ' + fmt(v.comment) + ' 评论' : ''}</div>
@@ -721,7 +770,7 @@ function renderApp(data) {
       return daysAgo === 0 ? '今日' : daysAgo === 1 ? '昨日' : `Day-${daysAgo}`;
     });
 
-    new Chart(document.getElementById(canvasId), {
+    if (chartAvailable) new Chart(document.getElementById(canvasId), {
       type: 'line',
       data: {
         labels: labels,
@@ -747,14 +796,49 @@ function renderApp(data) {
 
 // ─── Load data ─────────────────────────────────────────────────────────────────
 async function loadData() {
+  // Show loading state (in case of retry)
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <div class="loading" id="loading-state">
+      <div class="loading-spinner"></div>
+      <div>正在加载数据...</div>
+      <div class="loading-status" id="loading-status"></div>
+    </div>
+  `;
+  document.getElementById('last-updated').textContent = '加载中...';
+
+  // Timeout: if fetch takes >12s, it's probably stuck
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 12000);
+
   try {
-    const res = await fetch('./data.json');
-    if (!res.ok) throw new Error('no data.json');
+    setLoadingStatus('连接服务器...');
+    // Cache-bust: append hour-level timestamp so browsers don't serve stale data
+    // but identical requests within the same hour still hit cache
+    const cacheBust = Math.floor(Date.now() / 3600000);
+    const res = await fetch(`./data.json?v=${cacheBust}`, { signal: controller.signal });
+    clearTimeout(timeout);
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    setLoadingStatus('解析数据...');
     const data = await res.json();
+
+    if (!data.keywords || !data.summary) {
+      throw new Error('数据格式异常');
+    }
+
+    setLoadingStatus('渲染中...');
     renderApp(data);
-  } catch {
-    document.getElementById('demo-banner').style.display = 'flex';
-    renderApp(DEMO_DATA);
+  } catch (err) {
+    clearTimeout(timeout);
+    if (err.name === 'AbortError') {
+      showError('请求超时 — 网络连接可能不稳定');
+    } else if (err.message && err.message.startsWith('HTTP')) {
+      showError(`服务器返回错误 (${err.message})`);
+    } else {
+      showError(err.message || '未知错误');
+    }
   }
 }
 

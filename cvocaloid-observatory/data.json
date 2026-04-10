@@ -22,7 +22,9 @@
           "play_count": 24342393,
           "coin": 0,
           "like": 990090,
-          "pubdate": "2024-11-22T10:00:00"
+          "pubdate": "2024-11-22T10:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1Y9iZYUE6y",
@@ -30,7 +32,9 @@
           "play_count": 21035630,
           "coin": 0,
           "like": 1158160,
-          "pubdate": "2024-12-07T00:10:00"
+          "pubdate": "2024-12-07T00:10:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1SfK9zPEL3",
@@ -38,7 +42,9 @@
           "play_count": 15511658,
           "coin": 0,
           "like": 701127,
-          "pubdate": "2025-06-27T10:00:00"
+          "pubdate": "2025-06-27T10:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1cJ411q7GF",
@@ -46,7 +52,9 @@
           "play_count": 10748852,
           "coin": 0,
           "like": 276983,
-          "pubdate": "2019-12-07T03:24:37"
+          "pubdate": "2019-12-07T03:24:37",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1hs411W7uR",
@@ -54,7 +62,9 @@
           "play_count": 8840746,
           "coin": 0,
           "like": 268257,
-          "pubdate": "2016-11-18T10:02:37"
+          "pubdate": "2016-11-18T10:02:37",
+          "author": "",
+          "off_topic": false
         }
       ],
       "definition": "Hatsune Miku — Crypton 出品的初代 VOCALOID 角色，全球最具知名度的虚拟歌手。",
@@ -82,7 +92,9 @@
           "play_count": 23851321,
           "coin": 0,
           "like": 835177,
-          "pubdate": "2015-03-21T02:01:05"
+          "pubdate": "2015-03-21T02:01:05",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1Jb411U7u2",
@@ -90,7 +102,9 @@
           "play_count": 21430796,
           "coin": 0,
           "like": 993081,
-          "pubdate": "2019-02-13T14:09:40"
+          "pubdate": "2019-02-13T14:09:40",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1Qc411h7Ys",
@@ -98,7 +112,9 @@
           "play_count": 10756747,
           "coin": 0,
           "like": 535205,
-          "pubdate": "2020-04-10T10:10:15"
+          "pubdate": "2020-04-10T10:10:15",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1ZcKdzDE5Q",
@@ -106,7 +122,9 @@
           "play_count": 8718242,
           "coin": 0,
           "like": 267310,
-          "pubdate": "2025-06-28T10:00:00"
+          "pubdate": "2025-06-28T10:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1FwuyzAEsw",
@@ -114,7 +132,9 @@
           "play_count": 2770716,
           "coin": 0,
           "like": 185899,
-          "pubdate": "2025-07-15T10:00:00"
+          "pubdate": "2025-07-15T10:00:00",
+          "author": "",
+          "off_topic": false
         }
       ],
       "definition": "Luo Tianyi — 中国第一位 VOCALOID 角色，上海禾念出品。",
@@ -141,7 +161,9 @@
           "play_count": 15511706,
           "coin": 0,
           "like": 701127,
-          "pubdate": "2025-06-27T10:00:00"
+          "pubdate": "2025-06-27T10:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1vqQUYYEmg",
@@ -149,7 +171,9 @@
           "play_count": 9353052,
           "coin": 0,
           "like": 300447,
-          "pubdate": "2025-03-15T10:08:00"
+          "pubdate": "2025-03-15T10:08:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1dTzRBCEkg",
@@ -157,7 +181,9 @@
           "play_count": 8959346,
           "coin": 0,
           "like": 502630,
-          "pubdate": "2026-01-28T21:14:12"
+          "pubdate": "2026-01-28T21:14:12",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1gS411c78m",
@@ -165,7 +191,9 @@
           "play_count": 5750511,
           "coin": 0,
           "like": 164999,
-          "pubdate": "2024-05-10T23:48:42"
+          "pubdate": "2024-05-10T23:48:42",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1mNf3BREgj",
@@ -173,7 +201,9 @@
           "play_count": 4873036,
           "coin": 0,
           "like": 397738,
-          "pubdate": "2026-02-20T15:39:37"
+          "pubdate": "2026-02-20T15:39:37",
+          "author": "",
+          "off_topic": false
         }
       ],
       "definition": "Kasane Teto — 原为愚人节恶搞角色，后成为最知名的 UTAU 角色。现拥有 SynthV 音源。",
@@ -200,7 +230,9 @@
           "play_count": 24232213,
           "coin": 0,
           "like": 1111192,
-          "pubdate": "2019-05-20T03:28:47"
+          "pubdate": "2019-05-20T03:28:47",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV1e5411m72x",
@@ -208,7 +240,9 @@
           "play_count": 5548401,
           "coin": 0,
           "like": 224303,
-          "pubdate": "2022-04-22T15:09:05"
+          "pubdate": "2022-04-22T15:09:05",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1fN4y157oj",
@@ -216,7 +250,9 @@
           "play_count": 4856278,
           "coin": 0,
           "like": 38993,
-          "pubdate": "2022-08-20T16:00:00"
+          "pubdate": "2022-08-20T16:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1osK3z4ELq",
@@ -224,7 +260,9 @@
           "play_count": 3100411,
           "coin": 0,
           "like": 38493,
-          "pubdate": "2025-06-24T10:30:00"
+          "pubdate": "2025-06-24T10:30:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1xu4m137jj",
@@ -232,7 +270,9 @@
           "play_count": 3025711,
           "coin": 0,
           "like": 163284,
-          "pubdate": "2024-03-02T04:09:02"
+          "pubdate": "2024-03-02T04:09:02",
+          "author": "",
+          "off_topic": true
         }
       ],
       "definition": "KAFU — CeVIO AI 角色，花譜的音源，人气急升中。",
@@ -258,7 +298,9 @@
           "play_count": 8916726,
           "coin": 0,
           "like": 258767,
-          "pubdate": "2023-03-31T04:01:00"
+          "pubdate": "2023-03-31T04:01:00",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV11E411d7Jc",
@@ -266,7 +308,9 @@
           "play_count": 5829713,
           "coin": 0,
           "like": 196541,
-          "pubdate": "2019-10-14T01:27:11"
+          "pubdate": "2019-10-14T01:27:11",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV1zx411f7Kx",
@@ -274,7 +318,9 @@
           "play_count": 3159016,
           "coin": 0,
           "like": 49958,
-          "pubdate": "2019-07-11T04:30:18"
+          "pubdate": "2019-07-11T04:30:18",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV1wm4y1z7Vv",
@@ -282,7 +328,9 @@
           "play_count": 3010669,
           "coin": 0,
           "like": 87234,
-          "pubdate": "2023-03-31T11:09:52"
+          "pubdate": "2023-03-31T11:09:52",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV1Dg4y1g7VT",
@@ -290,7 +338,9 @@
           "play_count": 2021357,
           "coin": 0,
           "like": 29945,
-          "pubdate": "2023-04-05T16:20:59"
+          "pubdate": "2023-04-05T16:20:59",
+          "author": "",
+          "off_topic": true
         }
       ],
       "definition": "v flower — ガイノイド 出品，中性嗓音 VOCALOID 角色。",
@@ -317,7 +367,9 @@
           "play_count": 23851321,
           "coin": 0,
           "like": 835177,
-          "pubdate": "2015-03-21T02:01:05"
+          "pubdate": "2015-03-21T02:01:05",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1NPGAzhEYd",
@@ -325,7 +377,9 @@
           "play_count": 733769,
           "coin": 0,
           "like": 52796,
-          "pubdate": "2025-07-11T04:00:00"
+          "pubdate": "2025-07-11T04:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1xU4y1q79a",
@@ -333,7 +387,9 @@
           "play_count": 549189,
           "coin": 0,
           "like": 63097,
-          "pubdate": "2022-07-11T09:00:00"
+          "pubdate": "2022-07-11T09:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1XWE4z4ETr",
@@ -341,7 +397,9 @@
           "play_count": 508162,
           "coin": 0,
           "like": 39711,
-          "pubdate": "2025-05-16T13:26:42"
+          "pubdate": "2025-05-16T13:26:42",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1mee2zLEXa",
@@ -349,7 +407,9 @@
           "play_count": 368910,
           "coin": 0,
           "like": 22939,
-          "pubdate": "2025-08-27T10:33:07"
+          "pubdate": "2025-08-27T10:33:07",
+          "author": "",
+          "off_topic": false
         }
       ],
       "definition": "Yan He — 上海禾念出品的中文 VOCALOID 角色。",
@@ -375,7 +435,9 @@
           "play_count": 11897954,
           "coin": 0,
           "like": 360192,
-          "pubdate": "2021-02-11T14:12:02"
+          "pubdate": "2021-02-11T14:12:02",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV1p5411879s",
@@ -383,7 +445,9 @@
           "play_count": 10903056,
           "coin": 0,
           "like": 520484,
-          "pubdate": "2020-08-10T01:10:10"
+          "pubdate": "2020-08-10T01:10:10",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1V34y1r77P",
@@ -391,7 +455,9 @@
           "play_count": 2021178,
           "coin": 0,
           "like": 68183,
-          "pubdate": "2021-12-25T10:00:00"
+          "pubdate": "2021-12-25T10:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1cZ4y1P7wV",
@@ -399,7 +465,9 @@
           "play_count": 674943,
           "coin": 0,
           "like": 23653,
-          "pubdate": "2021-03-03T16:00:17"
+          "pubdate": "2021-03-03T16:00:17",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1q2tPeKEzW",
@@ -407,7 +475,9 @@
           "play_count": 331051,
           "coin": 0,
           "like": 13546,
-          "pubdate": "2024-09-14T10:00:00"
+          "pubdate": "2024-09-14T10:00:00",
+          "author": "",
+          "off_topic": false
         }
       ],
       "definition": "Chiha — SynthV 中文女声音源。",
@@ -429,11 +499,13 @@
       "top_videos": [
         {
           "bvid": "BV15GmhBaEZF",
-          "title": "I Can&#x27;t Wait feat. GUMI",
+          "title": "I Can't Wait feat. GUMI",
           "play_count": 21508092,
           "coin": 0,
           "like": 1873276,
-          "pubdate": "2025-12-11T23:00:00"
+          "pubdate": "2025-12-11T23:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1wt411Y7jT",
@@ -441,7 +513,9 @@
           "play_count": 1437793,
           "coin": 0,
           "like": 39134,
-          "pubdate": "2018-12-20T10:42:24"
+          "pubdate": "2018-12-20T10:42:24",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV1XJ411W7T9",
@@ -449,7 +523,9 @@
           "play_count": 1313719,
           "coin": 0,
           "like": 31427,
-          "pubdate": "2019-12-26T00:34:59"
+          "pubdate": "2019-12-26T00:34:59",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1njnFzNEwp",
@@ -457,7 +533,9 @@
           "play_count": 853574,
           "coin": 0,
           "like": 121843,
-          "pubdate": "2025-09-22T11:00:00"
+          "pubdate": "2025-09-22T11:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1TxHrzAEVp",
@@ -465,7 +543,9 @@
           "play_count": 296194,
           "coin": 0,
           "like": 10926,
-          "pubdate": "2025-09-12T12:35:00"
+          "pubdate": "2025-09-12T12:35:00",
+          "author": "",
+          "off_topic": false
         }
       ],
       "definition": "Megpoid GUMI — Internet Co. 出品的 VOCALOID 角色。",
@@ -492,7 +572,9 @@
           "play_count": 12785644,
           "coin": 0,
           "like": 1030522,
-          "pubdate": "2025-02-03T15:20:26"
+          "pubdate": "2025-02-03T15:20:26",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1i3eGzPEdP",
@@ -500,7 +582,9 @@
           "play_count": 4080763,
           "coin": 0,
           "like": 538027,
-          "pubdate": "2025-08-20T15:08:59"
+          "pubdate": "2025-08-20T15:08:59",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1dP4y1T7TU",
@@ -508,7 +592,9 @@
           "play_count": 2467960,
           "coin": 0,
           "like": 103132,
-          "pubdate": "2022-03-25T09:22:54"
+          "pubdate": "2022-03-25T09:22:54",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1Zs411D7vo",
@@ -516,7 +602,9 @@
           "play_count": 1830001,
           "coin": 0,
           "like": 36484,
-          "pubdate": "2016-02-26T06:53:59"
+          "pubdate": "2016-02-26T06:53:59",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1Tj411B7xQ",
@@ -524,7 +612,9 @@
           "play_count": 1069483,
           "coin": 0,
           "like": 35895,
-          "pubdate": "2023-08-12T08:30:00"
+          "pubdate": "2023-08-12T08:30:00",
+          "author": "",
+          "off_topic": false
         }
       ],
       "definition": "Stardust — Quadimension 出品，同时拥有 SynthV 和 VOCALOID 音源。",
@@ -551,7 +641,9 @@
           "play_count": 5869543,
           "coin": 0,
           "like": 199253,
-          "pubdate": "2018-05-31T23:45:06"
+          "pubdate": "2018-05-31T23:45:06",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1wbwze5EwH",
@@ -559,7 +651,9 @@
           "play_count": 3333792,
           "coin": 0,
           "like": 315206,
-          "pubdate": "2025-01-19T06:10:52"
+          "pubdate": "2025-01-19T06:10:52",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1A4jMzREkq",
@@ -567,7 +661,9 @@
           "play_count": 1866103,
           "coin": 0,
           "like": 68376,
-          "pubdate": "2025-05-25T05:03:50"
+          "pubdate": "2025-05-25T05:03:50",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV179AnzmEdN",
@@ -575,7 +671,9 @@
           "play_count": 1326445,
           "coin": 0,
           "like": 268715,
-          "pubdate": "2026-03-20T08:58:02"
+          "pubdate": "2026-03-20T08:58:02",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1tf421Q7Wc",
@@ -583,7 +681,9 @@
           "play_count": 298137,
           "coin": 0,
           "like": 18397,
-          "pubdate": "2024-06-22T15:48:58"
+          "pubdate": "2024-06-22T15:48:58",
+          "author": "",
+          "off_topic": false
         }
       ],
       "definition": "Kagamine Rin — Crypton 双子角色之一，活泼少女音色。",
@@ -609,7 +709,9 @@
           "play_count": 10131157,
           "coin": 0,
           "like": 360830,
-          "pubdate": "2016-08-25T14:15:41"
+          "pubdate": "2016-08-25T14:15:41",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1vs4y1V7vc",
@@ -617,7 +719,9 @@
           "play_count": 621260,
           "coin": 0,
           "like": 19935,
-          "pubdate": "2023-03-07T02:00:00"
+          "pubdate": "2023-03-07T02:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1g1RyYpE7t",
@@ -625,7 +729,9 @@
           "play_count": 533264,
           "coin": 0,
           "like": 18706,
-          "pubdate": "2025-04-07T04:12:37"
+          "pubdate": "2025-04-07T04:12:37",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV17W2oY2EX9",
@@ -633,7 +739,9 @@
           "play_count": 402874,
           "coin": 0,
           "like": 22761,
-          "pubdate": "2024-10-16T04:00:00"
+          "pubdate": "2024-10-16T04:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1yLcUz8EsM",
@@ -641,7 +749,9 @@
           "play_count": 381455,
           "coin": 0,
           "like": 29300,
-          "pubdate": "2026-03-14T03:00:00"
+          "pubdate": "2026-03-14T03:00:00",
+          "author": "",
+          "off_topic": false
         }
       ],
       "definition": "Yuezheng Ling — 上海禾念出品的中文 VOCALOID 角色。",
@@ -664,11 +774,13 @@
       "top_videos": [
         {
           "bvid": "BV1tr4y1A7Gu",
-          "title": "アブノーマリティ・ダンシンガール(Abnomality, Dancin&#x27; Girl) / ぐちり feat. flower",
+          "title": "アブノーマリティ・ダンシンガール(Abnomality, Dancin' Girl) / ぐちり feat. flower",
           "play_count": 6947153,
           "coin": 0,
           "like": 213625,
-          "pubdate": "2021-02-27T11:00:08"
+          "pubdate": "2021-02-27T11:00:08",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1XouczvERd",
@@ -676,7 +788,9 @@
           "play_count": 651575,
           "coin": 0,
           "like": 45111,
-          "pubdate": "2025-07-13T13:25:10"
+          "pubdate": "2025-07-13T13:25:10",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1qs411f7JL",
@@ -684,7 +798,9 @@
           "play_count": 564476,
           "coin": 0,
           "like": 21038,
-          "pubdate": "2013-08-10T06:00:19"
+          "pubdate": "2013-08-10T06:00:19",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1zw21BrEwv",
@@ -692,7 +808,9 @@
           "play_count": 208972,
           "coin": 0,
           "like": 10651,
-          "pubdate": "2025-12-08T12:24:50"
+          "pubdate": "2025-12-08T12:24:50",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1Vx411w7ub",
@@ -700,7 +818,9 @@
           "play_count": 174760,
           "coin": 0,
           "like": 8235,
-          "pubdate": "2011-12-27T11:09:33"
+          "pubdate": "2011-12-27T11:09:33",
+          "author": "",
+          "off_topic": false
         }
       ],
       "definition": "Megurine Luka — Crypton 出品，日英双语 VOCALOID 角色。",
@@ -727,7 +847,9 @@
           "play_count": 1507089,
           "coin": 0,
           "like": 65543,
-          "pubdate": "2022-12-10T10:00:00"
+          "pubdate": "2022-12-10T10:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1ss411377E",
@@ -735,7 +857,9 @@
           "play_count": 1154269,
           "coin": 0,
           "like": 50139,
-          "pubdate": "2018-08-03T00:15:57"
+          "pubdate": "2018-08-03T00:15:57",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV13t411d7s7",
@@ -743,7 +867,9 @@
           "play_count": 979456,
           "coin": 0,
           "like": 33537,
-          "pubdate": "2018-10-25T02:50:12"
+          "pubdate": "2018-10-25T02:50:12",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1RgKZzpEbA",
@@ -751,7 +877,9 @@
           "play_count": 388529,
           "coin": 0,
           "like": 28277,
-          "pubdate": "2025-06-27T10:00:00"
+          "pubdate": "2025-06-27T10:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1tF2QBMEuB",
@@ -759,7 +887,9 @@
           "play_count": 353084,
           "coin": 0,
           "like": 17396,
-          "pubdate": "2025-12-10T04:00:00"
+          "pubdate": "2025-12-10T04:00:00",
+          "author": "",
+          "off_topic": false
         }
       ],
       "definition": "Zhiyu Moke — 上海禾念出品的男声中文 VOCALOID 角色。",
@@ -785,7 +915,9 @@
           "play_count": 1437888,
           "coin": 0,
           "like": 40656,
-          "pubdate": "2024-08-02T02:20:29"
+          "pubdate": "2024-08-02T02:20:29",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV1Sy411h7se",
@@ -793,7 +925,9 @@
           "play_count": 1372684,
           "coin": 0,
           "like": 215491,
-          "pubdate": "2024-06-09T08:15:00"
+          "pubdate": "2024-06-09T08:15:00",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV1oPXDBTErH",
@@ -801,7 +935,9 @@
           "play_count": 320519,
           "coin": 0,
           "like": 7934,
-          "pubdate": "2026-03-29T10:00:00"
+          "pubdate": "2026-03-29T10:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1AzWZzLEaL",
@@ -809,7 +945,9 @@
           "play_count": 250101,
           "coin": 0,
           "like": 6602,
-          "pubdate": "2025-10-22T01:48:00"
+          "pubdate": "2025-10-22T01:48:00",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV1MkXNYNExz",
@@ -817,7 +955,9 @@
           "play_count": 249723,
           "coin": 0,
           "like": 12753,
-          "pubdate": "2025-03-20T10:40:20"
+          "pubdate": "2025-03-20T10:40:20",
+          "author": "",
+          "off_topic": false
         }
       ],
       "definition": "以虚拟形象呈现的合成歌声角色的统称。",
@@ -844,7 +984,9 @@
           "play_count": 1316885,
           "coin": 0,
           "like": 99421,
-          "pubdate": "2024-10-19T00:09:38"
+          "pubdate": "2024-10-19T00:09:38",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1c4iEB5ECw",
@@ -852,7 +994,9 @@
           "play_count": 931428,
           "coin": 0,
           "like": 145272,
-          "pubdate": "2026-01-04T12:42:46"
+          "pubdate": "2026-01-04T12:42:46",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1hk4y117kk",
@@ -860,7 +1004,9 @@
           "play_count": 500807,
           "coin": 0,
           "like": 17058,
-          "pubdate": "2020-08-11T16:05:30"
+          "pubdate": "2020-08-11T16:05:30",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1XaxHzcEau",
@@ -868,7 +1014,9 @@
           "play_count": 463666,
           "coin": 0,
           "like": 36733,
-          "pubdate": "2025-10-04T00:09:13"
+          "pubdate": "2025-10-04T00:09:13",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1vs4y177QG",
@@ -876,7 +1024,9 @@
           "play_count": 438178,
           "coin": 0,
           "like": 18416,
-          "pubdate": "2023-04-03T03:33:31"
+          "pubdate": "2023-04-03T03:33:31",
+          "author": "",
+          "off_topic": false
         }
       ],
       "definition": "Synthesizer V 的常用缩写。",
@@ -903,7 +1053,9 @@
           "play_count": 1795273,
           "coin": 0,
           "like": 49715,
-          "pubdate": "2016-02-22T10:41:55"
+          "pubdate": "2016-02-22T10:41:55",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1js411f7tE",
@@ -911,7 +1063,9 @@
           "play_count": 1070668,
           "coin": 0,
           "like": 39350,
-          "pubdate": "2013-07-01T07:33:00"
+          "pubdate": "2013-07-01T07:33:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1D66hY7E1C",
@@ -919,7 +1073,9 @@
           "play_count": 385939,
           "coin": 0,
           "like": 18169,
-          "pubdate": "2024-12-30T16:00:00"
+          "pubdate": "2024-12-30T16:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1Tx411m7nK",
@@ -927,7 +1083,9 @@
           "play_count": 275397,
           "coin": 0,
           "like": 8798,
-          "pubdate": "2017-05-03T22:12:59"
+          "pubdate": "2017-05-03T22:12:59",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1bW411r7WY",
@@ -935,7 +1093,9 @@
           "play_count": 223197,
           "coin": 0,
           "like": 7397,
-          "pubdate": "2018-09-22T04:18:07"
+          "pubdate": "2018-09-22T04:18:07",
+          "author": "",
+          "off_topic": false
         }
       ],
       "definition": "Yuzuki Yukari — AH-Software 出品，同时拥有 VOICEROID 语音库。",
@@ -961,7 +1121,9 @@
           "play_count": 814629,
           "coin": 0,
           "like": 130675,
-          "pubdate": "2025-08-03T08:20:52"
+          "pubdate": "2025-08-03T08:20:52",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1MmsMzSEPn",
@@ -969,7 +1131,9 @@
           "play_count": 479268,
           "coin": 0,
           "like": 43615,
-          "pubdate": "2025-10-20T03:55:45"
+          "pubdate": "2025-10-20T03:55:45",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV193DiBEEaP",
@@ -977,7 +1141,9 @@
           "play_count": 256310,
           "coin": 0,
           "like": 18311,
-          "pubdate": "2026-04-08T10:00:00"
+          "pubdate": "2026-04-08T10:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1C4s5ztEbF",
@@ -985,7 +1151,9 @@
           "play_count": 217746,
           "coin": 0,
           "like": 4764,
-          "pubdate": "2025-10-23T16:20:30"
+          "pubdate": "2025-10-23T16:20:30",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1y4SDB6EQt",
@@ -993,7 +1161,9 @@
           "play_count": 202317,
           "coin": 0,
           "like": 3839,
-          "pubdate": "2026-04-05T12:24:54"
+          "pubdate": "2026-04-05T12:24:54",
+          "author": "",
+          "off_topic": false
         }
       ],
       "definition": "VOCALOID 的中文谐音/代称，B站最常用的总称标签。",
@@ -1021,7 +1191,9 @@
           "play_count": 1901171,
           "coin": 0,
           "like": 67847,
-          "pubdate": "2012-04-11T11:19:27"
+          "pubdate": "2012-04-11T11:19:27",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1A5fpBEENJ",
@@ -1029,7 +1201,9 @@
           "play_count": 176153,
           "coin": 0,
           "like": 24448,
-          "pubdate": "2026-02-21T15:11:23"
+          "pubdate": "2026-02-21T15:11:23",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV11Mnwz7EYo",
@@ -1037,7 +1211,9 @@
           "play_count": 89952,
           "coin": 0,
           "like": 3868,
-          "pubdate": "2025-09-22T12:07:54"
+          "pubdate": "2025-09-22T12:07:54",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV1Dm4y1n77x",
@@ -1045,7 +1221,9 @@
           "play_count": 67947,
           "coin": 0,
           "like": 1798,
-          "pubdate": "2023-08-16T02:44:51"
+          "pubdate": "2023-08-16T02:44:51",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV1Ut8MzcEpL",
@@ -1053,7 +1231,9 @@
           "play_count": 30813,
           "coin": 0,
           "like": 3497,
-          "pubdate": "2025-07-24T09:36:08"
+          "pubdate": "2025-07-24T09:36:08",
+          "author": "",
+          "off_topic": true
         }
       ],
       "definition": "1st Place 出品的 VOCALOID 角色，以空灵音色著称。",
@@ -1079,7 +1259,9 @@
           "play_count": 541687,
           "coin": 0,
           "like": 23081,
-          "pubdate": "2025-05-20T04:00:00"
+          "pubdate": "2025-05-20T04:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1KD421A7uS",
@@ -1087,7 +1269,9 @@
           "play_count": 458195,
           "coin": 0,
           "like": 18428,
-          "pubdate": "2024-05-20T04:00:00"
+          "pubdate": "2024-05-20T04:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1J4411j7mn",
@@ -1095,7 +1279,9 @@
           "play_count": 430165,
           "coin": 0,
           "like": 25036,
-          "pubdate": "2019-05-20T04:00:54"
+          "pubdate": "2019-05-20T04:00:54",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1ebbQzxEbj",
@@ -1103,7 +1289,9 @@
           "play_count": 377410,
           "coin": 0,
           "like": 14017,
-          "pubdate": "2025-07-25T11:54:39"
+          "pubdate": "2025-07-25T11:54:39",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1ksJ3zeE8k",
@@ -1111,7 +1299,9 @@
           "play_count": 73885,
           "coin": 0,
           "like": 3917,
-          "pubdate": "2025-05-18T09:32:44"
+          "pubdate": "2025-05-18T09:32:44",
+          "author": "",
+          "off_topic": false
         }
       ],
       "definition": "Mo Qingxian — 上海禾念出品的中文 VOCALOID 角色。",
@@ -1137,7 +1327,9 @@
           "play_count": 626931,
           "coin": 0,
           "like": 34301,
-          "pubdate": "2023-08-09T11:00:00"
+          "pubdate": "2023-08-09T11:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1vs4y177QG",
@@ -1145,7 +1337,9 @@
           "play_count": 438178,
           "coin": 0,
           "like": 18416,
-          "pubdate": "2023-04-03T03:33:31"
+          "pubdate": "2023-04-03T03:33:31",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1FT4y177VT",
@@ -1153,7 +1347,9 @@
           "play_count": 174346,
           "coin": 0,
           "like": 4549,
-          "pubdate": "2020-08-15T05:10:29"
+          "pubdate": "2020-08-15T05:10:29",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1BK41117Bd",
@@ -1161,7 +1357,9 @@
           "play_count": 166485,
           "coin": 0,
           "like": 4918,
-          "pubdate": "2023-01-06T12:00:00"
+          "pubdate": "2023-01-06T12:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1QL4y1T7ib",
@@ -1169,7 +1367,9 @@
           "play_count": 48713,
           "coin": 0,
           "like": 2409,
-          "pubdate": "2022-03-15T03:37:35"
+          "pubdate": "2022-03-15T03:37:35",
+          "author": "",
+          "off_topic": false
         }
       ],
       "definition": "Dreamtonics 开发的新一代 AI 歌声合成引擎，音质接近真人。",
@@ -1197,7 +1397,9 @@
           "play_count": 463472,
           "coin": 0,
           "like": 13099,
-          "pubdate": "2020-04-06T11:28:29"
+          "pubdate": "2020-04-06T11:28:29",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV1uT411M7k3",
@@ -1205,7 +1407,9 @@
           "play_count": 256639,
           "coin": 0,
           "like": 8150,
-          "pubdate": "2022-09-09T13:24:21"
+          "pubdate": "2022-09-09T13:24:21",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV1o44y197J2",
@@ -1213,7 +1417,9 @@
           "play_count": 252261,
           "coin": 0,
           "like": 4972,
-          "pubdate": "2023-01-04T10:38:20"
+          "pubdate": "2023-01-04T10:38:20",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV1v64y1r7g2",
@@ -1221,7 +1427,9 @@
           "play_count": 142925,
           "coin": 0,
           "like": 4987,
-          "pubdate": "2021-06-14T15:08:20"
+          "pubdate": "2021-06-14T15:08:20",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1w7411u7Tb",
@@ -1229,7 +1437,9 @@
           "play_count": 51850,
           "coin": 0,
           "like": 615,
-          "pubdate": "2020-02-24T07:22:43"
+          "pubdate": "2020-02-24T07:22:43",
+          "author": "",
+          "off_topic": true
         }
       ],
       "definition": "语音合成技术的通用术语，包括歌声和语音。",
@@ -1255,7 +1465,9 @@
           "play_count": 463472,
           "coin": 0,
           "like": 13099,
-          "pubdate": "2020-04-06T11:28:29"
+          "pubdate": "2020-04-06T11:28:29",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV1o44y197J2",
@@ -1263,7 +1475,9 @@
           "play_count": 252261,
           "coin": 0,
           "like": 4972,
-          "pubdate": "2023-01-04T10:38:20"
+          "pubdate": "2023-01-04T10:38:20",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV1Lx4y147Yb",
@@ -1271,7 +1485,9 @@
           "play_count": 110549,
           "coin": 0,
           "like": 1404,
-          "pubdate": "2024-07-23T17:35:55"
+          "pubdate": "2024-07-23T17:35:55",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV1Ugy5YBEUG",
@@ -1279,7 +1495,9 @@
           "play_count": 66979,
           "coin": 0,
           "like": 487,
-          "pubdate": "2024-10-21T08:02:57"
+          "pubdate": "2024-10-21T08:02:57",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV1m14y1R7su",
@@ -1287,7 +1505,9 @@
           "play_count": 57416,
           "coin": 0,
           "like": 1494,
-          "pubdate": "2023-07-07T11:27:20"
+          "pubdate": "2023-07-07T11:27:20",
+          "author": "",
+          "off_topic": true
         }
       ],
       "definition": "泛指所有电子合成人声技术及作品。",
@@ -1314,7 +1534,9 @@
           "play_count": 558570,
           "coin": 0,
           "like": 18731,
-          "pubdate": "2018-11-16T10:00:06"
+          "pubdate": "2018-11-16T10:00:06",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1TGRWYsEBh",
@@ -1322,7 +1544,9 @@
           "play_count": 270744,
           "coin": 0,
           "like": 5101,
-          "pubdate": "2025-03-08T16:49:08"
+          "pubdate": "2025-03-08T16:49:08",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1KkAFzvEhA",
@@ -1330,7 +1554,9 @@
           "play_count": 217592,
           "coin": 0,
           "like": 65164,
-          "pubdate": "2026-03-21T06:00:00"
+          "pubdate": "2026-03-21T06:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1Zv4y16753",
@@ -1338,7 +1564,9 @@
           "play_count": 40339,
           "coin": 0,
           "like": 945,
-          "pubdate": "2023-01-31T07:07:59"
+          "pubdate": "2023-01-31T07:07:59",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1e3vrBfE5H",
@@ -1346,7 +1574,9 @@
           "play_count": 21004,
           "coin": 0,
           "like": 968,
-          "pubdate": "2025-12-28T07:04:04"
+          "pubdate": "2025-12-28T07:04:04",
+          "author": "",
+          "off_topic": false
         }
       ],
       "definition": "免费歌声合成软件，支持用户自制音源，社区驱动。",
@@ -1373,7 +1603,9 @@
           "play_count": 382722,
           "coin": 0,
           "like": 17603,
-          "pubdate": "2023-08-30T06:27:31"
+          "pubdate": "2023-08-30T06:27:31",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV1MQ4y1w7Jz",
@@ -1381,7 +1613,9 @@
           "play_count": 236489,
           "coin": 0,
           "like": 6555,
-          "pubdate": "2024-01-15T10:28:53"
+          "pubdate": "2024-01-15T10:28:53",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1F6Q9BjEVm",
@@ -1389,7 +1623,9 @@
           "play_count": 94186,
           "coin": 0,
           "like": 7554,
-          "pubdate": "2026-03-23T09:00:00"
+          "pubdate": "2026-03-23T09:00:00",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV1jBDaB5EfQ",
@@ -1397,7 +1633,9 @@
           "play_count": 85476,
           "coin": 0,
           "like": 1482,
-          "pubdate": "2026-04-08T10:00:00"
+          "pubdate": "2026-04-08T10:00:00",
+          "author": "",
+          "off_topic": true
         },
         {
           "bvid": "BV1a19NBvEG7",
@@ -1405,7 +1643,9 @@
           "play_count": 68359,
           "coin": 0,
           "like": 1714,
-          "pubdate": "2026-04-03T09:00:00"
+          "pubdate": "2026-04-03T09:00:00",
+          "author": "",
+          "off_topic": true
         }
       ],
       "definition": "AI 歌声合成引擎，以高质量免费音源闻名。",
@@ -1431,7 +1671,9 @@
           "play_count": 108744,
           "coin": 0,
           "like": 11406,
-          "pubdate": "2024-03-21T04:00:00"
+          "pubdate": "2024-03-21T04:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV12a4y1F7Kg",
@@ -1439,7 +1681,9 @@
           "play_count": 93741,
           "coin": 0,
           "like": 1886,
-          "pubdate": "2023-07-07T10:01:26"
+          "pubdate": "2023-07-07T10:01:26",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV18EPyeVE4s",
@@ -1447,7 +1691,9 @@
           "play_count": 50563,
           "coin": 0,
           "like": 997,
-          "pubdate": "2025-02-05T09:22:42"
+          "pubdate": "2025-02-05T09:22:42",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV17YrKBJEWF",
@@ -1455,7 +1701,9 @@
           "play_count": 40717,
           "coin": 0,
           "like": 909,
-          "pubdate": "2026-01-09T10:58:00"
+          "pubdate": "2026-01-09T10:58:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1AR4y1B77k",
@@ -1463,7 +1711,9 @@
           "play_count": 29827,
           "coin": 0,
           "like": 470,
-          "pubdate": "2023-02-12T01:00:00"
+          "pubdate": "2023-02-12T01:00:00",
+          "author": "",
+          "off_topic": true
         }
       ],
       "definition": "字节跳动旗下 AI 歌声合成平台。",
@@ -1489,7 +1739,9 @@
           "play_count": 170979,
           "coin": 0,
           "like": 7420,
-          "pubdate": "2022-12-04T04:00:00"
+          "pubdate": "2022-12-04T04:00:00",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV17v4y1B7Fc",
@@ -1497,7 +1749,9 @@
           "play_count": 59874,
           "coin": 0,
           "like": 2067,
-          "pubdate": "2022-12-31T10:36:38"
+          "pubdate": "2022-12-31T10:36:38",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1LD4MzvERG",
@@ -1505,7 +1759,9 @@
           "play_count": 41751,
           "coin": 0,
           "like": 2608,
-          "pubdate": "2025-10-12T09:37:31"
+          "pubdate": "2025-10-12T09:37:31",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1Z7411m7aa",
@@ -1513,7 +1769,9 @@
           "play_count": 25991,
           "coin": 0,
           "like": 275,
-          "pubdate": "2020-03-24T14:24:41"
+          "pubdate": "2020-03-24T14:24:41",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1Tv9TYrENY",
@@ -1521,7 +1779,9 @@
           "play_count": 23755,
           "coin": 0,
           "like": 512,
-          "pubdate": "2025-02-28T09:30:00"
+          "pubdate": "2025-02-28T09:30:00",
+          "author": "",
+          "off_topic": false
         }
       ],
       "definition": "AI 歌声合成平台，支持多种音色。",
@@ -1547,7 +1807,9 @@
           "play_count": 36974,
           "coin": 0,
           "like": 2221,
-          "pubdate": "2020-01-13T11:35:56"
+          "pubdate": "2020-01-13T11:35:56",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1uY411h7Na",
@@ -1555,7 +1817,9 @@
           "play_count": 21803,
           "coin": 0,
           "like": 832,
-          "pubdate": "2022-01-15T02:35:05"
+          "pubdate": "2022-01-15T02:35:05",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1R741137z7",
@@ -1563,7 +1827,9 @@
           "play_count": 18478,
           "coin": 0,
           "like": 702,
-          "pubdate": "2020-02-13T14:53:09"
+          "pubdate": "2020-02-13T14:53:09",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1e4411K7Jq",
@@ -1571,7 +1837,9 @@
           "play_count": 18077,
           "coin": 0,
           "like": 706,
-          "pubdate": "2019-06-07T06:05:09"
+          "pubdate": "2019-06-07T06:05:09",
+          "author": "",
+          "off_topic": false
         },
         {
           "bvid": "BV1sE411o7aA",
@@ -1579,7 +1847,9 @@
           "play_count": 5647,
           "coin": 0,
           "like": 391,
-          "pubdate": "2019-10-10T12:02:08"
+          "pubdate": "2019-10-10T12:02:08",
+          "author": "",
+          "off_topic": false
         }
       ],
       "definition": "Boxstar 开发的免费歌声合成软件，被称为新一代 UTAU。",
