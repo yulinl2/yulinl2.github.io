@@ -933,7 +933,7 @@ function renderApp(data) {
 
     // Related keywords as header pills
     const relatedHeaderHtml = (kw.related || []).length > 0
-      ? `<div class="kw-header-related">${kw.related.map(r =>
+      ? `<div class="kw-header-related"><span style="font-size:9px;color:var(--muted);margin-right:2px">关联词</span>${kw.related.map(r =>
              `<span class="bubble-related-tag" style="font-size:9px;padding:1px 6px;border-color:${g.color}44;color:${g.color}">${escapeHtml(r)}</span>`
            ).join('')}</div>`
       : '';
