@@ -129,7 +129,6 @@
   .kw-card:hover { border-color: rgba(79,209,199,.4); }
   .kw-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 6px; }
   .kw-name { font-size: 16px; font-weight: 700; }
-  .kw-count { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); }
   .kw-header-related { display: flex; flex-wrap: wrap; gap: 4px; margin-left: auto; }
   .kw-chart-wrap { height: 60px; }
   .anomaly-tag {
@@ -945,15 +944,15 @@ function renderApp(data) {
           <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${g.color};margin-right:8px;box-shadow:0 0 6px ${g.color}"></span>
           ${escapeHtml(kw.name)}
         </div>
-        <div class="kw-count">搜索结果 ${fmtResultCount(kw.result_count)}
-          ${infoIcon('Bilibili 搜索 API 返回的结果数量。API 上限为 1,000，显示 ≥1,000 表示实际结果可能更多。')}
-        </div>
         ${relatedHeaderHtml}
       </div>
+      ${defHtml}
       <div class="kw-chart-wrap"><canvas id="${canvasId}"></canvas></div>
       <div class="stat-delta ${deltaClass}" style="margin-top:10px">
         今日播放 ${fmt(kw.total_play_today)}
         ${infoIcon('当日搜索结果中前 N 个视频的播放量总和。数据来源：Bilibili 公开搜索 API (api.bilibili.com)。')}
+        &nbsp;|&nbsp; 搜索结果 ${fmtResultCount(kw.result_count)}
+        ${infoIcon('Bilibili 搜索 API 返回的结果数量。API 上限为 1,000，显示 ≥1,000 表示实际结果可能更多。')}
         &nbsp;|&nbsp; 昨日对比 ${deltaSign}${kw.delta_pct}%
       </div>
       ${kw.has_anomaly ? '<div class="anomaly-tag">⚡ 异常</div>' : ''}
@@ -963,7 +962,6 @@ function renderApp(data) {
       </div>
       <div class="kw-details">
         <div class="kw-details-inner">
-          ${defHtml}
           <div class="kw-details-title">热门视频 TOP ${videos.length}</div>
           ${videosHtml}
         </div>
