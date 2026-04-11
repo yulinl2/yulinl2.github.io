@@ -742,7 +742,8 @@ function renderApp(data) {
     });
   });
 
-  const pad = 12;
+  // Proportional gap: 15% of combined radii (bigger pairs → more space)
+  function gap(ra, rb) { return (ra + rb) * 0.15; }
   const maxR = bubbles.length ? bubbles[0].r : 1;
   for (let iter = 0; iter < 200; iter++) {
     // 1. Centering: larger bubbles → stronger pull to center
@@ -757,7 +758,7 @@ function renderApp(data) {
       const a = bubbles[i], bub = bubbles[j];
       const dx = bub.x - a.x, dy = bub.y - a.y;
       const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-      const ideal = a.r + bub.r + pad + 8;  // target: just touching + small gap
+      const ideal = a.r + bub.r + gap(a.r, bub.r) + 4;
       if (dist > ideal) {
         const pull = (dist - ideal) * 0.02;
         const nx = dx / dist, ny = dy / dist;
@@ -771,7 +772,7 @@ function renderApp(data) {
         const a = bubbles[i], bub = bubbles[j];
         const dx = bub.x - a.x, dy = bub.y - a.y;
         const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-        const minDist = a.r + bub.r + pad;
+        const minDist = a.r + bub.r + gap(a.r, bub.r);
         if (dist < minDist) {
           const overlap = minDist - dist;
           const totalMass = a.r * a.r + bub.r * bub.r;
