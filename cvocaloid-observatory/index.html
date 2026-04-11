@@ -742,8 +742,18 @@ function renderApp(data) {
     });
   });
 
-  // Proportional gap: 15% of combined radii (bigger pairs → more space)
-  function gap(ra, rb) { return (ra + rb) * 0.15; }
+  // Proportional gap with randomness — smaller bubbles jitter more
+  const gapCache = {};
+  function gap(ra, rb) {
+    const key = ra < rb ? ra + ',' + rb : rb + ',' + ra;
+    if (gapCache[key] !== undefined) return gapCache[key];
+    const base = (ra + rb) * 0.15;
+    const minR = Math.min(ra, rb);
+    const jitter = (1 - minR / maxR) * base * 0.6;  // up to 60% variation for smallest
+    const g = base + (Math.random() - 0.3) * jitter; // slight bias toward tighter
+    gapCache[key] = Math.max(base * 0.5, g);
+    return gapCache[key];
+  }
   const maxR = bubbles.length ? bubbles[0].r : 1;
   for (let iter = 0; iter < 200; iter++) {
     // 1. Centering: larger bubbles → stronger pull to center
