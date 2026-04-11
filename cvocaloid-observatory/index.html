@@ -248,6 +248,16 @@
     transform: scale(1.15);
     z-index: 5;
   }
+  .bubble-glow {
+    transform: scale(1.08);
+    z-index: 4;
+    filter: brightness(1.4);
+    transition: transform .3s, filter .3s;
+  }
+  .bubble-dim {
+    opacity: .35;
+    transition: opacity .3s;
+  }
   .bubble .bubble-tip {
     visibility: hidden; opacity: 0;
     position: absolute;
@@ -656,7 +666,11 @@ function renderApp(data) {
   // Sort largest first for better packing
   bubbles.sort((a, b) => b.r - a.r);
 
-  // Simple circle-packing: place in spiral, then run force iterations
+  // Name → bubble index lookup (built AFTER sort so indices match)
+  const nameIdx = {};
+  bubbles.forEach((b, i) => { nameIdx[b.kw.name] = i; });
+
+  // Circle-packing: spiral seed → force simulation with 3 forces
   const fw = fieldEl.offsetWidth || 600;
   const cx = fw / 2, cy = 160;
   bubbles.forEach((b, i) => {
@@ -666,20 +680,39 @@ function renderApp(data) {
     b.y = cy + Math.sin(angle) * dist;
   });
 
-  // Force simulation: push overlapping bubbles apart
-  // Larger bubbles resist displacement more (mass-weighted)
+  // Build related-keyword edge list for attraction force
+  const edges = [];
+  bubbles.forEach((b, i) => {
+    (b.kw.related || []).forEach(relName => {
+      const j = nameIdx[relName];
+      if (j !== undefined && j > i) edges.push([i, j]);
+    });
+  });
+
   const pad = 4;
   const maxR = bubbles.length ? bubbles[0].r : 1;
   for (let iter = 0; iter < 200; iter++) {
-    // 1. Centering force FIRST — pull everything toward center
+    // 1. Centering: larger bubbles → stronger pull to center
     for (let i = 0; i < bubbles.length; i++) {
-      const sizeRatio = bubbles[i].r / maxR;  // 0..1
-      // Big bubbles: up to 0.15 strength; small: 0.01
-      const strength = 0.01 + sizeRatio * sizeRatio * 0.14;
+      const sr = bubbles[i].r / maxR;
+      const strength = 0.01 + sr * sr * 0.14;
       bubbles[i].x += (cx - bubbles[i].x) * strength;
       bubbles[i].y += (cy - bubbles[i].y) * strength;
     }
-    // 2. Collision resolution — push overlapping bubbles apart
+    // 2. Related-keyword attraction: pull linked pairs closer
+    for (const [i, j] of edges) {
+      const a = bubbles[i], bub = bubbles[j];
+      const dx = bub.x - a.x, dy = bub.y - a.y;
+      const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      const ideal = a.r + bub.r + pad + 8;  // target: just touching + small gap
+      if (dist > ideal) {
+        const pull = (dist - ideal) * 0.02;
+        const nx = dx / dist, ny = dy / dist;
+        a.x += nx * pull;  a.y += ny * pull;
+        bub.x -= nx * pull; bub.y -= ny * pull;
+      }
+    }
+    // 3. Collision resolution — push overlapping bubbles apart
     for (let i = 0; i < bubbles.length; i++) {
       for (let j = i + 1; j < bubbles.length; j++) {
         const a = bubbles[i], bub = bubbles[j];
@@ -688,7 +721,6 @@ function renderApp(data) {
         const minDist = a.r + bub.r + pad;
         if (dist < minDist) {
           const overlap = minDist - dist;
-          // Mass ratio: bigger bubble moves less
           const totalMass = a.r * a.r + bub.r * bub.r;
           const aRatio = bub.r * bub.r / totalMass;
           const bRatio = a.r * a.r / totalMass;
@@ -715,10 +747,10 @@ function renderApp(data) {
   });
   const fieldH = maxY - minY + 20;
   fieldEl.style.minHeight = fieldH + 'px';
-  // Shift all bubbles so they start from top
   const shiftY = -minY + 10;
 
-  // Create DOM elements
+  // Create DOM elements + build name→element map for highlight
+  const bubbleEls = {};
   bubbles.forEach(b => {
     const { kw, norm, r, g } = b;
     const size = r * 2;
@@ -735,6 +767,7 @@ function renderApp(data) {
     const el = document.createElement('div');
     el.className = 'bubble';
     el.tabIndex = 0;
+    el.dataset.kwName = kw.name;
     el.style.cssText = `
       width:${size}px; height:${size}px;
       left:${Math.round(b.x - r)}px; top:${Math.round(b.y + shiftY - r)}px;
@@ -745,17 +778,12 @@ function renderApp(data) {
     `;
     // Dynamic tooltip positioning: avoid overflow on edges
     const tipW = 200;
-    const bLeft = Math.round(b.x - r);
     let tipLeft, tipTransform;
     if (b.x + tipW / 2 > fw) {
-      // Near right edge: anchor tooltip to right
       tipLeft = 'auto'; tipTransform = 'none';
-      el.style.setProperty('--tip-right', '0px');
     } else if (b.x - tipW / 2 < 0) {
-      // Near left edge: anchor tooltip to left
       tipLeft = '0px'; tipTransform = 'none';
     } else {
-      // Centered
       tipLeft = '50%'; tipTransform = 'translateX(-50%)';
     }
 
@@ -769,7 +797,30 @@ function renderApp(data) {
       </div>
     `;
     fieldEl.appendChild(el);
+    bubbleEls[kw.name] = el;
   });
+
+  // Interactive highlight: hover/focus a bubble → glow its related keywords
+  function highlightRelated(kwName, on) {
+    const kw = data.keywords.find(k => k.name === kwName);
+    if (!kw) return;
+    const related = new Set(kw.related || []);
+    related.add(kwName);
+    for (const [name, el] of Object.entries(bubbleEls)) {
+      if (on) {
+        el.classList.toggle('bubble-glow', related.has(name) && name !== kwName);
+        el.classList.toggle('bubble-dim', !related.has(name));
+      } else {
+        el.classList.remove('bubble-glow', 'bubble-dim');
+      }
+    }
+  }
+  for (const [name, el] of Object.entries(bubbleEls)) {
+    el.addEventListener('mouseenter', () => highlightRelated(name, true));
+    el.addEventListener('mouseleave', () => highlightRelated(name, false));
+    el.addEventListener('focus', () => highlightRelated(name, true));
+    el.addEventListener('blur', () => highlightRelated(name, false));
+  }
 
   // ── Keyword cards ──────────────────────────────────────────────────────
   const kwGrid = document.getElementById('kw-grid');
