@@ -160,15 +160,21 @@
     margin-bottom: 10px;
   }
   .video-row {
-    display: flex; align-items: baseline; justify-content: space-between;
-    gap: 8px; padding: 6px 0;
+    display: flex; gap: 10px; padding: 10px 0;
     border-bottom: 1px solid rgba(30,35,48,.6);
-    font-size: 13px;
+    font-size: 13px; align-items: flex-start;
   }
   .video-row:last-child { border-bottom: none; }
+  .video-thumb {
+    width: 96px; height: 60px; border-radius: 4px;
+    object-fit: cover; flex-shrink: 0;
+    background: rgba(255,255,255,.04);
+  }
+  .video-info { flex: 1; min-width: 0; }
   .video-title {
-    flex: 1; min-width: 0;
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    white-space: normal; line-height: 1.4;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   .video-title a {
     color: var(--text); text-decoration: none;
@@ -176,7 +182,30 @@
   .video-title a:hover { color: var(--accent); text-decoration: underline; }
   .video-stats {
     font-family: 'JetBrains Mono', monospace; font-size: 11px;
-    color: var(--muted); white-space: nowrap;
+    color: var(--muted); margin-top: 4px;
+    display: flex; flex-wrap: wrap; gap: 2px 10px;
+  }
+  .video-stat { display: inline-flex; align-items: center; gap: 2px; }
+  .video-stat svg { width: 12px; height: 12px; opacity: .6; }
+  /* Sort tabs */
+  .sort-tabs {
+    display: flex; gap: 0; margin-bottom: 8px; overflow-x: auto;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  }
+  .sort-tabs::-webkit-scrollbar { display: none; }
+  .sort-tab {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--muted); padding: 4px 10px; cursor: pointer;
+    border: 1px solid var(--border); border-radius: 4px;
+    white-space: nowrap; transition: all .15s;
+    background: transparent;
+  }
+  .sort-tab:not(:first-child) { margin-left: -1px; }
+  .sort-tab:first-child { border-radius: 4px 0 0 4px; }
+  .sort-tab:last-child { border-radius: 0 4px 4px 0; }
+  .sort-tab.active {
+    background: rgba(79,209,199,.12); color: var(--accent);
+    border-color: rgba(79,209,199,.4); z-index: 1; position: relative;
   }
 
   /* Bar chart overview */
@@ -361,9 +390,9 @@
     .stat-delta { word-break: break-word; line-height: 1.6; }
 
     /* Stack video row: title above stats */
-    .video-row { flex-wrap: wrap; }
-    .video-title { width: 100%; white-space: normal; }
+    .video-thumb { width: 72px; height: 45px; }
     .video-stats { font-size: 10px; }
+    .sort-tab { font-size: 9px; padding: 3px 8px; }
 
     /* Keep tooltips within viewport — anchor left on mobile */
     .info-tip .tip-text {
@@ -845,25 +874,52 @@ function renderApp(data) {
     const canvasId = 'chart-' + idx;
     const g = groups[kw.group] || groups.other || { color: '#4fd1c7' };
 
-    // Build top videos HTML with author info
+    // Build top videos with thumbnails, icons, sort tabs
     const videos = (kw.top_videos || []).filter(v => v.bvid && /^BV[\w]+$/.test(v.bvid));
+    // SVG icons for stats (small inline)
+    const iPlay = '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M4 2.5v11l9-5.5z"/></svg>';
+    const iLike = '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 14s-5.5-3.5-5.5-7.5C2.5 4 4.5 2 6.5 2c1.2 0 2.2.8 2.5 1.5C9.3 2.8 10.3 2 11.5 2c2 0 4 2 4 4.5S11.5 14 8 14z"/></svg>';
+    const iDanmaku = '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 3h14v8H4l-3 3V3zm3 2h8M4 7h6" stroke="currentColor" stroke-width=".5" fill="none"/><rect x="1" y="3" width="14" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><line x1="3" y1="6" x2="13" y2="6" stroke="currentColor" stroke-width=".8" opacity=".5"/><line x1="3" y1="8.5" x2="10" y2="8.5" stroke="currentColor" stroke-width=".8" opacity=".5"/></svg>';
+    const iComment = '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 2h14v9H5l-4 3V2z" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><circle cx="5" cy="6.5" r=".8"/><circle cx="8" cy="6.5" r=".8"/><circle cx="11" cy="6.5" r=".8"/></svg>';
+    function renderVideoRow(v) {
+      const url = 'https://www.bilibili.com/video/' + encodeURIComponent(v.bvid);
+      const authorHtml = v.mid && v.author
+        ? `<div class="video-author">UP: <a href="https://space.bilibili.com/${encodeURIComponent(v.mid)}" target="_blank" rel="noopener">${escapeHtml(v.author)}</a></div>`
+        : '';
+      const offTopicClass = v.off_topic ? ' off-topic' : '';
+      const offTopicBadge = v.off_topic ? '<span class="off-topic-badge">⚠ 可能偏题</span>' : '';
+      const thumbHtml = v.pic
+        ? `<img class="video-thumb" src="${escapeHtml(v.pic)}@200w_125h.webp" alt="" loading="lazy" onerror="this.style.display='none'">`
+        : '';
+      return `<div class="video-row${offTopicClass}">
+        ${thumbHtml}
+        <div class="video-info">
+          <div class="video-title">
+            <a href="${url}" target="_blank" rel="noopener">${escapeHtml(v.title || '(无标题)')}</a>${offTopicBadge}
+          </div>
+          ${authorHtml}
+          <div class="video-stats">
+            <span class="video-stat">${iPlay}${fmt(v.play_count)}</span>
+            <span class="video-stat">${iLike}${fmt(v.like)}</span>
+            ${v.danmaku ? `<span class="video-stat">${iDanmaku}${fmt(v.danmaku)}</span>` : ''}
+            ${v.comment ? `<span class="video-stat">${iComment}${fmt(v.comment)}</span>` : ''}
+          </div>
+        </div>
+      </div>`;
+    }
+    const sortModes = [
+      { key: 'play_count', label: '▶ 播放' },
+      { key: 'like', label: '♡ 点赞' },
+      { key: 'danmaku', label: '☰ 弹幕' },
+      { key: 'comment', label: '◎ 评论' },
+    ];
     let videosHtml = '';
     if (videos.length > 0) {
-      videosHtml = videos.map(v => {
-        const url = 'https://www.bilibili.com/video/' + encodeURIComponent(v.bvid);
-        const authorHtml = v.mid && v.author
-          ? `<div class="video-author">UP: <a href="https://space.bilibili.com/${encodeURIComponent(v.mid)}" target="_blank" rel="noopener">${escapeHtml(v.author)}</a></div>`
-          : '';
-        const offTopicClass = v.off_topic ? ' off-topic' : '';
-        const offTopicBadge = v.off_topic ? '<span class="off-topic-badge">⚠ 可能偏题</span>' : '';
-        return `<div class="video-row${offTopicClass}" style="flex-wrap:wrap">
-          <div class="video-title" style="width:100%">
-            <a href="${url}" target="_blank" rel="noopener">${escapeHtml(v.title || '(无标题)')}</a>${offTopicBadge}
-            ${authorHtml}
-          </div>
-          <div class="video-stats">${fmt(v.play_count)} 播放 · ${fmt(v.like)} 赞${v.danmaku ? ' · ' + fmt(v.danmaku) + ' 弹幕' : ''}${v.comment ? ' · ' + fmt(v.comment) + ' 评论' : ''}</div>
-        </div>`;
-      }).join('');
+      const sortTabsHtml = `<div class="sort-tabs">${sortModes.map((m, i) =>
+        `<button class="sort-tab${i === 0 ? ' active' : ''}" data-sort-key="${m.key}">${m.label}</button>`
+      ).join('')}</div>`;
+      const listId = 'video-list-' + idx;
+      videosHtml = sortTabsHtml + `<div id="${listId}">${videos.map(renderVideoRow).join('')}</div>`;
     } else {
       videosHtml = '<div style="color:var(--muted);font-size:12px">暂无视频数据</div>';
     }
@@ -912,11 +968,26 @@ function renderApp(data) {
     `;
 
     card.addEventListener('click', (e) => {
-      if (e.target.closest('a, .info-tip')) return;
+      if (e.target.closest('a, .info-tip, .sort-tab')) return;
       card.classList.toggle('expanded');
     });
 
     kwGrid.appendChild(card);
+
+    // Sort tab click handler
+    if (videos.length > 0) {
+      const listEl = document.getElementById('video-list-' + idx);
+      const tabs = card.querySelectorAll('.sort-tab');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          const key = tab.dataset.sortKey;
+          const sorted = [...videos].sort((a, b) => (b[key] || 0) - (a[key] || 0));
+          listEl.innerHTML = sorted.map(renderVideoRow).join('');
+        });
+      });
+    }
 
     const trend = kw.trend || [];
     const labels = trend.map((_, i) => {
