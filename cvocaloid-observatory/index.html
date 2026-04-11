@@ -163,12 +163,12 @@
 
   /* Expandable detail section */
   .kw-details {
-    max-height: 0; overflow: hidden;
+    max-height: 0; overflow: hidden; margin-top: 14px;
     transition: max-height .3s ease;
   }
   .kw-card.expanded .kw-details { max-height: 2000px; }
   .kw-details-inner {
-    padding-top: 14px; margin-top: 14px;
+    padding-top: 14px;
     border-top: 1px solid var(--border);
   }
   .kw-details-title {
@@ -971,8 +971,9 @@ function renderApp(data) {
       <div class="kw-chart-wrap"><canvas id="${canvasId}"></canvas></div>
       <div class="stat-delta ${deltaClass}" style="margin-top:10px">
         今日播放 ${fmt(kw.total_play_today)}
-        ${infoIcon('当日搜索结果中前 N 个视频的播放量总和。数据来源：Bilibili 公开搜索 API (api.bilibili.com)。')}
+        ${infoIcon('当日搜索结果中前 20 个视频的播放量总和（非历史累计）。数据来源：Bilibili 公开搜索 API。')}
         &nbsp;|&nbsp; 昨日对比 ${deltaSign}${kw.delta_pct}%
+        ${infoIcon('与昨日同口径播放量对比的变化百分比。正值表示增长，负值表示下降。')}
       </div>
       ${kw.has_anomaly ? '<div class="anomaly-tag">⚡ 异常</div>' : ''}
       <div class="kw-expand-hint">
