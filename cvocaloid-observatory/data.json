@@ -1,69 +1,85 @@
 {
-  "last_updated": "2026-04-10T15:16:31Z",
+  "last_updated": "2026-04-11T00:15:45Z",
   "summary": {
-    "total_keywords": 27,
-    "total_play_week": 478147087,
+    "total_keywords": 29,
+    "total_play_week": 961572433,
     "anomaly_count": 0
   },
   "keywords": [
     {
       "name": "初音ミク",
-      "total_play_today": 97332673,
+      "total_play_today": 119959896,
       "result_count": 1000,
-      "delta_pct": 0,
+      "delta_pct": 23,
       "has_anomaly": false,
       "trend": [
-        97332673
+        97332673,
+        119959896
       ],
       "top_videos": [
         {
           "bvid": "BV1qDUPYKEzf",
           "title": "DECO*27 - モニタリング feat. 初音ミク",
-          "play_count": 24342393,
+          "play_count": 24349033,
           "coin": 0,
-          "like": 990090,
+          "like": 990274,
           "pubdate": "2024-11-22T10:00:00",
-          "author": "",
+          "mid": 177291194,
+          "author": "DECO27_Official",
+          "danmaku": 189755,
+          "comment": 69036,
           "off_topic": false
         },
         {
           "bvid": "BV1Y9iZYUE6y",
           "title": "ぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬぬ￤みむかｩわナイストライ￤初音ミク￤ボカロ",
-          "play_count": 21035630,
+          "play_count": 21037986,
           "coin": 0,
-          "like": 1158160,
+          "like": 1158256,
           "pubdate": "2024-12-07T00:10:00",
-          "author": "",
+          "mid": 1285606978,
+          "author": "ぬぬぬぬぬぬぬぬぬぬ",
+          "danmaku": 162939,
+          "comment": 64327,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV15J4m1A7qy",
+          "title": "【官方投稿】メズマライザー / 初音ミク・重音テトSV",
+          "play_count": 19174799,
+          "coin": 0,
+          "like": 667039,
+          "pubdate": "2024-05-13T09:00:00",
+          "mid": 1829236187,
+          "author": "サツキ_Official",
+          "danmaku": 58190,
+          "comment": 21754,
           "off_topic": false
         },
         {
           "bvid": "BV1SfK9zPEL3",
           "title": "ピノキオピー - T氏の話を信じるな feat. 初音ミク・重音テト",
-          "play_count": 15511658,
+          "play_count": 15519125,
           "coin": 0,
-          "like": 701127,
+          "like": 701345,
           "pubdate": "2025-06-27T10:00:00",
-          "author": "",
+          "mid": 203655966,
+          "author": "ピノキオピー_official",
+          "danmaku": 190774,
+          "comment": 34940,
           "off_topic": false
         },
         {
-          "bvid": "BV1cJ411q7GF",
-          "title": "【初音ミク】春嵐【john】",
-          "play_count": 10748852,
+          "bvid": "BV1uJ411879Y",
+          "title": "原版《神的随波逐流》中文字幕【初音ミク、鏡音リン、GUMI】 神のまにまに 随神之侧",
+          "play_count": 12777948,
           "coin": 0,
-          "like": 276983,
-          "pubdate": "2019-12-07T03:24:37",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1hs411W7uR",
-          "title": "【初音ミク】妄想感傷代償連盟【DECO*27】",
-          "play_count": 8840746,
-          "coin": 0,
-          "like": 268257,
-          "pubdate": "2016-11-18T10:02:37",
-          "author": "",
+          "like": 439094,
+          "pubdate": "2020-01-01T14:51:56",
+          "mid": 130556618,
+          "author": "adamsmiles",
+          "danmaku": 12546,
+          "comment": 9630,
           "off_topic": false
         }
       ],
@@ -77,132 +93,79 @@
       ]
     },
     {
-      "name": "洛天依",
-      "total_play_today": 75778882,
-      "result_count": 1000,
-      "delta_pct": 0,
-      "has_anomaly": false,
-      "trend": [
-        75778882
-      ],
-      "top_videos": [
-        {
-          "bvid": "BV1zs411S7sz",
-          "title": "洛天依，言和原创《普通DISCO》",
-          "play_count": 23851321,
-          "coin": 0,
-          "like": 835177,
-          "pubdate": "2015-03-21T02:01:05",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1Jb411U7u2",
-          "title": "洛天依，原创《勾指起誓》",
-          "play_count": 21430796,
-          "coin": 0,
-          "like": 993081,
-          "pubdate": "2019-02-13T14:09:40",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1Qc411h7Ys",
-          "title": "【洛天依原创】我的悲伤是水做的",
-          "play_count": 10756747,
-          "coin": 0,
-          "like": 535205,
-          "pubdate": "2020-04-10T10:10:15",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1ZcKdzDE5Q",
-          "title": "捉迷藏(鬼ごっこ) - 春野 feat.洛天依 官方MV",
-          "play_count": 8718242,
-          "coin": 0,
-          "like": 267310,
-          "pubdate": "2025-06-28T10:00:00",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1FwuyzAEsw",
-          "title": "洛天依再唱《权御天下》「2025官方重置版」",
-          "play_count": 2770716,
-          "coin": 0,
-          "like": 185899,
-          "pubdate": "2025-07-15T10:00:00",
-          "author": "",
-          "off_topic": false
-        }
-      ],
-      "definition": "Luo Tianyi — 中国第一位 VOCALOID 角色，上海禾念出品。",
-      "group": "vocaloid_cn",
-      "related": [
-        "言和",
-        "乐正绫",
-        "虚拟歌手"
-      ]
-    },
-    {
       "name": "重音テト",
-      "total_play_today": 60441319,
+      "total_play_today": 81056075,
       "result_count": 1000,
-      "delta_pct": 0,
+      "delta_pct": 34,
       "has_anomaly": false,
       "trend": [
-        60441319
+        60441319,
+        81056075
       ],
       "top_videos": [
+        {
+          "bvid": "BV15J4m1A7qy",
+          "title": "【官方投稿】メズマライザー / 初音ミク・重音テトSV",
+          "play_count": 19174812,
+          "coin": 0,
+          "like": 667040,
+          "pubdate": "2024-05-13T09:00:00",
+          "mid": 1829236187,
+          "author": "サツキ_Official",
+          "danmaku": 58190,
+          "comment": 21754,
+          "off_topic": false
+        },
         {
           "bvid": "BV1SfK9zPEL3",
           "title": "ピノキオピー - T氏の話を信じるな feat. 初音ミク・重音テト",
-          "play_count": 15511706,
+          "play_count": 15519161,
           "coin": 0,
-          "like": 701127,
+          "like": 701345,
           "pubdate": "2025-06-27T10:00:00",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1vqQUYYEmg",
-          "title": "【初音ミクVS重音テト】超级超级超级超级超级讨厌【雨良 Amala】【授权转载】",
-          "play_count": 9353052,
-          "coin": 0,
-          "like": 300447,
-          "pubdate": "2025-03-15T10:08:00",
-          "author": "",
+          "mid": 203655966,
+          "author": "ピノキオピー_official",
+          "danmaku": 190775,
+          "comment": 34940,
           "off_topic": false
         },
         {
           "bvid": "BV1dTzRBCEkg",
           "title": "【重音テト/中译版】说谎的马卡龙/うそつきマカロン（BY： 暴飲暴食P）",
-          "play_count": 8959346,
+          "play_count": 8968220,
           "coin": 0,
-          "like": 502630,
+          "like": 502932,
           "pubdate": "2026-01-28T21:14:12",
-          "author": "",
+          "mid": 2705870,
+          "author": "苏维埃冰棺中的伊利亚",
+          "danmaku": 66053,
+          "comment": 65670,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1No1MBjErV",
+          "title": "【重音/雨衣/授权代发/中译版】目击！Teto31世/目撃！テト31世🎉🎃🧟（BY：はろける・HALLO CEL）",
+          "play_count": 6740280,
+          "coin": 0,
+          "like": 346071,
+          "pubdate": "2025-10-31T10:05:09",
+          "mid": 2705870,
+          "author": "苏维埃冰棺中的伊利亚",
+          "danmaku": 129476,
+          "comment": 10823,
           "off_topic": false
         },
         {
           "bvid": "BV1gS411c78m",
           "title": "【重音テト】無责任集合体【マサラダ】",
-          "play_count": 5750511,
+          "play_count": 5751126,
           "coin": 0,
-          "like": 164999,
+          "like": 165011,
           "pubdate": "2024-05-10T23:48:42",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1mNf3BREgj",
-          "title": "【重音テト/中译版】脑蚀/Brain rot/ブレインロット（BY：東京真中）",
-          "play_count": 4873036,
-          "coin": 0,
-          "like": 397738,
-          "pubdate": "2026-02-20T15:39:37",
-          "author": "",
+          "mid": 62880505,
+          "author": "rotbala",
+          "danmaku": 43102,
+          "comment": 4029,
           "off_topic": false
         }
       ],
@@ -212,6 +175,91 @@
         "UTAU",
         "欲音レイ",
         "Synthesizer V"
+      ]
+    },
+    {
+      "name": "洛天依",
+      "total_play_today": 73961041,
+      "result_count": 1000,
+      "delta_pct": -2,
+      "has_anomaly": false,
+      "trend": [
+        75778882,
+        73961041
+      ],
+      "top_videos": [
+        {
+          "bvid": "BV1zs411S7sz",
+          "title": "洛天依，言和原创《普通DISCO》",
+          "play_count": 23853245,
+          "coin": 0,
+          "like": 835289,
+          "pubdate": "2015-03-21T02:01:05",
+          "mid": 3379951,
+          "author": "ilem",
+          "danmaku": 279147,
+          "comment": 409207,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1Jb411U7u2",
+          "title": "洛天依，原创《勾指起誓》",
+          "play_count": 21433150,
+          "coin": 0,
+          "like": 993148,
+          "pubdate": "2019-02-13T14:09:40",
+          "mid": 3379951,
+          "author": "ilem",
+          "danmaku": 89433,
+          "comment": 176576,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1Qc411h7Ys",
+          "title": "【洛天依原创】我的悲伤是水做的",
+          "play_count": 10760687,
+          "coin": 0,
+          "like": 535365,
+          "pubdate": "2020-04-10T10:10:15",
+          "mid": 90942983,
+          "author": "YuH_ChiliChill",
+          "danmaku": 80814,
+          "comment": 27104,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1ZcKdzDE5Q",
+          "title": "捉迷藏(鬼ごっこ) - 春野 feat.洛天依 官方MV",
+          "play_count": 8720722,
+          "coin": 0,
+          "like": 267376,
+          "pubdate": "2025-06-28T10:00:00",
+          "mid": 215889001,
+          "author": "春野xupxq_",
+          "danmaku": 56660,
+          "comment": 11757,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1FwuyzAEsw",
+          "title": "洛天依再唱《权御天下》「2025官方重置版」",
+          "play_count": 2771505,
+          "coin": 0,
+          "like": 185923,
+          "pubdate": "2025-07-15T10:00:00",
+          "mid": 36081646,
+          "author": "洛天依",
+          "danmaku": 27892,
+          "comment": 7742,
+          "off_topic": false
+        }
+      ],
+      "definition": "Luo Tianyi — 中国第一位 VOCALOID 角色，上海禾念出品。",
+      "group": "vocaloid_cn",
+      "related": [
+        "言和",
+        "乐正绫",
+        "虚拟歌手"
       ]
     },
     {
@@ -284,62 +332,78 @@
     },
     {
       "name": "flower",
-      "total_play_today": 29995642,
+      "total_play_today": 30952554,
       "result_count": 1000,
-      "delta_pct": 0,
+      "delta_pct": 3,
       "has_anomaly": false,
       "trend": [
-        29995642
+        29995642,
+        30952554
       ],
       "top_videos": [
         {
           "bvid": "BV1RX4y1R7w1",
           "title": "JISOO - ‘FLOWER’ M/V",
-          "play_count": 8916726,
+          "play_count": 8917084,
           "coin": 0,
-          "like": 258767,
+          "like": 258779,
           "pubdate": "2023-03-31T04:01:00",
-          "author": "",
+          "mid": 1822650474,
+          "author": "YG_FAMILY",
+          "danmaku": 19268,
+          "comment": 17102,
           "off_topic": true
         },
         {
           "bvid": "BV11E411d7Jc",
           "title": "终于弹了这首 花之舞 Flower Dance 无伴奏钢琴版 DJ Okawari【超高清音质】",
-          "play_count": 5829713,
+          "play_count": 5830235,
           "coin": 0,
-          "like": 196541,
+          "like": 196544,
           "pubdate": "2019-10-14T01:27:11",
-          "author": "",
+          "mid": 419743655,
+          "author": "BiBiPiano",
+          "danmaku": 4079,
+          "comment": 3577,
           "off_topic": true
         },
         {
           "bvid": "BV1zx411f7Kx",
           "title": "《DJ OKAWARI》Flower Dance（花之舞）高品质，进来听歌",
-          "play_count": 3159016,
+          "play_count": 3159528,
           "coin": 0,
-          "like": 49958,
+          "like": 49963,
           "pubdate": "2019-07-11T04:30:18",
-          "author": "",
+          "mid": 386439620,
+          "author": "Pigeon老硬币",
+          "danmaku": 1510,
+          "comment": 2080,
           "off_topic": true
         },
         {
           "bvid": "BV1wm4y1z7Vv",
           "title": "野Flower香 / FLOWER (Jiafei Remix) - JISOO",
-          "play_count": 3010669,
+          "play_count": 3010895,
           "coin": 0,
-          "like": 87234,
+          "like": 87238,
           "pubdate": "2023-03-31T11:09:52",
-          "author": "",
+          "mid": 484649963,
+          "author": "Waynie_7",
+          "danmaku": 2573,
+          "comment": 3521,
           "off_topic": true
         },
         {
-          "bvid": "BV1Dg4y1g7VT",
-          "title": "【4K超清】金智秀 《FLOWER》（舞蹈版）MV",
-          "play_count": 2021357,
+          "bvid": "BV17s41137mU",
+          "title": "【flower】猛毒【かいりきベア】",
+          "play_count": 2739697,
           "coin": 0,
-          "like": 29945,
-          "pubdate": "2023-04-05T16:20:59",
-          "author": "",
+          "like": 84584,
+          "pubdate": "2018-08-02T11:49:51",
+          "mid": 11401760,
+          "author": "SenaRinka_Tao",
+          "danmaku": 2908,
+          "comment": 2349,
           "off_topic": true
         }
       ],
@@ -352,199 +416,79 @@
       ]
     },
     {
-      "name": "言和",
-      "total_play_today": 27798923,
-      "result_count": 1000,
-      "delta_pct": 0,
-      "has_anomaly": false,
-      "trend": [
-        27798923
-      ],
-      "top_videos": [
-        {
-          "bvid": "BV1zs411S7sz",
-          "title": "洛天依，言和原创《普通DISCO》",
-          "play_count": 23851321,
-          "coin": 0,
-          "like": 835177,
-          "pubdate": "2015-03-21T02:01:05",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1NPGAzhEYd",
-          "title": "【言和原创曲】Override【2025官方生贺曲】",
-          "play_count": 733769,
-          "coin": 0,
-          "like": 52796,
-          "pubdate": "2025-07-11T04:00:00",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1xU4y1q79a",
-          "title": "记住我是谁！狂气江湖风原创《在下，言和》【iKz-茶壶/PV付】",
-          "play_count": 549189,
-          "coin": 0,
-          "like": 63097,
-          "pubdate": "2022-07-11T09:00:00",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1XWE4z4ETr",
-          "title": "【言和】珠玉【ACE COVER】",
-          "play_count": 508162,
-          "coin": 0,
-          "like": 39711,
-          "pubdate": "2025-05-16T13:26:42",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1mee2zLEXa",
-          "title": "【言和】神性四溢！《嗵嗵》|“神明神明张开嘴，让我知道我是谁”【原创PV付】",
-          "play_count": 368910,
-          "coin": 0,
-          "like": 22939,
-          "pubdate": "2025-08-27T10:33:07",
-          "author": "",
-          "off_topic": false
-        }
-      ],
-      "definition": "Yan He — 上海禾念出品的中文 VOCALOID 角色。",
-      "group": "vocaloid_cn",
-      "related": [
-        "洛天依",
-        "乐正绫"
-      ]
-    },
-    {
-      "name": "赤羽",
-      "total_play_today": 26335990,
-      "result_count": 1000,
-      "delta_pct": 0,
-      "has_anomaly": false,
-      "trend": [
-        26335990
-      ],
-      "top_videos": [
-        {
-          "bvid": "BV1zN411d7dG",
-          "title": "万象霜天【2021拜年纪单品】",
-          "play_count": 11897954,
-          "coin": 0,
-          "like": 360192,
-          "pubdate": "2021-02-11T14:12:02",
-          "author": "",
-          "off_topic": true
-        },
-        {
-          "bvid": "BV1p5411879s",
-          "title": "《苍蝇》 赤羽 原创",
-          "play_count": 10903056,
-          "coin": 0,
-          "like": 520484,
-          "pubdate": "2020-08-10T01:10:10",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1V34y1r77P",
-          "title": "【赤羽/赵方婧】倾国【忘川风华录×音阙诗听】",
-          "play_count": 2021178,
-          "coin": 0,
-          "like": 68183,
-          "pubdate": "2021-12-25T10:00:00",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1cZ4y1P7wV",
-          "title": "【诡秘之主/赤羽原创曲】愚者【克莱恩2021生日快乐（2/2）】【喻川】",
-          "play_count": 674943,
-          "coin": 0,
-          "like": 23653,
-          "pubdate": "2021-03-03T16:00:17",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1q2tPeKEzW",
-          "title": "【忘川风华录·刘秀】拜云台【赤羽ver.】",
-          "play_count": 331051,
-          "coin": 0,
-          "like": 13546,
-          "pubdate": "2024-09-14T10:00:00",
-          "author": "",
-          "off_topic": false
-        }
-      ],
-      "definition": "Chiha — SynthV 中文女声音源。",
-      "group": "synthv",
-      "related": [
-        "Synthesizer V",
-        "星尘"
-      ]
-    },
-    {
       "name": "GUMI",
-      "total_play_today": 25427818,
+      "total_play_today": 30169903,
       "result_count": 1000,
-      "delta_pct": 0,
+      "delta_pct": 19,
       "has_anomaly": false,
       "trend": [
-        25427818
+        25427818,
+        30169903
       ],
       "top_videos": [
         {
           "bvid": "BV15GmhBaEZF",
           "title": "I Can't Wait feat. GUMI",
-          "play_count": 21508092,
+          "play_count": 21527050,
           "coin": 0,
-          "like": 1873276,
+          "like": 1875091,
           "pubdate": "2025-12-11T23:00:00",
-          "author": "",
+          "mid": 3546729546778833,
+          "author": "d0tc0mmie",
+          "danmaku": 108082,
+          "comment": 119787,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1K8KUzUEdX",
+          "title": "克隆克隆 (Clone Clone) / GUMI, 鏡音鈴",
+          "play_count": 3051823,
+          "coin": 0,
+          "like": 120553,
+          "pubdate": "2025-06-28T11:39:50",
+          "mid": 3546853849172535,
+          "author": "Atenaアテナ",
+          "danmaku": 42532,
+          "comment": 3967,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV18W411S7Hw",
+          "title": "GUMI - 心做し（带字幕）",
+          "play_count": 1498861,
+          "coin": 0,
+          "like": 57166,
+          "pubdate": "2018-09-29T19:13:51",
+          "mid": 18705546,
+          "author": "梦雪月夜",
+          "danmaku": 1407,
+          "comment": 2085,
           "off_topic": false
         },
         {
           "bvid": "BV1wt411Y7jT",
           "title": "裏切りアリス（背叛的爱丽丝）",
-          "play_count": 1437793,
+          "play_count": 1438384,
           "coin": 0,
-          "like": 39134,
+          "like": 39152,
           "pubdate": "2018-12-20T10:42:24",
-          "author": "",
+          "mid": 6381023,
+          "author": "レティホワイトロック",
+          "danmaku": 8727,
+          "comment": 2162,
           "off_topic": true
         },
         {
           "bvid": "BV1XJ411W7T9",
           "title": "【GUMI】ゴー・トゥ・大都会【月裏】",
-          "play_count": 1313719,
+          "play_count": 1314089,
           "coin": 0,
-          "like": 31427,
+          "like": 31434,
           "pubdate": "2019-12-26T00:34:59",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1njnFzNEwp",
-          "title": "『だれかの心臓になれたなら（若能成为谁的心脏 ）』 -ユリイ・カノン feat.GUMI【中文歌词付】",
-          "play_count": 853574,
-          "coin": 0,
-          "like": 121843,
-          "pubdate": "2025-09-22T11:00:00",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1TxHrzAEVp",
-          "title": "【TOP20】GUMI人气歌曲排行榜（完整版）",
-          "play_count": 296194,
-          "coin": 0,
-          "like": 10926,
-          "pubdate": "2025-09-12T12:35:00",
-          "author": "",
+          "mid": 488817090,
+          "author": "百合咲奈奈",
+          "danmaku": 12923,
+          "comment": 1525,
           "off_topic": false
         }
       ],
@@ -557,63 +501,247 @@
       ]
     },
     {
-      "name": "星尘",
-      "total_play_today": 23895606,
+      "name": "言和",
+      "total_play_today": 29310699,
       "result_count": 1000,
-      "delta_pct": 0,
+      "delta_pct": 5,
       "has_anomaly": false,
       "trend": [
-        23895606
+        27798923,
+        29310699
+      ],
+      "top_videos": [
+        {
+          "bvid": "BV1zs411S7sz",
+          "title": "洛天依，言和原创《普通DISCO》",
+          "play_count": 23853245,
+          "coin": 0,
+          "like": 835289,
+          "pubdate": "2015-03-21T02:01:05",
+          "mid": 3379951,
+          "author": "ilem",
+          "danmaku": 279147,
+          "comment": 409207,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1jx411S7fK",
+          "title": "【言和翻唱】刀马红颜（PV付）",
+          "play_count": 1010933,
+          "coin": 0,
+          "like": 19410,
+          "pubdate": "2017-04-29T22:11:18",
+          "mid": 893950,
+          "author": "纳兰寻风",
+          "danmaku": 9226,
+          "comment": 23703,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1yT4y1X7su",
+          "title": "核能花腔《达拉崩吧》东方夜莺带你穿越！【吴碧霞x鞠红川x自得琴社】梦幻联动，盛世闹元宵~",
+          "play_count": 742183,
+          "coin": 0,
+          "like": 70814,
+          "pubdate": "2022-02-15T10:15:03",
+          "mid": 10128411,
+          "author": "古琴诊所",
+          "danmaku": 2081,
+          "comment": 1072,
+          "off_topic": true
+        },
+        {
+          "bvid": "BV1NPGAzhEYd",
+          "title": "【言和原创曲】Override【2025官方生贺曲】",
+          "play_count": 733854,
+          "coin": 0,
+          "like": 52798,
+          "pubdate": "2025-07-11T04:00:00",
+          "mid": 406948276,
+          "author": "言和",
+          "danmaku": 2984,
+          "comment": 8631,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1Gs411D7C3",
+          "title": "【言和原创曲】向内生长-Corbeau Ver.",
+          "play_count": 607591,
+          "coin": 0,
+          "like": 10091,
+          "pubdate": "2015-04-09T06:32:23",
+          "mid": 341368,
+          "author": "JUSF周存",
+          "danmaku": 4634,
+          "comment": 2165,
+          "off_topic": false
+        }
+      ],
+      "definition": "Yan He — 上海禾念出品的中文 VOCALOID 角色。",
+      "group": "vocaloid_cn",
+      "related": [
+        "洛天依",
+        "乐正绫"
+      ]
+    },
+    {
+      "name": "赤羽",
+      "total_play_today": 26678384,
+      "result_count": 1000,
+      "delta_pct": 1,
+      "has_anomaly": false,
+      "trend": [
+        26335990,
+        26678384
+      ],
+      "top_videos": [
+        {
+          "bvid": "BV1zN411d7dG",
+          "title": "万象霜天【2021拜年纪单品】",
+          "play_count": 11898384,
+          "coin": 0,
+          "like": 360198,
+          "pubdate": "2021-02-11T14:12:02",
+          "mid": 326258472,
+          "author": "忘川风华录",
+          "danmaku": 13495,
+          "comment": 51463,
+          "off_topic": true
+        },
+        {
+          "bvid": "BV1p5411879s",
+          "title": "《苍蝇》 赤羽 原创",
+          "play_count": 10903981,
+          "coin": 0,
+          "like": 520518,
+          "pubdate": "2020-08-10T01:10:10",
+          "mid": 3379951,
+          "author": "ilem",
+          "danmaku": 52299,
+          "comment": 31072,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1nJ411q7ZR",
+          "title": "【赤羽x乐正绫】《赤伶》【炸裂戏腔】【原创剧情向pv附】",
+          "play_count": 2827932,
+          "coin": 0,
+          "like": 123314,
+          "pubdate": "2019-12-07T10:05:22",
+          "mid": 2468984,
+          "author": "鲜洋芋",
+          "danmaku": 10165,
+          "comment": 7749,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1q2tPeKEzW",
+          "title": "【忘川风华录·刘秀】拜云台【赤羽ver.】",
+          "play_count": 331100,
+          "coin": 0,
+          "like": 13547,
+          "pubdate": "2024-09-14T10:00:00",
+          "mid": 9416977,
+          "author": "坐标P",
+          "danmaku": 182,
+          "comment": 648,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV14oe4zZEg3",
+          "title": "首通！就在今天！十周年版 火苗 0塔 城堡之战 战役",
+          "play_count": 139833,
+          "coin": 0,
+          "like": 7651,
+          "pubdate": "2025-08-22T08:13:51",
+          "mid": 412706119,
+          "author": "赤羽Akaa",
+          "danmaku": 330,
+          "comment": 443,
+          "off_topic": true
+        }
+      ],
+      "definition": "Chiha — SynthV 中文女声音源。",
+      "group": "synthv",
+      "related": [
+        "Synthesizer V",
+        "星尘"
+      ]
+    },
+    {
+      "name": "星尘",
+      "total_play_today": 26521327,
+      "result_count": 1000,
+      "delta_pct": 11,
+      "has_anomaly": false,
+      "trend": [
+        23895606,
+        26521327
       ],
       "top_videos": [
         {
           "bvid": "BV1CVPoeNEq4",
           "title": "【星尘/诗岸/原创摇滚】反乌托邦 “至少我还在为你而歌唱，在黑暗漫长的反乌托邦”",
-          "play_count": 12785644,
+          "play_count": 12791220,
           "coin": 0,
-          "like": 1030522,
+          "like": 1031022,
           "pubdate": "2025-02-03T15:20:26",
-          "author": "",
+          "mid": 1858510441,
+          "author": "Utopia_乌托邦P",
+          "danmaku": 308571,
+          "comment": 75937,
           "off_topic": false
         },
         {
           "bvid": "BV1i3eGzPEdP",
           "title": "“生命是一万次的谎话，吊唁着梦和童话”星尘原创/空心人札记",
-          "play_count": 4080763,
+          "play_count": 4082007,
           "coin": 0,
-          "like": 538027,
+          "like": 538051,
           "pubdate": "2025-08-20T15:08:59",
-          "author": "",
+          "mid": 3546804614335126,
+          "author": "Calia_林焰",
+          "danmaku": 72344,
+          "comment": 27181,
           "off_topic": false
         },
         {
           "bvid": "BV1dP4y1T7TU",
           "title": "我多想说再见啊【星尘Infinity】[原创曲]",
-          "play_count": 2467960,
+          "play_count": 2468154,
           "coin": 0,
-          "like": 103132,
+          "like": 103136,
           "pubdate": "2022-03-25T09:22:54",
-          "author": "",
+          "mid": 238662476,
+          "author": "柯立可",
+          "danmaku": 2135,
+          "comment": 7392,
           "off_topic": false
         },
         {
           "bvid": "BV1Zs411D7vo",
           "title": "【星尘V4官方试听曲】星愿StarWish",
-          "play_count": 1830001,
+          "play_count": 1830066,
           "coin": 0,
           "like": 36484,
           "pubdate": "2016-02-26T06:53:59",
-          "author": "",
+          "mid": 15817819,
+          "author": "星尘Official",
+          "danmaku": 37908,
+          "comment": 34064,
           "off_topic": false
         },
         {
-          "bvid": "BV1Tj411B7xQ",
-          "title": "【星尘原创】《碎镜》——“我用泪与火尽力歌唱。”【星尘2023诞生日】",
-          "play_count": 1069483,
+          "bvid": "BV1dd4y1d7W5",
+          "title": "JOJO的奇妙冒险第三部解说，星尘斗士上半部24集290分钟解说，JOJO的奇妙冒险第三部上合集",
+          "play_count": 1637961,
           "coin": 0,
-          "like": 35895,
-          "pubdate": "2023-08-12T08:30:00",
-          "author": "",
+          "like": 28806,
+          "pubdate": "2022-08-25T19:39:21",
+          "mid": 60763598,
+          "author": "北秋的奇妙冒险",
+          "danmaku": 20525,
+          "comment": 391,
           "off_topic": false
         }
       ],
@@ -626,63 +754,164 @@
       ]
     },
     {
-      "name": "鏡音リン",
-      "total_play_today": 13084041,
+      "name": "乐正绫",
+      "total_play_today": 12567504,
       "result_count": 1000,
-      "delta_pct": 0,
+      "delta_pct": -1,
       "has_anomaly": false,
       "trend": [
-        13084041
+        12667823,
+        12567504
+      ],
+      "top_videos": [
+        {
+          "bvid": "BV1Qs411k7Qv",
+          "title": "【乐正绫原创】世末歌者【PV付/COSMOSⅡ】",
+          "play_count": 10133891,
+          "coin": 0,
+          "like": 360918,
+          "pubdate": "2016-08-25T14:15:41",
+          "mid": 396194,
+          "author": "COPY",
+          "danmaku": 167522,
+          "comment": 168224,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1vs4y1V7vc",
+          "title": "【乐正绫AI】《精卫》——“愿生命绽放再盛开，让它填没在大海”【原创PV付】",
+          "play_count": 621287,
+          "coin": 0,
+          "like": 19935,
+          "pubdate": "2023-03-07T02:00:00",
+          "mid": 12355462,
+          "author": "鬼面P",
+          "danmaku": 376,
+          "comment": 539,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1g1RyYpE7t",
+          "title": "乐正绫十周年纪念原创专辑《音樂》试听PV",
+          "play_count": 533300,
+          "coin": 0,
+          "like": 18706,
+          "pubdate": "2025-04-07T04:12:37",
+          "mid": 406948651,
+          "author": "乐正绫",
+          "danmaku": 1529,
+          "comment": 1720,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV17W2oY2EX9",
+          "title": "【洛天依X乐正绫】古风原创曲《碧天明月辞》原创PV付【古风文艺复兴计划#010】",
+          "play_count": 402918,
+          "coin": 0,
+          "like": 22762,
+          "pubdate": "2024-10-16T04:00:00",
+          "mid": 3842081,
+          "author": "RAiNSE雨观",
+          "danmaku": 224,
+          "comment": 546,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1yLcUz8EsM",
+          "title": "四月万万岁 | 乐正绫线下演唱会来啦！",
+          "play_count": 381788,
+          "coin": 0,
+          "like": 29352,
+          "pubdate": "2026-03-14T03:00:00",
+          "mid": 406948651,
+          "author": "乐正绫",
+          "danmaku": 357,
+          "comment": 1692,
+          "off_topic": false
+        }
+      ],
+      "definition": "Yuezheng Ling — 上海禾念出品的中文 VOCALOID 角色。",
+      "group": "vocaloid_cn",
+      "related": [
+        "洛天依",
+        "言和",
+        "徵羽摩柯"
+      ]
+    },
+    {
+      "name": "鏡音リン",
+      "total_play_today": 10719005,
+      "result_count": 1000,
+      "delta_pct": -18,
+      "has_anomaly": false,
+      "trend": [
+        13084041,
+        10719005
       ],
       "top_videos": [
         {
           "bvid": "BV1QW411P75t",
           "title": "【鏡音リン】少女A【椎名もた】",
-          "play_count": 5869543,
+          "play_count": 5871715,
           "coin": 0,
-          "like": 199253,
+          "like": 199337,
           "pubdate": "2018-05-31T23:45:06",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1wbwze5EwH",
-          "title": "【官方投稿】人マニア - 重音テト",
-          "play_count": 3333792,
-          "coin": 0,
-          "like": 315206,
-          "pubdate": "2025-01-19T06:10:52",
-          "author": "",
+          "mid": 82140882,
+          "author": "Kunon",
+          "danmaku": 96660,
+          "comment": 7337,
           "off_topic": false
         },
         {
           "bvid": "BV1A4jMzREkq",
           "title": "［中文字幕/FLAVOR FOLEY］Static ft. Hatsune Miku",
-          "play_count": 1866103,
+          "play_count": 1866849,
           "coin": 0,
-          "like": 68376,
+          "like": 68392,
           "pubdate": "2025-05-25T05:03:50",
-          "author": "",
+          "mid": 433501637,
+          "author": "天邪捏",
+          "danmaku": 13906,
+          "comment": 4731,
           "off_topic": false
         },
         {
           "bvid": "BV179AnzmEdN",
           "title": "【鏡音リン】稍微一点的哭腔的少女A复刻椎名もた",
-          "play_count": 1326445,
+          "play_count": 1333967,
           "coin": 0,
-          "like": 268715,
+          "like": 270060,
           "pubdate": "2026-03-20T08:58:02",
-          "author": "",
+          "mid": 53653003,
+          "author": "233奥特曼",
+          "danmaku": 8901,
+          "comment": 2790,
           "off_topic": false
         },
         {
-          "bvid": "BV1tf421Q7Wc",
-          "title": "【鏡音リン】恐怖！破绽！暴力性！【兎胎虚無子】",
-          "play_count": 298137,
+          "bvid": "BV1eZ4y1q7qA",
+          "title": "鏡音リン 鏡音レン「炉心融解+心+右肩之蝶」4K 中日字幕 39's Giving Day",
+          "play_count": 348658,
           "coin": 0,
-          "like": 18397,
-          "pubdate": "2024-06-22T15:48:58",
-          "author": "",
+          "like": 13734,
+          "pubdate": "2022-06-16T08:59:13",
+          "mid": 9855586,
+          "author": "ShinyRalts",
+          "danmaku": 929,
+          "comment": 550,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1Qs411v7aT",
+          "title": "【鏡音リン】难听系男子不会倒下【 LamazeP 】",
+          "play_count": 301341,
+          "coin": 0,
+          "like": 12670,
+          "pubdate": "2016-07-05T00:43:11",
+          "mid": 10849002,
+          "author": "乌青y",
+          "danmaku": 794,
+          "comment": 700,
           "off_topic": false
         }
       ],
@@ -694,72 +923,88 @@
       ]
     },
     {
-      "name": "乐正绫",
-      "total_play_today": 12667823,
+      "name": "虚拟歌手",
+      "total_play_today": 9853095,
       "result_count": 1000,
-      "delta_pct": 0,
+      "delta_pct": 96,
       "has_anomaly": false,
       "trend": [
-        12667823
+        5026172,
+        9853095
       ],
       "top_videos": [
         {
-          "bvid": "BV1Qs411k7Qv",
-          "title": "【乐正绫原创】世末歌者【PV付/COSMOSⅡ】",
-          "play_count": 10131157,
+          "bvid": "BV1yW4y137WQ",
+          "title": "【中文字幕】デビルじゃないもん【DECO*27 x ピノキオピー】",
+          "play_count": 2681993,
           "coin": 0,
-          "like": 360830,
-          "pubdate": "2016-08-25T14:15:41",
-          "author": "",
+          "like": 91854,
+          "pubdate": "2023-01-13T11:41:39",
+          "mid": 597934592,
+          "author": "中门对狙第一人",
+          "danmaku": 7239,
+          "comment": 3774,
+          "off_topic": true
+        },
+        {
+          "bvid": "BV1H24y187Ko",
+          "title": "【AI翻唱/SoVITS 4.1】手把手教你老婆唱歌给你听~无需配置环境的本地训练/推理教程[懒人整合包]",
+          "play_count": 2174326,
+          "coin": 0,
+          "like": 76780,
+          "pubdate": "2023-03-02T09:30:00",
+          "mid": 3493141443250876,
+          "author": "羽毛布団",
+          "danmaku": 1485,
+          "comment": 13917,
           "off_topic": false
         },
         {
-          "bvid": "BV1vs4y1V7vc",
-          "title": "【乐正绫AI】《精卫》——“愿生命绽放再盛开，让它填没在大海”【原创PV付】",
-          "play_count": 621260,
+          "bvid": "BV1ZoiTeeEL5",
+          "title": "《骂谁罕见》完整版未剪辑版，全网首发！",
+          "play_count": 1438095,
           "coin": 0,
-          "like": 19935,
-          "pubdate": "2023-03-07T02:00:00",
-          "author": "",
-          "off_topic": false
+          "like": 40661,
+          "pubdate": "2024-08-02T02:20:29",
+          "mid": 627342328,
+          "author": "天才歌手東雪蓮",
+          "danmaku": 1764,
+          "comment": 2274,
+          "off_topic": true
         },
         {
-          "bvid": "BV1g1RyYpE7t",
-          "title": "乐正绫十周年纪念原创专辑《音樂》试听PV",
-          "play_count": 533264,
+          "bvid": "BV1Sy411h7se",
+          "title": "初 音 采 访",
+          "play_count": 1372698,
           "coin": 0,
-          "like": 18706,
-          "pubdate": "2025-04-07T04:12:37",
-          "author": "",
-          "off_topic": false
+          "like": 215491,
+          "pubdate": "2024-06-09T08:15:00",
+          "mid": 5197192,
+          "author": "正義segi",
+          "danmaku": 1322,
+          "comment": 1573,
+          "off_topic": true
         },
         {
-          "bvid": "BV17W2oY2EX9",
-          "title": "【洛天依X乐正绫】古风原创曲《碧天明月辞》原创PV付【古风文艺复兴计划#010】",
-          "play_count": 402874,
+          "bvid": "BV1mN4y1V7GL",
+          "title": "听我狡辩！我真的是正经歌势啊！！【小缘查房记】",
+          "play_count": 395048,
           "coin": 0,
-          "like": 22761,
-          "pubdate": "2024-10-16T04:00:00",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1yLcUz8EsM",
-          "title": "四月万万岁 | 乐正绫线下演唱会来啦！",
-          "play_count": 381455,
-          "coin": 0,
-          "like": 29300,
-          "pubdate": "2026-03-14T03:00:00",
-          "author": "",
-          "off_topic": false
+          "like": 26917,
+          "pubdate": "2022-08-06T07:21:24",
+          "mid": 43272050,
+          "author": "穆小泠Official",
+          "danmaku": 226,
+          "comment": 416,
+          "off_topic": true
         }
       ],
-      "definition": "Yuezheng Ling — 上海禾念出品的中文 VOCALOID 角色。",
-      "group": "vocaloid_cn",
+      "definition": "以虚拟形象呈现的合成歌声角色的统称。",
+      "group": "umbrella",
       "related": [
-        "洛天依",
-        "言和",
-        "徵羽摩柯"
+        "術力口",
+        "初音ミク",
+        "洛天依"
       ]
     },
     {
@@ -833,62 +1078,78 @@
     },
     {
       "name": "徵羽摩柯",
-      "total_play_today": 5418623,
+      "total_play_today": 5040480,
       "result_count": 1000,
-      "delta_pct": 0,
+      "delta_pct": -7,
       "has_anomaly": false,
       "trend": [
-        5418623
+        5418623,
+        5040480
       ],
       "top_videos": [
         {
           "bvid": "BV1TG4y137S8",
           "title": "【徵羽摩柯原创曲】无理无智【异托邦LOVETOPIA】",
-          "play_count": 1507089,
+          "play_count": 1507302,
           "coin": 0,
-          "like": 65543,
+          "like": 65548,
           "pubdate": "2022-12-10T10:00:00",
-          "author": "",
+          "mid": 112428,
+          "author": "阿良良木健",
+          "danmaku": 6731,
+          "comment": 9810,
           "off_topic": false
         },
         {
           "bvid": "BV1ss411377E",
           "title": "【徵羽摩柯原创曲】你好，世界！【摩柯印象曲】",
-          "play_count": 1154269,
+          "play_count": 1154294,
           "coin": 0,
-          "like": 50139,
+          "like": 50141,
           "pubdate": "2018-08-03T00:15:57",
-          "author": "",
+          "mid": 228147,
+          "author": "OQQ_",
+          "danmaku": 16302,
+          "comment": 19457,
           "off_topic": false
         },
         {
           "bvid": "BV13t411d7s7",
           "title": "【徵羽摩柯原创曲】戴帽子的孩子",
-          "play_count": 979456,
+          "play_count": 979520,
           "coin": 0,
-          "like": 33537,
+          "like": 33538,
           "pubdate": "2018-10-25T02:50:12",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1RgKZzpEbA",
-          "title": "少年汹涌·暗涌版【歌词PV】【徵羽摩柯】【异托邦LOVETOPIA】",
-          "play_count": 388529,
-          "coin": 0,
-          "like": 28277,
-          "pubdate": "2025-06-27T10:00:00",
-          "author": "",
+          "mid": 341368,
+          "author": "JUSF周存",
+          "danmaku": 2242,
+          "comment": 4694,
           "off_topic": false
         },
         {
           "bvid": "BV1tF2QBMEuB",
           "title": "【徵羽摩柯原创曲】铜羽乘风【2025官方生贺曲】",
-          "play_count": 353084,
+          "play_count": 353130,
           "coin": 0,
-          "like": 17396,
+          "like": 17403,
           "pubdate": "2025-12-10T04:00:00",
-          "author": "",
+          "mid": 406949083,
+          "author": "徵羽摩柯",
+          "danmaku": 509,
+          "comment": 1758,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1mJ411v7Em",
+          "title": "【徵羽摩柯原创曲】虚拟少年",
+          "play_count": 331363,
+          "coin": 0,
+          "like": 17845,
+          "pubdate": "2019-12-09T16:00:14",
+          "mid": 406949083,
+          "author": "徵羽摩柯",
+          "danmaku": 1822,
+          "comment": 1896,
           "off_topic": false
         }
       ],
@@ -897,75 +1158,6 @@
       "related": [
         "乐正绫",
         "墨清弦"
-      ]
-    },
-    {
-      "name": "虚拟歌手",
-      "total_play_today": 5026172,
-      "result_count": 1000,
-      "delta_pct": 0,
-      "has_anomaly": false,
-      "trend": [
-        5026172
-      ],
-      "top_videos": [
-        {
-          "bvid": "BV1ZoiTeeEL5",
-          "title": "《骂谁罕见》完整版未剪辑版，全网首发！",
-          "play_count": 1437888,
-          "coin": 0,
-          "like": 40656,
-          "pubdate": "2024-08-02T02:20:29",
-          "author": "",
-          "off_topic": true
-        },
-        {
-          "bvid": "BV1Sy411h7se",
-          "title": "初 音 采 访",
-          "play_count": 1372684,
-          "coin": 0,
-          "like": 215491,
-          "pubdate": "2024-06-09T08:15:00",
-          "author": "",
-          "off_topic": true
-        },
-        {
-          "bvid": "BV1oPXDBTErH",
-          "title": "虚拟歌手大PK！每日总分排行可视化（2025.03-2026.03）",
-          "play_count": 320519,
-          "coin": 0,
-          "like": 7934,
-          "pubdate": "2026-03-29T10:00:00",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1AzWZzLEaL",
-          "title": "B站VUP虚拟主播歌曲投稿综合榜top100（截至2025.10.22）",
-          "play_count": 250101,
-          "coin": 0,
-          "like": 6602,
-          "pubdate": "2025-10-22T01:48:00",
-          "author": "",
-          "off_topic": true
-        },
-        {
-          "bvid": "BV1MkXNYNExz",
-          "title": "哪些知名P主喜欢用冷门歌姬？",
-          "play_count": 249723,
-          "coin": 0,
-          "like": 12753,
-          "pubdate": "2025-03-20T10:40:20",
-          "author": "",
-          "off_topic": false
-        }
-      ],
-      "definition": "以虚拟形象呈现的合成歌声角色的统称。",
-      "group": "umbrella",
-      "related": [
-        "術力口",
-        "初音ミク",
-        "洛天依"
       ]
     },
     {
@@ -1039,62 +1231,78 @@
     },
     {
       "name": "結月ゆかり",
-      "total_play_today": 4027813,
+      "total_play_today": 4595489,
       "result_count": 1000,
-      "delta_pct": 0,
+      "delta_pct": 14,
       "has_anomaly": false,
       "trend": [
-        4027813
+        4027813,
+        4595489
       ],
       "top_videos": [
         {
           "bvid": "BV1bs41197Th",
           "title": "【結月ゆかり】啾噜哩啦·啾噜哩啦·哒哒哒！【くらげP】",
-          "play_count": 1795273,
+          "play_count": 1795513,
           "coin": 0,
-          "like": 49715,
+          "like": 49719,
           "pubdate": "2016-02-22T10:41:55",
-          "author": "",
+          "mid": 24535677,
+          "author": "和田たけあき",
+          "danmaku": 5886,
+          "comment": 2321,
           "off_topic": false
         },
         {
           "bvid": "BV1js411f7tE",
           "title": "【結月ゆかり】似乎有着能够变得幸福的隐藏指令",
-          "play_count": 1070668,
+          "play_count": 1070845,
           "coin": 0,
-          "like": 39350,
+          "like": 39356,
           "pubdate": "2013-07-01T07:33:00",
-          "author": "",
+          "mid": 186935,
+          "author": "trance羯",
+          "danmaku": 1491,
+          "comment": 994,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1ps41167SN",
+          "title": "【結月ゆかり】Check Check Check One Two！【くらげP】",
+          "play_count": 550228,
+          "coin": 0,
+          "like": 11759,
+          "pubdate": "2016-08-30T07:46:26",
+          "mid": 24535677,
+          "author": "和田たけあき",
+          "danmaku": 1505,
+          "comment": 1013,
           "off_topic": false
         },
         {
           "bvid": "BV1D66hY7E1C",
           "title": "[Phigros] 雪降り ~雪が降っている~ (Full Ver.) - AiSS w/ 夜輪 ft. 結月ゆかり",
-          "play_count": 385939,
+          "play_count": 386144,
           "coin": 0,
-          "like": 18169,
+          "like": 18175,
           "pubdate": "2024-12-30T16:00:00",
-          "author": "",
+          "mid": 8351435,
+          "author": "_AiSS",
+          "danmaku": 1118,
+          "comment": 1042,
           "off_topic": false
         },
         {
           "bvid": "BV1Tx411m7nK",
           "title": "【結月ゆかり】我的新曲还没作完吗？【LamazeP/ラマーズP】",
-          "play_count": 275397,
+          "play_count": 275462,
           "coin": 0,
-          "like": 8798,
+          "like": 8799,
           "pubdate": "2017-05-03T22:12:59",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1bW411r7WY",
-          "title": "【結月ゆかり】几望之月【なきゃむりゃ】",
-          "play_count": 223197,
-          "coin": 0,
-          "like": 7397,
-          "pubdate": "2018-09-22T04:18:07",
-          "author": "",
+          "mid": 3209711,
+          "author": "SakaBrianYuW2",
+          "danmaku": 581,
+          "comment": 339,
           "off_topic": false
         }
       ],
@@ -1106,269 +1314,162 @@
       ]
     },
     {
-      "name": "術力口",
-      "total_play_today": 2379267,
+      "name": "鏡音レン",
+      "total_play_today": 3518554,
       "result_count": 1000,
       "delta_pct": 0,
       "has_anomaly": false,
       "trend": [
-        2379267
+        3518554
       ],
       "top_videos": [
         {
-          "bvid": "BV1PXh3zvEgw",
-          "title": "【ch/country humans/历史向手书/术力口】T氏の話を信じるな",
-          "play_count": 814629,
+          "bvid": "BV1g8411Y7oW",
+          "title": "ラヴィ(Lavie) / すりぃ feat.鏡音レン",
+          "play_count": 1109831,
           "coin": 0,
-          "like": 130675,
-          "pubdate": "2025-08-03T08:20:52",
-          "author": "",
+          "like": 41306,
+          "pubdate": "2022-10-29T10:25:18",
+          "mid": 62880505,
+          "author": "rotbala",
+          "danmaku": 460,
+          "comment": 1120,
           "off_topic": false
         },
         {
-          "bvid": "BV1MmsMzSEPn",
-          "title": "【术力口歌单🎧】氛围相对安静的术曲 | 1h个人向",
-          "play_count": 479268,
+          "bvid": "BV1ZJ411S7Wn",
+          "title": "「鏡音鈴」「Unknown Mother-Goose」Sour式鏡音Rin「MMD杯ZERO2」",
+          "play_count": 844175,
           "coin": 0,
-          "like": 43615,
-          "pubdate": "2025-10-20T03:55:45",
-          "author": "",
+          "like": 54856,
+          "pubdate": "2019-11-14T09:50:16",
+          "mid": 65240243,
+          "author": "pizacg",
+          "danmaku": 2140,
+          "comment": 1461,
           "off_topic": false
         },
         {
-          "bvid": "BV193DiBEEaP",
-          "title": "Bili_Board术力口周榜第96期2026年4月8日第14周",
-          "play_count": 256310,
+          "bvid": "BV1eZ4y1q7qA",
+          "title": "鏡音リン 鏡音レン「炉心融解+心+右肩之蝶」4K 中日字幕 39's Giving Day",
+          "play_count": 348658,
           "coin": 0,
-          "like": 18311,
-          "pubdate": "2026-04-08T10:00:00",
-          "author": "",
+          "like": 13734,
+          "pubdate": "2022-06-16T08:59:13",
+          "mid": 9855586,
+          "author": "ShinyRalts",
+          "danmaku": 929,
+          "comment": 550,
           "off_topic": false
         },
         {
-          "bvid": "BV1C4s5ztEbF",
-          "title": "【术力口合集】21首精选术曲听个爽！！！",
-          "play_count": 217746,
+          "bvid": "BV1QYfnB4EU8",
+          "title": "【中文字幕】Ego Renegade Boy/自我叛逆的男孩 鏡音レン【FLAVOR FOLEY】",
+          "play_count": 321665,
           "coin": 0,
-          "like": 4764,
-          "pubdate": "2025-10-23T16:20:30",
-          "author": "",
+          "like": 29823,
+          "pubdate": "2026-02-21T10:35:51",
+          "mid": 483620385,
+          "author": "一个无聊的念",
+          "danmaku": 892,
+          "comment": 554,
           "off_topic": false
         },
         {
-          "bvid": "BV1y4SDB6EQt",
-          "title": "术力口但是好听就切",
-          "play_count": 202317,
+          "bvid": "BV13x411w7QZ",
+          "title": "【神威がくぽ･KAITO･鏡音レン】悖德的記憶〜The Lost Memory〜【natsuP】",
+          "play_count": 167841,
           "coin": 0,
-          "like": 3839,
-          "pubdate": "2026-04-05T12:24:54",
-          "author": "",
+          "like": 2451,
+          "pubdate": "2011-12-01T23:21:11",
+          "mid": 133076,
+          "author": "BILI君的音樂工房",
+          "danmaku": 3751,
+          "comment": 332,
           "off_topic": false
         }
       ],
-      "definition": "VOCALOID 的中文谐音/代称，B站最常用的总称标签。",
-      "group": "umbrella",
-      "related": [
-        "电子人声",
-        "人声合成",
-        "VOCALOID",
-        "虚拟歌手"
-      ]
-    },
-    {
-      "name": "IA",
-      "total_play_today": 2310211,
-      "result_count": 1000,
-      "delta_pct": 0,
-      "has_anomaly": false,
-      "trend": [
-        2310211
-      ],
-      "top_videos": [
-        {
-          "bvid": "BV1ax411w7gM",
-          "title": "【IA】六兆年と一夜物語【kemu】",
-          "play_count": 1901171,
-          "coin": 0,
-          "like": 67847,
-          "pubdate": "2012-04-11T11:19:27",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1A5fpBEENJ",
-          "title": "【本家投稿】ノウナイディスコ / r-906 feat. IA",
-          "play_count": 176153,
-          "coin": 0,
-          "like": 24448,
-          "pubdate": "2026-02-21T15:11:23",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV11Mnwz7EYo",
-          "title": "【TOP10】IA人气歌曲排行榜（完整版）",
-          "play_count": 89952,
-          "coin": 0,
-          "like": 3868,
-          "pubdate": "2025-09-22T12:07:54",
-          "author": "",
-          "off_topic": true
-        },
-        {
-          "bvid": "BV1Dm4y1n77x",
-          "title": "从IA设计师到天才漫画家！聊聊辉夜原作赤坂明那些不为人知的作品",
-          "play_count": 67947,
-          "coin": 0,
-          "like": 1798,
-          "pubdate": "2023-08-16T02:44:51",
-          "author": "",
-          "off_topic": true
-        },
-        {
-          "bvid": "BV1Ut8MzcEpL",
-          "title": "你可能不认识我但你大概听过我的歌",
-          "play_count": 30813,
-          "coin": 0,
-          "like": 3497,
-          "pubdate": "2025-07-24T09:36:08",
-          "author": "",
-          "off_topic": true
-        }
-      ],
-      "definition": "1st Place 出品的 VOCALOID 角色，以空灵音色著称。",
+      "definition": "Kagamine Len — Crypton 双子角色之一，少年音色。",
       "group": "vocaloid_jp",
       "related": [
-        "GUMI",
-        "flower"
-      ]
-    },
-    {
-      "name": "墨清弦",
-      "total_play_today": 1976401,
-      "result_count": 1000,
-      "delta_pct": 0,
-      "has_anomaly": false,
-      "trend": [
-        1976401
-      ],
-      "top_videos": [
-        {
-          "bvid": "BV1dCEXzBEZZ",
-          "title": "【墨清弦原创曲】独占春【2025官方生贺曲】",
-          "play_count": 541687,
-          "coin": 0,
-          "like": 23081,
-          "pubdate": "2025-05-20T04:00:00",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1KD421A7uS",
-          "title": "【墨清弦AI原创曲】绝对占有【2024官方生贺曲】",
-          "play_count": 458195,
-          "coin": 0,
-          "like": 18428,
-          "pubdate": "2024-05-20T04:00:00",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1J4411j7mn",
-          "title": "【墨清弦】ACE",
-          "play_count": 430165,
-          "coin": 0,
-          "like": 25036,
-          "pubdate": "2019-05-20T04:00:54",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1ebbQzxEbj",
-          "title": "讲讲Vsinger的形象和背后画师们的故事",
-          "play_count": 377410,
-          "coin": 0,
-          "like": 14017,
-          "pubdate": "2025-07-25T11:54:39",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1ksJ3zeE8k",
-          "title": "【墨清弦feat.单依纯】《珠玉》|“心上人流浪的白发天涯，哪里懂 镜月水花”【墨清弦七周年】",
-          "play_count": 73885,
-          "coin": 0,
-          "like": 3917,
-          "pubdate": "2025-05-18T09:32:44",
-          "author": "",
-          "off_topic": false
-        }
-      ],
-      "definition": "Mo Qingxian — 上海禾念出品的中文 VOCALOID 角色。",
-      "group": "vocaloid_cn",
-      "related": [
-        "洛天依",
-        "徵羽摩柯"
+        "鏡音リン",
+        "初音ミク"
       ]
     },
     {
       "name": "Synthesizer V",
-      "total_play_today": 1689826,
+      "total_play_today": 3329125,
       "result_count": 1000,
-      "delta_pct": 0,
+      "delta_pct": 97,
       "has_anomaly": false,
       "trend": [
-        1689826
+        1689826,
+        3329125
       ],
       "top_videos": [
         {
+          "bvid": "BV1me73z6E4j",
+          "title": "【ANRI Arcane原创】私はあの花火大会に行かなかった/我没有去那场烟火大会",
+          "play_count": 950749,
+          "coin": 0,
+          "like": 167943,
+          "pubdate": "2025-06-01T04:57:18",
+          "mid": 443969017,
+          "author": "神经罐头",
+          "danmaku": 2754,
+          "comment": 2154,
+          "off_topic": false
+        },
+        {
           "bvid": "BV1gF411Z7SW",
           "title": "【Mai】今はいいんだよ。/可以不再继续逞强了哦。【Synthesizer V Cover】",
-          "play_count": 626931,
+          "play_count": 627000,
           "coin": 0,
           "like": 34301,
           "pubdate": "2023-08-09T11:00:00",
-          "author": "",
+          "mid": 151165899,
+          "author": "落桜飘雪",
+          "danmaku": 126,
+          "comment": 770,
           "off_topic": false
         },
         {
           "bvid": "BV1vs4y177QG",
           "title": "【Synthesizer V AI 重音 Teto】Alive / デスおはぎ【Power 声线试听】",
-          "play_count": 438178,
+          "play_count": 438215,
           "coin": 0,
-          "like": 18416,
+          "like": 18418,
           "pubdate": "2023-04-03T03:33:31",
-          "author": "",
+          "mid": 8109148,
+          "author": "LinR隐卫-v1Tuner",
+          "danmaku": 389,
+          "comment": 773,
           "off_topic": false
         },
         {
-          "bvid": "BV1FT4y177VT",
-          "title": "Synthesizer V声库全盘点【截至2025年8月21日，持续更新】",
-          "play_count": 174346,
+          "bvid": "BV1tp4y1J7bK",
+          "title": "【重音テトSV】吉原哀歌-再来盤-【亜沙】",
+          "play_count": 305849,
           "coin": 0,
-          "like": 4549,
-          "pubdate": "2020-08-15T05:10:29",
-          "author": "",
+          "like": 17150,
+          "pubdate": "2023-08-18T12:13:24",
+          "mid": 488817090,
+          "author": "百合咲奈奈",
+          "danmaku": 287,
+          "comment": 538,
           "off_topic": false
         },
         {
-          "bvid": "BV1BK41117Bd",
-          "title": "Synthesizer V 零基础详细中文教程（上集-创作篇）",
-          "play_count": 166485,
+          "bvid": "BV15z421D7fR",
+          "title": "【星尘Infinity】庆长生【Synthesizer V Cover】",
+          "play_count": 177986,
           "coin": 0,
-          "like": 4918,
-          "pubdate": "2023-01-06T12:00:00",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1QL4y1T7ib",
-          "title": "【V4】小白也能轻松掌握的Vocaloid教学，助你速速成为百万p主！",
-          "play_count": 48713,
-          "coin": 0,
-          "like": 2409,
-          "pubdate": "2022-03-15T03:37:35",
-          "author": "",
+          "like": 5696,
+          "pubdate": "2024-04-28T04:23:01",
+          "mid": 273891297,
+          "author": "磷元素P",
+          "danmaku": 29,
+          "comment": 98,
           "off_topic": false
         }
       ],
@@ -1382,200 +1483,79 @@
       ]
     },
     {
-      "name": "人声合成",
-      "total_play_today": 1449602,
+      "name": "UTAU",
+      "total_play_today": 2551812,
       "result_count": 1000,
-      "delta_pct": 0,
+      "delta_pct": 122,
       "has_anomaly": false,
       "trend": [
-        1449602
+        1148029,
+        2551812
       ],
       "top_videos": [
         {
-          "bvid": "BV1YQ4y1K7uj",
-          "title": "【AU人声教程】让你视频的声音更好听①（振幅与压限）如何让女声甜美动人男声低沉性感，简单几步让你的音频视频vlog声音变好听",
-          "play_count": 463472,
+          "bvid": "BV1YXY5ezEPq",
+          "title": "【重音テト||医学】明明曾爱着你【UTAUカバー】",
+          "play_count": 1387231,
           "coin": 0,
-          "like": 13099,
-          "pubdate": "2020-04-06T11:28:29",
-          "author": "",
-          "off_topic": true
-        },
-        {
-          "bvid": "BV1uT411M7k3",
-          "title": "《Daisy Bell》第一首自上世纪电脑合成的人声歌曲",
-          "play_count": 256639,
-          "coin": 0,
-          "like": 8150,
-          "pubdate": "2022-09-09T13:24:21",
-          "author": "",
-          "off_topic": true
-        },
-        {
-          "bvid": "BV1o44y197J2",
-          "title": "【干货分享】教你一键分离人声、伴奏和音效",
-          "play_count": 252261,
-          "coin": 0,
-          "like": 4972,
-          "pubdate": "2023-01-04T10:38:20",
-          "author": "",
-          "off_topic": true
-        },
-        {
-          "bvid": "BV1v64y1r7g2",
-          "title": "【人声混音】5分钟教你学会后期人声混音的公式！用最快最简单的方法做出好听的人声混音～ 翻唱，说唱，原创都可以用的干货！",
-          "play_count": 142925,
-          "coin": 0,
-          "like": 4987,
-          "pubdate": "2021-06-14T15:08:20",
-          "author": "",
+          "like": 62122,
+          "pubdate": "2024-08-10T03:11:04",
+          "mid": 598684844,
+          "author": "samuton9574",
+          "danmaku": 1385,
+          "comment": 958,
           "off_topic": false
         },
         {
-          "bvid": "BV1w7411u7Tb",
-          "title": "5分钟教你人声增强和背景降噪！",
-          "play_count": 51850,
-          "coin": 0,
-          "like": 615,
-          "pubdate": "2020-02-24T07:22:43",
-          "author": "",
-          "off_topic": true
-        }
-      ],
-      "definition": "语音合成技术的通用术语，包括歌声和语音。",
-      "group": "umbrella",
-      "related": [
-        "術力口",
-        "电子人声"
-      ]
-    },
-    {
-      "name": "电子人声",
-      "total_play_today": 1184371,
-      "result_count": 1000,
-      "delta_pct": 0,
-      "has_anomaly": false,
-      "trend": [
-        1184371
-      ],
-      "top_videos": [
-        {
-          "bvid": "BV1YQ4y1K7uj",
-          "title": "【AU人声教程】让你视频的声音更好听①（振幅与压限）如何让女声甜美动人男声低沉性感，简单几步让你的音频视频vlog声音变好听",
-          "play_count": 463472,
-          "coin": 0,
-          "like": 13099,
-          "pubdate": "2020-04-06T11:28:29",
-          "author": "",
-          "off_topic": true
-        },
-        {
-          "bvid": "BV1o44y197J2",
-          "title": "【干货分享】教你一键分离人声、伴奏和音效",
-          "play_count": 252261,
-          "coin": 0,
-          "like": 4972,
-          "pubdate": "2023-01-04T10:38:20",
-          "author": "",
-          "off_topic": true
-        },
-        {
-          "bvid": "BV1Lx4y147Yb",
-          "title": "【纯人声/伴奏】Super Power无畏契约·Valorant2024冠军赛主题曲音乐（自制）",
-          "play_count": 110549,
-          "coin": 0,
-          "like": 1404,
-          "pubdate": "2024-07-23T17:35:55",
-          "author": "",
-          "off_topic": true
-        },
-        {
-          "bvid": "BV1Ugy5YBEUG",
-          "title": "四款人声分离软件，哪个更强？离谱的QQ音乐居然也可以？",
-          "play_count": 66979,
-          "coin": 0,
-          "like": 487,
-          "pubdate": "2024-10-21T08:02:57",
-          "author": "",
-          "off_topic": true
-        },
-        {
-          "bvid": "BV1m14y1R7su",
-          "title": "人声分离 I Die For You——无畏契约 / Grabbitz",
-          "play_count": 57416,
-          "coin": 0,
-          "like": 1494,
-          "pubdate": "2023-07-07T11:27:20",
-          "author": "",
-          "off_topic": true
-        }
-      ],
-      "definition": "泛指所有电子合成人声技术及作品。",
-      "group": "umbrella",
-      "related": [
-        "術力口",
-        "人声合成",
-        "虚拟歌手"
-      ]
-    },
-    {
-      "name": "UTAU",
-      "total_play_today": 1148029,
-      "result_count": 1000,
-      "delta_pct": 0,
-      "has_anomaly": false,
-      "trend": [
-        1148029
-      ],
-      "top_videos": [
-        {
           "bvid": "BV1Xt411275k",
           "title": "【UTAU教程】UTAU超好用！【应该是完结了】",
-          "play_count": 558570,
+          "play_count": 558617,
           "coin": 0,
-          "like": 18731,
+          "like": 18734,
           "pubdate": "2018-11-16T10:00:06",
-          "author": "",
+          "mid": 1323266,
+          "author": "某只泽",
+          "danmaku": 1792,
+          "comment": 3124,
           "off_topic": false
         },
         {
           "bvid": "BV1TGRWYsEBh",
           "title": "我好像下载了错误的UTAU...",
-          "play_count": 270744,
+          "play_count": 270788,
           "coin": 0,
-          "like": 5101,
+          "like": 5102,
           "pubdate": "2025-03-08T16:49:08",
-          "author": "",
+          "mid": 35234989,
+          "author": "Ryuro1779",
+          "danmaku": 499,
+          "comment": 522,
           "off_topic": false
         },
         {
           "bvid": "BV1KkAFzvEhA",
           "title": "【愛音フカ】猛毒注意cover【utau音源配布】",
-          "play_count": 217592,
+          "play_count": 219408,
           "coin": 0,
-          "like": 65164,
+          "like": 65511,
           "pubdate": "2026-03-21T06:00:00",
-          "author": "",
+          "mid": 3690991053703575,
+          "author": "爱音芙歌_official",
+          "danmaku": 171,
+          "comment": 687,
           "off_topic": false
         },
         {
-          "bvid": "BV1Zv4y16753",
-          "title": "新人自学一天utau能到什么程度捏！【ナースロボ＿タイプＴ _Milk】心拍数#0822【UTAU cover】",
-          "play_count": 40339,
+          "bvid": "BV1w4iEB5Ebu",
+          "title": "【中文字幕/唄音ウタ】只の人/只身一人【犬ドリンク】",
+          "play_count": 33909,
           "coin": 0,
-          "like": 945,
-          "pubdate": "2023-01-31T07:07:59",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1e3vrBfE5H",
-          "title": "【干货】Open utau超详细教程！",
-          "play_count": 21004,
-          "coin": 0,
-          "like": 968,
-          "pubdate": "2025-12-28T07:04:04",
-          "author": "",
+          "like": 2167,
+          "pubdate": "2026-01-04T12:39:06",
+          "mid": 3546835859802390,
+          "author": "能言_Noin",
+          "danmaku": 12,
+          "comment": 22,
           "off_topic": false
         }
       ],
@@ -1588,63 +1568,333 @@
       ]
     },
     {
-      "name": "NEUTRINO",
-      "total_play_today": 1098022,
+      "name": "IA",
+      "total_play_today": 2367374,
       "result_count": 1000,
-      "delta_pct": 0,
+      "delta_pct": 2,
       "has_anomaly": false,
       "trend": [
-        1098022
+        2310211,
+        2367374
       ],
       "top_videos": [
         {
-          "bvid": "BV1ih4y1N7iS",
-          "title": "【中文字幕】在栀子树还未干枯之前/クチナシの木が朽ちる前に【ox】",
-          "play_count": 382722,
+          "bvid": "BV1ax411w7gM",
+          "title": "【IA】六兆年と一夜物語【kemu】",
+          "play_count": 1901302,
           "coin": 0,
-          "like": 17603,
-          "pubdate": "2023-08-30T06:27:31",
-          "author": "",
+          "like": 67848,
+          "pubdate": "2012-04-11T11:19:27",
+          "mid": 215715,
+          "author": "Lynn_Campbell_",
+          "danmaku": 6028,
+          "comment": 2921,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1A5fpBEENJ",
+          "title": "【本家投稿】ノウナイディスコ / r-906 feat. IA",
+          "play_count": 176412,
+          "coin": 0,
+          "like": 24464,
+          "pubdate": "2026-02-21T15:11:23",
+          "mid": 3706924254103921,
+          "author": "r-906_arukuremu",
+          "danmaku": 288,
+          "comment": 1355,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV16o4y1176J",
+          "title": "【IA・初音ミク】重奏奥尔良【じょるじん(暗黒童話P)】",
+          "play_count": 141648,
+          "coin": 0,
+          "like": 3176,
+          "pubdate": "2021-05-30T13:35:17",
+          "mid": 161813534,
+          "author": "繝ウ繝-ヨ",
+          "danmaku": 196,
+          "comment": 103,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV11Mnwz7EYo",
+          "title": "【TOP10】IA人气歌曲排行榜（完整版）",
+          "play_count": 90003,
+          "coin": 0,
+          "like": 3868,
+          "pubdate": "2025-09-22T12:07:54",
+          "mid": 14577351,
+          "author": "小小佐仓千代",
+          "danmaku": 299,
+          "comment": 351,
           "off_topic": true
         },
         {
-          "bvid": "BV1MQ4y1w7Jz",
-          "title": "ずんだもんの朝食 NEUTRINO ver (俊达萌演唱版)",
-          "play_count": 236489,
+          "bvid": "BV1Ut8MzcEpL",
+          "title": "你可能不认识我但你大概听过我的歌",
+          "play_count": 30826,
           "coin": 0,
-          "like": 6555,
-          "pubdate": "2024-01-15T10:28:53",
-          "author": "",
+          "like": 3497,
+          "pubdate": "2025-07-24T09:36:08",
+          "mid": 384004149,
+          "author": "71786696177_bili",
+          "danmaku": 53,
+          "comment": 156,
+          "off_topic": true
+        }
+      ],
+      "definition": "1st Place 出品的 VOCALOID 角色，以空灵音色著称。",
+      "group": "vocaloid_jp",
+      "related": [
+        "GUMI",
+        "flower"
+      ]
+    },
+    {
+      "name": "術力口",
+      "total_play_today": 2107939,
+      "result_count": 1000,
+      "delta_pct": -11,
+      "has_anomaly": false,
+      "trend": [
+        2379267,
+        2107939
+      ],
+      "top_videos": [
+        {
+          "bvid": "BV1PXh3zvEgw",
+          "title": "【ch/country humans/历史向手书/术力口】T氏の話を信じるな",
+          "play_count": 814796,
+          "coin": 0,
+          "like": 130683,
+          "pubdate": "2025-08-03T08:20:52",
+          "mid": 1191923567,
+          "author": "七乾秦妖Violet",
+          "danmaku": 859,
+          "comment": 1721,
           "off_topic": false
+        },
+        {
+          "bvid": "BV193DiBEEaP",
+          "title": "Bili_Board术力口周榜第96期2026年4月8日第14周",
+          "play_count": 266421,
+          "coin": 0,
+          "like": 18740,
+          "pubdate": "2026-04-08T10:00:00",
+          "mid": 3546800279522160,
+          "author": "Bili-Board_Atel",
+          "danmaku": 31892,
+          "comment": 1974,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1C4s5ztEbF",
+          "title": "【术力口合集】21首精选术曲听个爽！！！",
+          "play_count": 217846,
+          "coin": 0,
+          "like": 4765,
+          "pubdate": "2025-10-23T16:20:30",
+          "mid": 474155540,
+          "author": "异世界大运摩托",
+          "danmaku": 1279,
+          "comment": 214,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1y4SDB6EQt",
+          "title": "术力口但是好听就切",
+          "play_count": 210288,
+          "coin": 0,
+          "like": 3951,
+          "pubdate": "2026-04-05T12:24:54",
+          "mid": 1714024272,
+          "author": "Rs愚人节",
+          "danmaku": 3023,
+          "comment": 346,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1uywCzFEXJ",
+          "title": "【术力口/作业向】40首术曲共2小时合集",
+          "play_count": 120202,
+          "coin": 0,
+          "like": 3322,
+          "pubdate": "2026-03-19T04:59:52",
+          "mid": 1094980434,
+          "author": "潜水的咕咕嘎嘎",
+          "danmaku": 661,
+          "comment": 83,
+          "off_topic": false
+        }
+      ],
+      "definition": "VOCALOID 的中文谐音/代称，B站最常用的总称标签。",
+      "group": "umbrella",
+      "related": [
+        "电子人声",
+        "人声合成",
+        "VOCALOID",
+        "虚拟歌手"
+      ]
+    },
+    {
+      "name": "墨清弦",
+      "total_play_today": 1678891,
+      "result_count": 1000,
+      "delta_pct": -15,
+      "has_anomaly": false,
+      "trend": [
+        1976401,
+        1678891
+      ],
+      "top_videos": [
+        {
+          "bvid": "BV1dCEXzBEZZ",
+          "title": "【墨清弦原创曲】独占春【2025官方生贺曲】",
+          "play_count": 541784,
+          "coin": 0,
+          "like": 23084,
+          "pubdate": "2025-05-20T04:00:00",
+          "mid": 406950978,
+          "author": "墨清弦",
+          "danmaku": 762,
+          "comment": 2461,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1KD421A7uS",
+          "title": "【墨清弦AI原创曲】绝对占有【2024官方生贺曲】",
+          "play_count": 458222,
+          "coin": 0,
+          "like": 18429,
+          "pubdate": "2024-05-20T04:00:00",
+          "mid": 406950978,
+          "author": "墨清弦",
+          "danmaku": 421,
+          "comment": 1020,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1J4411j7mn",
+          "title": "【墨清弦】ACE",
+          "play_count": 430180,
+          "coin": 0,
+          "like": 25038,
+          "pubdate": "2019-05-20T04:00:54",
+          "mid": 406950978,
+          "author": "墨清弦",
+          "danmaku": 2772,
+          "comment": 3201,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1ME411n7rr",
+          "title": "【vsinger头摇摇】阿弥陀佛头摇摇【洛天依/乐正绫/言和/乐正龙牙/墨清弦/徵羽摩柯/初音未来】【文舞bin】",
+          "play_count": 79024,
+          "coin": 0,
+          "like": 5278,
+          "pubdate": "2020-03-01T07:09:41",
+          "mid": 11933318,
+          "author": "文舞bin",
+          "danmaku": 593,
+          "comment": 380,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1ksJ3zeE8k",
+          "title": "【墨清弦feat.单依纯】《珠玉》|“心上人流浪的白发天涯，哪里懂 镜月水花”【墨清弦七周年】",
+          "play_count": 73896,
+          "coin": 0,
+          "like": 3917,
+          "pubdate": "2025-05-18T09:32:44",
+          "mid": 12355462,
+          "author": "鬼面P",
+          "danmaku": 298,
+          "comment": 123,
+          "off_topic": false
+        }
+      ],
+      "definition": "Mo Qingxian — 上海禾念出品的中文 VOCALOID 角色。",
+      "group": "vocaloid_cn",
+      "related": [
+        "洛天依",
+        "徵羽摩柯"
+      ]
+    },
+    {
+      "name": "NEUTRINO",
+      "total_play_today": 1622283,
+      "result_count": 1000,
+      "delta_pct": 48,
+      "has_anomaly": false,
+      "trend": [
+        1098022,
+        1622283
+      ],
+      "top_videos": [
+        {
+          "bvid": "BV1UdqzYbE6J",
+          "title": "【ずんだもん】みむかｩわナイストライ【NEUTRINO＆VOICEVOXカバー】",
+          "play_count": 665881,
+          "coin": 0,
+          "like": 36784,
+          "pubdate": "2024-12-13T06:10:55",
+          "mid": 598684844,
+          "author": "samuton9574",
+          "danmaku": 310,
+          "comment": 592,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1ih4y1N7iS",
+          "title": "【中文字幕】在栀子树还未干枯之前/クチナシの木が朽ちる前に【ox】",
+          "play_count": 382829,
+          "coin": 0,
+          "like": 17606,
+          "pubdate": "2023-08-30T06:27:31",
+          "mid": 431853521,
+          "author": "冷坑系列搬运",
+          "danmaku": 72,
+          "comment": 434,
+          "off_topic": true
+        },
+        {
+          "bvid": "BV1At4y1f7dP",
+          "title": "(熟肉/音乐剧场)(起床啦！)俊达萌的早餐【俊达萌x小春六花】",
+          "play_count": 172848,
+          "coin": 0,
+          "like": 5726,
+          "pubdate": "2023-12-26T11:08:00",
+          "mid": 93633612,
+          "author": "约伊兹的Igor",
+          "danmaku": 181,
+          "comment": 273,
+          "off_topic": true
         },
         {
           "bvid": "BV1F6Q9BjEVm",
           "title": "一边听俊达萌唱「熱異常」一边运动减肥！",
-          "play_count": 94186,
+          "play_count": 94765,
           "coin": 0,
-          "like": 7554,
+          "like": 7620,
           "pubdate": "2026-03-23T09:00:00",
-          "author": "",
+          "mid": 3546856483195396,
+          "author": "zundo_ch",
+          "danmaku": 26,
+          "comment": 140,
           "off_topic": true
         },
         {
           "bvid": "BV1jBDaB5EfQ",
           "title": "一边听俊达萌唱「我ら！ゴミ分別団」一边运动减肥！",
-          "play_count": 85476,
+          "play_count": 89770,
           "coin": 0,
-          "like": 1482,
+          "like": 1562,
           "pubdate": "2026-04-08T10:00:00",
-          "author": "",
-          "off_topic": true
-        },
-        {
-          "bvid": "BV1a19NBvEG7",
-          "title": "一边听俊达萌唱「どりーむもーど」一边运动减肥！",
-          "play_count": 68359,
-          "coin": 0,
-          "like": 1714,
-          "pubdate": "2026-04-03T09:00:00",
-          "author": "",
+          "mid": 3546856483195396,
+          "author": "zundo_ch",
+          "danmaku": 38,
+          "comment": 42,
           "off_topic": true
         }
       ],
@@ -1656,92 +1906,280 @@
       ]
     },
     {
-      "name": "ACE虚拟歌手",
-      "total_play_today": 414137,
+      "name": "人声合成",
+      "total_play_today": 1448294,
       "result_count": 1000,
       "delta_pct": 0,
       "has_anomaly": false,
       "trend": [
-        414137
+        1449602,
+        1448294
       ],
       "top_videos": [
         {
-          "bvid": "BV1RK421Y7V8",
-          "title": "【东方栀子Nectar】ACE AI声库试听【ACE Studio 自训练beta测试】",
-          "play_count": 108744,
+          "bvid": "BV1YQ4y1K7uj",
+          "title": "【AU人声教程】让你视频的声音更好听①（振幅与压限）如何让女声甜美动人男声低沉性感，简单几步让你的音频视频vlog声音变好听",
+          "play_count": 463487,
           "coin": 0,
-          "like": 11406,
-          "pubdate": "2024-03-21T04:00:00",
-          "author": "",
+          "like": 13100,
+          "pubdate": "2020-04-06T11:28:29",
+          "mid": 523603471,
+          "author": "立信老学长",
+          "danmaku": 783,
+          "comment": 378,
+          "off_topic": true
+        },
+        {
+          "bvid": "BV1uT411M7k3",
+          "title": "《Daisy Bell》第一首自上世纪电脑合成的人声歌曲",
+          "play_count": 256662,
+          "coin": 0,
+          "like": 8150,
+          "pubdate": "2022-09-09T13:24:21",
+          "mid": 281669189,
+          "author": "火之燎原不可向迩",
+          "danmaku": 243,
+          "comment": 414,
+          "off_topic": true
+        },
+        {
+          "bvid": "BV1sq4y1a7KJ",
+          "title": "一分钟学会pr里面背景音乐和人声分离技巧，学不会你回来找我！",
+          "play_count": 240437,
+          "coin": 0,
+          "like": 3115,
+          "pubdate": "2022-04-05T13:41:18",
+          "mid": 300402330,
+          "author": "星铁炼金术士",
+          "danmaku": 142,
+          "comment": 206,
+          "off_topic": true
+        },
+        {
+          "bvid": "BV1v64y1r7g2",
+          "title": "【人声混音】5分钟教你学会后期人声混音的公式！用最快最简单的方法做出好听的人声混音～ 翻唱，说唱，原创都可以用的干货！",
+          "play_count": 142927,
+          "coin": 0,
+          "like": 4988,
+          "pubdate": "2021-06-14T15:08:20",
+          "mid": 515265238,
+          "author": "王大文-音乐制作人",
+          "danmaku": 120,
+          "comment": 226,
           "off_topic": false
         },
         {
-          "bvid": "BV12a4y1F7Kg",
-          "title": "ACE Studio教程系列丨ACE Studio入门",
-          "play_count": 93741,
+          "bvid": "BV1w7411u7Tb",
+          "title": "5分钟教你人声增强和背景降噪！",
+          "play_count": 51852,
           "coin": 0,
-          "like": 1886,
-          "pubdate": "2023-07-07T10:01:26",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV18EPyeVE4s",
-          "title": "【ACE studio教程】半小时带你走上虚拟歌手调教之路，干货满满",
-          "play_count": 50563,
-          "coin": 0,
-          "like": 997,
-          "pubdate": "2025-02-05T09:22:42",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV17YrKBJEWF",
-          "title": "40分钟【ACE Studio 2教程】我已经用它做了十几首商单，集成AI虚拟歌姬AI乐器宿主，生成AI音乐吊打Suno AI，能买断了！【汪叔聊音源】",
-          "play_count": 40717,
-          "coin": 0,
-          "like": 909,
-          "pubdate": "2026-01-09T10:58:00",
-          "author": "",
-          "off_topic": false
-        },
-        {
-          "bvid": "BV1AR4y1B77k",
-          "title": "【教程】如何用ACE_Studio来填词？",
-          "play_count": 29827,
-          "coin": 0,
-          "like": 470,
-          "pubdate": "2023-02-12T01:00:00",
-          "author": "",
+          "like": 615,
+          "pubdate": "2020-02-24T07:22:43",
+          "mid": 69208856,
+          "author": "林煎伞夏",
+          "danmaku": 5,
+          "comment": 49,
           "off_topic": true
         }
       ],
-      "definition": "字节跳动旗下 AI 歌声合成平台。",
-      "group": "other",
+      "definition": "语音合成技术的通用术语，包括歌声和语音。",
+      "group": "umbrella",
       "related": [
-        "AiSingers",
+        "術力口",
+        "电子人声"
+      ]
+    },
+    {
+      "name": "欲音レイ",
+      "total_play_today": 1344946,
+      "result_count": 1000,
+      "delta_pct": 0,
+      "has_anomaly": false,
+      "trend": [
+        1344946
+      ],
+      "top_videos": [
+        {
+          "bvid": "BV1mUmXBjEnb",
+          "title": "高潮催眠术12：欲仙欲死",
+          "play_count": 508546,
+          "coin": 0,
+          "like": 8584,
+          "pubdate": "2025-12-13T12:00:00",
+          "mid": 335267655,
+          "author": "催眠师_龙晓立",
+          "danmaku": 0,
+          "comment": 396,
+          "off_topic": true
+        },
+        {
+          "bvid": "BV1QGZiBAEiF",
+          "title": "【中文音声】3D剧情/荤/❤好色养女的步步引诱❤欲擒故纵引小叔",
+          "play_count": 257829,
+          "coin": 0,
+          "like": 5844,
+          "pubdate": "2026-02-20T13:00:00",
+          "mid": 449253041,
+          "author": "脂肪酸金属盐",
+          "danmaku": 3,
+          "comment": 106,
+          "off_topic": true
+        },
+        {
+          "bvid": "BV1cR4y1K7R8",
+          "title": "ディフレイル / 初音ミク",
+          "play_count": 235549,
+          "coin": 0,
+          "like": 15108,
+          "pubdate": "2022-04-25T10:00:00",
+          "mid": 1625807892,
+          "author": "ユギカYugica",
+          "danmaku": 182,
+          "comment": 168,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1mx411Y7Rm",
+          "title": "〔バイノーラル〕额。。。〔男声〕※女性向け",
+          "play_count": 225301,
+          "coin": 0,
+          "like": 793,
+          "pubdate": "2017-05-27T18:02:47",
+          "mid": 1776135,
+          "author": "阴黎特女巫",
+          "danmaku": 372,
+          "comment": 182,
+          "off_topic": true
+        },
+        {
+          "bvid": "BV1KJzNBWEcV",
+          "title": "自用【R18/女性向けASMR】白衣を着た彼氏と甘くえっちなお医者さんプレイ【シチュエーションボイス】",
+          "play_count": 31296,
+          "coin": 0,
+          "like": 195,
+          "pubdate": "2026-01-23T08:59:24",
+          "mid": 3546936606984653,
+          "author": "予鹿鹿_",
+          "danmaku": 1,
+          "comment": 59,
+          "off_topic": true
+        }
+      ],
+      "definition": "Yokune Rei — UTAU 社区人气角色。",
+      "group": "utau",
+      "related": [
+        "重音テト",
+        "UTAU"
+      ]
+    },
+    {
+      "name": "电子人声",
+      "total_play_today": 1140044,
+      "result_count": 1000,
+      "delta_pct": -4,
+      "has_anomaly": false,
+      "trend": [
+        1184371,
+        1140044
+      ],
+      "top_videos": [
+        {
+          "bvid": "BV1YQ4y1K7uj",
+          "title": "【AU人声教程】让你视频的声音更好听①（振幅与压限）如何让女声甜美动人男声低沉性感，简单几步让你的音频视频vlog声音变好听",
+          "play_count": 463487,
+          "coin": 0,
+          "like": 13100,
+          "pubdate": "2020-04-06T11:28:29",
+          "mid": 523603471,
+          "author": "立信老学长",
+          "danmaku": 783,
+          "comment": 378,
+          "off_topic": true
+        },
+        {
+          "bvid": "BV1o44y197J2",
+          "title": "【干货分享】教你一键分离人声、伴奏和音效",
+          "play_count": 252326,
+          "coin": 0,
+          "like": 4972,
+          "pubdate": "2023-01-04T10:38:20",
+          "mid": 326499589,
+          "author": "空之化羽",
+          "danmaku": 91,
+          "comment": 498,
+          "off_topic": true
+        },
+        {
+          "bvid": "BV1Lx4y147Yb",
+          "title": "【纯人声/伴奏】Super Power无畏契约·Valorant2024冠军赛主题曲音乐（自制）",
+          "play_count": 110553,
+          "coin": 0,
+          "like": 1404,
+          "pubdate": "2024-07-23T17:35:55",
+          "mid": 23013698,
+          "author": "小猫生鲜",
+          "danmaku": 398,
+          "comment": 370,
+          "off_topic": true
+        },
+        {
+          "bvid": "BV1Ugy5YBEUG",
+          "title": "四款人声分离软件，哪个更强？离谱的QQ音乐居然也可以？",
+          "play_count": 67005,
+          "coin": 0,
+          "like": 487,
+          "pubdate": "2024-10-21T08:02:57",
+          "mid": 3546705706355393,
+          "author": "律动盒子",
+          "danmaku": 46,
+          "comment": 120,
+          "off_topic": true
+        },
+        {
+          "bvid": "BV1BM411Y724",
+          "title": "5个思路帮你混出贴耳人声｜混音教程｜人声混音贴脸感",
+          "play_count": 38209,
+          "coin": 0,
+          "like": 1259,
+          "pubdate": "2023-02-11T11:10:56",
+          "mid": 7795018,
+          "author": "李趴趴_Lijiabin",
+          "danmaku": 18,
+          "comment": 71,
+          "off_topic": true
+        }
+      ],
+      "definition": "泛指所有电子合成人声技术及作品。",
+      "group": "umbrella",
+      "related": [
+        "術力口",
+        "人声合成",
         "虚拟歌手"
       ]
     },
     {
       "name": "AiSingers",
-      "total_play_today": 368805,
+      "total_play_today": 454437,
       "result_count": 1000,
-      "delta_pct": 0,
+      "delta_pct": 23,
       "has_anomaly": false,
       "trend": [
-        368805
+        368805,
+        454437
       ],
       "top_videos": [
         {
-          "bvid": "BV1be411N7JA",
-          "title": "【DiffSinger】《我多想说再见啊》开源引擎高音质歌声合成效果展示",
-          "play_count": 170979,
+          "bvid": "BV1tvTVzHEcZ",
+          "title": "什么Weights用不了？！那我教你个简单的！！",
+          "play_count": 90267,
           "coin": 0,
-          "like": 7420,
-          "pubdate": "2022-12-04T04:00:00",
-          "author": "",
-          "off_topic": false
+          "like": 2140,
+          "pubdate": "2025-06-07T02:18:37",
+          "mid": 3546659699034625,
+          "author": "HoshinoHB",
+          "danmaku": 6,
+          "comment": 455,
+          "off_topic": true
         },
         {
           "bvid": "BV17v4y1B7Fc",
@@ -1750,37 +2188,49 @@
           "coin": 0,
           "like": 2067,
           "pubdate": "2022-12-31T10:36:38",
-          "author": "",
+          "mid": 24159939,
+          "author": "D大AI",
+          "danmaku": 15,
+          "comment": 227,
           "off_topic": false
         },
         {
-          "bvid": "BV1LD4MzvERG",
-          "title": "终于来了！告别paintvoice | 移动端高质量专业AI歌声合成软件 OpenUtau Mobile 试听",
-          "play_count": 41751,
+          "bvid": "BV1hH1kYZEBU",
+          "title": "【AI翻唱教程/Sovits-SVC4.1】还不知道怎么做？超详细教程2.0 还不会那你别玩了",
+          "play_count": 57628,
           "coin": 0,
-          "like": 2608,
-          "pubdate": "2025-10-12T09:37:31",
-          "author": "",
+          "like": 895,
+          "pubdate": "2024-10-07T05:55:02",
+          "mid": 401456700,
+          "author": "毒打爱摸鱼",
+          "danmaku": 5,
+          "comment": 712,
           "off_topic": false
         },
         {
-          "bvid": "BV1Z7411m7aa",
-          "title": "15分钟教你如何让AI歌手为你演唱！全新国产Ai歌声合成软件AiSingers第三方使用教程+调声演示",
-          "play_count": 25991,
+          "bvid": "BV1dqx8zfEnW",
+          "title": "AI翻唱教程  这应该是目前最简单的办法了吧",
+          "play_count": 50048,
           "coin": 0,
-          "like": 275,
-          "pubdate": "2020-03-24T14:24:41",
-          "author": "",
+          "like": 834,
+          "pubdate": "2025-10-04T23:02:55",
+          "mid": 3546921893365849,
+          "author": "AnXBaiZi音乐",
+          "danmaku": 2,
+          "comment": 94,
           "off_topic": false
         },
         {
-          "bvid": "BV1Tv9TYrENY",
-          "title": "AI翻唱工具盘点！全流程演示  | 喜欢ta就让ta唱歌给你听",
-          "play_count": 23755,
+          "bvid": "BV1PKutzxEmh",
+          "title": "手机Ai翻唱全教程，包教包会！！",
+          "play_count": 45468,
           "coin": 0,
-          "like": 512,
-          "pubdate": "2025-02-28T09:30:00",
-          "author": "",
+          "like": 961,
+          "pubdate": "2025-07-16T09:05:38",
+          "mid": 3546659699034625,
+          "author": "HoshinoHB",
+          "danmaku": 3,
+          "comment": 172,
           "off_topic": false
         }
       ],
@@ -1792,13 +2242,98 @@
       ]
     },
     {
+      "name": "ACE虚拟歌手",
+      "total_play_today": 330196,
+      "result_count": 1000,
+      "delta_pct": -20,
+      "has_anomaly": false,
+      "trend": [
+        414137,
+        330196
+      ],
+      "top_videos": [
+        {
+          "bvid": "BV12a4y1F7Kg",
+          "title": "ACE Studio教程系列丨ACE Studio入门",
+          "play_count": 93754,
+          "coin": 0,
+          "like": 1887,
+          "pubdate": "2023-07-07T10:01:26",
+          "mid": 290069256,
+          "author": "ACE_Studio",
+          "danmaku": 8,
+          "comment": 166,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV18EPyeVE4s",
+          "title": "【ACE studio教程】半小时带你走上虚拟歌手调教之路，干货满满",
+          "play_count": 50578,
+          "coin": 0,
+          "like": 997,
+          "pubdate": "2025-02-05T09:22:42",
+          "mid": 592947813,
+          "author": "老天爷P",
+          "danmaku": 123,
+          "comment": 281,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1Qg411f7hL",
+          "title": "ACE Studio快速入门教程第2期：各种工程迁移到ACE",
+          "play_count": 35743,
+          "coin": 0,
+          "like": 544,
+          "pubdate": "2022-07-13T10:50:27",
+          "mid": 386270936,
+          "author": "笛鹿FlutyDeer",
+          "danmaku": 3,
+          "comment": 85,
+          "off_topic": false
+        },
+        {
+          "bvid": "BV1AR4y1B77k",
+          "title": "【教程】如何用ACE_Studio来填词？",
+          "play_count": 29828,
+          "coin": 0,
+          "like": 470,
+          "pubdate": "2023-02-12T01:00:00",
+          "mid": 455024580,
+          "author": "默默谓无闻",
+          "danmaku": 1,
+          "comment": 94,
+          "off_topic": true
+        },
+        {
+          "bvid": "BV18Y4y1478M",
+          "title": "没有声库能逃得过无参茉莉花【洛天依 ACE与VOCALOID5对比】",
+          "play_count": 27174,
+          "coin": 0,
+          "like": 1033,
+          "pubdate": "2022-05-12T05:41:01",
+          "mid": 1792460280,
+          "author": "冶熠",
+          "danmaku": 160,
+          "comment": 144,
+          "off_topic": false
+        }
+      ],
+      "definition": "字节跳动旗下 AI 歌声合成平台。",
+      "group": "other",
+      "related": [
+        "AiSingers",
+        "虚拟歌手"
+      ]
+    },
+    {
       "name": "DeepVocal",
-      "total_play_today": 146436,
+      "total_play_today": 145999,
       "result_count": 1000,
       "delta_pct": 0,
       "has_anomaly": false,
       "trend": [
-        146436
+        146436,
+        145999
       ],
       "top_videos": [
         {
@@ -1808,17 +2343,23 @@
           "coin": 0,
           "like": 2221,
           "pubdate": "2020-01-13T11:35:56",
-          "author": "",
+          "mid": 1292427,
+          "author": "丨落雨丨",
+          "danmaku": 146,
+          "comment": 278,
           "off_topic": false
         },
         {
           "bvid": "BV1uY411h7Na",
           "title": "【教程】DeepVocal声库制作简易教程",
-          "play_count": 21803,
+          "play_count": 21804,
           "coin": 0,
           "like": 832,
           "pubdate": "2022-01-15T02:35:05",
-          "author": "",
+          "mid": 31861557,
+          "author": "赋水仙术",
+          "danmaku": 8,
+          "comment": 208,
           "off_topic": false
         },
         {
@@ -1828,7 +2369,10 @@
           "coin": 0,
           "like": 702,
           "pubdate": "2020-02-13T14:53:09",
-          "author": "",
+          "mid": 207052912,
+          "author": "たくまる",
+          "danmaku": 1,
+          "comment": 112,
           "off_topic": false
         },
         {
@@ -1838,7 +2382,10 @@
           "coin": 0,
           "like": 706,
           "pubdate": "2019-06-07T06:05:09",
-          "author": "",
+          "mid": 7644915,
+          "author": "boxstar",
+          "danmaku": 31,
+          "comment": 246,
           "off_topic": false
         },
         {
@@ -1848,7 +2395,10 @@
           "coin": 0,
           "like": 391,
           "pubdate": "2019-10-10T12:02:08",
-          "author": "",
+          "mid": 797614,
+          "author": "阿赫official",
+          "danmaku": 2,
+          "comment": 31,
           "off_topic": false
         }
       ],
