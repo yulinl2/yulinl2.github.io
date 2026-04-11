@@ -236,11 +236,9 @@
 
   /* Keyword definition in expanded card */
   .kw-definition {
-    font-size: 12px; color: var(--muted); line-height: 1.6;
-    margin-bottom: 12px; padding: 8px 12px;
-    background: rgba(79,209,199,.04);
-    border-left: 2px solid rgba(79,209,199,.3);
-    border-radius: 0 4px 4px 0;
+    font-size: 11px; color: var(--muted); line-height: 1.5;
+    margin-left: auto; flex-shrink: 1;
+    text-align: right; max-width: 55%;
   }
 
   /* Bubble cloud */
@@ -944,9 +942,9 @@ function renderApp(data) {
           <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:${g.color};margin-right:8px;box-shadow:0 0 6px ${g.color}"></span>
           ${escapeHtml(kw.name)}
         </div>
+        ${defHtml}
         ${relatedHeaderHtml}
       </div>
-      ${defHtml}
       <div class="kw-chart-wrap"><canvas id="${canvasId}"></canvas></div>
       <div class="stat-delta ${deltaClass}" style="margin-top:10px">
         今日播放 ${fmt(kw.total_play_today)}
