@@ -36,6 +36,7 @@
     color: var(--text);
     font-family: 'Noto Serif SC', serif;
     min-height: 100vh;
+    overflow-x: hidden;
   }
 
   /* Background grid */
@@ -50,7 +51,7 @@
     z-index: 0;
   }
 
-  .wrap { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 24px 16px 60px; }
+  .wrap { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 24px 16px 60px; overflow-x: hidden; }
 
   /* Header */
   header { padding: 40px 0 32px; border-bottom: 1px solid var(--border); margin-bottom: 32px; }
@@ -107,12 +108,12 @@
   .info-tip .tip-text {
     visibility: hidden; opacity: 0;
     position: absolute; bottom: calc(100% + 8px);
-    right: 0;
+    left: 50%; transform: translateX(-50%);
     background: #1a1d26; border: 1px solid var(--border);
     border-radius: 6px; padding: 8px 12px;
     font-size: 11px; font-weight: 400; color: var(--text);
     line-height: 1.5; white-space: normal; width: 220px;
-    max-width: calc(100vw - 40px);
+    max-width: calc(100vw - 24px);
     z-index: 10; pointer-events: none;
     transition: opacity .15s;
   }
@@ -141,8 +142,6 @@
     grid-column: 2; grid-row: 1;
     font-size: 11px; color: var(--muted); line-height: 1.4;
     text-align: right; min-width: 0;
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
-    overflow: hidden;
   }
   .kw-header-related {
     grid-column: 1 / -1; grid-row: 2;
@@ -333,11 +332,11 @@
   .bubble:nth-child(5n) { animation-delay: -4.5s; animation-duration: 8s; }
   .bubble:nth-child(7n) { animation-delay: -2s; animation-duration: 5s; }
 
-  /* AI-generated label — subtle watermark */
+  /* AI-generated label — subtle inline suffix */
   .ai-label {
     font-family: 'JetBrains Mono', monospace; font-size: 8px;
     color: var(--muted); opacity: .4;
-    float: right; margin: -2px 0 0 6px;
+    margin-left: 4px; white-space: nowrap;
   }
 
   /* Anomaly feed */
@@ -400,7 +399,6 @@
     .kw-definition {
       grid-column: 1; grid-row: 2;
       text-align: left; font-size: 10px;
-      -webkit-line-clamp: 2;
     }
     .kw-header-related { grid-row: 3; }
 
@@ -412,11 +410,9 @@
     .video-stats { font-size: 10px; }
     .sort-tab { font-size: 9px; padding: 3px 8px; }
 
-    /* Keep tooltips within viewport — anchor left on mobile */
+    /* Keep tooltips within viewport on mobile */
     .info-tip .tip-text {
       width: 180px;
-      left: 0; right: auto;
-      transform: none;
     }
 
     /* Smaller stat cards */
@@ -516,6 +512,32 @@ function fmtResultCount(n) {
 function infoIcon(text) {
   return `<span class="info-tip" tabindex="0" role="button" aria-label="说明">?<span class="tip-text">${text}</span></span>`;
 }
+
+// Adaptive tooltip positioning — keeps tip-text within viewport
+document.addEventListener('pointerenter', function(e) {
+  const tip = e.target.closest('.info-tip');
+  if (!tip) return;
+  const text = tip.querySelector('.tip-text');
+  if (!text) return;
+  // Reset to centered default
+  text.style.left = '50%';
+  text.style.right = 'auto';
+  text.style.transform = 'translateX(-50%)';
+  // Measure after making visible for correct rect
+  const rect = text.getBoundingClientRect();
+  const vw = window.innerWidth;
+  if (rect.right > vw - 12) {
+    // Overflows right — anchor to right edge
+    text.style.left = 'auto';
+    text.style.right = '0';
+    text.style.transform = 'none';
+  } else if (rect.left < 12) {
+    // Overflows left — anchor to left edge
+    text.style.left = '0';
+    text.style.right = 'auto';
+    text.style.transform = 'none';
+  }
+}, true);
 
 // Group color map (fallback for demo/missing config)
 const DEFAULT_GROUPS = {
@@ -832,7 +854,7 @@ function renderApp(data) {
       `<span class="bubble-related-tag">${escapeHtml(r)}</span>`
     ).join('');
     const defText = kw.definition
-      ? `<div class="bubble-tip-def"><span class="ai-label">\u24D8 AI\u91CA\u4E49</span>${escapeHtml(kw.definition)}</div>`
+      ? `<div class="bubble-tip-def">${escapeHtml(kw.definition)}<span class="ai-label">\u24D8 AI\u91CA\u4E49</span></div>`
       : '';
 
     const el = document.createElement('div');
@@ -956,7 +978,7 @@ function renderApp(data) {
 
     // Keyword definition
     const defHtml = kw.definition
-      ? `<div class="kw-definition"><span class="ai-label">\u24D8 AI\u91CA\u4E49</span>${escapeHtml(kw.definition)}</div>`
+      ? `<div class="kw-definition">${escapeHtml(kw.definition)}<span class="ai-label">\u24D8 AI\u91CA\u4E49</span></div>`
       : '';
 
     // Related keywords as header pills
@@ -980,7 +1002,7 @@ function renderApp(data) {
         今日播放 ${fmt(kw.total_play_today)}
         ${infoIcon('当日搜索结果中前 20 个视频的播放量总和（非历史累计）。数据来源：Bilibili 公开搜索 API。')}
         &nbsp;|&nbsp; 昨日对比 ${deltaSign}${kw.delta_pct}%
-        ${infoIcon('与昨日同口径播放量对比的变化百分比。正值表示增长，负值表示下降。')}
+        ${infoIcon('与昨日同关键词的前 20 个视频播放量总和对比的变化百分比。正值表示增长，负值表示下降。')}
       </div>
       ${kw.has_anomaly ? '<div class="anomaly-tag">⚡ 异常</div>' : ''}
       <div class="kw-expand-hint">
