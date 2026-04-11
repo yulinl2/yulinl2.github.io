@@ -127,9 +127,10 @@
     cursor: pointer;
   }
   .kw-card:hover { border-color: rgba(79,209,199,.4); }
-  .kw-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .kw-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; margin-bottom: 14px; gap: 6px; }
   .kw-name { font-size: 16px; font-weight: 700; }
   .kw-count { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); }
+  .kw-header-related { display: flex; flex-wrap: wrap; gap: 4px; margin-left: auto; }
   .kw-chart-wrap { height: 60px; }
   .anomaly-tag {
     display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 10px;
@@ -872,14 +873,11 @@ function renderApp(data) {
       ? `<div class="kw-definition"><span class="ai-label">\u24D8 AI\u91CA\u4E49</span>${escapeHtml(kw.definition)}</div>`
       : '';
 
-    // Related keywords as bubbles
-    const relatedHtml = (kw.related || []).length > 0
-      ? `<div style="margin-bottom:12px">
-           <div class="kw-details-title">关联词</div>
-           <div class="bubble-related">${kw.related.map(r =>
-             `<span class="bubble-related-tag" style="font-size:10px;padding:2px 8px;border-color:${g.color}44;color:${g.color}">${escapeHtml(r)}</span>`
-           ).join('')}</div>
-         </div>`
+    // Related keywords as header pills
+    const relatedHeaderHtml = (kw.related || []).length > 0
+      ? `<div class="kw-header-related">${kw.related.map(r =>
+             `<span class="bubble-related-tag" style="font-size:9px;padding:1px 6px;border-color:${g.color}44;color:${g.color}">${escapeHtml(r)}</span>`
+           ).join('')}</div>`
       : '';
 
     card.innerHTML = `
@@ -891,6 +889,7 @@ function renderApp(data) {
         <div class="kw-count">搜索结果 ${fmtResultCount(kw.result_count)}
           ${infoIcon('Bilibili 搜索 API 返回的结果数量。API 上限为 1,000，显示 ≥1,000 表示实际结果可能更多。')}
         </div>
+        ${relatedHeaderHtml}
       </div>
       <div class="kw-chart-wrap"><canvas id="${canvasId}"></canvas></div>
       <div class="stat-delta ${deltaClass}" style="margin-top:10px">
@@ -906,7 +905,6 @@ function renderApp(data) {
       <div class="kw-details">
         <div class="kw-details-inner">
           ${defHtml}
-          ${relatedHtml}
           <div class="kw-details-title">热门视频 TOP ${videos.length}</div>
           ${videosHtml}
         </div>
