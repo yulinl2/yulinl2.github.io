@@ -2,6 +2,8 @@
 
 Welcome to my literature reading section. This is where I document thoughts, comments, and brainstorms on academic papers I've read. Each paper has its own dedicated page for detailed notes and insights.
 
+> 📊 **[Annotated Bibliography Dashboard](./dashboard.html)** — categorised cards with abstracts, my notes, direct PDF links, and one-click batch download (ZIP or shell script) with category-prefixed filenames.
+
 ## Recent Reading
 
 ### Inference on Inference

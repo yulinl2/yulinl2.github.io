@@ -1,0 +1,48 @@
+{
+  "_readme": "Each paper: id, slug, category, tags, title, authors, year, venue, pdfUrl, arxivId, notesUrl, abstract, description, accessedOn. `slug` drives the downloaded filename.",
+  "categories": [
+    {
+      "id": "inference-on-inference",
+      "name": "Inference on Inference",
+      "description": "Statistical inference methods for estimators that are themselves the result of inference / selection procedures (argmin, rankings, model selection)."
+    }
+  ],
+  "papers": [
+    {
+      "id": "zhang-2024-argmin",
+      "slug": "zhang-2024-winners-with-confidence",
+      "category": "inference-on-inference",
+      "tags": ["Model Selection", "Inference", "Confidence Sets", "Argmin"],
+      "title": "Winners with Confidence: Discrete Argmin Inference with an Application to Model Selection",
+      "authors": "Tianyu Zhang, Hao Lee, Jing Lei",
+      "affiliations": "CMU",
+      "year": 2024,
+      "venue": "arXiv preprint",
+      "arxivId": "2408.02060",
+      "pdfUrl": "https://arxiv.org/pdf/2408.02060.pdf",
+      "abstractUrl": "https://arxiv.org/abs/2408.02060",
+      "notesUrl": "./2025-01-12-argmin-inference.html",
+      "accessedOn": "2025-01",
+      "abstract": "Introduces a framework for performing inference on discrete argmin estimators commonly encountered in model-selection problems. The authors construct confidence sets around the selected model with valid coverage probabilities, using cross-validation combined with a differential-privacy style perturbation to decouple selection and inference. Existing approaches (Mogstad et al. 2024; Hansen et al. 2011; Dey et al. 2024) are shown to suffer from inferior power in high dimensions, heavy computation, or poor handling of ties.",
+      "description": "My take: the DP mechanism is a clever data-augmentation trick — it not only decouples double-dipping but also gives guidance on how much noise is enough. Potentially useful as a proof technique: inject Gaussian noise to manufacture the independence a proof needs, even if you don't actually perturb the data in practice. Open questions I'm tracking: (1) how is the pairwise-comparison idea wired into the argmin confidence set? (2) how exactly does DP enter the algorithm? (3) how does CLT transfer to the discrete index of interest?"
+    },
+    {
+      "id": "su-2024-icml-ranking",
+      "slug": "su-2024-icml2023-ranking-data",
+      "category": "inference-on-inference",
+      "tags": ["Peer Review", "Isotonic Mechanism", "Rankings", "Conferences"],
+      "title": "Analysis of the ICML 2023 Ranking Data: Can Authors' Opinions of Their Own Papers Assist Peer Review in Machine Learning?",
+      "authors": "Buxin Su, Jiayao Zhang, Natalie Collina, Yuling Yan, Didong Li, Kyunghyun Cho, Jianqing Fan, Aaron Roth, Weijie J. Su",
+      "affiliations": "UPenn, UW-Madison, UNC, NYU, Princeton",
+      "year": 2024,
+      "venue": "arXiv preprint",
+      "arxivId": "2408.13430",
+      "pdfUrl": "https://arxiv.org/pdf/2408.13430.pdf",
+      "abstractUrl": "https://arxiv.org/abs/2408.13430",
+      "notesUrl": "./2025-01-14-comparative-eval.html",
+      "accessedOn": "2025-01",
+      "abstract": "Empirical analysis of how author-provided rankings can enhance peer review at machine-learning conferences. At ICML 2023, 1,342 authors with multiple submissions ranked their own papers, covering 2,592 submissions. The Isotonic Mechanism calibrates raw review scores against these rankings and is shown to outperform raw scores in estimating ground-truth expected review scores (both squared and absolute error). The authors propose cautious, low-risk deployments: assisting senior area chairs, supporting award selection, and guiding emergency reviewer recruitment.",
+      "description": "My take: the marginal-unbiasedness assumption looks shaky in their data — without stratified sampling between the split halves y and y′, conditional marginal unbiasedness is probably not the interpretation that pulls the most weight. Worth pressure-testing before generalising to other venues. Questions I'm tracking: unbiasedness assumption plausibility, and scalability / generalisability beyond ML conferences."
+    }
+  ]
+}

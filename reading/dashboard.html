@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Annotated Bibliography — Yulin Li</title>
+<!-- JSZip for in-browser PDF bundling -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"
+        referrerpolicy="no-referrer"></script>
+<style>
+  :root {
+    --fg: #1f2430;
+    --fg-muted: #5b6472;
+    --bg: #fafafa;
+    --card: #ffffff;
+    --border: #e5e7eb;
+    --accent: #2d5aa0;
+    --accent-soft: #e9eefa;
+    --chip: #eef1f4;
+    --chip-active: #2d5aa0;
+    --chip-active-fg: #ffffff;
+    --danger: #b63a2b;
+    --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 1px 1px rgba(0,0,0,0.03);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue",
+                 Helvetica, Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  header.page { margin-bottom: 1.5rem; }
+  header.page h1 { margin: 0 0 0.25rem; font-size: 1.75rem; letter-spacing: -0.01em; }
+  header.page .subtitle { color: var(--fg-muted); font-size: 0.95rem; }
+  header.page .crumbs { font-size: 0.85rem; color: var(--fg-muted); margin-bottom: 0.5rem; }
+
+  /* Toolbar */
+  .toolbar {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(250,250,250,0.92);
+    backdrop-filter: saturate(1.2) blur(6px);
+    -webkit-backdrop-filter: saturate(1.2) blur(6px);
+    padding: 0.75rem 0;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .toolbar-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+  .toolbar input[type=search] {
+    flex: 1 1 16rem;
+    padding: 0.55rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    background: white;
+  }
+  .toolbar input[type=search]:focus { outline: 2px solid var(--accent-soft); border-color: var(--accent); }
+  .btn {
+    padding: 0.55rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: var(--fg);
+    transition: all 0.15s;
+  }
+  .btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn.primary { background: var(--accent); color: white; border-color: var(--accent); }
+  .btn.primary:hover:not(:disabled) { background: #24487f; border-color: #24487f; color: white; }
+  .btn.ghost { background: transparent; border-color: transparent; color: var(--fg-muted); }
+  .btn.ghost:hover { background: var(--chip); color: var(--fg); }
+
+  .tag-row { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.6rem; }
+  .tag {
+    font-size: 0.78rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    background: var(--chip);
+    color: var(--fg-muted);
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid transparent;
+  }
+  .tag:hover { border-color: var(--accent); color: var(--accent); }
+  .tag.active { background: var(--chip-active); color: var(--chip-active-fg); border-color: var(--chip-active); }
+
+  /* Summary */
+  .summary {
+    font-size: 0.85rem; color: var(--fg-muted); margin-top: 0.6rem;
+  }
+  .summary strong { color: var(--fg); }
+  .summary .sep { margin: 0 0.45rem; color: var(--border); }
+
+  /* Categories */
+  .category { margin: 1.5rem 0; }
+  .category > header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    gap: 1rem; margin-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border); padding-bottom: 0.4rem;
+  }
+  .category > header h2 { font-size: 1.15rem; margin: 0; letter-spacing: -0.005em; }
+  .category > header .cat-desc { color: var(--fg-muted); font-size: 0.85rem; flex: 1; }
+  .category > header .cat-actions { display: flex; gap: 0.35rem; }
+
+  .cards { display: grid; gap: 0.85rem; grid-template-columns: 1fr; }
+  @media (min-width: 780px) { .cards { grid-template-columns: 1fr 1fr; } }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.1rem 0.9rem;
+    box-shadow: var(--shadow);
+    display: flex; flex-direction: column;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .card.selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+  .card-head { display: flex; gap: 0.65rem; align-items: flex-start; }
+  .card-head input[type=checkbox] {
+    margin-top: 0.3rem; flex-shrink: 0;
+    width: 1.05rem; height: 1.05rem; accent-color: var(--accent); cursor: pointer;
+  }
+  .card-title { font-weight: 600; font-size: 1rem; line-height: 1.35; }
+  .card-meta { color: var(--fg-muted); font-size: 0.85rem; margin-top: 0.15rem; }
+  .card-body { margin-top: 0.6rem; font-size: 0.9rem; color: var(--fg); }
+  .card-body h4 {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--fg-muted); margin: 0.75rem 0 0.25rem;
+  }
+  .card-body h4:first-child { margin-top: 0; }
+  .card-body p { margin: 0; }
+  .card-actions {
+    margin-top: auto; padding-top: 0.75rem;
+    display: flex; flex-wrap: wrap; gap: 0.4rem 0.85rem;
+    font-size: 0.85rem; color: var(--fg-muted);
+  }
+  .card-actions a { font-weight: 500; }
+  .card-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.5rem; }
+  .card-tags .mini-tag {
+    font-size: 0.72rem; padding: 0.1rem 0.45rem; border-radius: 4px;
+    background: var(--chip); color: var(--fg-muted);
+  }
+
+  /* Status bar */
+  .status-bar {
+    position: fixed;
+    right: 1rem; bottom: 1rem;
+    background: var(--fg); color: white;
+    padding: 0.6rem 0.9rem;
+    border-radius: 8px; font-size: 0.85rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    max-width: 22rem;
+    display: none;
+  }
+  .status-bar.visible { display: block; }
+  .status-bar pre {
+    margin: 0.4rem 0 0; font-size: 0.75rem;
+    max-height: 8rem; overflow: auto;
+    background: rgba(255,255,255,0.08); padding: 0.35rem 0.5rem; border-radius: 4px;
+  }
+
+  .empty {
+    text-align: center; color: var(--fg-muted);
+    padding: 3rem 1rem; border: 1px dashed var(--border); border-radius: 10px;
+  }
+
+  details.help {
+    margin-top: 2rem; border: 1px solid var(--border);
+    border-radius: 8px; background: white; padding: 0.5rem 1rem;
+    font-size: 0.88rem; color: var(--fg-muted);
+  }
+  details.help summary { cursor: pointer; color: var(--fg); font-weight: 500; padding: 0.35rem 0; }
+  details.help code {
+    background: var(--chip); padding: 0.05rem 0.35rem;
+    border-radius: 3px; font-size: 0.82rem;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page">
+    <div class="crumbs"><a href="../index.html">Home</a> / <a href="./index.html">Reference Library</a> / Dashboard</div>
+    <h1>Annotated Bibliography</h1>
+    <div class="subtitle">Categorised view of papers I've been reading — with abstracts, my notes, and one-click batch PDF download.</div>
+  </header>
+
+  <div class="toolbar">
+    <div class="toolbar-row">
+      <input id="search" type="search" placeholder="Search title, author, tag, abstract…" autocomplete="off" />
+      <button class="btn" id="select-visible" title="Select all papers currently visible">Select visible</button>
+      <button class="btn ghost" id="clear-selection">Clear</button>
+      <button class="btn primary" id="download-zip" disabled>⬇ Download ZIP</button>
+      <button class="btn" id="download-script" disabled title="Get a bash script with curl commands — runs locally, no CORS issues">⬇ Script (.sh)</button>
+    </div>
+    <div class="tag-row" id="tag-row"></div>
+    <div class="summary" id="summary">
+      <strong id="vis-count">0</strong> of <strong id="total-count">0</strong> showing
+      <span class="sep">·</span>
+      <strong id="sel-count">0</strong> selected for download
+    </div>
+  </div>
+
+  <main id="categories"></main>
+
+  <details class="help">
+    <summary>How the batch download works</summary>
+    <p>
+      <strong>Primary path — “Download ZIP”</strong>: your browser fetches the selected PDFs and bundles
+      them into a flat <code>bibliography-pdfs.zip</code> where each file is renamed
+      <code>&lt;category-prefix&gt;__&lt;slug&gt;.pdf</code> (e.g.
+      <code>inference-on-inference__zhang-2024-winners-with-confidence.pdf</code>).
+      arXiv usually allows cross-origin fetches; if a particular host blocks CORS
+      you'll see a per-file error in the status bar.
+    </p>
+    <p>
+      <strong>Fallback — “Script (.sh)”</strong>: downloads a bash script that uses
+      <code>curl</code> to fetch all selected PDFs into a single flat folder
+      with the same category-prefixed filenames. Run it locally when the browser
+      path can't reach a host.
+    </p>
+  </details>
+
+</div>
+
+<div class="status-bar" id="status"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- tiny helpers ----------
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const esc = (s) => (s == null ? "" : String(s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;"));
+  const slugify = (s) => String(s || "")
+    .toLowerCase().trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  const statusEl = $("#status");
+  function setStatus(html, sticky = false) {
+    if (!html) { statusEl.classList.remove("visible"); statusEl.innerHTML = ""; return; }
+    statusEl.classList.add("visible");
+    statusEl.innerHTML = html;
+    if (!sticky) {
+      clearTimeout(statusEl._t);
+      statusEl._t = setTimeout(() => statusEl.classList.remove("visible"), 6000);
+    }
+  }
+
+  const UNCATEGORISED = "uncategorised";
+  const MAX_CONCURRENT_FETCHES = 6;
+
+  // ---------- state ----------
+  const state = {
+    data: null,
+    catsById: {},
+    categoryOrder: [],
+    selected: new Set(),
+    activeTags: new Set(),
+    query: "",
+  };
+
+  // cached element refs
+  const els = {};
+
+  // ---------- load ----------
+  fetch("./bibliography.json", { cache: "no-cache" })
+    .then(r => {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    })
+    .then(init)
+    .catch(err => {
+      $("#categories").innerHTML =
+        `<div class="empty">Couldn't load <code>bibliography.json</code>.<br>${esc(err.message)}</div>`;
+    });
+
+  function init(data) {
+    state.data = data;
+    const declared = data.categories || [];
+    declared.forEach(c => { state.catsById[c.id] = c; });
+    // Fold in any category id referenced by a paper but not declared.
+    (data.papers || []).forEach(p => {
+      const id = p.category || UNCATEGORISED;
+      if (!state.catsById[id]) state.catsById[id] = { id, name: id, description: "" };
+    });
+    state.categoryOrder = declared.map(c => c.id);
+    Object.keys(state.catsById).forEach(id => {
+      if (!state.categoryOrder.includes(id)) state.categoryOrder.push(id);
+    });
+
+    els.host       = $("#categories");
+    els.summaryVis = $("#vis-count");
+    els.summaryTot = $("#total-count");
+    els.summarySel = $("#sel-count");
+    els.dlZip      = $("#download-zip");
+    els.dlScript   = $("#download-script");
+
+    els.summaryTot.textContent = (data.papers || []).length;
+
+    buildTagRow();
+    bindToolbar();
+    render();
+  }
+
+  // ---------- tags ----------
+  function allTags() {
+    const set = new Set();
+    (state.data.papers || []).forEach(p => (p.tags || []).forEach(t => set.add(t)));
+    return Array.from(set).sort((a, b) => a.localeCompare(b));
+  }
+  function buildTagRow() {
+    const row = $("#tag-row");
+    row.innerHTML = "";
+    allTags().forEach(t => {
+      const chip = document.createElement("span");
+      chip.className = "tag";
+      chip.textContent = t;
+      chip.dataset.tag = t;
+      chip.addEventListener("click", () => {
+        if (state.activeTags.has(t)) state.activeTags.delete(t);
+        else state.activeTags.add(t);
+        chip.classList.toggle("active");
+        render();
+      });
+      row.appendChild(chip);
+    });
+  }
+
+  // ---------- toolbar ----------
+  function bindToolbar() {
+    $("#search").addEventListener("input", (e) => {
+      state.query = e.target.value.trim().toLowerCase();
+      render();
+    });
+    $("#select-visible").addEventListener("click", () => {
+      visiblePapers().forEach(p => state.selected.add(p.id));
+      render();
+    });
+    $("#clear-selection").addEventListener("click", () => {
+      state.selected.clear();
+      render();
+    });
+    $("#download-zip").addEventListener("click", downloadZip);
+    $("#download-script").addEventListener("click", downloadScript);
+  }
+
+  // ---------- filtering ----------
+  function paperMatches(p) {
+    if (state.activeTags.size) {
+      const tags = new Set(p.tags || []);
+      for (const t of state.activeTags) if (!tags.has(t)) return false;
+    }
+    if (!state.query) return true;
+    const hay = [
+      p.title, p.authors, p.affiliations, p.venue, p.year,
+      p.abstract, p.description, (p.tags || []).join(" "),
+      state.catsById[p.category] && state.catsById[p.category].name,
+    ].filter(Boolean).join(" \n ").toLowerCase();
+    return state.query.split(/\s+/).every(tok => hay.includes(tok));
+  }
+  function visiblePapers() { return (state.data.papers || []).filter(paperMatches); }
+
+  // ---------- summary / download-button sync ----------
+  function updateSelectionDisplay() {
+    const n = state.selected.size;
+    els.summarySel.textContent = n;
+    els.dlZip.disabled = n === 0;
+    els.dlScript.disabled = n === 0;
+  }
+
+  // ---------- render ----------
+  function render() {
+    els.host.innerHTML = "";
+    const visible = visiblePapers();
+    els.summaryVis.textContent = visible.length;
+    updateSelectionDisplay();
+
+    if (!visible.length) {
+      els.host.innerHTML = `<div class="empty">No papers match the current filters.</div>`;
+      return;
+    }
+
+    const byCat = {};
+    visible.forEach(p => { (byCat[p.category] = byCat[p.category] || []).push(p); });
+
+    state.categoryOrder.forEach(cid => {
+      const bucket = byCat[cid];
+      if (!bucket || !bucket.length) return;
+      const cat = state.catsById[cid];
+      const section = document.createElement("section");
+      section.className = "category";
+      section.innerHTML =
+        `<header>
+           <div>
+             <h2>${esc(cat.name)}</h2>
+             ${cat.description ? `<div class="cat-desc">${esc(cat.description)}</div>` : ""}
+           </div>
+           <div class="cat-actions">
+             <button class="btn" type="button">Select all (${bucket.length})</button>
+           </div>
+         </header>
+         <div class="cards"></div>`;
+      $("button", section).addEventListener("click", () => {
+        bucket.forEach(p => state.selected.add(p.id));
+        render();
+      });
+      const cardsEl = $(".cards", section);
+      bucket.forEach(p => cardsEl.appendChild(renderCard(p)));
+      els.host.appendChild(section);
+    });
+  }
+
+  function renderCard(p) {
+    const el = document.createElement("article");
+    el.className = "card" + (state.selected.has(p.id) ? " selected" : "");
+    el.innerHTML = `
+      <div class="card-head">
+        <input type="checkbox" ${state.selected.has(p.id) ? "checked" : ""} aria-label="Select paper" />
+        <div style="flex:1; min-width:0;">
+          <div class="card-title">${esc(p.title)}</div>
+          <div class="card-meta">
+            ${esc(p.authors || "")}${p.year ? ` · ${esc(p.year)}` : ""}
+            ${p.venue ? ` · <em>${esc(p.venue)}</em>` : ""}
+            ${p.arxivId ? ` · arXiv:${esc(p.arxivId)}` : ""}
+          </div>
+          <div class="card-tags">
+            ${(p.tags || []).map(t => `<span class="mini-tag">${esc(t)}</span>`).join("")}
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        ${p.abstract ? `<h4>Abstract</h4><p>${esc(p.abstract)}</p>` : ""}
+        ${p.description ? `<h4>My notes</h4><p>${esc(p.description)}</p>` : ""}
+      </div>
+      <div class="card-actions">
+        ${p.pdfUrl      ? `<a href="${esc(p.pdfUrl)}" target="_blank" rel="noopener">📄 PDF</a>` : ""}
+        ${p.abstractUrl ? `<a href="${esc(p.abstractUrl)}" target="_blank" rel="noopener">🔗 Abstract page</a>` : ""}
+        ${p.notesUrl    ? `<a href="${esc(p.notesUrl)}">📝 My notes</a>` : ""}
+        <span style="margin-left:auto; font-size:0.8rem;">
+          filename: <code>${esc(buildFilename(p))}</code>
+        </span>
+      </div>
+    `;
+    const cb = $("input[type=checkbox]", el);
+    cb.addEventListener("change", () => {
+      if (cb.checked) state.selected.add(p.id);
+      else state.selected.delete(p.id);
+      el.classList.toggle("selected", cb.checked);
+      updateSelectionDisplay();
+    });
+    return el;
+  }
+
+  // <category-prefix>__<paper-slug>.pdf  (both lower-kebab) — contract with the shell script too.
+  function buildFilename(p) {
+    const cat = state.catsById[p.category];
+    const catSlug = slugify((cat && cat.id) || p.category || UNCATEGORISED);
+    const paperSlug = slugify(p.slug || p.id || p.title);
+    return `${catSlug}__${paperSlug}.pdf`;
+  }
+  function selectedPapers() {
+    return (state.data.papers || []).filter(p => state.selected.has(p.id) && p.pdfUrl);
+  }
+
+  // Bounded parallel map — avoids flooding arXiv if "Select visible" grabs hundreds.
+  async function mapLimit(items, limit, fn) {
+    const results = new Array(items.length);
+    let next = 0;
+    const workers = new Array(Math.min(limit, items.length)).fill(0).map(async () => {
+      while (true) {
+        const i = next++;
+        if (i >= items.length) return;
+        results[i] = await fn(items[i], i);
+      }
+    });
+    await Promise.all(workers);
+    return results;
+  }
+
+  // ---------- ZIP download ----------
+  async function downloadZip() {
+    if (typeof JSZip === "undefined") {
+      setStatus("JSZip failed to load — use the <strong>Script</strong> button instead.", true);
+      return;
+    }
+    const papers = selectedPapers();
+    if (!papers.length) return;
+
+    const zip = new JSZip();
+    const errors = [];
+    let done = 0;
+
+    setStatus(`Fetching ${papers.length} PDF${papers.length > 1 ? "s" : ""}…`, true);
+
+    await mapLimit(papers, MAX_CONCURRENT_FETCHES, async p => {
+      try {
+        const r = await fetch(p.pdfUrl, { mode: "cors", redirect: "follow" });
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        const blob = await r.blob();
+        zip.file(buildFilename(p), blob);
+      } catch (e) {
+        errors.push(`• ${buildFilename(p)} — ${e.message || e}`);
+      } finally {
+        done += 1;
+        setStatus(
+          `Fetching PDFs… <strong>${done}/${papers.length}</strong>` +
+          (errors.length ? `<br>${errors.length} failed` : ""),
+          true
+        );
+      }
+    });
+
+    if (!Object.keys(zip.files).length) {
+      setStatus(
+        `All ${papers.length} fetches failed (likely CORS). ` +
+        `Use the <strong>Script (.sh)</strong> button instead.` +
+        `<pre>${esc(errors.join("\n"))}</pre>`,
+        true
+      );
+      return;
+    }
+
+    const blob = await zip.generateAsync({ type: "blob" });
+    triggerDownload(blob, "bibliography-pdfs.zip");
+
+    if (errors.length) {
+      setStatus(
+        `Downloaded ZIP with ${Object.keys(zip.files).length} file(s). ` +
+        `${errors.length} failed:<pre>${esc(errors.join("\n"))}</pre>` +
+        `Tip: try the <strong>Script (.sh)</strong> button for those.`,
+        true
+      );
+    } else {
+      setStatus(`✅ Downloaded ${Object.keys(zip.files).length} PDFs as ZIP.`);
+    }
+  }
+
+  // ---------- shell-script fallback ----------
+  function downloadScript() {
+    const papers = selectedPapers();
+    if (!papers.length) return;
+
+    const lines = [
+      "#!/usr/bin/env bash",
+      "# Flat batch download of selected papers.",
+      "# Generated by the annotated-bibliography dashboard.",
+      "set -euo pipefail",
+      "",
+      'OUT="${1:-bibliography-pdfs}"',
+      'mkdir -p "$OUT"',
+      'echo "Downloading into $OUT/"',
+      "",
+    ];
+    papers.forEach(p => {
+      // Filenames are safe slugs; URLs are user/data-provided, so single-quote them.
+      lines.push(`# ${p.title.replace(/\r?\n/g, " ")}`);
+      lines.push(`curl -fL --retry 3 --retry-delay 2 -o "$OUT/${buildFilename(p)}" ${shellQuote(p.pdfUrl)}`);
+      lines.push("");
+    });
+    lines.push('echo "Done. Files are in $OUT/"');
+
+    const blob = new Blob([lines.join("\n")], { type: "text/x-shellscript" });
+    triggerDownload(blob, "download-bibliography.sh");
+    setStatus("Saved <code>download-bibliography.sh</code>. Run: <code>bash download-bibliography.sh</code>");
+  }
+  // POSIX-safe single-quote wrapper: close-escape-open around each embedded quote.
+  function shellQuote(s) { return "'" + String(s).replace(/'/g, "'\\''") + "'"; }
+
+  function triggerDownload(blob, name) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 500);
+  }
+
+})();
+</script>
+</body>
+</html>
