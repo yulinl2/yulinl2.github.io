@@ -83,8 +83,41 @@ that won't match the quicksand filter cleanly.
 - **No iframe** for community content — direct, indexable, shareable links.
 - Consistent header/footer + ASA banner that sits in normal flow (no overlap).
 
-### Known limitation
+## Round 2 — deeper sweep (infra → operations → automation)
 
-Headshots were copied as-is from the mirror (the environment has no image tooling).
-A production pass should re-encode them to WebP/AVIF and add `srcset`. Content and
-team data should be re-synced from `Statsup-AI/statsupai.github.io`.
+The first round fixed the *presentation* layer. A site for a mass academic
+group also has to be **operable by non-engineers** and **safe to change**.
+Further suboptimal traits found and addressed:
+
+| # | Trait (any layer) | Severity | Addressed by |
+|---|-------------------|----------|--------------|
+|13 | Content baked into markup — adding a weekly webinar meant editing HTML | High | `assets/data/events.json` + client render; auto upcoming/past split |
+|14 | Datasets/articles/pipelines hand-coded as card markup | High | `assets/data/resources.json` + render with search & topic filter |
+|15 | No CI / validation — a stray comma or 12 MB image ships unnoticed | High | `scripts/check.mjs` + path-scoped GitHub Actions + htmlhint |
+|16 | No asset-weight guardrail (root cause of the original 129 MB `img/`) | High | Budget gate in `check.mjs` (per-file + `assets/img` total) |
+|17 | Webinars had no calendar export / no upcoming-vs-past logic | Med | Generated `.ics` "Add to calendar"; date-driven partition |
+|18 | No `Event`/`Organization` structured data (no Google event rich results) | Med | JSON-LD `Organization` (home) + `Event`/`ItemList` (rendered) |
+|19 | Missing site essentials: `sitemap.xml`, `robots.txt`, `404.html`, manifest, favicon, OG image | Med | All added (favicon/OG as lightweight SVG) |
+|20 | Analytics dropped vs. original, or would track preview/forks if re-added | Med | `analytics.js`: off by default, prod-host-only, honors DNT, `anonymize_ip` |
+|21 | No maintainer documentation for a non-technical academic team | Med | `MAINTAINING.md` — "edit one JSON file, commit, robots verify" |
+|22 | No no-JS/SEO fallback once content is client-rendered | Med | `<noscript>` link lists on every data-driven page |
+|23 | Repo hygiene in source: `.DS_Store`, `_Rhistory`, `.backup/`, ~1.7k tracked files | Low | N/A here — flagged for upstream cleanup |
+
+### Net effect
+
+- Adding a webinar or dataset is now a **one-file JSON edit** with automated
+  validation — appropriate for a rotating set of academic volunteers.
+- The class of regression that produced a single 11.7 MB hero image is now a
+  **hard build failure**, not a thing someone has to notice in review.
+- Search/filter, calendar export and date-aware scheduling match how the
+  audience actually uses an academic seminar site.
+
+### Known limitations
+
+- Headshots are the original unoptimized files (no image tooling in this
+  environment). Re-encode to WebP/AVIF + `srcset`, then tighten the asset
+  budget (see `MAINTAINING.md`).
+- `robots.txt` / `sitemap.xml` / `404.html` only take effect at a domain
+  root; they are inert while served from the `/statsupai-revamp/` subfolder.
+- Content and team data should be re-synced from the canonical
+  `Statsup-AI/statsupai.github.io` (outside this environment's repo scope).

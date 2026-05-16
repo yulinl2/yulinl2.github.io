@@ -1,0 +1,13 @@
+{
+  "name": "StatsUpAI",
+  "short_name": "StatsUpAI",
+  "description": "Statistics shaping the future of Artificial Intelligence — an ASA interest group.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0c1413",
+  "theme_color": "#088080",
+  "icons": [
+    { "src": "assets/img/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

@@ -7,6 +7,11 @@
   <meta name="description" content="Curated, well-organized datasets for statisticians across EHR, genomics, imaging, microbiome, clinical trials, biobanks, spatial transcriptomics, proteomics and bioinformatics.">
   <meta name="theme-color" content="#088080">
   <link rel="canonical" href="https://statsupai.org/datasets.html">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/favicon.svg">
+  <link rel="manifest" href="site.webmanifest">
+  <meta property="og:image" content="https://statsupai.org/assets/img/og.svg">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
@@ -40,52 +45,20 @@
 
   <section class="block">
     <div class="container">
-      <div class="grid cols-3">
-        <article class="card">
-          <h3><a href="https://odin.mdacc.tmc.edu/~wwang7/data_resources.html" target="_blank" rel="noopener">Genomics Data</a></h3>
-          <p>Genome-scale resources for method development in oncology and population genetics.</p>
-          <ul class="tag-row"><li class="tag">Genomics</li></ul>
-        </article>
-        <article class="card">
-          <h3><a href="https://statsupai.org/pages/neuroimaging2.html" target="_blank" rel="noopener">Medical Imaging Data</a></h3>
-          <p>Brain and medical imaging datasets for preprocessing and analysis pipelines.</p>
-          <ul class="tag-row"><li class="tag">Imaging</li></ul>
-        </article>
-        <article class="card">
-          <h3><a href="https://statsupai.org/pages/micro2.html" target="_blank" rel="noopener">Microbiome &amp; Metagenomics</a></h3>
-          <p>Microbiome and metagenomic collections for community and gut–brain studies.</p>
-          <ul class="tag-row"><li class="tag">Microbiome</li></ul>
-        </article>
-        <article class="card">
-          <h3><a href="https://statsupai.org/pages/data_ehr.html" target="_blank" rel="noopener">EHR Data</a></h3>
-          <p>Electronic Health Record data for real-world evidence and predictive modeling.</p>
-          <ul class="tag-row"><li class="tag">EHR</li></ul>
-        </article>
-        <article class="card">
-          <h3><a href="https://statsupai.org/pages/clinicaltrial.html" target="_blank" rel="noopener">Clinical Trial Data</a></h3>
-          <p>Clinical-trial datasets to support causal inference and trial methodology.</p>
-          <ul class="tag-row"><li class="tag">Clinical Trial</li></ul>
-        </article>
-        <article class="card">
-          <h3><a href="https://statsupai.org/pages/biobank_dataset.html" target="_blank" rel="noopener">Biobank Data</a></h3>
-          <p>Large-scale biobank resources such as UK Biobank–style population cohorts.</p>
-          <ul class="tag-row"><li class="tag">Biobank</li></ul>
-        </article>
-        <article class="card">
-          <h3><a href="https://statsupai.org/pages/Omics_data.html" target="_blank" rel="noopener">Spatial Transcriptomics</a></h3>
-          <p>Spatially resolved transcriptomics datasets for tissue-level analysis.</p>
-          <ul class="tag-row"><li class="tag">Spatial omics</li></ul>
-        </article>
-        <article class="card">
-          <h3><a href="https://statsupai.org/pages/Proteogenomics.html" target="_blank" rel="noopener">Proteomics Data</a></h3>
-          <p>Proteomic and proteogenomic resources linking protein and genomic layers.</p>
-          <ul class="tag-row"><li class="tag">Proteomics</li></ul>
-        </article>
-        <article class="card">
-          <h3><a href="https://statsupai.org/pages/bioinformatics.html" target="_blank" rel="noopener">Bioinformatics Data</a></h3>
-          <p>General-purpose bioinformatics datasets and tooling references.</p>
-          <ul class="tag-row"><li class="tag">Bioinformatics</li></ul>
-        </article>
+      <div data-resources="datasets">
+        <noscript>
+          <ul>
+            <li><a href="https://odin.mdacc.tmc.edu/~wwang7/data_resources.html">Genomics Data</a></li>
+            <li><a href="https://statsupai.org/pages/neuroimaging2.html">Medical Imaging Data</a></li>
+            <li><a href="https://statsupai.org/pages/micro2.html">Microbiome &amp; Metagenomics</a></li>
+            <li><a href="https://statsupai.org/pages/data_ehr.html">EHR Data</a></li>
+            <li><a href="https://statsupai.org/pages/clinicaltrial.html">Clinical Trial Data</a></li>
+            <li><a href="https://statsupai.org/pages/biobank_dataset.html">Biobank Data</a></li>
+            <li><a href="https://statsupai.org/pages/Omics_data.html">Spatial Transcriptomics</a></li>
+            <li><a href="https://statsupai.org/pages/Proteogenomics.html">Proteomics Data</a></li>
+            <li><a href="https://statsupai.org/pages/bioinformatics.html">Bioinformatics Data</a></li>
+          </ul>
+        </noscript>
       </div>
     </div>
   </section>
@@ -106,6 +79,8 @@
   </div>
 </footer>
 
+<script src="assets/js/render.js" defer></script>
+<script src="assets/js/analytics.js" defer></script>
 <script src="assets/js/main.js" defer></script>
 </body>
 </html>

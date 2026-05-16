@@ -321,3 +321,27 @@ section.block.soft { background: var(--bg-soft); }
 .prose p { max-width: 72ch; }
 .lead-block { max-width: 70ch; font-size: 1.1rem; color: var(--body); }
 hr.div { border: 0; height: 1px; background: var(--line); margin: 48px 0; }
+
+/* ---------- Resource search / filter ---------- */
+.res-controls { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-bottom: 28px; }
+.res-search {
+  flex: 1 1 260px; min-width: 220px;
+  padding: 11px 15px; font: inherit; color: var(--ink);
+  background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+}
+.res-search::placeholder { color: var(--muted); }
+.res-filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  font: inherit; font-size: .86rem; cursor: pointer;
+  padding: 7px 13px; border-radius: 999px;
+  background: var(--bg-soft); color: var(--body);
+  border: 1px solid var(--line);
+}
+.chip:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+.chip.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.res-empty { color: var(--muted); }
+
+/* ---------- Event actions ---------- */
+.event-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.btn-sm { padding: 8px 14px; font-size: .9rem; border-radius: 9px; }
+.event-actions .meta { align-self: center; }
