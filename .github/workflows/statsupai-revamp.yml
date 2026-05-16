@@ -1,0 +1,26 @@
+name: statsupai-revamp checks
+
+# Scoped to the revamp folder so it never runs on unrelated commits
+# (e.g. the daily cvocaloid-observatory dashboard updates).
+on:
+  push:
+    branches: ["**"]
+    paths: ["statsupai-revamp/**"]
+  pull_request:
+    paths: ["statsupai-revamp/**"]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Site checks (JSON, links, HTML sanity, asset budget)
+        run: node statsupai-revamp/scripts/check.mjs
+      - name: HTML lint
+        run: npx --yes htmlhint@1 --config statsupai-revamp/.htmlhintrc "statsupai-revamp/**/*.html"

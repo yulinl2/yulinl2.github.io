@@ -7,6 +7,11 @@
   <meta name="description" content="StatsUpAI webinar series: Health Data Science, and Generative AI & Statistics — talks bridging statistical methodology and modern AI.">
   <meta name="theme-color" content="#088080">
   <link rel="canonical" href="https://statsupai.org/events/webinars/">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/favicon.svg">
+  <link rel="manifest" href="site.webmanifest">
+  <meta property="og:image" content="https://statsupai.org/assets/img/og.svg">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
@@ -53,23 +58,15 @@
         </article>
       </div>
 
-      <div class="section-head"><div class="kicker">2026 schedule</div><h2>Recent &amp; upcoming talks</h2></div>
-      <div class="timeline">
-        <div class="event">
-          <span class="date">Jan 9, 2026</span><span class="badge">Health</span>
-          <h3>Deconstructing Alzheimer's Disease and Related Dementias to Enable Precision Medicine</h3>
-          <p class="meta">Andrew Saykin · Indiana University School of Medicine</p>
-        </div>
-        <div class="event">
-          <span class="date">Jan 16, 2026</span><span class="badge">GenAI</span>
-          <h3>Leveraging LLMs for student feedback in introductory data science courses</h3>
-          <p class="meta">Mine Çetinkaya-Rundel · Duke University</p>
-        </div>
-        <div class="event">
-          <span class="date">Feb 11, 2026</span><span class="badge">GenAI</span>
-          <h3>AI agents to accelerate scientific discoveries</h3>
-          <p class="meta">James Zou · Stanford University</p>
-        </div>
+      <div id="events-root">
+        <noscript>
+          <div class="section-head"><div class="kicker">2026 schedule</div><h2>Talks</h2></div>
+          <ul>
+            <li>Jan 9, 2026 — Andrew Saykin (Indiana University): Deconstructing Alzheimer's Disease and Related Dementias to Enable Precision Medicine [Health]</li>
+            <li>Jan 16, 2026 — Mine Çetinkaya-Rundel (Duke University): Leveraging LLMs for student feedback in introductory data science courses [GenAI]</li>
+            <li>Feb 11, 2026 — James Zou (Stanford University): AI agents to accelerate scientific discoveries [GenAI]</li>
+          </ul>
+        </noscript>
       </div>
       <p style="margin-top:28px">
         <a class="btn btn-primary" href="https://statsupai.org/events/webinars/" target="_blank" rel="noopener">Full schedule &amp; registration</a>
@@ -93,6 +90,8 @@
   </div>
 </footer>
 
+<script src="assets/js/render.js" defer></script>
+<script src="assets/js/analytics.js" defer></script>
 <script src="assets/js/main.js" defer></script>
 </body>
 </html>

@@ -7,6 +7,11 @@
   <meta name="description" content="Expert-curated, ready-to-use analysis pipelines for EHR, neuroimaging, data fusion and clinical-trial data processing.">
   <meta name="theme-color" content="#088080">
   <link rel="canonical" href="https://statsupai.org/pipeline.html">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/img/favicon.svg">
+  <link rel="manifest" href="site.webmanifest">
+  <meta property="og:image" content="https://statsupai.org/assets/img/og.svg">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="assets/css/main.css">
 </head>
 <body>
@@ -40,31 +45,15 @@
 
   <section class="block">
     <div class="container">
-      <div class="grid cols-2">
-        <article class="card">
-          <h3><a href="https://github.com/data-processing-pipeline/EHR_data_pipelines/tree/main" target="_blank" rel="noopener">EHR Data Pipelines</a></h3>
-          <p>A collection of pipelines for processing Electronic Health Record data,
-          from ingestion through analysis-ready datasets.</p>
-          <a class="more" href="https://github.com/data-processing-pipeline/EHR_data_pipelines/tree/main" target="_blank" rel="noopener">Open on GitHub</a>
-        </article>
-        <article class="card">
-          <h3><a href="https://statsupai.org/pages/Neuroimaging%20Processing%20Software.html" target="_blank" rel="noopener">Neuroimaging Processing Software</a></h3>
-          <p>Key neuroimaging tools widely used in neuroscience research, with their
-          corresponding academic publications.</p>
-          <a class="more" href="https://statsupai.org/pages/Neuroimaging%20Processing%20Software.html" target="_blank" rel="noopener">View tools</a>
-        </article>
-        <article class="card">
-          <h3><a href="https://statsupai.org/pages/Data_Fusion_Analysis_Pipeline_pipeline.html" target="_blank" rel="noopener">Data Fusion Analysis Pipeline</a></h3>
-          <p>A modular framework that integrates diverse data sources and analytical models
-          to improve predictive accuracy and decision-making.</p>
-          <a class="more" href="https://statsupai.org/pages/Data_Fusion_Analysis_Pipeline_pipeline.html" target="_blank" rel="noopener">Learn more</a>
-        </article>
-        <article class="card">
-          <h3><a href="https://statsupai.org/pages/clinicaltrials_pipeline.html" target="_blank" rel="noopener">Clinical Trials Data Processing</a></h3>
-          <p>Efficient pipelines for processing and analyzing clinical-trial data to
-          streamline research workflows.</p>
-          <a class="more" href="https://statsupai.org/pages/clinicaltrials_pipeline.html" target="_blank" rel="noopener">Learn more</a>
-        </article>
+      <div data-resources="pipelines">
+        <noscript>
+          <ul>
+            <li><a href="https://github.com/data-processing-pipeline/EHR_data_pipelines/tree/main">EHR Data Pipelines</a></li>
+            <li><a href="https://statsupai.org/pages/Neuroimaging%20Processing%20Software.html">Neuroimaging Processing Software</a></li>
+            <li><a href="https://statsupai.org/pages/Data_Fusion_Analysis_Pipeline_pipeline.html">Data Fusion Analysis Pipeline</a></li>
+            <li><a href="https://statsupai.org/pages/clinicaltrials_pipeline.html">Clinical Trials Data Processing</a></li>
+          </ul>
+        </noscript>
       </div>
     </div>
   </section>
@@ -85,6 +74,8 @@
   </div>
 </footer>
 
+<script src="assets/js/render.js" defer></script>
+<script src="assets/js/analytics.js" defer></script>
 <script src="assets/js/main.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,42 @@
+{
+  "_comment": "SINGLE SOURCE OF TRUTH for webinars. Non-technical maintainers: add an object, commit. CI validates it; the site auto-sorts upcoming vs past by date and builds calendar links. Date = ISO YYYY-MM-DD. time_et like '12:00 PM'. series = 'Health' | 'GenAI'.",
+  "series": {
+    "Health": { "label": "Health Data Science Series", "tagline": "Big-data & AI methods for health, imaging, genetics and clinical phenotyping." },
+    "GenAI": { "label": "GenAI × Statistics Series", "tagline": "Bridging the gap between generative AI and statistical methodologies." }
+  },
+  "talks": [
+    {
+      "date": "2026-01-09",
+      "time_et": "12:00 PM",
+      "duration_min": 60,
+      "speaker": "Andrew Saykin",
+      "affiliation": "Indiana University School of Medicine",
+      "title": "Deconstructing Alzheimer's Disease and Related Dementias to Enable Precision Medicine",
+      "series": "Health",
+      "registration_link": "https://upenn.zoom.us/meeting/register/uA1Jh_J8T3Wez4q0rbpTLQ#/registration",
+      "recording_link": ""
+    },
+    {
+      "date": "2026-01-16",
+      "time_et": "12:00 PM",
+      "duration_min": 60,
+      "speaker": "Mine Çetinkaya-Rundel",
+      "affiliation": "Duke University",
+      "title": "Leveraging LLMs for student feedback in introductory data science courses",
+      "series": "GenAI",
+      "registration_link": "https://upenn.zoom.us/meeting/register/7iwjCrS6Qia0EbrBodLyQw#/registration",
+      "recording_link": ""
+    },
+    {
+      "date": "2026-02-11",
+      "time_et": "1:00 PM",
+      "duration_min": 60,
+      "speaker": "James Zou",
+      "affiliation": "Stanford University",
+      "title": "AI agents to accelerate scientific discoveries",
+      "series": "GenAI",
+      "registration_link": "https://sfu.zoom.us/meeting/register/3MLcnkc9TJCYfHNrdVSbeQ#/registration",
+      "recording_link": ""
+    }
+  ]
+}
