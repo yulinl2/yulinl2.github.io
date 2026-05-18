@@ -1,0 +1,156 @@
+{
+  "_comment": "Faithful directory of the live statsupai.org Datasets section (see _reference/datasets.md). Names/URLs verbatim from survey. Per-entry prose lives on the source page (linked) — not duplicated/invented here.",
+  "categories": [
+    {
+      "id": "genomics", "name": "Genomics Data", "tag": "Genomics",
+      "intro": "Genome-scale resources for method development in oncology and population genetics.",
+      "source": "https://odin.mdacc.tmc.edu/~wwang7/data_resources.html",
+      "external_only": true,
+      "entries": []
+    },
+    {
+      "id": "imaging", "name": "Medical Imaging Data", "tag": "Imaging",
+      "intro": "The Large-scale Medical Imaging Related Studies Directory — 26 large-scale neuroimaging/medical-imaging studies & repositories.",
+      "source": "https://statsupai.org/pages/neuroimaging2.html",
+      "entries": [
+        { "name": "ADNI", "url": "https://adni.loni.usc.edu/" },
+        { "name": "Human Connectome Project", "url": "https://www.humanconnectome.org/" },
+        { "name": "UK Biobank", "url": "https://www.ukbiobank.ac.uk/" },
+        { "name": "ABCD Study", "url": "https://abcdstudy.org/" },
+        { "name": "ENIGMA", "url": "https://enigma.ini.usc.edu/" },
+        { "name": "All of Us", "url": "https://allofus.nih.gov/" },
+        { "name": "Osteoarthritis Initiative (OAI)", "url": "https://nda.nih.gov/oai" },
+        { "name": "Philadelphia Neurodevelopmental Cohort (PNC)", "url": "https://www.med.upenn.edu/bbl/philadelphianeurodevelopmentalcohort.html" },
+        { "name": "PING", "url": "http://pingstudy.ucsd.edu/" },
+        { "name": "National Lung Screening Trial (NLST)", "url": "https://www.cancer.gov/types/lung/research/nlst" },
+        { "name": "Image & Data Archive (IDA)", "url": "https://ida.loni.usc.edu/login.jsp" },
+        { "name": "NIMH Data Archive (NDA)", "url": "https://nda.nih.gov/" },
+        { "name": "Brain Image Library (BIL)", "url": "https://www.brainimagelibrary.org/" },
+        { "name": "PLCO", "url": "https://cdas.cancer.gov/plco/" },
+        { "name": "NITRC", "url": "https://www.nitrc.org/projects/nitrc/" },
+        { "name": "TCGA", "url": "https://www.genome.gov/Funded-Programs-Projects/Cancer-Genome-Atlas" },
+        { "name": "BraTS", "url": "https://www.med.upenn.edu/cbica/brats/" },
+        { "name": "NeMO Archive", "url": "https://nemoarchive.org/" },
+        { "name": "DABI", "url": "https://dabi.loni.usc.edu/" },
+        { "name": "OpenNeuro", "url": "https://openneuro.org/" },
+        { "name": "OpenNeuro PET", "url": "https://openneuropet.github.io/" },
+        { "name": "BossDB", "url": "https://bossdb.org/" },
+        { "name": "DANDI Archive", "url": "https://www.dandiarchive.org/" },
+        { "name": "NEMAR", "url": "https://nemar.org/" },
+        { "name": "The Cancer Imaging Archive (TCIA)", "url": "https://www.cancerimagingarchive.net/" }
+      ]
+    },
+    {
+      "id": "microbiome", "name": "Microbiome & Metagenomics", "tag": "Microbiome",
+      "intro": "Human Microbiome and Metagenomics Datasets — 8 resources with paired dataset + publication links.",
+      "source": "https://statsupai.org/pages/micro2.html",
+      "entries": [
+        { "name": "curatedMetagenomicData", "url": "https://waldronlab.io/curatedMetagenomicData/", "pubs": ["https://doi.org/10.1038/nmeth.4468"] },
+        { "name": "Human Microbiome Project (HMP)", "url": "https://portal.hmpdacc.org", "pubs": ["https://doi.org/10.1038/s41586-019-1238-8", "https://doi.org/10.1038/nature11234"] },
+        { "name": "American Gut Project", "url": "https://www.ebi.ac.uk/ena/browser/view/PRJEB11419", "pubs": ["https://github.com/knightlab-analyses/american-gut-analyses", "https://doi.org/10.1128/mSystems.00031-18"] },
+        { "name": "GGMP", "url": "https://github.com/SMUJYYXB/GGMP", "pubs": ["https://doi.org/10.1038/s41598-020-66369-z"] },
+        { "name": "Lifelines", "url": "https://www.lifelines-biobank.com/researchers/about-lifelines", "pubs": ["https://www.science.org/doi/10.1126/science.aad3369"] },
+        { "name": "TwinsUK", "url": "https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJEB13747", "pubs": ["https://doi.org/10.1038/s41467-018-05184-7", "https://doi.org/10.1016/j.chom.2016.04.017"] },
+        { "name": "MetaHIT", "url": "https://www.ebi.ac.uk/ena/browser/view/PRJEB2054", "pubs": ["https://doi.org/10.1038/nature08821"] },
+        { "name": "MiBioGen", "url": "https://mibiogen.gcc.rug.nl/menu/main/home/", "pubs": ["https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-018-0479-3"] }
+      ]
+    },
+    {
+      "id": "ehr", "name": "EHR Data", "tag": "EHR",
+      "intro": "Electronic Health Record Datasets — 11 EHR/ICU databases and EHR-NLP tools.",
+      "source": "https://statsupai.org/pages/data_ehr.html",
+      "entries": [
+        { "name": "All of Us", "url": "https://allofus.nih.gov/" },
+        { "name": "UK Biobank", "url": "https://www.ukbiobank.ac.uk/" },
+        { "name": "MIMIC-III", "url": "https://physionet.org/content/mimiciii/1.4/" },
+        { "name": "MIMIC-IV", "url": "https://physionet.org/content/mimiciv/0.4/" },
+        { "name": "PCORnet", "url": "https://pcornet.org/data/" },
+        { "name": "eICU Collaborative Research Database", "url": "https://eicu-crd.mit.edu/" },
+        { "name": "AmsterdamUMCdb", "url": "https://amsterdammedicaldatascience.nl/amsterdamumcdb/" },
+        { "name": "HiRID", "url": "https://physionet.org/content/hirid/1.1.1/" },
+        { "name": "GENIE (THUMedInfo)", "url": "https://huggingface.co/THUMedInfo/GENIE_en_8b" },
+        { "name": "PMC-Patients", "url": "https://huggingface.co/datasets/THUMedInfo/PMC-Patients" },
+        { "name": "RareArena", "url": "https://huggingface.co/datasets/THUMedInfo/RareArena" }
+      ]
+    },
+    {
+      "id": "clinicaltrial", "name": "Clinical Trial Data", "tag": "Clinical Trial",
+      "intro": "Global Clinical Trial Registries — 9 registries / data-sharing platforms.",
+      "source": "https://statsupai.org/pages/clinicaltrial.html",
+      "entries": [
+        { "name": "ISRCTN Registry", "url": "https://www.isrctn.com/" },
+        { "name": "ChiCTR", "url": "https://www.chictr.org.cn/index.html" },
+        { "name": "Vivli", "url": "https://vivli.org/" },
+        { "name": "Clinical Trials Registry – India (CTRI)", "url": "https://ctri.nic.in/Clinicaltrials/login.php" },
+        { "name": "WHO ICTRP", "url": "https://www.who.int/clinical-trials-registry-platform" },
+        { "name": "EU Clinical Trials", "url": "https://euclinicaltrials.eu/" },
+        { "name": "ClinicalTrials.gov", "url": "https://clinicaltrials.gov/" },
+        { "name": "ANZCTR", "url": "https://www.anzctr.org.au/" },
+        { "name": "Critical Path for Alzheimer's Disease (CPAD)", "url": "https://c-path.org/program/critical-path-for-alzheimers-disease/" }
+      ]
+    },
+    {
+      "id": "biobank", "name": "Biobank Data", "tag": "Biobank",
+      "intro": "The Large-scale Biobanks — 13 biobanks/genomic databases with key reference publications.",
+      "source": "https://statsupai.org/pages/biobank_dataset.html",
+      "entries": [
+        { "name": "UK Biobank", "url": "https://www.ukbiobank.ac.uk/", "pubs": ["https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(12)60404-8/abstract"] },
+        { "name": "All of Us", "url": "https://allofus.nih.gov/" },
+        { "name": "FinnGen", "url": "https://www.finngen.fi/en", "pubs": ["https://www.nature.com/articles/s41586-022-05473-8"] },
+        { "name": "TCGA", "url": "https://www.cancer.gov/about-nci/organization/ccg/research/structural-genomics/tcga" },
+        { "name": "Million Veteran Program", "url": "https://www.mvp.va.gov/pwa/", "pubs": ["https://www.jclinepi.com/article/S0895-4356(15)00444-8/fulltext"] },
+        { "name": "BioBank Japan", "url": "https://biobankjp.org/" },
+        { "name": "BioVU", "url": "https://victr.vumc.org/biovu-description/" },
+        { "name": "Mayo Clinic Biobank", "url": "https://www.mayo.edu/research/centers-programs/mayo-clinic-biobank/overview" },
+        { "name": "IGSR / 1000 Genomes", "url": "https://www.internationalgenome.org/" },
+        { "name": "gnomAD", "url": "https://gnomad.broadinstitute.org/", "pubs": ["https://www.nature.com/articles/s41586-020-2308-7"] },
+        { "name": "deCODE Genetics", "url": "https://www.decode.com/" },
+        { "name": "100,000 Genomes Project", "url": "https://www.genomicsengland.co.uk/initiatives/100000-genomes-project", "pubs": ["https://www.nejm.org/doi/full/10.1056/NEJMoa2035790"] },
+        { "name": "Aging Research Biobank", "url": "https://agingresearchbiobank.nia.nih.gov/" }
+      ]
+    },
+    {
+      "id": "spatial", "name": "Spatial Transcriptomics", "tag": "Spatial omics",
+      "intro": "Spatial Transcriptomics Data — 4 resources.",
+      "source": "https://statsupai.org/pages/Omics_data.html",
+      "entries": [
+        { "name": "STAr", "url": "https://lce.biohpc.swmed.edu/star/" },
+        { "name": "STimage-1K4M", "url": "https://github.com/JiawenChenn/STimage-1K4M" },
+        { "name": "HEST-1k", "url": "https://github.com/mahmoodlab/HEST" },
+        { "name": "DeepSpaceDB", "url": "https://genomics.virus.kyoto-u.ac.jp/deepspacedb/" }
+      ]
+    },
+    {
+      "id": "proteomics", "name": "Proteomics Data", "tag": "Proteomics",
+      "intro": "Data Resources for Proteomics-related Studies — 8 repositories.",
+      "source": "https://statsupai.org/pages/Proteogenomics.html",
+      "entries": [
+        { "name": "CPTAC Pan-Cancer", "url": "https://proteomic.datacommons.cancer.gov/pdc/cptac-pancancer" },
+        { "name": "CCLE Proteomics", "url": "https://gygi.hms.harvard.edu/publications/ccle.html" },
+        { "name": "ProteomeXchange", "url": "https://www.proteomexchange.org/" },
+        { "name": "MassIVE", "url": "https://massive.ucsd.edu/ProteoSAFe/static/massive.jsp" },
+        { "name": "PeptideAtlas", "url": "https://peptideatlas.org/" },
+        { "name": "PRIDE", "url": "https://www.ebi.ac.uk/pride/" },
+        { "name": "NCI Proteomic Data Commons", "url": "https://proteomic.datacommons.cancer.gov/pdc/" },
+        { "name": "Proteome-Phenome Atlas", "url": "https://proteome-phenome-atlas.com/" }
+      ]
+    },
+    {
+      "id": "bioinformatics", "name": "Bioinformatics Data", "tag": "Bioinformatics",
+      "intro": "Bioinformatics Datasets — 10 databases spanning drug discovery, disease ontologies, proteins, and pathways.",
+      "source": "https://statsupai.org/pages/bioinformatics.html",
+      "entries": [
+        { "name": "ChEMBL", "url": "https://www.ebi.ac.uk/chembl/" },
+        { "name": "DISEASES", "url": "https://diseases.jensenlab.org/Downloads" },
+        { "name": "Disease Ontology", "url": "https://www.disease-ontology.org/" },
+        { "name": "Mondo Disease Ontology", "url": "https://mondo.monarchinitiative.org/" },
+        { "name": "FDA Drug Approvals", "url": "https://www.fda.gov/drugs/development-approval-process-drugs/drug-approvals-and-databases" },
+        { "name": "DrugCentral", "url": "https://drugcentral.org/" },
+        { "name": "UniProt", "url": "https://www.uniprot.org/" },
+        { "name": "KEGG Pathway", "url": "https://www.genome.jp/kegg/pathway.html" },
+        { "name": "Reactome", "url": "https://reactome.org/" },
+        { "name": "GeneCards", "url": "https://www.genecards.org/" }
+      ]
+    }
+  ]
+}
