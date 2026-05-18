@@ -1,8 +1,9 @@
-Absolutely — here’s a concise, collaborator-friendly **README draft** that captures the *big picture, core logic, and demo scope* without going into internal technicalities.
-
+---
+title: HAN — Overview
+description: The big picture and core logic of the Hierarchical Agentic Network.
 ---
 
-# 🧠 Hierarchical Agentic Network (HAN) – Minimal Demonstration
+# Hierarchical Agentic Network (HAN) — Minimal Demonstration
 
 ### **Overview**
 

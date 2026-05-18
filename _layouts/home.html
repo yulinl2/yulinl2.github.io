@@ -1,0 +1,97 @@
+---
+layout: default
+---
+<section class="hero">
+  <span class="blob b1"></span>
+  <span class="blob b2"></span>
+  <span class="blob b3"></span>
+  <div class="container hero-inner">
+    <div>
+      <span class="eyebrow">{{ site.tagline }}</span>
+      <h1>Hi, I&rsquo;m <span class="grad">Yulin&nbsp;Li</span>.</h1>
+      <p class="lead">{{ page.intro }}</p>
+      <ul class="fact-row">
+        {% for f in page.facts %}<li class="fact">{{ f }}</li>{% endfor %}
+      </ul>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="#work">See my work</a>
+        <a class="btn btn-ghost" href="https://github.com/{{ site.social.github }}">GitHub</a>
+      </div>
+    </div>
+    <div class="portrait">
+      <img src="{{ '/assets/images/2024-rutgers-profile.png' | relative_url }}"
+           alt="Portrait of Yulin Li" loading="eager" width="320" height="320">
+    </div>
+  </div>
+</section>
+
+<section class="block" id="work">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">What I&rsquo;m building</p>
+      <h2>Research, notes &amp; experiments</h2>
+      <p>A working record of the ideas I&rsquo;m chasing at the intersection of statistics, machine learning, and art.</p>
+    </div>
+    <div class="grid cols-3">
+      {% for c in page.cards %}
+      <article class="card" data-reveal="{{ forloop.index0 }}">
+        <div class="ico">{{ c.icon }}</div>
+        <h3><a href="{{ c.url | relative_url }}">{{ c.title }}</a></h3>
+        <p>{{ c.body }}</p>
+        {% if c.tags %}<ul class="tag-row">{% for t in c.tags %}<li class="tag">{{ t }}</li>{% endfor %}</ul>{% endif %}
+        <a class="more" href="{{ c.url | relative_url }}">{{ c.cta | default: "Explore" }}</a>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="block soft">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Teaching journey</p>
+      <h2>In the classroom &amp; recitation room</h2>
+      <p>Statistics and mathematics, from PhD seminars to first-year calculus &mdash; across Rutgers, Boston University, and Zhejiang University.</p>
+    </div>
+    <div class="timeline">
+      {% for t in page.teaching %}
+      <div class="tl-item" data-reveal="{{ forloop.index0 }}">
+        <div class="date">{{ t.when }}</div>
+        <h3>{{ t.course }}</h3>
+        <p class="meta">{{ t.detail }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container">
+    <div class="section-head">
+      <p class="kicker">Off the page</p>
+      <h2>A life in music</h2>
+      <p>Conductor, music director, arranger, and accompanist &mdash; building choirs and concerts wherever I go.</p>
+    </div>
+    <div class="timeline">
+      {% for m in page.music %}
+      <div class="tl-item" data-reveal="{{ forloop.index0 }}">
+        <div class="date">{{ m.when }}</div>
+        <h3>{{ m.title }}</h3>
+        <p class="meta">{{ m.detail }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="block soft">
+  <div class="container narrow">
+    <div class="section-head">
+      <p class="kicker">Colophon</p>
+      <h2>About this site</h2>
+    </div>
+    <div class="prose">
+      {{ content }}
+    </div>
+  </div>
+</section>
