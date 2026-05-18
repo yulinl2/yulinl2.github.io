@@ -105,6 +105,10 @@
   /* ---------------- Events ---------------- */
   var evRoot = document.getElementById("events-root");
   if (evRoot) {
+    var IC = {
+      youtube: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 12s0-3.2-.4-4.6a3 3 0 0 0-2.1-2.1C18.9 5 12 5 12 5s-6.9 0-8.5.3A3 3 0 0 0 1.4 7.4 32 32 0 0 0 1 12s0 3.2.4 4.6a3 3 0 0 0 2.1 2.1C5.1 19 12 19 12 19s6.9 0 8.5-.3a3 3 0 0 0 2.1-2.1c.4-1.4.4-4.6.4-4.6ZM10 15V9l5.2 3-5.2 3Z"/></svg>',
+      zoom: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Zm15 2.2 3.4-2.3a.6.6 0 0 1 .9.5v9.2a.6.6 0 0 1-.9.5L18 14.8Z"/></svg>'
+    };
     getJSON("assets/data/events.json").then(function (data) {
       var today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -119,7 +123,7 @@
 
       function fmt(d) {
         return new Date(d + "T00:00:00").toLocaleDateString("en-US", {
-          month: "short", day: "numeric", year: "numeric"
+          weekday: "short", month: "short", day: "numeric", year: "numeric"
         });
       }
       function ics(t) {
@@ -130,59 +134,74 @@
           "UID:" + start + "-" + encodeURIComponent(t.speaker) + "@statsupai.org",
           "DTSTART;VALUE=DATE:" + start,
           "SUMMARY:" + t.title.replace(/[,;]/g, "") + " — " + t.speaker,
-          "DESCRIPTION:" + (data.series[t.series] ? data.series[t.series].label : t.series) +
+          "DESCRIPTION:" + (data.series[t.series] ? data.series[t.series].full : t.series) +
             (t.registration_link ? "\\nRegister: " + t.registration_link : ""),
           "END:VEVENT", "END:VCALENDAR"
         ];
         return "data:text/calendar;charset=utf-8," + encodeURIComponent(lines.join("\r\n"));
       }
+      function disc(label, text) {
+        if (!text) return "";
+        return '<details class="ev-disc"><summary>' + esc(label) +
+          '</summary><div class="body">' + esc(text) + "</div></details>";
+      }
       function card(t, isUpcoming) {
-        var ser = data.series[t.series] ? data.series[t.series].label : t.series;
-        var actions = isUpcoming
+        var sname = data.series[t.series] ? data.series[t.series].label : t.series;
+        var spk = t.personal_website
+          ? '<a href="' + esc(t.personal_website) + '" target="_blank" rel="noopener">' + esc(t.speaker_full || t.speaker) + "</a>"
+          : esc(t.speaker_full || t.speaker);
+        var platform = "";
+        if (!isUpcoming && t.recording_link) {
+          platform = '<span class="ev-platform">' + (IC[t.recording_platform] || "") +
+            (t.recording_platform === "youtube" ? "Recording on YouTube" : "Recording available") + "</span>";
+        } else if (isUpcoming && t.registration_link) {
+          platform = '<span class="ev-platform">' + IC.zoom + "Online · Zoom (registration)</span>";
+        }
+        var cta = isUpcoming
           ? (t.registration_link
-              ? '<a class="btn btn-primary btn-sm" href="' + esc(t.registration_link) + '" target="_blank" rel="noopener">Register</a>'
-              : "") +
+              ? '<a class="btn btn-primary btn-sm" href="' + esc(t.registration_link) + '" target="_blank" rel="noopener">Register</a>' : "") +
             '<a class="btn btn-ghost btn-sm" href="' + ics(t) + '" download="statsupai-' + t.date + '.ics">Add to calendar</a>'
           : (t.recording_link
-              ? '<a class="btn btn-ghost btn-sm" href="' + esc(t.recording_link) + '" target="_blank" rel="noopener">Watch recording</a>'
-              : '<span class="meta">Recording TBA</span>');
-        var d = el("div", "event");
-        d.innerHTML =
-          '<span class="date">' + fmt(t.date) + " · " + esc(t.time_et) + " ET</span>" +
-          '<span class="badge">' + esc(t.series) + "</span>" +
+              ? '<a class="btn btn-primary btn-sm" href="' + esc(t.recording_link) + '" target="_blank" rel="noopener">Watch recording</a>'
+              : '<span class="ev-status">Recording TBA</span>');
+        var c = el("article", "evcard s-" + esc(t.series) + (isUpcoming ? "" : " is-past"));
+        c.innerHTML =
+          '<div class="pad">' +
+          '<div class="ev-top">' +
+            '<span class="ev-chip">' + esc(sname) + "</span>" +
+            '<span class="ev-when">' + fmt(t.date) + " · " + esc(t.time_et) + " ET</span>" +
+            '<span class="ev-status ' + (isUpcoming ? "up" : "") + '">' + (isUpcoming ? "Upcoming" : "Past") + "</span>" +
+          "</div>" +
           "<h3>" + esc(t.title) + "</h3>" +
-          '<p class="meta">' + esc(t.speaker) + " · " + esc(t.affiliation) + " · <em>" + esc(ser) + "</em></p>" +
-          '<div class="event-actions">' + actions + "</div>";
-        return d;
+          '<p class="ev-speaker">' + spk + ' <span class="aff">· ' + esc(t.affiliation) + "</span></p>" +
+          (platform ? '<p style="margin:6px 0 0">' + platform + "</p>" : "") +
+          disc("Abstract", t.abstract) +
+          disc("Speaker bio", t.bio) +
+          '<div class="ev-cta">' + cta + "</div>" +
+          "</div>";
+        return c;
       }
-
-      var html = "";
-      var up = el("div");
-      up.appendChild(el("div", "section-head",
-        '<div class="kicker">Upcoming</div><h2>Next talks</h2>'));
-      if (upcoming.length) {
-        var tl = el("div", "timeline");
-        upcoming.forEach(function (t) { tl.appendChild(card(t, true)); });
-        up.appendChild(tl);
-      } else {
-        up.appendChild(el("p", "meta", "No upcoming talks scheduled — check back soon."));
-      }
-
-      var pa = el("div");
-      pa.style.marginTop = "48px";
-      pa.appendChild(el("div", "section-head",
-        '<div class="kicker">Archive</div><h2>Past talks</h2>'));
-      if (past.length) {
-        var tl2 = el("div", "timeline");
-        past.forEach(function (t) { tl2.appendChild(card(t, false)); });
-        pa.appendChild(tl2);
-      } else {
-        pa.appendChild(el("p", "meta", "Archive coming soon."));
+      function section(title, sub, arr, isUp, emptyMsg) {
+        var wrap = el("div");
+        wrap.innerHTML = '<div class="ev-series-head"><h2>' + esc(title) +
+          '</h2><span class="sub">' + esc(sub) + "</span></div>";
+        if (arr.length) {
+          var list = el("div", "ev-list");
+          arr.forEach(function (t) { list.appendChild(card(t, isUp)); });
+          wrap.appendChild(list);
+        } else {
+          wrap.appendChild(el("p", "ev-empty", emptyMsg));
+        }
+        return wrap;
       }
 
       evRoot.innerHTML = "";
-      evRoot.appendChild(up);
-      evRoot.appendChild(pa);
+      evRoot.appendChild(section("Upcoming", upcoming.length + " scheduled", upcoming, true,
+        "No upcoming talks scheduled — check back soon."));
+      var pastWrap = section("Past talks", past.length + " in the archive", past, false,
+        "Archive coming soon.");
+      pastWrap.style.marginTop = "44px";
+      evRoot.appendChild(pastWrap);
 
       // Event JSON-LD (Google event rich results)
       var ld = talks.map(function (t) {
