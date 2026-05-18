@@ -834,19 +834,36 @@ window.addEventListener('scroll',function(){
     if(!ta||!out)return;
     var CK='ai4sm_dedup_cache';
 
+    function cleanTex(b){
+      return b.replace(/\\(begin|end)\{[^}]*\}/g,' ')
+              .replace(/\\[a-zA-Z]+\*?(\[[^\]]*\])?/g,' ')
+              .replace(/[{}$&~^]/g,' ').replace(/\s+/g,' ').trim();
+    }
+    function isStub(t){
+      if(!t)return true;
+      var low=t.toLowerCase();
+      if(low.length<25)return true;
+      if(low.indexOf('state the problem clearly')>=0)return true;
+      if(low.indexOf('define all notation, hypotheses')>=0)return true;
+      var todo=(t.match(/todo/gi)||[]).length;
+      if(todo>=2 && low.replace(/[^a-z]/g,'').length<90)return true;
+      return false;
+    }
     function texStatement(src){
-      // strip comments
       var s=src.replace(/(^|[^\\])%.*$/gm,'$1');
-      var m=s.match(/\\begin\{problem\}([\s\S]*?)\\end\{problem\}/i)
-          || s.match(/\\begin\{statement\}([\s\S]*?)\\end\{statement\}/i)
-          || s.match(/\\statement\{([\s\S]*?)\}\s*(\\|$)/i)
-          || s.match(/\\section\*?\{\s*problem[^}]*\}([\s\S]*?)(\\section|\\end\{document\}|$)/i);
-      var body=m?m[1]:(s.split(/\\begin\{document\}/)[1]||s);
-      // cut at solution / rubric
-      body=body.split(/\\(section|subsection)\*?\{\s*(solution|oracle|rubric)/i)[0];
-      return body.replace(/\\(begin|end)\{[^}]*\}/g,' ')
-                 .replace(/\\[a-zA-Z]+\*?(\[[^\]]*\])?/g,' ')
-                 .replace(/[{}$&]/g,' ').replace(/\s+/g,' ').trim();
+      var re=/\\begin\{problemstatement\}([\s\S]*?)\\end\{problemstatement\}/gi, m, blocks=[];
+      while((m=re.exec(s))!==null){ blocks.push(m[1]); }
+      if(!blocks.length){
+        var t=(s.split(/\\begin\{document\}/)[1]||s)
+          .replace(/\\(problemsetup|problemtags)(\s*\{[^}]*\})+/gi,' ')
+          .replace(/\\begin\{(answerkey|gradingscheme|editornotes)\}[\s\S]*?\\end\{\1\}/gi,' ');
+        var g=t.match(/\\begin\{statement\}([\s\S]*?)\\end\{statement\}/i)
+            || t.match(/\\statement\{([\s\S]*?)\}\s*(\\|$)/i)
+            || t.match(/\\section\*?\{\s*problem[^}]*\}([\s\S]*?)(\\section|\\end\{document\}|$)/i);
+        blocks=[ g?g[1]:t ];
+      }
+      return blocks.map(function(b){ var c=cleanTex(b); return isStub(c)?'\u27eaTEMPLATE-STUB\u27eb':c; })
+                   .filter(Boolean).join('\n---\n');
     }
     function toks(t){ return (t.toLowerCase().match(/[a-z0-9\\]+/g)||[]); }
     function vec(t){ var v={}, a=toks(t); a.forEach(function(w){ if(w.length>2) v[w]=(v[w]||0)+1; }); return v; }
@@ -855,6 +872,11 @@ window.addEventListener('scroll',function(){
       return (na&&nb)? d/Math.sqrt(na*nb) : 0; }
 
     function screen(stem){
+      if(stem.indexOf('\u27eaTEMPLATE-STUB\u27eb')>=0){
+        return {stem:'(unfilled template — the \\begin{problemstatement} block still has the placeholder / TODOs)',
+          verdict:'Template stub — write the problem statement, then re-check (nothing to dedup yet)',
+          vclass:'flag',fires:[],nn:[],maxc:0,nov:[]};
+      }
       var low=' '+stem.toLowerCase()+' ', fires=[];
       T.forEach(function(r){
         var hit=r.any.some(function(s){return low.indexOf(s.toLowerCase())>=0;});
