@@ -2,18 +2,21 @@
 layout: home
 title: Home
 description: >-
-  Yulin Li — Ph.D. candidate in Statistics at Rutgers, working across
-  statistics, machine learning, and music.
+  Yulin Li — Ph.D. candidate in Statistics at Rutgers. How intelligent
+  systems, human or AI, learn and deploy structural knowledge — and the
+  theory that guides methodology in practice.
 
 intro: >-
   I&rsquo;m a Ph.D. candidate in the Department of Statistics at
-  Rutgers&ndash;New Brunswick. I think about inference, machine
-  learning, and the mathematics underneath them &mdash; and, away
-  from the page, I make music.
+  Rutgers&ndash;New Brunswick. I&rsquo;m drawn to one question: how
+  intelligent systems &mdash; human or AI, vision or language &mdash;
+  get to learn and deploy structural knowledge. My work is on the
+  theory that guides methodology in practical deployment. Away from
+  the page, I make music.
 
 facts:
   - "<b>Ph.D. Candidate</b> · Statistics, Rutgers&ndash;New Brunswick"
-  - "<b>Research</b> · inference &amp; machine learning"
+  - "<b>Research</b> · structural knowledge &amp; learning theory"
   - "<b>Music</b> · conductor, arranger, accompanist"
 
 cards:
