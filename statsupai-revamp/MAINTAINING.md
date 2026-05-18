@@ -1,3 +1,13 @@
+<!-- ============================================================= -->
+<!-- ⚠️ FORK-TREE WARNING — DO NOT NEGLECT ⚠️                       -->
+<!-- The official StatsUpAI source `Statsup-AI/statsupai.github.io` -->
+<!-- is NOT the upstream/root — it is itself a FORK within a fork   -->
+<!-- tree. This `statsupai-revamp/` is a downstream PERSONAL mirror.-->
+<!-- Changes here do NOT auto-propagate to the live site, and the   -->
+<!-- "obvious parent" is NOT necessarily canonical. Re-verify fork  -->
+<!-- lineage before any PR / push / sync. See repo-root CLAUDE.md.  -->
+<!-- ============================================================= -->
+
 # Maintaining the StatsUpAI site (for non-technical maintainers)
 
 You almost never touch HTML. Content lives in **JSON data files**; the site
