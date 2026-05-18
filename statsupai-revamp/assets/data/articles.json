@@ -1,0 +1,32 @@
+{
+  "_comment": "Review Articles = live statsupai.org Zotero group 5407414 (public). Collection→section map from _reference/articles.md. Renderer lazy-fetches each collection from api.zotero.org on expand → faithful AND auto-current; graceful fallback to source links if the API is unreachable.",
+  "group": "5407414",
+  "api": "https://api.zotero.org/groups/5407414/collections/",
+  "groups": [
+    {
+      "name": "Biomedical reviews",
+      "sections": [
+        { "title": "Cancer Research", "collection": "6PVIT4IP", "source": "https://statsupai.org/pages/Cancer_review_papers.html" },
+        { "title": "Cancer Research — PCAWG", "collection": "AA3PQDEF", "source": "https://statsupai.org/pages/new_cancer_review_PCAWG.html" },
+        { "title": "Cancer Research — TCGA", "collection": "QH5SVF2G", "source": "https://statsupai.org/pages/new_cancer_review_TCGA.html" },
+        { "title": "Electronic Health Records", "collection": "MZDBVWF5", "source": "https://statsupai.org/pages/ehr_review_papers.html" },
+        { "title": "Genetics", "collection": "IN44WNCJ", "source": "https://statsupai.org/pages/genetic_review_papers.html" },
+        { "title": "Medical Imaging", "collection": "IJ5MX65B", "source": "https://statsupai.org/pages/Neuroimaging_review_papers.html" },
+        { "title": "Microbiome & Metagenomics", "collection": "8CE45R76", "source": "https://statsupai.org/pages/Microbiome_review_paper.html" }
+      ]
+    },
+    {
+      "name": "AI reviews",
+      "sections": [
+        { "title": "LLMs — Survey Articles (2023–2025)", "collection": "AA8HVZ8M", "source": "https://statsupai.org/pages/paper_list_ai/list-AI-LLM.html" },
+        { "title": "LLMs — Technical Reports (2025–2026)", "collection": "N2PSJFMY", "source": "https://statsupai.org/pages/paper_list_ai/list-AI-LLM.html" },
+        { "title": "Designing Trustworthy LLMs", "collection": "PKBWUAU9", "source": "https://statsupai.org/pages/paper_list_ai/list-AI-LLM.html" },
+        { "title": "LLM-Empowered Statistical Analysis", "collection": "CYNWXVJ3", "source": "https://statsupai.org/pages/paper_list_ai/list-AI-LLM.html" },
+        { "title": "AI Safety — Algorithmic Fairness & Bias", "collection": "W3D9VXVK", "source": "https://statsupai.org/pages/paper_list_ai/list-AI-Safety.html" },
+        { "title": "AI Safety — Privacy & Differential Privacy", "collection": "BCSH7HSH", "source": "https://statsupai.org/pages/paper_list_ai/list-AI-Safety.html" },
+        { "title": "AI Safety — Aligning AI with Human Values", "collection": "3UJJK7EM", "source": "https://statsupai.org/pages/paper_list_ai/list-AI-Safety.html" },
+        { "title": "AGI & AI Agents", "collection": "JF8AYJFT", "source": "https://statsupai.org/pages/paper_list_ai/list-AI-Agent.html" }
+      ]
+    }
+  ]
+}

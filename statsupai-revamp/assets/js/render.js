@@ -102,6 +102,70 @@
     }).catch(function () { /* keep noscript fallback */ });
   }
 
+  /* ---------------- Review Articles (Zotero-driven) ---------------- */
+  var arRoot = document.querySelector("[data-articles]");
+  if (arRoot) {
+    getJSON("assets/data/articles.json").then(function (cfg) {
+      arRoot.innerHTML = "";
+      var note = el("p", "res-empty");
+      note.style.color = "var(--muted)";
+      note.innerHTML = "Live from the StatsUpAI Zotero library — expand a topic to load its papers.";
+      arRoot.appendChild(note);
+
+      cfg.groups.forEach(function (g) {
+        arRoot.appendChild(el("div", "ev-series-head", "<h2>" + esc(g.name) + "</h2>"));
+        g.sections.forEach(function (sec) {
+          var d = el("details", "ev-disc");
+          d.style.borderTop = "0";
+          d.innerHTML = '<summary><strong>' + esc(sec.title) +
+            '</strong> &nbsp;<span style="color:var(--muted);font-weight:400" data-c>…</span></summary>' +
+            '<div class="body" style="max-width:none"><p class="meta">Loading…</p></div>';
+          var body = d.querySelector(".body");
+          var cspan = d.querySelector("[data-c]");
+          var loaded = false;
+          d.addEventListener("toggle", function () {
+            if (!d.open || loaded) return;
+            loaded = true;
+            fetch(cfg.api + sec.collection + "/items/top?format=json&sort=date&direction=desc&limit=100",
+              { cache: "no-cache" })
+              .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+              .then(function (items) {
+                var rows = items.map(function (it) {
+                  var x = it.data || {};
+                  if (x.itemType === "note" || x.itemType === "attachment") return "";
+                  var au = (x.creators || []).filter(function (c) { return c.creatorType === "author"; })[0] || {};
+                  var who = au.lastName || au.name || "";
+                  var pub = x.publicationTitle || x.bookTitle || x.repository || x.publisher || "";
+                  var yr = (x.date || "").match(/\d{4}/);
+                  var href = x.url || (x.DOI ? "https://doi.org/" + x.DOI : "");
+                  var t = esc(x.title || "Untitled");
+                  return "<li style=\"margin-bottom:9px\">" +
+                    (href ? '<a href="' + esc(href) + '" target="_blank" rel="noopener">' + t + "</a>" : t) +
+                    '<br><span class="meta" style="font-size:.86rem">' +
+                    (who ? esc(who) : "") + (pub ? " · " + esc(pub) : "") +
+                    (yr ? " · " + yr[0] : "") + "</span></li>";
+                }).filter(Boolean);
+                cspan.textContent = rows.length + " papers";
+                body.innerHTML = rows.length
+                  ? '<ul style="padding-left:18px;margin:8px 0 0">' + rows.join("") + "</ul>" +
+                    '<p style="margin-top:10px"><a href="' + esc(sec.source) +
+                    '" target="_blank" rel="noopener">View on the StatsUpAI site ↗</a></p>'
+                  : '<p class="meta">No papers in this collection yet. <a href="' +
+                    esc(sec.source) + '" target="_blank" rel="noopener">Source ↗</a></p>';
+              })
+              .catch(function () {
+                cspan.textContent = "";
+                body.innerHTML = '<p class="meta">Couldn’t load the live list here. ' +
+                  '<a href="' + esc(sec.source) + '" target="_blank" rel="noopener">' +
+                  'View this topic on the StatsUpAI site ↗</a></p>';
+              });
+          });
+          arRoot.appendChild(d);
+        });
+      });
+    }).catch(function () { /* keep noscript fallback */ });
+  }
+
   /* ---------------- Datasets directory ---------------- */
   var dsRoot = document.querySelector("[data-datasets]");
   if (dsRoot) {
