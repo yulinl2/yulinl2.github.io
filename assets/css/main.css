@@ -163,7 +163,10 @@ img { max-width: 100%; display: block; }
 
 .portrait { justify-self: center; }
 .portrait img {
-  width: clamp(104px, 12vw, 136px); aspect-ratio: 1; object-fit: cover;
+  width: clamp(96px, 22vw, 128px);
+  height: clamp(96px, 22vw, 128px);
+  aspect-ratio: 1 / 1;
+  object-fit: cover; object-position: center 28%;
   border-radius: 50%; border: 1px solid var(--line);
   background: var(--bg-soft);
 }
