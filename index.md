@@ -1,178 +1,93 @@
 ---
+layout: home
 title: Home
-layout: default
+description: >-
+  Yulin Li — Ph.D. candidate in Statistics at Rutgers, working across
+  statistics, machine learning, and music.
+
+intro: >-
+  I&rsquo;m a Ph.D. candidate in the Department of Statistics at
+  Rutgers&ndash;New Brunswick. I think about inference, machine
+  learning, and the mathematics underneath them &mdash; and, away
+  from the page, I make music.
+
+facts:
+  - "<b>Ph.D. Candidate</b> · Statistics, Rutgers&ndash;New Brunswick"
+  - "<b>Research</b> · inference &amp; machine learning"
+  - "<b>Music</b> · conductor, arranger, accompanist"
+
+cards:
+  - icon: "✦"
+    title: "Learning Notes"
+    body: "Long-form deep dives — why logarithms rule statistics, ViT vs. wavelets, and other ideas worked out from scratch."
+    url: "/docs/"
+    tags: ["Statistics", "Machine Learning"]
+    cta: "Read the notes"
+  - icon: "❑"
+    title: "Reference Library"
+    body: "An annotated record of papers I&rsquo;ve read — key insights, open questions, and reading roadmaps."
+    url: "/reading/"
+    tags: ["Papers", "Roadmaps"]
+    cta: "Browse the library"
+  - icon: "◇"
+    title: "AI × Stat/Math Lit Review"
+    body: "A living literature map tracking the conversation between modern AI and the statistical & mathematical foundations it leans on."
+    url: "/ai4statmath-litreview/"
+    tags: ["Survey", "AI4Science"]
+    cta: "Open the map"
+  - icon: "⬡"
+    title: "Hierarchical Agentic Network"
+    body: "A self-organizing architecture built from frozen LLM/tool &ldquo;atoms&rdquo; — teach nothing, wire everything, let coordination evolve."
+    url: "/projects/"
+    tags: ["Agents", "Self-organization"]
+    cta: "See the project"
+  - icon: "♪"
+    title: "Cvocaloid Observatory"
+    body: "A quietly self-updating data dashboard at the crossing of music and statistics."
+    url: "/cvocaloid-observatory/"
+    tags: ["Data", "Music"]
+    cta: "Visit the dashboard"
+  - icon: "⌥"
+    title: "Toolbox"
+    body: "Prompts, workflows, and scratch notes — the working scaffolding behind everything else here."
+    url: "/toolbox/"
+    tags: ["Workflow", "Notes"]
+    cta: "Open the toolbox"
+
+teaching:
+  - when: "Fall 2024 · Rutgers"
+    course: "STAT 596 — Advanced Applied Statistics I"
+    detail: "Teaching Assistant, Department of Statistics, Rutgers University."
+  - when: "Spring 2023 · Boston University"
+    course: "MA 751 — Statistical Machine Learning"
+    detail: "Teaching Assistant, Department of Math &amp; Statistics. Recitations 2 hr/wk · class size ~20."
+  - when: "Spring 2022 · Boston University"
+    course: "MA 575 — Linear Models"
+    detail: "Teaching Assistant across five sections. Recitations 5 hr/wk · class size ~80."
+  - when: "2019 &amp; 2020 · Zhejiang University"
+    course: "MATH 241 — Calculus III"
+    detail: "Teaching Assistant, ZJU&ndash;UIUC Institute. Recitations 4 hr/wk · class size ~40."
+
+music:
+  - when: "Dec 2020"
+    title: "1st Chamber Concert, International Campus ZJU"
+    detail: "Director, Musical Director &amp; Piano Accompanist for the inaugural chamber concert."
+  - when: "2017&ndash;2020"
+    title: "Student Choir, International Campus ZJU"
+    detail: "Musical Director, Conductor &amp; Accompanist for a ~30-voice choir spanning every school and nationality on campus."
+  - when: "Aug 2019"
+    title: "ZJU Freshmen Choral Competition"
+    detail: "Arranger &amp; vocal coach for a 100+ ensemble — University Anthem (SATB), arr. Yulin Li. 2nd-place finalist."
+  - when: "Aug 2017 &amp; 2018"
+    title: "ZJU Freshmen Choral Competition"
+    detail: "Arranger, coach &amp; conductor for 80&ndash;180-voice ensembles among 4000+ participants. 2nd-place finalist (2017)."
 ---
 
-# Home
+This space is hand-built — a small, dependency-free Jekyll theme in
+system fonts, light- and dark-aware, dressed in a periwinkle-to-lilac
+palette I&rsquo;m fond of. It documents a journey across **math**,
+**science**, and **art**, and it grows slowly and on purpose.
 
-This is Yulin's personal space to document her journeys in **math**, **science**, and **art**.
-
-
-
-
-> ***Here I am in**: Jan 2025*
->
-> <img src="./assets/images/2024-rutgers-profile.png" alt="Yulin: Sep 2023" style="max-width: 18rem; width: 30%"/>
-> Ph.D. Candidate  
-> 
-> **Department of Statistics, Rutgers--New Brunswick**
-> 
-
-## Resources
-
-### [Academics](./docs/academic/index.md)
-- **Tutorials**: Learning from sharing.  
-  - [A Beginner's Guide to GitHub](./docs/tutorials/HTML_GitHub_Tutorial.html) (v1.5: 01/2025, v1.0: 02/2022)
-- **Communities**
-  - [**StatsUp AI** (https://statsupai.org)](https://statsupai.org): A frontier information platform for statisticians in AI research and revolution.
-  - [**Lunch Salon**](https://mp.weixin.qq.com/s/yIelqWgUyHuEE4iSJwFYGw): A student-organized media for scientific knowledge sharing.
-    
-    - [ ] `TO-DO: include article links`
-    
-    > **Bio**:
-    > Joint work by 7 of the [ZH1Z](https://en.wikipedia.org/wiki/Zhuhai_No.1_High_School) 2017 graduates.
-    >
-    > **Articles**: `Psychology`x4, `Biochemistry`x3, `Computer Science & Engineering`x3, `Motorsports Technology`x2, `Linguistics`x2, `Architecture`x1, `Math History`x1, `Music`x1
-    >
-    > Last update: 02/04/2019
-    ><div style="padding-left: 3rem">
-    >  <img src="./assets/images/2017-lunch-salon.jpeg" alt="Lunch Salon: 2017"  style="max-height: 10rem" />
-    ></div>
-    >
-    
-- **[My Reference Library](./reading/index.md)**: Reference organizer and reading roadmap.
-
-- **My Favorites in Statistics**: Domain highlights and key insights.
-
-
-### Musical Works
-`Under construction...`
-
-- Performance Videos  
-- Music Scores 
-  - Transcriptions
-  - Compositions
-- Activity Timeline
-
-
-## My Teaching Journey
-### Math & Statistics
-#### PhD-level courses
-  - **STAT 596: Advanced Applied Statistics I** Fall 2024
-      
-      Teaching Assistant, Department of Statistics, Rutgers University
-
-  - **MA 751: Statistical Machine Learning** (Section A2, A3) Spring 2023
-      
-      Teaching Assistant, Department of Math & Statistics, Boston University
-
-      Recitations: 2 hr/wk; Total Class Size: 20
-
-#### Graduate-level courses
-  - **MA 575: Linear Models** (Section B1, B2, B3, B4, B5) Spring 2022
-      
-      Teaching Assistant, Department of Math & Statistics, Boston University
-      
-      Recitations: 5 hr/wk; Total Class Size: 80
-#### Undergraduate-level courses
-  - **MATH 241: Calculus III** (Section ?, ?) Fall 2020
-      
-      Teaching Assistant, ZJU-UIUC Institute, Zhejiang University
-      
-      Recitations: 4 hr/wk; Total Class Size: 40
-  - **MATH 241: Calculus III** (Section ?, ?) Fall 2019
-      
-      Teaching Assistant, ZJU-UIUC Institute, Zhejiang University
-      
-      Recitations: 4 hr/wk; Total Class Size: 40
-        
-### Music
-
-  - **1st Chamber Concert of International Campus, ZJU** Fall 2020
-    
-    Director, Musical Director, Piano Accompanist
-
-    > 
-    > **Event Schedule**: Sunday Dec 6, 2020 `18:30-21:00`
-    > 
-    > *Event Highlights:* **[*Intl-ZJU News*](https://mp.weixin.qq.com/s/4tOWEFEcM4L6ZsTlfMB37w)**
-    > 
-    > **Concert Programme**: 
-    ><div style="padding-left: 3rem">
-    >  <img src="./assets/images/2020-concert-programme-1.jpeg" alt="Concert: 2020"  style="max-width: 30%" />
-    >  <img src="./assets/images/2020-concert-programme-2.jpeg" alt="Concert: 2020"  style="max-width: 30%" />
-    >  <img src="./assets/images/2020-concert-programme-3.jpeg" alt="Concert: 2020"  style="max-width: 30%" />
-    ></div>
-  
-  - **Student Choir of International Campus, ZJU** 2017-2020
-    
-    Musical Director, Conductor, Piano Accompanist
-    
-    > ***Team members***: ~30 students from all schools, years, ages, and nationalities at the *International Campus of Zhejiang University*.
-    > 
-    > ***Performed***: 
-    > * ***Can't Help Falling in Love*** (A cappella) Dec 2020
-    > * ***菊花台*** (SATB) Dec 2019 
-    > * ***Seasons of Love*** (SATB) Dec 2019
-    ><div style="padding-left: 3rem">
-    >  <img src="./assets/images/2019-choir-on-stage.jpeg" alt="Choir: 2019"  style="max-height: 100%" />
-    >  <img src="./assets/images/2019-choir.jpeg" alt="Choir: 2019"  style="max-height: 150px" />
-    ></div>
-    > 
-
-  - **2019 Freshmen Choral Competition of Zhejiang University** Aug 2019
-    
-    Music Arranger, Instrument & Vocal Coach
-    
-    - Team Size: 100+ (representing ZJU-UoE Institute)
-    - Total Participants: 4000+
-    - Performed: 
-      - ***University Anthem***（SATB), arr. Yulin Li (2019)
-      - ***汪峰：我爱你中国***（SATB)
-    - Placement: ***2nd-Place** Finalist*
-
-  - **2018 Freshmen Choral Competition of Zhejiang University** Aug 2018
-    
-    Music Arranger, Instrument & Vocal Coach
-    
-    - Team Size: 80+ (representing ZJU-UoE Institute)
-    - Total Participants: 4000+
-    - Performed: 
-      - ***University Anthem***（SATB), arr. Yulin Li (2018)
-      - ***少年中国说***（SATB), arr. Yulin Li (2018)
-
-  - **2017 Freshmen Choral Competition of Zhejiang University** Aug 2017
-    
-    Music Arranger, Instrument & Vocal Coach, Conductor
-    
-    - Team Size: 180+ (representing ZJU-UIUC Institute)
-    - Total Participants: 4000+
-    - Performed: 
-      - ***University Anthem***（SATB), arr. Xinhai Zhu (2017)
-      - ***生来倔强***（SATB), arr. Yulin Li (2017)
-    - Placement: ***2nd-Place** Finalist*
-
-
-
-
-
-## My Toolboxes
-
-`Under construction...`
-
-### [Projects](./projects/index.md)
-- **Ongoing Projects**  
-
-
-
-### Toolboxes
-- **[Toolbox](./toolbox/index.md)**  
-
-
-
-## About This Site
-
-`Under construction...`
-
-*Last updated: 01-12-2025*
-
+Earlier drafts of the front page are kept in
+[`/archive/homepage`]({{ '/archive/homepage/20260518-index.md' | relative_url }})
+rather than deleted — versioned, not erased.

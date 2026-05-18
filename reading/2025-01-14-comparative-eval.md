@@ -1,3 +1,8 @@
+---
+title: Comparative model evaluations
+description: Su et al. (2024) — Analysis of the ICML 2023 ranking data.
+---
+
 ### **Su et al. (2024)** *Analysis of the ICML 2023 Ranking Data: Can Authors' Opinions of Their Own Papers Assist Peer Review in Machine Learning?*  
 **Buxin Su (UPenn), Jiayao Zhang (UPenn), Natalie Collina (UPenn), Yuling Yan (UW-Madison), Didong Li (UNC), Kyunghyun Cho (NYU), Jianqing Fan (Princeton), Aaron Roth (UPenn), Weijie J. Su (UPenn)**  
 [arXiv:2408.13430](https://arxiv.org/abs/2408.13430) — *accessed Jan, 2025*  

@@ -1,4 +1,9 @@
-Absolutely—this is where HAN can get spicy and *alive*. You can let the network **self-organize** via RL by training *only* the wiring, routing, and scheduling policies while keeping each atomic LLM frozen. Think of it as “evolution over circuits,” not neurons.
+---
+title: HAN — Design Discussions
+description: Open threads on self-organization, routing, and scheduling.
+---
+
+This is where HAN gets alive: let the network **self-organize** via RL by training *only* the wiring, routing, and scheduling policies while keeping each atomic LLM frozen — evolution over circuits, not neurons.
 
 # High-level idea
 
@@ -120,7 +125,7 @@ If you want, I can sketch the exact telemetry schema and the first set of node p
 
 ---
 
-Absolutely—this is where HAN can get spicy and *alive*. You can let the network **self-organize** via RL by training *only* the wiring, routing, and scheduling policies while keeping each atomic LLM frozen. Think of it as “evolution over circuits,” not neurons.
+This is where HAN gets alive: let the network **self-organize** via RL by training *only* the wiring, routing, and scheduling policies while keeping each atomic LLM frozen — evolution over circuits, not neurons.
 
 # High-level idea
 

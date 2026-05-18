@@ -1,3 +1,8 @@
+---
+title: HAN — README
+description: Scope and minimal demonstration of the Hierarchical Agentic Network.
+---
+
 # 🧠 Hierarchical Agentic Network (HAN)
 
 > **A minimal, self-organizing architecture built from frozen LLM atoms.**  
