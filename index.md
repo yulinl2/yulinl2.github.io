@@ -84,8 +84,8 @@ music:
 ---
 
 This space is hand-built — a small, dependency-free Jekyll theme in
-system fonts, light- and dark-aware, dressed in a periwinkle-to-lilac
-palette I&rsquo;m fond of. It documents a journey across **math**,
+system fonts, light- and dark-aware, kept deliberately quiet in a
+dusty mint-and-mauve palette. It documents a journey across **math**,
 **science**, and **art**, and it grows slowly and on purpose.
 
 Earlier drafts of the front page are kept in
