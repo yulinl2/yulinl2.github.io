@@ -59,8 +59,12 @@
   if (grid && window.STATSUPAI_TEAM) {
     var team = window.STATSUPAI_TEAM;
     grid.innerHTML = team.map(function (m) {
-      var img = '<img src="assets/img/team/' + m.img + '" alt="' + m.name +
-        '" width="96" height="96" loading="lazy" decoding="async">';
+      var initials = m.name.split(",")[0].slice(0, 1) +
+        (m.name.split(",")[1] ? m.name.split(",")[1].trim().slice(0, 1) : "");
+      var img = m.img
+        ? '<img src="assets/img/team/' + m.img + '" alt="' + m.name +
+          '" width="96" height="96" loading="lazy" decoding="async">'
+        : '<span class="member-monogram" aria-hidden="true">' + initials + '</span>';
       var inner =
         img +
         '<h3>' + m.name + '</h3>' +
