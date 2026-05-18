@@ -17,7 +17,7 @@ intro: >-
 facts:
   - "<b>Ph.D. Candidate</b> · Statistics, Rutgers&ndash;New Brunswick"
   - "<b>Research</b> · structural knowledge &amp; learning theory"
-  - "<b>Music</b> · conductor, arranger, accompanist"
+  - "<b>Music</b> · pianist, arranger, accompanist"
 
 cards:
   - icon: "✦"
@@ -63,7 +63,7 @@ teaching:
     detail: "Teaching Assistant, Department of Statistics, Rutgers University."
   - when: "Spring 2023 · Boston University"
     course: "MA 751 — Statistical Machine Learning"
-    detail: "Teaching Assistant, Department of Math &amp; Statistics. Recitations 2 hr/wk · class size ~20."
+    detail: "Sole Teaching Assistant, Department of Math &amp; Statistics &mdash; a demanding PhD-level course. <a href='https://math.bu.edu/people/mkon/MA751/index.html'>Course page</a>."
   - when: "Spring 2022 · Boston University"
     course: "MA 575 — Linear Models"
     detail: "Teaching Assistant across five sections. Recitations 5 hr/wk · class size ~80."
