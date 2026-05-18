@@ -27,15 +27,15 @@
   }
   targets.forEach(function (el) {
     el.style.opacity = 0;
-    el.style.transform = "translateY(18px)";
-    el.style.transition = "opacity .6s ease, transform .6s ease";
+    el.style.transform = "translateY(9px)";
+    el.style.transition = "opacity .45s ease, transform .45s ease";
   });
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (en) {
       if (en.isIntersecting) {
         var el = en.target;
         var d = el.getAttribute("data-reveal") || 0;
-        el.style.transitionDelay = (d * 70) + "ms";
+        el.style.transitionDelay = (d * 40) + "ms";
         el.style.opacity = 1;
         el.style.transform = "none";
         io.unobserve(el);
