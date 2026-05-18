@@ -1,10 +1,43 @@
 {
-  "_comment": "SINGLE SOURCE OF TRUTH for webinars. Non-technical maintainers: add an object, commit. CI validates it; the site auto-sorts upcoming vs past by date and builds calendar links. Date = ISO YYYY-MM-DD. time_et like '12:00 PM'. series = 'Health' | 'GenAI'.",
+  "_comment": "SINGLE SOURCE OF TRUTH for webinars. Non-technical maintainers: add an object to talks, commit. CI validates it; the site auto-sorts upcoming vs past by date and builds calendar links. date = ISO YYYY-MM-DD. time_et like '12:00 PM'. series = 'Health' | 'GenAI'. Compiled from the stats-up-ai@googlegroups.com announcements.",
   "series": {
-    "Health": { "label": "Health Data Science Series", "tagline": "Big-data & AI methods for health, imaging, genetics and clinical phenotyping." },
+    "Health": { "label": "Health Data Science Series", "tagline": "Statistical and AI methods for health data science — neuroimaging, genomics, EHR, microbiome and more." },
     "GenAI": { "label": "GenAI × Statistics Series", "tagline": "Bridging the gap between generative AI and statistical methodologies." }
   },
   "talks": [
+    {
+      "date": "2025-04-09",
+      "time_et": "12:00 PM",
+      "duration_min": 60,
+      "speaker": "Martin Lindquist",
+      "affiliation": "Johns Hopkins University",
+      "title": "Elements of Functional Neuroimaging",
+      "series": "Health",
+      "registration_link": "https://upenn.zoom.us/j/94227327976",
+      "recording_link": ""
+    },
+    {
+      "date": "2025-05-08",
+      "time_et": "3:00 PM",
+      "duration_min": 60,
+      "speaker": "Ying Guo",
+      "affiliation": "Emory University",
+      "title": "Exploring Brain Function and Connectivity with fMRI: From Data Characteristics to Statistical and AI Methods",
+      "series": "Health",
+      "registration_link": "https://upenn.zoom.us/j/99182616852",
+      "recording_link": ""
+    },
+    {
+      "date": "2025-12-02",
+      "time_et": "1:00 PM",
+      "duration_min": 60,
+      "speaker": "Ani Eloyan",
+      "affiliation": "Brown University",
+      "title": "Manifold Learning for Modeling Shapes in Alzheimer's Disease",
+      "series": "Health",
+      "registration_link": "https://upenn.zoom.us/meeting/register/SL8s_eubT-6qoVoMJRsK6w",
+      "recording_link": "https://www.youtube.com/@StatsUpAI/videos"
+    },
     {
       "date": "2026-01-09",
       "time_et": "12:00 PM",
@@ -13,7 +46,7 @@
       "affiliation": "Indiana University School of Medicine",
       "title": "Deconstructing Alzheimer's Disease and Related Dementias to Enable Precision Medicine",
       "series": "Health",
-      "registration_link": "https://upenn.zoom.us/meeting/register/uA1Jh_J8T3Wez4q0rbpTLQ#/registration",
+      "registration_link": "https://upenn.zoom.us/meeting/register/uA1Jh_J8T3Wez4q0rbpTLQ",
       "recording_link": ""
     },
     {
@@ -36,6 +69,28 @@
       "title": "AI agents to accelerate scientific discoveries",
       "series": "GenAI",
       "registration_link": "https://sfu.zoom.us/meeting/register/3MLcnkc9TJCYfHNrdVSbeQ#/registration",
+      "recording_link": ""
+    },
+    {
+      "date": "2026-05-08",
+      "time_et": "2:00 PM",
+      "duration_min": 60,
+      "speaker": "Curtis Huttenhower",
+      "affiliation": "Harvard T.H. Chan School of Public Health",
+      "title": "Quantitative methods for microbial communities and the human microbiome",
+      "series": "Health",
+      "registration_link": "https://us02web.zoom.us/meeting/register/6V5L7h7YQ0-qs6JqnElBfg",
+      "recording_link": ""
+    },
+    {
+      "date": "2026-05-26",
+      "time_et": "2:00 PM",
+      "duration_min": 60,
+      "speaker": "Naim Rashid",
+      "affiliation": "University of North Carolina–Chapel Hill",
+      "title": "Staying in the Driver's Seat: Calibrating AI Use in Statistical Research, Training, and Practice",
+      "series": "GenAI",
+      "registration_link": "https://sfu.zoom.us/meeting/register/t_dkc6edSq2ql2STmKquqw",
       "recording_link": ""
     }
   ]
