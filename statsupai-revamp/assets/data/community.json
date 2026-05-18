@@ -1,0 +1,32 @@
+{
+  "_comment": "Community feed mirror of the live Quarto posts index (statsupai.org/quarto_web/site/posts/). Categories + recent posts from _reference survey. Deep-links out (no iframe). Refresh recent[] periodically or when notable posts ship.",
+  "feed": "https://statsupai.org/quarto_web/site/posts/index.html",
+  "base": "https://statsupai.org/quarto_web/site/posts/",
+  "total": 73,
+  "categories": [
+    { "name": "Events", "count": 29 },
+    { "name": "Interviews", "count": 24 },
+    { "name": "Opportunities", "count": 13 },
+    { "name": "Resources", "count": 12 },
+    { "name": "Videos", "count": 11 },
+    { "name": "Announcements", "count": 6 },
+    { "name": "Webinars", "count": 6 }
+  ],
+  "recent": [
+    { "title": "BIOS 740: Deep Learning Methods in Biomedical Sciences with PyTorch", "date": "2026-05-03", "cat": "Resources", "file": "bios740-course.html" },
+    { "title": "The ICML 2023 Ranking Experiment: Author Self-Assessment in ML/AI Peer Review", "date": "2026-04-14", "cat": "Interviews", "file": "icml2023-ranking-experiment.html" },
+    { "title": "In Conversation with Bingxin Zhao: Agentic AI for Genetic Discovery", "date": "2026-03-08", "cat": "Interviews", "file": "agentic-ai-genetics-interview.html" },
+    { "title": "Emerging Knowledge Trend in Statistical Research", "date": "2026-03-08", "cat": "Interviews", "file": "emerging-knowledge-trend.html" },
+    { "title": "StatsUpAI Interest Group Announces 2026 Election Results & Executive Committee", "date": "2026-02-21", "cat": "Announcements", "file": "2026-ec-election.html" },
+    { "title": "SMI 2026 Announcement", "date": "2026-02-03", "cat": "Events", "file": "2026-smi-announcement.html" },
+    { "title": "Workshop: Statistical Foundations of AI", "date": "2026-02-02", "cat": "Events", "file": "uncertainty_workshop.html" },
+    { "title": "In Conversation: Cancer Transcriptomic Deconvolution", "date": "2026-01-28", "cat": "Interviews", "file": "cancer_review.html" },
+    { "title": "Rebuilding Statistics in the Age of AI", "date": "2026-01-27", "cat": "Interviews", "file": "perspective_paper.html" },
+    { "title": "StatsUpAI · 2025 Annual Newsletter", "date": "2025-12-31", "cat": "Announcements", "file": "2025-annual-newsletter.html" },
+    { "title": "LAMBDA: A Large Model Based Data Agent", "date": "2025-11-24", "cat": "Interviews", "file": "LAMBDA.html" },
+    { "title": "2025 Workshop at BIRS: Day 4 Recordings", "date": "2025-08-21", "cat": "Videos", "file": "2025-birs-workshop-day-4.html" },
+    { "title": "2025 Workshop at BIRS: Day 3 Recordings", "date": "2025-08-20", "cat": "Videos", "file": "2025-birs-workshop-day-3.html" },
+    { "title": "2025 Workshop at BIRS: Day 2 Recordings", "date": "2025-08-20", "cat": "Videos", "file": "2025-birs-workshop-day-2.html" },
+    { "title": "2025 Workshop at BIRS: Day 1 Recordings", "date": "2025-08-19", "cat": "Videos", "file": "2025-birs-workshop-day-1.html" }
+  ]
+}

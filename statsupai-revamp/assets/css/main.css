@@ -497,3 +497,22 @@ details.ev-disc .body {
   border: 1px solid var(--line);
 }
 @media (prefers-color-scheme: dark) { .member-monogram { background: rgba(10,156,156,.14); } }
+
+/* Community feed list */
+.co-list { list-style: none; padding: 0; margin: 14px 0 0; }
+.co-post {
+  display: grid; grid-template-columns: 116px 1fr auto; gap: 14px; align-items: baseline;
+  padding: 12px 4px; border-bottom: 1px solid var(--line);
+}
+.co-post a { color: var(--ink); font-weight: 600; }
+.co-post a:hover { color: var(--accent); }
+.co-date { color: var(--muted); font-size: .85rem; font-variant-numeric: tabular-nums; }
+.co-cat {
+  font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--accent); background: var(--teal-050); padding: 3px 9px; border-radius: 999px;
+}
+@media (prefers-color-scheme: dark) { .co-cat { background: rgba(10,156,156,.14); } }
+@media (max-width: 640px) {
+  .co-post { grid-template-columns: 1fr; gap: 4px; }
+  .co-cat { justify-self: start; }
+}

@@ -102,6 +102,34 @@
     }).catch(function () { /* keep noscript fallback */ });
   }
 
+  /* ---------------- Community feed ---------------- */
+  var coRoot = document.querySelector("[data-community]");
+  if (coRoot) {
+    getJSON("assets/data/community.json").then(function (c) {
+      var chips = c.categories.map(function (k) {
+        return '<a class="chip" href="' + esc(c.feed) + '" target="_blank" rel="noopener">' +
+          esc(k.name) + ' <b>' + k.count + "</b></a>";
+      }).join("");
+      var posts = c.recent.map(function (p) {
+        return '<li class="co-post">' +
+          '<span class="co-date">' + new Date(p.date + "T00:00:00").toLocaleDateString("en-US",
+            { month: "short", day: "numeric", year: "numeric" }) + "</span>" +
+          '<a href="' + esc(c.base + p.file) + '" target="_blank" rel="noopener">' + esc(p.title) + "</a>" +
+          '<span class="co-cat">' + esc(p.cat) + "</span></li>";
+      }).join("");
+      coRoot.innerHTML = "";
+      var wrap = el("div");
+      wrap.innerHTML =
+        '<div class="res-filters" style="margin-bottom:26px">' + chips + "</div>" +
+        '<div class="ev-series-head"><h2>Latest posts</h2><span class="sub">' +
+        c.total + " in the feed</span></div>" +
+        '<ul class="co-list">' + posts + "</ul>" +
+        '<p style="margin-top:22px"><a class="btn btn-primary" href="' + esc(c.feed) +
+        '" target="_blank" rel="noopener">Browse the full community feed ↗</a></p>';
+      coRoot.appendChild(wrap);
+    }).catch(function () { /* keep noscript fallback */ });
+  }
+
   /* ---------------- Review Articles (Zotero-driven) ---------------- */
   var arRoot = document.querySelector("[data-articles]");
   if (arRoot) {
