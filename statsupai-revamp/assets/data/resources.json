@@ -22,9 +22,10 @@
     { "title": "AGI & AI Agents", "tag": "AI", "url": "https://statsupai.org/pages/paper_list_ai/list-AI-Agent.html", "desc": "The frontier of AGI and AI agents — a foundational entry point for statisticians new to the field." }
   ],
   "pipelines": [
-    { "title": "EHR Data Pipelines", "tag": "EHR", "url": "https://github.com/data-processing-pipeline/EHR_data_pipelines/tree/main", "desc": "Pipelines for processing Electronic Health Record data, from ingestion to analysis-ready datasets." },
-    { "title": "Neuroimaging Processing Software", "tag": "Imaging", "url": "https://statsupai.org/pages/Neuroimaging%20Processing%20Software.html", "desc": "Key neuroimaging tools widely used in neuroscience research, with corresponding publications." },
-    { "title": "Data Fusion Analysis Pipeline", "tag": "Multi-modal", "url": "https://statsupai.org/pages/Data_Fusion_Analysis_Pipeline_pipeline.html", "desc": "A modular framework integrating diverse data sources and analytical models." },
-    { "title": "Clinical Trials Data Processing", "tag": "Clinical Trial", "url": "https://statsupai.org/pages/clinicaltrials_pipeline.html", "desc": "Efficient pipelines for processing and analyzing clinical-trial data." }
+    { "title": "EHR Data Pipelines", "tag": "EHR", "url": "https://github.com/data-processing-pipeline/EHR_data_pipelines/tree/main", "desc": "Pipelines for processing Electronic Health Record data into analysis-ready datasets (references the celehs toolset)." },
+    { "title": "Neuroimaging Processing Software", "tag": "Imaging", "url": "https://statsupai.org/pages/Neuroimaging%20Processing%20Software.html", "desc": "Catalog of neuroimaging processing tools with corresponding publications — in progress." },
+    { "title": "Enhance ADMET ML Models", "tag": "Drug discovery", "url": "https://statsupai.org/pages/Data_Fusion_Analysis_Pipeline_pipeline.html", "desc": "Combinatorial fusion analysis (CFA) to improve ADMET ML model performance. Tool: cfanalysis — https://github.com/mquazi/cfanalysis" },
+    { "title": "Clinical Trials Data Processing", "tag": "Clinical Trial", "url": "https://statsupai.org/pages/clinicaltrials_pipeline.html", "desc": "Extract, organize and QC clinical-trial data. Tool: EUCTR Scraper — https://github.com/mquazi/EUCTR" },
+    { "title": "Evaluate Target Druggability", "tag": "Drug discovery", "url": "https://statsupai.org/pages/Evaluate_Target_Druggability.html", "desc": "Temporally validated ML models and prediction workflows for drug-target druggability. Tool: Tclin-like — https://github.com/mquazi/Tclin-like" }
   ]
 }
