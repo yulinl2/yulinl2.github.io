@@ -44,6 +44,33 @@ The page rebuilds its cards, search box and topic filters from this file.
 Edit **`assets/js/team-data.js`** (one array). The card grid and the A–Z
 roster both render from it.
 
+## Backup reference links (LinkedIn / X / YouTube)
+
+When you find a post that documents a talk, drop its URL into
+**`assets/data/reference-links.json`** → `refs`:
+
+```json
+{ "url": "https://www.linkedin.com/posts/stats-up-ai_…", "match_date": "2026-05-26", "platform": "linkedin", "note": "" }
+```
+
+- `match_date` = the talk's `events.json` date if you know it; otherwise add
+  the object to `unsorted` and it'll be classified on the next sweep.
+- Individual LinkedIn/X **post** URLs are fetchable even though the
+  company/profile pages are login-walled — so paste the specific post link,
+  not the profile.
+- CI only validates the JSON; the actual cross-check/fill into `events.json`
+  happens on the next Claude sweep. The entries are also listed on the
+  Decision Board page for visibility.
+
+## Decision board
+
+`roadmap.html` (internal, `noindex`) renders **`assets/data/roadmap.json`** —
+every proposed feature, decision and blocker, filterable by status/category.
+To add or move an item, edit one object in `roadmap.json` (status:
+`proposed | in-progress | blocked | decided | done`; owner: `you` = needs a
+human decision, `claude` = I can execute). It is not linked from the public
+nav; bookmark `/<…>/roadmap.html`.
+
 ## What the robots can do for you
 
 Every change is checked automatically (`.github/workflows/statsupai-revamp.yml`):

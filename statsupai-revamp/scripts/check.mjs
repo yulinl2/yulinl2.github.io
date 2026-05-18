@@ -38,7 +38,8 @@ for (const f of htmls) {
   if (!/<html lang="en">/.test(s)) fail(`${f}: missing <html lang="en">`);
   if (!/<title>/.test(s)) fail(`${f}: missing <title>`);
   if (!/assets\/css\/main\.css/.test(s)) fail(`${f}: missing main.css`);
-  if (f !== "404.html" && !/rel="canonical"/.test(s)) fail(`${f}: missing canonical`);
+  var noIndex = f === "404.html" || f === "roadmap.html";
+  if (!noIndex && !/rel="canonical"/.test(s)) fail(`${f}: missing canonical`);
 
   for (const m of s.matchAll(/(?:href|src)="([^"#][^"]*)"/g)) {
     const u = m[1];
