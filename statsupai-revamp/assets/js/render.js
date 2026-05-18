@@ -102,6 +102,75 @@
     }).catch(function () { /* keep noscript fallback */ });
   }
 
+  /* ---------------- Datasets directory ---------------- */
+  var dsRoot = document.querySelector("[data-datasets]");
+  if (dsRoot) {
+    getJSON("assets/data/datasets-detail.json").then(function (data) {
+      var cats = data.categories || [];
+      var controls = el("div", "res-controls");
+      var search = el("input", "res-search");
+      search.type = "search";
+      search.placeholder = "Search datasets…";
+      search.setAttribute("aria-label", "Search datasets");
+      controls.appendChild(search);
+      var host = el("div");
+      dsRoot.innerHTML = "";
+      dsRoot.appendChild(controls);
+      dsRoot.appendChild(host);
+      var total = cats.reduce(function (n, c) { return n + (c.entries ? c.entries.length : 0); }, 0);
+      var count = el("p", "res-empty");
+      count.style.color = "var(--muted)";
+      count.textContent = total + " resources across " + cats.length + " categories";
+      controls.appendChild(count);
+
+      function paint(q) {
+        host.innerHTML = "";
+        cats.forEach(function (c) {
+          var entries = (c.entries || []).filter(function (e) {
+            return !q || (e.name + " " + c.name + " " + c.tag).toLowerCase().indexOf(q) !== -1;
+          });
+          if (q && !entries.length && (c.name + c.intro).toLowerCase().indexOf(q) === -1) return;
+          var d = el("details", "ev-disc");
+          d.style.borderTop = "0";
+          if (!q) d.open = false; else d.open = true;
+          var rows = entries.map(function (e) {
+            var pubs = (e.pubs || []).map(function (p, i) {
+              return ' <a href="' + esc(p) + '" target="_blank" rel="noopener" style="font-size:.85em">[ref' +
+                ((e.pubs.length > 1) ? " " + (i + 1) : "") + "]</a>";
+            }).join("");
+            return '<li style="margin-bottom:7px"><a href="' + esc(e.url) +
+              '" target="_blank" rel="noopener">' + esc(e.name) + "</a>" + pubs + "</li>";
+          }).join("");
+          var body = c.external_only
+            ? '<p>This category links to an external resource.</p>'
+            : '<ul style="columns:2;column-gap:36px;margin:10px 0 0;padding-left:18px">' + rows + "</ul>";
+          d.innerHTML =
+            '<summary><strong>' + esc(c.name) + "</strong> &nbsp;<span style=\"color:var(--muted);font-weight:400\">" +
+            (c.external_only ? "external" : entries.length + " resources") + "</span></summary>" +
+            '<div class="body" style="max-width:none">' +
+            "<p>" + esc(c.intro) + "</p>" + body +
+            '<p style="margin-top:10px"><a href="' + esc(c.source) +
+            '" target="_blank" rel="noopener">Full descriptions on the source page ↗</a></p></div>';
+          host.appendChild(d);
+        });
+        if (!host.children.length) host.appendChild(el("p", "res-empty", "No matches."));
+      }
+      paint("");
+      search.addEventListener("input", function () { paint(search.value.trim().toLowerCase()); });
+
+      var ld = el("script");
+      ld.type = "application/ld+json";
+      ld.textContent = JSON.stringify({
+        "@context": "https://schema.org", "@type": "ItemList",
+        name: "StatsUpAI datasets",
+        itemListElement: cats.map(function (c, i) {
+          return { "@type": "ListItem", position: i + 1, name: c.name, url: c.source };
+        })
+      });
+      document.head.appendChild(ld);
+    }).catch(function () { /* keep noscript fallback */ });
+  }
+
   /* ---------------- Events ---------------- */
   var evRoot = document.getElementById("events-root");
   if (evRoot) {
