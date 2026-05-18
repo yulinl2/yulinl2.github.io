@@ -55,9 +55,10 @@ When you find a post that documents a talk, drop its URL into
 
 - `match_date` = the talk's `events.json` date if you know it; otherwise add
   the object to `unsorted` and it'll be classified on the next sweep.
-- Individual LinkedIn/X **post** URLs are fetchable even though the
-  company/profile pages are login-walled — so paste the specific post link,
-  not the profile.
+- Individual **post** URLs are fetchable even though the company/profile
+  pages are login-walled — so paste the specific post link, not the profile.
+  LinkedIn `/posts/…` works via its OG preview; X `…/status/<id>` works via
+  the public syndication endpoint (a plain profile/timeline link does not).
 - CI only validates the JSON; the actual cross-check/fill into `events.json`
   happens on the next Claude sweep. The entries are also listed on the
   Decision Board page for visibility.
