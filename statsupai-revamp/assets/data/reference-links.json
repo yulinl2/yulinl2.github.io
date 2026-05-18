@@ -7,6 +7,12 @@
       "match_date": "2026-05-26",
       "platform": "linkedin",
       "note": "Naim Rashid talk — verified, already in events.json. Example entry."
+    },
+    {
+      "url": "https://x.com/statsupai/status/2049208693133087060",
+      "match_date": "2026-05-08",
+      "platform": "x",
+      "note": "Curtis Huttenhower (Harvard) Health-series seminar — verified via syndication endpoint, matches events.json. Example X entry."
     }
   ],
   "unsorted": []
