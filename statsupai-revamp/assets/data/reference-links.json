@@ -1,0 +1,13 @@
+{
+  "_comment": "ENDURING PASTE INTERFACE for backup reference data. Drop public post URLs here (LinkedIn /posts/… , X /status/… , YouTube watch?v=…). On the next sweep these are fetched and used to verify / fill events.json (dates, titles, speakers, recordings). Match a talk by its events.json date when known; otherwise add to 'unsorted' and I'll classify. Individual post URLs work even though company/profile pages are login-walled.",
+  "how_to_use": "Add an object to refs. Minimum: a url. If you know the talk, set match_date to that talk's events.json date (YYYY-MM-DD). Optional note for anything ambiguous. Commit — CI just validates the JSON; reconciliation happens on the next Claude sweep.",
+  "refs": [
+    {
+      "url": "https://www.linkedin.com/posts/stats-up-ai_generativeai-biostatistics-statisticalresearch-activity-7461616537657958400-lhgM",
+      "match_date": "2026-05-26",
+      "platform": "linkedin",
+      "note": "Naim Rashid talk — verified, already in events.json. Example entry."
+    }
+  ],
+  "unsorted": []
+}
