@@ -149,7 +149,7 @@ pre{background:var(--bg-accent);padding:12px 16px;border-radius:6px;overflow-x:a
 .muted{color:var(--fg-muted)}.dim{color:var(--fg-dim);font-size:.9em}
 .tag{display:inline-block;padding:2px 8px;margin:0 4px 4px 0;border-radius:999px;font-size:.78em;font-weight:500;background:var(--bg-accent);color:var(--fg-muted);border:1px solid var(--border)}
 .tag-warn{background:var(--bg-warn);color:#b45309;border-color:#fde68a}.tag-ok{background:var(--bg-ok);color:#059669;border-color:#6ee7b7}
-header.hero{background:linear-gradient(180deg,var(--bg-card),var(--bg));padding:60px 0 28px;border-bottom:1px solid var(--border)}
+header.hero{background:linear-gradient(180deg,var(--bg-card),var(--bg));padding:60px 0 28px}
 .hero-meta{color:var(--fg-dim);font-size:.92em;margin-top:4px}.hero-lede{font-size:1.05rem;margin-top:1rem;max-width:820px}
 /* hero: one-line edition stamp + click-to-expand intro (no card chrome) */
 .hero-fold{background:transparent;border:none;border-radius:0;box-shadow:none;margin:6px 0 0;padding:0}
@@ -570,8 +570,8 @@ $ python3 build_html.py         # this page</pre>
 </aside>
 
 <footer><div class="container">
-<p>AI4Stat/Math interactive lit-review · <strong>edition v0.3 · 2026-05-27</strong> · canonical write-up: <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/lit-review/report/2026-05-11-deep-lit-review.md">deep markdown report ↗</a> · <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/issues/14">discussion ↗</a><br><span class="dim" style="font-size:.85em">page rebuilt 2026-05-27 10:48 UTC</span></p>
-<!-- internal: page-build timestamp 2026-05-27 10:48 UTC -->
+<p>AI4Stat/Math interactive lit-review · <strong>edition v0.3 · 2026-05-27</strong> · canonical write-up: <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/lit-review/report/2026-05-11-deep-lit-review.md">deep markdown report ↗</a> · <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/issues/14">discussion ↗</a><br><span class="dim" style="font-size:.85em">page rebuilt 2026-05-27 10:52 UTC</span></p>
+<!-- internal: page-build timestamp 2026-05-27 10:52 UTC -->
 
 </div></footer>
 
@@ -783,9 +783,10 @@ window.addEventListener('scroll',function(){
     var terms=Object.keys(tset).sort(function(a,b){return b.length-a.length;});
     if(!terms.length)return;
     function isW(c){ return !!c && /[A-Za-z0-9]/.test(c); }
-    var secs=document.querySelectorAll('main > section');
-    Array.prototype.forEach.call(secs,function(sec){
-      if(sec.id==='glossary')return;
+    // Re-callable per-section glossifier; idempotent (skips elements already
+    // inside class="term" so re-runs over freshly-injected DOM are safe).
+    window.__glossifySection = function(sec){
+      if(!sec||sec.id==='glossary')return;
       var seen={}, tw=document.createTreeWalker(sec,NodeFilter.SHOW_TEXT,null), nodes=[], n;
       while((n=tw.nextNode())){
         if(!n.nodeValue||!n.nodeValue.trim())continue;
@@ -830,7 +831,9 @@ window.addEventListener('scroll',function(){
           return;
         }
       });
-    });
+    };
+    // initial pass over all in-main sections
+    Array.prototype.forEach.call(document.querySelectorAll('main > section'), window.__glossifySection);
   });
 
   guard('sources-rail',function(){
@@ -894,6 +897,10 @@ window.addEventListener('scroll',function(){
       },{rootMargin:'-45% 0px -45% 0px'});
       Array.prototype.forEach.call(document.querySelectorAll('main > section'),function(s){io.observe(s);});
     }
+    // re-glossify #sources now that the dynamic group labels ("Tier-A
+    // precedent benchmarks", etc.) are in the DOM — initial glossify pass
+    // ran before sources-rail injected content.
+    if(window.__glossifySection) window.__glossifySection(document.getElementById('sources'));
   });
 
   guard('layout',function(){
