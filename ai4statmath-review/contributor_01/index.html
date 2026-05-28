@@ -4,406 +4,1463 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Zhixian Zhang — auto-review</title>
-<script>
-  window.MathJax = { tex: { inlineMath: [['$', '$']] } };
-</script>
+<script>window.MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
 <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <style>
 :root {
   color-scheme: dark;
   --fg:#e5e7eb; --fg-dim:#94a3b8; --fg-muted:#cbd5e1;
-  --bg:#0f172a; --bg-card:#1e293b; --bg-accent:#334155;
+  --bg:#0f172a; --bg-card:#1e293b; --bg-soft:#162033; --bg-accent:#334155;
   --border:#334155; --primary:#60a5fa;
-  --strong:#34d399; --revise:#fbbf24; --rework:#f87171; --stub:#9ca3af;
+  --c-ready:#34d399; --c-revision:#fbbf24; --c-rework:#f87171; --c-stub:#9ca3af;
 }
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; scroll-padding-top:72px; }
 body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
        background:var(--bg); color:var(--fg); line-height:1.55; font-size:15px; }
-.container { max-width:920px; margin:0 auto; padding:30px 24px 80px; }
-.contributor-head h1 { font-size:1.7rem; margin:0 0 .25rem; }
-.contributor-head .sub { color:var(--fg-dim); font-size:.9em; }
-.under-construction { background:#78350f; border-left:3px solid #f59e0b; color:#fed7aa;
-                      padding:8px 14px; border-radius:6px; margin:14px 0; font-size:.88em; }
-.aggregate { background:var(--bg-card); border:1px solid var(--border); border-radius:10px;
-             padding:16px 20px; margin:20px 0; }
-.aggregate h3 { margin:0 0 .5rem; font-size:1em; }
-.agg-tiles { display:flex; gap:14px; flex-wrap:wrap; margin-top:8px; }
-.agg-tile { background:var(--bg); border-radius:6px; padding:8px 12px; min-width:90px; }
-.agg-tile .num { font-size:1.5rem; font-weight:700; line-height:1.1; }
-.agg-tile .lbl { font-size:.78em; color:var(--fg-dim); }
-.toc { background:var(--bg-card); border:1px solid var(--border); border-radius:10px;
-       padding:10px 16px; margin:20px 0; font-size:.92em; }
-.toc a { color:var(--fg-muted); text-decoration:none; margin-right:14px; }
-.toc a:hover { color:var(--primary); }
-.toc .verdict-chip { font-size:.74em; padding:1px 6px; border-radius:3px; margin-left:4px; vertical-align:middle; }
 
+/* ── sticky navbar ─────────────────────────────────────────────── */
+.navbar { position:sticky; top:0; z-index:50; background:rgba(15,23,42,0.92);
+          backdrop-filter:saturate(160%) blur(10px); border-bottom:1px solid var(--border); }
+.nav-inner { max-width:980px; margin:0 auto; padding:10px 18px; display:flex;
+             align-items:center; gap:14px; }
+.nav-brand { font-weight:700; font-size:.95em; white-space:nowrap; }
+.nav-brand .sub { color:var(--fg-dim); font-weight:400; font-size:.9em; margin-left:6px; }
+.nav-chips { flex:1; display:flex; gap:6px; overflow-x:auto; padding:2px 0;
+             scrollbar-width:thin; scrollbar-color:var(--bg-accent) transparent; }
+.nav-chips::-webkit-scrollbar { height:6px; }
+.nav-chips::-webkit-scrollbar-thumb { background:var(--bg-accent); border-radius:3px; }
+.chip { display:inline-flex; align-items:center; gap:4px; padding:5px 11px;
+        border-radius:6px; font-size:.84em; text-decoration:none; color:var(--fg);
+        background:var(--bg-card); border:1px solid var(--border); white-space:nowrap;
+        transition:transform .12s, border-color .12s; }
+.chip:hover { transform:translateY(-1px); border-color:var(--primary); }
+.chip.active { border-color:var(--primary); box-shadow:0 0 0 1px var(--primary) inset; }
+.chip .ch-num { font-variant-numeric:tabular-nums; color:var(--fg-dim); font-size:.92em; }
+.chip .ch-kw { font-weight:500; }
+.chip-ready    { border-left:3px solid var(--c-ready); }
+.chip-revision { border-left:3px solid var(--c-revision); }
+.chip-rework   { border-left:3px solid var(--c-rework); }
+.chip-stub     { border-left:3px solid var(--c-stub); }
+.nav-chat { background:var(--primary); color:#0f172a; padding:6px 12px; border-radius:6px;
+            border:none; font-weight:600; font-size:.88em; cursor:pointer; white-space:nowrap; }
+.nav-chat:hover { filter:brightness(1.1); }
+
+/* ── container ─────────────────────────────────────────────────── */
+.container { max-width:980px; margin:0 auto; padding:24px 18px 80px; }
+
+/* ── hero ──────────────────────────────────────────────────────── */
+.hero { background:linear-gradient(135deg, var(--bg-card), var(--bg-soft));
+        border:1px solid var(--border); border-radius:14px; padding:22px 26px; margin-bottom:18px; }
+.hero h1 { margin:0 0 .25rem; font-size:1.7rem; }
+.hero .hero-sub { color:var(--fg-dim); font-size:.95em; }
+.hero .timestamp { color:var(--fg-muted); font-size:.86em; margin-top:8px; }
+.uc-banner { background:#78350f; border-left:3px solid #f59e0b; color:#fed7aa;
+             padding:9px 14px; border-radius:8px; margin:14px 0 4px; font-size:.86em; }
+
+/* ── dashboard ─────────────────────────────────────────────────── */
+.dashboard { background:var(--bg-card); border:1px solid var(--border); border-radius:14px;
+             padding:20px 22px; margin:14px 0 22px; display:grid;
+             grid-template-columns:1fr auto; gap:24px; align-items:center; }
+@media(max-width:720px){ .dashboard { grid-template-columns:1fr; } .dashboard .dash-radar{ justify-self:center; } }
+.dashboard h2 { margin:0 0 12px; font-size:1.05em; color:var(--fg-muted); font-weight:600; }
+.dash-tiles { display:grid; grid-template-columns:repeat(auto-fit, minmax(110px, 1fr)); gap:12px; }
+.tile { background:var(--bg-soft); border-radius:8px; padding:10px 14px; }
+.tile .num { font-size:1.65em; font-weight:700; line-height:1; }
+.tile .lbl { font-size:.78em; color:var(--fg-dim); margin-top:3px; }
+.tile.t-ready    .num { color:var(--c-ready); }
+.tile.t-revision .num { color:var(--c-revision); }
+.tile.t-rework   .num { color:var(--c-rework); }
+.tile.t-verif    .num { color:var(--primary); }
+
+/* ── problem cards ─────────────────────────────────────────────── */
 section.problem { background:var(--bg-card); border:1px solid var(--border);
-                  border-radius:12px; padding:22px 26px; margin:24px 0; }
-.problem-head { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; }
-.problem-head h2 { margin:0 0 .25rem; font-size:1.2rem; }
-.problem-head .meta { color:var(--fg-dim); font-size:.84em; }
-.radar { flex:none; }
+                  border-radius:14px; padding:22px 26px; margin:18px 0;
+                  scroll-margin-top:80px; }
+.p-head { display:flex; justify-content:space-between; gap:14px; align-items:flex-start;
+          flex-wrap:wrap; }
+.p-title { display:flex; align-items:baseline; gap:10px; }
+.p-num { color:var(--fg-dim); font-family:"SF Mono",Consolas,monospace; font-size:.95em;
+         font-variant-numeric:tabular-nums; }
+.p-title h2 { margin:0; font-size:1.18em; }
+.p-pills { display:flex; gap:6px; flex-wrap:wrap; }
+.p-tldr { color:var(--fg-muted); margin:10px 0 16px; font-size:1.02em;
+          padding-left:11px; border-left:3px solid var(--primary); }
 
-.pill { display:inline-block; padding:1px 8px; border-radius:4px; font-size:.78em;
-        font-weight:600; margin-left:6px; vertical-align:middle; }
-.v-ready    { background:#064e3b; color:#a7f3d0; }
-.v-revision { background:#78350f; color:#fde68a; }
-.v-rework   { background:#7f1d1d; color:#fecaca; }
-.v-stub     { background:#374151; color:#d1d5db; }
-.v-other    { background:#334155; color:#cbd5e1; }
+.pill { display:inline-flex; align-items:center; gap:3px; padding:2px 9px;
+        border-radius:5px; font-size:.78em; font-weight:600; }
+.pill.v-ready    { background:#064e3b; color:#a7f3d0; }
+.pill.v-revision { background:#78350f; color:#fde68a; }
+.pill.v-rework   { background:#7f1d1d; color:#fecaca; }
+.pill.v-stub     { background:#374151; color:#d1d5db; }
 
-.digest { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin:16px 0; }
-@media(max-width:720px){ .digest{ grid-template-columns:1fr; } }
-.d-col { background:var(--bg); border-radius:8px; padding:10px 14px; }
-.d-col h3 { margin:0 0 6px; font-size:.86em; color:var(--fg-muted); font-weight:600; }
-.d-col ul { margin:0; padding-left:18px; font-size:.9em; }
-.d-col li { margin:3px 0; }
+.p-cols { display:grid; grid-template-columns:1fr auto; gap:20px; align-items:center;
+          margin:14px 0 8px; }
+@media(max-width:720px){ .p-cols { grid-template-columns:1fr; } .p-radar { justify-self:center; } }
+.p-actions h3 { margin:0 0 8px; font-size:.92em; color:var(--fg-muted); }
+.qa-list { margin:0; padding-left:20px; }
+.qa-item { margin:7px 0; }
+.qa-where { display:inline-block; background:var(--bg-accent); color:var(--fg);
+            padding:1px 6px; border-radius:3px; font-family:"SF Mono",Consolas,monospace;
+            font-size:.78em; margin-right:6px; }
+.qa-what { font-size:.96em; }
+.qa-example { margin-top:4px; }
+.qa-example summary { font-size:.78em; color:var(--fg-dim); cursor:pointer; }
+.qa-example pre { background:var(--bg); padding:8px 10px; border-radius:4px;
+                  font-size:.84em; overflow-x:auto; margin:4px 0 0; line-height:1.4; }
 
-.tabs { display:flex; gap:4px; margin:14px 0 0; border-bottom:1px solid var(--border); }
-.tab { background:none; border:none; color:var(--fg-muted); padding:8px 14px; cursor:pointer;
-       font-family:inherit; font-size:.92em; border-bottom:2px solid transparent; }
+.d-block { background:var(--bg-soft); border-radius:8px; padding:8px 14px; margin:10px 0; }
+.d-block > summary { cursor:pointer; padding:4px 0; font-weight:500;
+                     color:var(--fg-muted); font-size:.94em; list-style:none;
+                     display:flex; justify-content:space-between; align-items:center; }
+.d-block > summary::before { content:"›"; margin-right:8px; color:var(--fg-dim);
+                              transition:transform .15s; display:inline-block; }
+.d-block[open] > summary::before { transform:rotate(90deg); }
+.d-block ul.bullets { margin:8px 0 4px; padding-left:22px; font-size:.94em; }
+.d-block ul.bullets li { margin:5px 0; }
+.dim { color:var(--fg-dim); }
+.small { font-size:.84em; }
+
+/* ── tabs (snapshot / annotated) ───────────────────────────────── */
+.tabs { display:flex; gap:2px; margin:10px 0 0; border-bottom:1px solid var(--border); }
+.tab { background:none; border:none; color:var(--fg-muted); padding:7px 13px; cursor:pointer;
+       font-family:inherit; font-size:.88em; border-bottom:2px solid transparent; }
 .tab.active { color:var(--primary); border-bottom-color:var(--primary); }
-.pane { display:none; padding:14px 0; }
+.pane { display:none; padding:12px 0 4px; }
 .pane.active { display:block; }
 .statement { font-family:"Georgia","Cambria",serif; font-size:1.02em; line-height:1.65;
              background:var(--bg); padding:14px 18px; border-radius:6px;
              white-space:pre-wrap; word-break:break-word; }
 
-.annot { background:rgba(96,165,250,0.12); border-radius:3px; cursor:help;
+.annot { background:rgba(96,165,250,0.14); border-radius:3px; cursor:help;
          position:relative; padding:0 2px; }
-.annot:hover, .annot:focus-visible { background:rgba(96,165,250,0.25); outline:none; }
-.annot-strong, .annot-praise   { background:rgba(52,211,153,0.18); }
-.annot-strong:hover, .annot-praise:hover { background:rgba(52,211,153,0.32); }
-.annot-nit { background:rgba(156,163,175,0.18); }
-.annot-suggestion { background:rgba(96,165,250,0.18); }
-.annot-ambiguity { background:rgba(251,191,36,0.18); }
-.annot-missing { background:rgba(248,113,113,0.18); }
+.annot:hover, .annot:focus-visible { background:rgba(96,165,250,0.28); outline:none; }
+.annot-strong, .annot-praise   { background:rgba(52,211,153,0.20); }
+.annot-strong:hover, .annot-praise:hover { background:rgba(52,211,153,0.35); }
+.annot-nit { background:rgba(156,163,175,0.20); }
+.annot-suggestion { background:rgba(96,165,250,0.20); }
+.annot-ambiguity { background:rgba(251,191,36,0.20); }
+.annot-missing { background:rgba(248,113,113,0.20); }
 .annot-bubble { display:none; position:absolute; left:0; bottom:calc(100% + 4px);
                 background:var(--bg-card); border:1px solid var(--primary); border-radius:6px;
                 padding:8px 12px; font-size:.85em; font-family:-apple-system,sans-serif;
                 line-height:1.4; box-shadow:0 4px 14px rgba(0,0,0,.4); z-index:10;
                 width:280px; max-width:90vw; white-space:normal; }
 .annot:hover .annot-bubble, .annot:focus-visible .annot-bubble { display:block; }
-.annot-legend { font-size:.82em; color:var(--fg-dim); margin:6px 0 0; }
 
-.actions-block { background:var(--bg); border-left:3px solid var(--primary);
-                 padding:12px 16px 12px 18px; margin:14px 0; border-radius:0 8px 8px 0; }
-.actions-block h3 { margin:0 0 6px; font-size:.92em; }
-.actions-block ol { margin:0; padding-left:18px; font-size:.92em; }
-.actions-block li { margin:6px 0; }
-.actions-block code { background:var(--bg-accent); padding:1px 5px; border-radius:3px; font-size:.85em; }
-.example { margin-top:4px; }
-.example summary { font-size:.78em; color:var(--fg-dim); cursor:pointer; }
-.example pre { background:var(--bg-accent); padding:8px 10px; border-radius:4px;
-               font-size:.82em; overflow-x:auto; margin:4px 0 0; }
+/* ── verifier card ─────────────────────────────────────────────── */
+.verifier-card { padding:8px 0; }
+.verifier-card.empty p { color:var(--fg-dim); font-size:.92em; margin:6px 0; }
+.vc-head { display:flex; gap:12px; align-items:center; flex-wrap:wrap;
+           padding:4px 0 10px; }
+.vc-mode code { font-size:.86em; }
+.vc-meta { font-size:.85em; }
+.vc-rationale { margin:6px 0; font-size:.92em; color:var(--fg-muted); }
+.vc-blocker { background:#7f1d1d; color:#fecaca; padding:6px 12px; border-radius:4px;
+              font-size:.86em; margin:8px 0; }
+.vc-details { margin:6px 0; }
+.vc-details summary { cursor:pointer; color:var(--fg-dim); font-size:.86em; padding:3px 0; }
+pre.code { background:#0b1220; padding:12px 14px; border-radius:6px; overflow-x:auto;
+           font-size:.78em; line-height:1.45; max-height:380px; overflow-y:auto;
+           border:1px solid var(--border); }
+pre.code code { white-space:pre; }
+table.checks { width:100%; border-collapse:collapse; font-size:.84em; margin-top:6px; }
+table.checks th, table.checks td { text-align:left; padding:5px 8px;
+                                    border-bottom:1px solid var(--border); vertical-align:top; }
+table.checks th { color:var(--fg-dim); font-weight:500; font-size:.82em; }
+table.checks td.t-r { color:var(--c-ready); white-space:nowrap; font-size:.82em; }
+table.checks td code { background:var(--bg); padding:1px 4px; border-radius:3px; font-size:.92em; }
 
-details.timeline { margin:14px 0 0; background:var(--bg); border-radius:6px;
-                   padding:6px 14px; font-size:.86em; }
-details.timeline summary { cursor:pointer; color:var(--fg-muted); padding:4px 0; }
-details.timeline ul { margin:6px 0 8px; padding-left:20px; }
-details.timeline .ts { color:var(--fg-dim); font-variant-numeric:tabular-nums; margin-right:8px; }
-details.timeline .sha { color:var(--fg-muted); font-family:"SF Mono",Consolas,monospace;
-                       font-size:.84em; margin-right:8px; }
+/* ── benchmark drawer ──────────────────────────────────────────── */
+.bench-block { background:var(--bg-soft); border-radius:8px; padding:8px 14px; margin:10px 0; }
+.bench-block summary { cursor:pointer; color:var(--fg-muted); font-weight:500; font-size:.94em; }
+.model-response { background:var(--bg); padding:12px 14px; border-radius:6px; font-size:.86em;
+                  white-space:pre-wrap; max-height:340px; overflow-y:auto;
+                  border:1px solid var(--border); line-height:1.5; }
 
-.problem-foot { margin-top:16px; border-top:1px solid var(--border); padding-top:10px;
-                font-size:.85em; }
-.problem-foot a { color:var(--fg-muted); text-decoration:none; }
-.problem-foot a:hover { color:var(--primary); }
-.dim { color:var(--fg-dim); }
+/* ── timeline ──────────────────────────────────────────────────── */
+ul.timeline { margin:6px 0 8px; padding-left:20px; font-size:.86em; }
+ul.timeline li { margin:4px 0; }
+ul.timeline .ts { color:var(--fg-dim); font-variant-numeric:tabular-nums; margin-right:8px; }
+ul.timeline .sha { color:var(--fg-muted); font-family:"SF Mono",Consolas,monospace;
+                  font-size:.84em; margin-right:8px; }
 
-footer.page-foot { margin-top:40px; padding-top:24px; border-top:1px solid var(--border);
-                   color:var(--fg-dim); font-size:.86em; }
-footer.page-foot a { color:var(--fg-muted); }
-.visit-note { margin-top:14px; font-size:.84em; color:var(--fg-dim); }
-.new-since { color:var(--primary); font-weight:600; }
+/* ── footers ───────────────────────────────────────────────────── */
+.p-foot { display:flex; justify-content:space-between; margin-top:14px; padding-top:10px;
+          border-top:1px solid var(--border); flex-wrap:wrap; gap:8px; }
+.p-foot a { color:var(--primary); text-decoration:none; font-size:.86em; }
+.p-foot a:hover { text-decoration:underline; }
+
+footer.page-foot { margin-top:40px; padding-top:22px; border-top:1px solid var(--border);
+                   color:var(--fg-dim); font-size:.85em; text-align:center; }
+footer.page-foot a { color:var(--primary); text-decoration:none; }
+
+/* ── chatbot drawer ────────────────────────────────────────────── */
+.chat-fab { position:fixed; right:18px; bottom:18px; background:var(--primary); color:#0f172a;
+            border:none; padding:12px 18px; border-radius:30px; font-weight:600;
+            cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.4); z-index:60; font-size:.92em; }
+.chat-fab:hover { filter:brightness(1.1); }
+.chat-drawer { position:fixed; right:-440px; top:0; bottom:0; width:420px; max-width:100vw;
+               background:var(--bg-card); border-left:1px solid var(--border);
+               display:flex; flex-direction:column; transition:right .25s; z-index:65; }
+.chat-drawer.open { right:0; }
+@media(max-width:520px){ .chat-drawer { width:100vw; right:-100vw; } }
+.chat-head { padding:14px 18px; border-bottom:1px solid var(--border);
+             display:flex; justify-content:space-between; align-items:center; }
+.chat-head h3 { margin:0; font-size:1em; }
+.chat-close, .chat-settings { background:none; border:none; color:var(--fg-muted);
+                              cursor:pointer; font-size:1.15em; padding:4px 8px; }
+.chat-close:hover, .chat-settings:hover { color:var(--fg); }
+.chat-body { flex:1; overflow-y:auto; padding:14px 18px; display:flex;
+             flex-direction:column; gap:10px; font-size:.92em; }
+.msg { padding:8px 12px; border-radius:8px; max-width:90%; line-height:1.45; }
+.msg.user { background:var(--primary); color:#0f172a; align-self:flex-end; }
+.msg.assistant { background:var(--bg-soft); color:var(--fg); align-self:flex-start; }
+.msg.system { background:transparent; color:var(--fg-dim); font-size:.84em;
+              align-self:center; text-align:center; }
+.msg.error { background:#7f1d1d; color:#fecaca; align-self:flex-start; }
+.msg pre { background:var(--bg); padding:6px 10px; border-radius:4px; overflow-x:auto;
+           font-size:.86em; margin:6px 0; white-space:pre-wrap; }
+.chat-input { display:flex; gap:8px; padding:12px 14px; border-top:1px solid var(--border); }
+.chat-input textarea { flex:1; background:var(--bg-soft); border:1px solid var(--border);
+                       border-radius:6px; padding:8px 10px; color:var(--fg); font-family:inherit;
+                       font-size:.92em; resize:none; min-height:38px; max-height:120px; }
+.chat-input button { background:var(--primary); color:#0f172a; border:none; border-radius:6px;
+                     padding:0 18px; font-weight:600; cursor:pointer; }
+.chat-input button:disabled { opacity:.5; cursor:not-allowed; }
+.chat-settings-panel { display:none; padding:14px 18px; border-bottom:1px solid var(--border);
+                       background:var(--bg-soft); }
+.chat-settings-panel.open { display:block; }
+.chat-settings-panel label { display:block; font-size:.84em; color:var(--fg-muted); margin:6px 0 4px; }
+.chat-settings-panel input, .chat-settings-panel select {
+  width:100%; background:var(--bg); border:1px solid var(--border); border-radius:5px;
+  color:var(--fg); padding:6px 10px; font-family:inherit; font-size:.9em;
+}
+.chat-settings-panel .hint { font-size:.78em; color:var(--fg-dim); margin-top:6px; }
 </style>
 </head><body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <div class="nav-brand">Zhixian Zhang <span class="sub">· auto-review</span></div>
+    <div class="nav-chips"><a class="chip chip-ready" href="#problem-2"><span class="ch-num">#02</span> <span class="ch-kw">Smallest Terminating</span> <span class="dim">✓</span></a><a class="chip chip-revision" href="#problem-3"><span class="ch-num">#03</span> <span class="ch-kw">Relative Speed</span> <span class="dim">△</span></a><a class="chip chip-revision" href="#problem-4"><span class="ch-num">#04</span> <span class="ch-kw">Dog Shelter</span> <span class="dim">△</span></a><a class="chip chip-rework" href="#problem-5"><span class="ch-num">#05</span> <span class="ch-kw">untitled</span> <span class="dim">✗</span></a><a class="chip chip-rework" href="#problem-6"><span class="ch-num">#06</span> <span class="ch-kw">untitled</span> <span class="dim">✗</span></a></div>
+    <button class="nav-chat" onclick="document.querySelector('.chat-fab').click();">💬 chat</button>
+  </div>
+</nav>
+
 <div class="container">
-  <header class="contributor-head">
-    <h1>Zhixian Zhang <span class="dim" style="font-size:.6em">· auto-review</span></h1>
-    <div class="sub">contributor folder: <code>contributor_01</code></div>
-  </header>
 
-  <div class="under-construction">
-    🚧 <strong>Under construction.</strong> This is an auto-generated review surface (LLM-drafted, the lead has not yet validated). Treat as a structured first pass — not the canonical decision. The lead will sign off / amend during human review. Feedback welcome.
+  <div class="hero">
+    <h1>📊 Zhixian Zhang's problem reviews</h1>
+    <div class="hero-sub">Auto-drafted by <code>claude-opus-4-7</code>. Lead-reviewed feedback (you) is the canonical word.</div>
+    <div class="timestamp">⏱ Last reviewed <strong>2026-05-28 08:17 UTC</strong> · total LLM cost: <strong>$0.85</strong> · <span id="first-visit-note"></span></div>
+    <div class="uc-banner">🚧 <strong>Under construction.</strong> This page is auto-generated. Feedback welcome — DM lead or open an issue on github.</div>
   </div>
 
-  <div class="aggregate">
-    <h3>📊 Progress at a glance</h3>
-    <div class="agg-tiles">
-      <div class="agg-tile"><div class="num">5</div><div class="lbl">problems reviewed</div></div>
-      <div class="agg-tile"><div class="num">0</div><div class="lbl">ready</div></div>
-      <div class="agg-tile"><div class="num">2</div><div class="lbl">needs revision</div></div>
-      <div class="agg-tile"><div class="num">2</div><div class="lbl">major rework</div></div>
-      <div class="agg-tile"><div class="num">1</div><div class="lbl">template stubs</div></div>
+  <div class="dashboard">
+    <div>
+      <h2>📈 Progress at a glance</h2>
+      <div class="dash-tiles">
+        <div class="tile"><div class="num">5</div><div class="lbl">problems</div></div>
+        <div class="tile t-ready"><div class="num">1</div><div class="lbl">ready ✓</div></div>
+        <div class="tile t-revision"><div class="num">2</div><div class="lbl">revise △</div></div>
+        <div class="tile t-rework"><div class="num">2</div><div class="lbl">rework ✗</div></div>
+        <div class="tile t-verif"><div class="num">5/5</div><div class="lbl">verifiers ✓</div></div>
+        <div class="tile"><div class="num">1/5</div><div class="lbl">LLM solved</div></div>
+      </div>
+    </div>
+    <div class="dash-radar">
+      <svg viewBox="0 0 200 200" width="200" height="200" class="radar-svg"><polygon points="100.0,84.0 113.9,92.0 113.9,108.0 100.0,116.0 86.1,108.0 86.1,92.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="100.0,68.0 127.7,84.0 127.7,116.0 100.0,132.0 72.3,116.0 72.3,84.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="100.0,52.0 141.6,76.0 141.6,124.0 100.0,148.0 58.4,124.0 58.4,76.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="100.0,36.0 155.4,68.0 155.4,132.0 100.0,164.0 44.6,132.0 44.6,68.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="100.0,20.0 169.3,60.0 169.3,140.0 100.0,180.0 30.7,140.0 30.7,60.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="100.0,68.0 127.7,84.0 127.7,116.0 100.0,132.0 58.4,124.0 44.6,68.0" fill="#60a5fa" fill-opacity="0.28" stroke="#60a5fa" stroke-width="1.6"/><text x="100.0" y="12.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity 2</text><text x="179.7" y="58.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel 2</text><text x="179.7" y="150.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff-fit 2</text><text x="100.0" y="196.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric 2</text><text x="20.3" y="150.0" text-anchor="middle" fill="#94a3b8" font-size="9">verifier 3</text><text x="20.3" y="58.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean 4</text></svg>
+      <div class="dim small" style="text-align:center;margin-top:4px">average across problems</div>
     </div>
   </div>
 
-  <div class="toc"><a href="#problem-2">#2 Smallest Terminating Decimal with Digit 9</a><span class="pill verdict-chip v-revision">needs-revision</span> · <a href="#problem-3">#3 Relative Speed and Time Word Problem</a><span class="pill verdict-chip v-revision">needs-revision</span> · <a href="#problem-4">#4 Dog Shelter Toys Problem</a><span class="pill verdict-chip v-rework">needs-major-rework</span> · <a href="#problem-5">#5 Problem #5 (untitled draft)</a><span class="pill verdict-chip v-rework">needs-major-rework</span> · <a href="#problem-6">#6 Problem #6 (untitled draft)</a><span class="pill verdict-chip v-stub">template-stub</span></div>
-
   
-<section class="problem" id="problem-2" data-sha="4f057767b1bebc82">
-  <header class="problem-head">
-    <div>
+<section class="problem" id="problem-2" data-sha="4f057767b1bebc82" data-verdict="ready">
+  <header class="p-head">
+    <div class="p-title">
+      <span class="p-num">#02</span>
       <h2>Smallest Terminating Decimal with Digit 9</h2>
-      <div class="meta">
-        Problem #2 · reviewed 2026-05-28 06:50:56 UTC · content 4f057767
-        <span class="pill v-revision">needs-revision</span>
-      </div>
     </div>
-    <div class="radar"><svg viewBox="0 0 180 180" width="180" height="180" aria-label="dimensions radar"><polygon points="90.0,76.0 102.1,83.0 102.1,97.0 90.0,104.0 77.9,97.0 77.9,83.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,62.0 114.2,76.0 114.2,104.0 90.0,118.0 65.8,104.0 65.8,76.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,48.0 126.4,69.0 126.4,111.0 90.0,132.0 53.6,111.0 53.6,69.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,34.0 138.5,62.0 138.5,118.0 90.0,146.0 41.5,118.0 41.5,62.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,20.0 150.6,55.0 150.6,125.0 90.0,160.0 29.4,125.0 29.4,55.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,20.0 114.2,76.0 114.2,104.0 90.0,160.0 29.4,125.0 65.8,76.0" fill="#60a5fa" fill-opacity="0.25" stroke="#60a5fa" stroke-width="1.5"/><text x="90.0" y="14.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity 5</text><text x="159.3" y="54.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel 2</text><text x="159.3" y="134.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff 2</text><text x="90.0" y="174.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric 5</text><text x="20.7" y="134.0" text-anchor="middle" fill="#94a3b8" font-size="9">verif 5</text><text x="20.7" y="54.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean 2</text></svg></div>
+    <div class="p-pills">
+      <span class="pill v-ready">✓ ready</span>
+      <span class="pill v-ready">✓ haiku solved it</span>
+    </div>
   </header>
 
-  <div class="digest">
-    <div class="d-col">
-      <h3>✨ Strengths</h3>
-      <ul><li>(no specific strengths surfaced — early draft)</li></ul>
+  <p class="p-tldr"></p>
+
+  <div class="p-cols">
+    <div class="p-actions">
+      <h3>🔧 Quick fixes & next steps</h3>
+      <ol class="qa-list"><li class="qa-item"><span class="qa-where">problemtags</span> <span class="qa-what">Clean up the failure-modes tag — currently reads as one run-on fragment.</span><details class="qa-example"><summary>example LaTeX</summary><pre>{off-by-one: returns a larger valid n such as 8192; incorrect rejection of 4096 due to digit-9 misread}</pre></details></li><li class="qa-item"><span class="qa-where">answerkey</span> <span class="qa-what">Fix typo &#x27;not satisfed&#x27; → &#x27;not satisfied&#x27; in the 1001–2000 bullet.</span></li><li class="qa-item"><span class="qa-where">problemsetup</span> <span class="qa-what">Reconsider difficulty tag — Intermediate may fit better than Advanced.</span><details class="qa-example"><summary>example LaTeX</summary><pre>{Intermediate}</pre></details></li></ol>
     </div>
-    <div class="d-col">
-      <h3>💡 Considerations</h3>
-      <ul><li>This problem is routine once the terminating decimal criterion is recalled; consider downgrading to Intermediate or adding a twist (e.g., &#x27;prove that 4096 is minimal&#x27;).</li><li>This tag in \problemtags is cryptic and appears to be a note-to-self; remove or clarify for the public-facing problem.</li><li>The enumeration is helpful but could be more compact; consider listing only the candidates that contain 9 (none in this range) rather than all candidates.</li></ul>
-    </div>
-    <div class="d-col">
-      <h3>👉 Next steps</h3>
-      <ul><li>Remove or clarify the tag &#x27;not the smallest one, incorrect rejection of the true answer&#x27;—it reads as an internal note rather than a problem tag.</li><li>Consider downgrading difficulty from Advanced to Intermediate, or add a secondary part (e.g., &#x27;Prove that 4096 is the smallest&#x27;) to justify the Advanced tag.</li><li>Add a note that this problem is a well-known competition-math setup; verify that the specific wording and context are sufficiently novel for the benchmark.</li></ul>
-    </div>
+    <aside class="p-radar">
+      <svg viewBox="0 0 180 180" width="180" height="180" class="radar-svg"><polygon points="90.0,75.6 102.5,82.8 102.5,97.2 90.0,104.4 77.5,97.2 77.5,82.8" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 114.9,75.6 114.9,104.4 90.0,118.8 65.1,104.4 65.1,75.6" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,46.8 127.4,68.4 127.4,111.6 90.0,133.2 52.6,111.6 52.6,68.4" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,32.4 139.9,61.2 139.9,118.8 90.0,147.6 40.1,118.8 40.1,61.2" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,18.0 152.4,54.0 152.4,126.0 90.0,162.0 27.6,126.0 27.6,54.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,18.0 127.4,68.4 127.4,111.6 90.0,162.0 27.6,126.0 52.6,68.4" fill="#60a5fa" fill-opacity="0.28" stroke="#60a5fa" stroke-width="1.6"/><text x="90.0" y="10.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity 5</text><text x="162.7" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel 3</text><text x="162.7" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff-fit 3</text><text x="90.0" y="178.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric 5</text><text x="17.3" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">verifier 5</text><text x="17.3" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean 3</text></svg>
+    </aside>
   </div>
 
-  <div class="tabs">
-    <button class="tab active" data-target="snapshot-2">Snapshot</button>
-    <button class="tab" data-target="annotated-2">Annotated</button>
-  </div>
-  <div class="pane active" id="snapshot-2">
-    <div class="statement">What is the smallest positive integer $n$ such that $\frac{1}{n}$ is a terminating decimal and $n$ contains the digit 9?</div>
-  </div>
-  <div class="pane" id="annotated-2">
-    <div class="statement annot-host">What is the smallest positive integer $n$ such that $\frac{1}{n}$ is a terminating decimal and $n$ contains the digit 9?</div>
-    <p class="annot-legend dim">Hover (desktop) or tap (touch) a highlighted span for the reviewer's comment.</p>
-  </div>
+  <details class="d-block">
+    <summary>✨ What's working</summary>
+    <ul class="bullets"><li>Nice — stating the characterization theorem up front makes the answer key self-contained.</li><li>Good — pre-empts a common verifier failure where an equivalent form gets rejected.</li></ul>
+  </details>
 
-  <div class="actions-block"><h3>📝 Concrete actions for Overleaf</h3><ol><li><code>problemtags</code>: Remove or clarify the tag &#x27;not the smallest one, incorrect rejection of the true answer&#x27;—it reads as an internal note rather than a problem tag.</li><li><code>problemsetup</code>: Consider downgrading difficulty from Advanced to Intermediate, or add a secondary part (e.g., &#x27;Prove that 4096 is the smallest&#x27;) to justify the Advanced tag.</li><li><code>editornotes</code>: Add a note that this problem is a well-known competition-math setup; verify that the specific wording and context are sufficiently novel for the benchmark.</li></ol></div>
+  <details class="d-block">
+    <summary>💡 Things to consider</summary>
+    <ul class="bullets"><li>This appears in the failure-modes tag slot but reads like a fragment. Consider rephrasing as two distinct failure modes, e.g. &#x27;off-by-one (returning a larger valid n)&#x27; and &#x27;rejecting 4096 due to misreading the digit-9 condition&#x27;.</li><li>Typo: &#x27;satisfed&#x27; → &#x27;satisfied&#x27;.</li><li>Consider downgrading to Intermediate: the required insight (n = 2^a·5^b) is standard and the rest is enumeration.</li></ul>
+  </details>
+
+  <details class="d-block">
+    <summary>👉 Suggested next steps</summary>
+    <ul class="bullets"><li>Clean up the failure-modes tag — currently reads as one run-on fragment. — e.g. {off-by-one: returns a larger valid n such as 8192; incorrect rejection of 4096 due to digit-9 misread}</li><li>Fix typo &#x27;not satisfed&#x27; → &#x27;not satisfied&#x27; in the 1001–2000 bullet.</li><li>Reconsider difficulty tag — Intermediate may fit better than Advanced. — e.g. {Intermediate}</li></ul>
+  </details>
+
+  <details class="d-block">
+    <summary>📄 Problem text (snapshot · annotated)</summary>
+    <div class="tabs">
+      <button class="tab active" data-target="snap-2">Snapshot</button>
+      <button class="tab" data-target="annot-2">Annotated</button>
+    </div>
+    <div class="pane active" id="snap-2">
+      <div class="statement">What is the smallest positive integer $n$ such that $\frac{1}{n}$ is a terminating decimal and $n$ contains the digit 9?</div>
+    </div>
+    <div class="pane" id="annot-2">
+      <div class="statement annot-host">What is the smallest positive integer $n$ such that $\frac{1}{n}$ is a terminating decimal and $n$ contains the digit 9?</div>
+      <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Color = kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
+    </div>
+  </details>
+
+  <details class="d-block">
+    <summary>🧪 Verifier (auto-drafted code · validation trace)</summary>
+    
+<div class="verifier-card">
+  <div class="vc-head">
+    <span class="pill v-ready">✓ validated</span>
+    <span class="vc-mode">mode: <code>exact</code></span>
+    <span class="vc-meta dim">oracle: ✓ · rejected 8/8 bad responses</span>
+  </div>
+  <p class="vc-rationale">The grading scheme specifies an exact match: the answer must be 4096 (or equivalently 2^12). The verifier uses regex to detect either the bare integer 4096 or the expression 2^{12} in the response, normalising LaTeX delimiters and whitespace first.</p>
+  
+  <details class="vc-details">
+    <summary>Generated Python verifier (29 lines)</summary>
+    <pre class="code"><code>import re
+
+def grade(response: str, context: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Verifier for: smallest positive integer n such that 1/n is a terminating
+    decimal and n contains the digit 9.
+    Expected answer: 4096 (equivalently 2^12).
+    &quot;&quot;&quot;
+    if not response or not isinstance(response, str):
+        return {&quot;pass&quot;: False, &quot;score&quot;: 0.0, &quot;notes&quot;: &quot;empty or invalid response&quot;}
+
+    # Normalise: strip LaTeX delimiters, collapse whitespace
+    text = response
+    text = text.replace(&#x27;$&#x27;, &#x27; &#x27;).replace(&#x27;\\(&#x27;, &#x27; &#x27;).replace(&#x27;\\)&#x27;, &#x27; &#x27;)
+    text = text.replace(&#x27;\\[&#x27;, &#x27; &#x27;).replace(&#x27;\\]&#x27;, &#x27; &#x27;)
+    text = re.sub(r&#x27;\s+&#x27;, &#x27; &#x27;, text)
+
+    # --- Check for explicit 4096 ---
+    # Look for the bare number 4096 (not as part of a larger number)
+    if re.search(r&#x27;(?&lt;![0-9])4096(?![0-9])&#x27;, text):
+        return {&quot;pass&quot;: True, &quot;score&quot;: 1.0, &quot;notes&quot;: &quot;Response contains the correct answer 4096.&quot;}
+
+    # --- Check for 2^{12} or 2^12 ---
+    # Matches: 2^12, 2^{12}, 2 ^ 12, 2^{ 12 }, etc.
+    if re.search(r&#x27;2\s*\^\s*\{?\s*12\s*\}?&#x27;, text):
+        return {&quot;pass&quot;: True, &quot;score&quot;: 1.0, &quot;notes&quot;: &quot;Response contains the correct expression 2^12 = 4096.&quot;}
+
+    return {&quot;pass&quot;: False, &quot;score&quot;: 0.0, &quot;notes&quot;: &quot;Could not find the correct answer (4096 or 2^12) in the response.&quot;}
+
+</code></pre>
+  </details>
+  <details class="vc-details"><summary>Validation trace (8 checks)</summary><table class="checks"><thead><tr><th>verdict</th><th>response (truncated)</th><th>verifier notes</th></tr></thead><tbody><tr><td class="t-r">✓ rejected</td><td><code>The answer is 9.</code></td><td class="dim">Could not find the correct answer (4096 or 2^12) in the response.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>The smallest such n is 512.</code></td><td class="dim">Could not find the correct answer (4096 or 2^12) in the response.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>I believe the answer is 4097.</code></td><td class="dim">Could not find the correct answer (4096 or 2^12) in the response.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>The answer is 2^13 = 8192.</code></td><td class="dim">Could not find the correct answer (4096 or 2^12) in the response.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>n = 3200 contains the digit 9 and 1/3200 terminates.</code></td><td class="dim">Could not find the correct answer (4096 or 2^12) in the response.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>The answer is 2^10 = 1024.</code></td><td class="dim">Could not find the correct answer (4096 or 2^12) in the response.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>I cannot determine the answer from the given information.</code></td><td class="dim">Could not find the correct answer (4096 or 2^12) in the response.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>The answer is somewhere between 4000 and 5000.</code></td><td class="dim">Could not find the correct answer (4096 or 2^12) in the response.</td></tr></tbody></table></details>
+</div>
+
+  </details>
+
+  
+<details class="bench-block">
+  <summary>🤖 How a frontier LLM did (claude-haiku-4-5-20251001)</summary>
+  <p class="dim">Run: <code>2026-05-28-opus-reviews-haiku-solver</code> · verdict <strong>PASS</strong> · verifier notes: Response contains the correct answer 4096.</p>
+  <details><summary>Show the model's full response</summary>
+    <pre class="model-response">I need to find the smallest positive integer $n$ such that:
+1. $\frac{1}{n}$ is a terminating decimal
+2. $n$ contains the digit 9
+
+**When is $\frac{1}{n}$ a terminating decimal?**
+
+A fraction in lowest terms has a terminating decimal representation if and only if the denominator has no prime factors other than 2 and 5.
+
+So $n$ must be of the form $n = 2^a \cdot 5^b$ where $a, b \geq 0$.
+
+**Finding the smallest such $n$ containing the digit 9:**
+
+I need to find the smallest number of the form $2^a \cdot 5^b$ that contains the digit 9.
+
+Let me systematically check powers and products:
+- Powers of 2: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, ...
+- Powers of 5: 1, 5, 25, 125, 625, 3125, ...
+- Mixed products: Let me organize by size
+
+Small values of $2^a \cdot 5^b$:
+- $2^0 \cdot 5^0 = 1$
+- $2^1 \cdot 5^0 = 2$
+- $2^0 \cdot 5^1 = 5$
+- $2^2 \cdot 5^0 = 4$
+- $2^1 \cdot 5^1 = 10$
+- $2^3 \cdot 5^0 = 8$
+- $2^0 \cdot 5^2 = 25$
+- $2^2 \cdot 5^1 = 20$
+- $2^4 \cdot 5^0 = 16$
+- $2^1 \cdot 5^2 = 50$
+- $2^3 \cdot 5^1 = 40$
+- $2^5 \cdot 5^0 = 32$
+- $2^0 \cdot 5^3 = 125$
+- $2^2 \cdot 5^2 = 100$
+- $2^4 \cdot 5^1 = 80$
+- $2^6 \cdot 5^0 = 64$
+- $2^1 \cdot 5^3 = 250$
+- $2^3 \cdot 5^2 = 200$
+- $2^5 \cdot 5^1 = 160$
+- $2^7 \cdot 5^0 = 128$
+- $2^0 \cdot 5^4 = 625$
+- $2^2 \cdot 5^3 = 500$
+- $2^4 \cdot 5^2 = 400$
+- $2^6 \cdot 5^1 = 320$
+- $2^8 \cdot 5^0 = 256$
+- $2^1 \cdot 5^4 = 1250$
+- $2^3 \cdot 5^3 = 1000$
+- $2^5 \cdot 5^2 = 800$
+- $2^7 \cdot 5^1 = 640$
+- $2^9 \cdot 5^0 = 512$
+
+Continuing to look for the digit 9:
+- $2^0 \cdot 5^5 = 3125$
+- $2^2 \cdot 5^4 = 2500$
+- $2^4 \cdot 5^3 = 2000$
+- $2^6 \cdot 5^2 = 1600$
+- $2^8 \cdot 5^1 = 1280$
+- $2^{10} \cdot 5^0 = 1024$
+- $2^1 \cdot 5^5 = 6250$
+- $2^3 \cdot 5^4 = 5000$
+- $2^5 \cdot 5^3 = 4000$
+- $2^7 \cdot 5^2 = 3200$
+- $2^9 \cdot 5^1 = 2560$
+- $2^{11} \cdot 5^0 = 2048$
+- $2^2 \cdot 5^5 = 12500$
+- $2^4 \cdot 5^4 = 10000$
+- $2^6 \cdot 5^3 = 8000$
+- $2^8 \cdot 5^2 = 6400$
+- $2^{10} \cdot 5^1 = 5120$
+- $2^{12} \cdot 5^0 = 4096$
+- $2^3 \cdot 5^5 = 25000$
+- $2^5 \cdot 5^4 = 20000$
+- $2^7 \cdot 5^3 = 16000$
+- $2^9 \cdot 5^2 = 12800$
+- $2^{11} \cdot 5^1 = 10240$
+- $2^{13} \cdot 5^0 = 8192$
+- $2^4 \cdot 5^5 = 50000$
+- $2^6 \cdot 5^4 = 40000$
+- $2^8 \cdot 5^3 = 32000$
+- $2^{10} \cdot 5^2 = 25600$
+- $2^{12} \cdot 5^1 = 20480$
+- $2^{14} \cdot 5^0 = 16384$
+- $2^5 \cdot 5^5 = 100000$
+- $2^7 \cdot 5^4 = 80000$
+- $2^9 \cdot 5^3 = 64000$
+- $2^{11} \cdot 5^2 = 51200$
+- $2^{13} \cdot 5^1 = 40960$
+- $2^{15} \cdot 5^0 = 32768$
+- $2^6 \cdot 5^5 = 200000$
+- $2^8 \cdot 5^4 = 160000$
+- $2^{10} \cdot 5^3 = 128000$
+- $2^{12} \cdot 5^2 = 102400$
+- $2^{14} \cdot 5^1 = 81920$
+- $2^{16} \cdot 5^0 = 65536$
+- $2^7 \cdot 5^5 = 400000$
+- $2^9 \cdot 5^4 = 320000$
+- $2^{11} \cdot 5^3 = 256000$
+- $2^{13} \cdot 5^2 = 204800$
+- $2^{15} \cdot 5^1 = 163840$
+- $2^{17} \cdot 5^0 = 131072$
+- $2^8 \cdot 5^5 = 800000$
+- $2^{10} \cdot 5^4 = 640000$
+- $2^{12} \cdot 5^3 = 512000$
+- $2^{14} \cdot 5^2 = 409600$
+- $2^{16} \cdot 5^1 = 327680$
+- $2^{18} \cdot 5^0 = 262144$
+- $2^9 \cdot 5^5 = 1600000$
+- $2^{11} \cdot 5^4 = 1280000$
+- $2^{13} \cdot 5^3 = 1024000$
+- $2^{15} \cdot 5^2 =</pre>
+  </details>
+</details>
+
 
   
 
-  <footer class="problem-foot">
-    <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/master/contributors/contributor_01/problems/problem_02.tex" target="_blank">📄 view .tex on github</a>
+  <footer class="p-foot">
+    <span class="dim small">Reviewed by <code>claude-opus-4-7</code> · 2026-05-28 08:15 UTC · content sha <code>4f057767</code></span>
+    <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/master/contributors/contributor_01/problems/problem_02.tex" target="_blank">view .tex →</a>
   </footer>
 </section>
 
-<section class="problem" id="problem-3" data-sha="067b497aba6636b4">
-  <header class="problem-head">
-    <div>
+<section class="problem" id="problem-3" data-sha="067b497aba6636b4" data-verdict="needs-revision">
+  <header class="p-head">
+    <div class="p-title">
+      <span class="p-num">#03</span>
       <h2>Relative Speed and Time Word Problem</h2>
-      <div class="meta">
-        Problem #3 · reviewed 2026-05-28 06:51:06 UTC · content 067b497a
-        <span class="pill v-revision">needs-revision</span>
-      </div>
     </div>
-    <div class="radar"><svg viewBox="0 0 180 180" width="180" height="180" aria-label="dimensions radar"><polygon points="90.0,76.0 102.1,83.0 102.1,97.0 90.0,104.0 77.9,97.0 77.9,83.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,62.0 114.2,76.0 114.2,104.0 90.0,118.0 65.8,104.0 65.8,76.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,48.0 126.4,69.0 126.4,111.0 90.0,132.0 53.6,111.0 53.6,69.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,34.0 138.5,62.0 138.5,118.0 90.0,146.0 41.5,118.0 41.5,62.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,20.0 150.6,55.0 150.6,125.0 90.0,160.0 29.4,125.0 29.4,55.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,34.0 114.2,76.0 138.5,118.0 90.0,160.0 29.4,125.0 53.6,69.0" fill="#60a5fa" fill-opacity="0.25" stroke="#60a5fa" stroke-width="1.5"/><text x="90.0" y="14.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity 4</text><text x="159.3" y="54.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel 2</text><text x="159.3" y="134.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff 4</text><text x="90.0" y="174.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric 5</text><text x="20.7" y="134.0" text-anchor="middle" fill="#94a3b8" font-size="9">verif 5</text><text x="20.7" y="54.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean 3</text></svg></div>
+    <div class="p-pills">
+      <span class="pill v-revision">△ needs-revision</span>
+      <span class="pill v-rework">✗ haiku failed (score 0)</span>
+    </div>
   </header>
 
-  <div class="digest">
-    <div class="d-col">
-      <h3>✨ Strengths</h3>
-      <ul><li>(no specific strengths surfaced — early draft)</li></ul>
+  <p class="p-tldr"></p>
+
+  <div class="p-cols">
+    <div class="p-actions">
+      <h3>🔧 Quick fixes & next steps</h3>
+      <ol class="qa-list"><li class="qa-item"><span class="qa-where">problemstatement</span> <span class="qa-what">Disambiguate &#x27;total hours&#x27; — state explicitly that travel times are summed across animals (or that animals cross sequentially).</span><details class="qa-example"><summary>example LaTeX</summary><pre>If the combined travel time of 3 kangaroos (each crossing the highway once, at the same speed) is 18 hours, how many combined hours will 4 turtles need, each traveling at half a kangaroo&#x27;s speed?</pre></details></li><li class="qa-item"><span class="qa-where">problemtags</span> <span class="qa-what">Re-check difficulty after disambiguation; if the trap is removed, downgrade to Basic.</span></li><li class="qa-item"><span class="qa-where">answerkey</span> <span class="qa-what">State the interpretation convention in one sentence before the computation, so a grader can see why 48 (not 12) is correct.</span><details class="qa-example"><summary>example LaTeX</summary><pre>Interpreting &#x27;18 hours total&#x27; as the sum of individual crossing times: each kangaroo takes 18/3 = 6 hours...</pre></details></li></ol>
     </div>
-    <div class="d-col">
-      <h3>💡 Considerations</h3>
-      <ul><li>Clarify: does &#x27;18 hours total&#x27; mean 18 hours per kangaroo or 18 hours if all three traveled together? The answerkey interprets it as per-kangaroo, but a solver might read it as combined time.</li><li>The answerkey conflates &#x27;four turtles each taking 12 hours&#x27; with &#x27;total of 48 hours.&#x27; If turtles travel in parallel (like kangaroos did), each takes 12 hours, not 48 combined. Clarify the problem intent: are turtles traveling together or separately?</li><li>The editornotes section reads like a template checklist; consider replacing with problem-specific guidance (e.g., &#x27;Watch for solvers who multiply 4 × 18 directly without adjusting for speed ratio&#x27;).</li></ul>
-    </div>
-    <div class="d-col">
-      <h3>👉 Next steps</h3>
-      <ul><li>Clarify whether the 18 hours is the time for one kangaroo or the combined time if all three traveled together. Recommend: &#x27;If it takes one kangaroo 18 hours to travel across a highway, and three kangaroos travel together at the same speed, how many hours will it take four turtles, each traveling at half the speed of a kangaroo, to do so?&#x27; (or similar, depending on intended setup).</li><li>Resolve the &#x27;total of 4 × 12 = 48 hours&#x27; statement. If turtles travel in parallel (like kangaroos), each takes 12 hours individually, not 48 combined. If the problem intends sequential travel, state that explicitly in the problem statement.</li><li>Replace the generic checklist with problem-specific notes, e.g., &#x27;Common error: students may multiply 4 × 18 without accounting for the speed ratio, yielding 72 hours.&#x27;</li></ul>
-    </div>
+    <aside class="p-radar">
+      <svg viewBox="0 0 180 180" width="180" height="180" class="radar-svg"><polygon points="90.0,75.6 102.5,82.8 102.5,97.2 90.0,104.4 77.5,97.2 77.5,82.8" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 114.9,75.6 114.9,104.4 90.0,118.8 65.1,104.4 65.1,75.6" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,46.8 127.4,68.4 127.4,111.6 90.0,133.2 52.6,111.6 52.6,68.4" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,32.4 139.9,61.2 139.9,118.8 90.0,147.6 40.1,118.8 40.1,61.2" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,18.0 152.4,54.0 152.4,126.0 90.0,162.0 27.6,126.0 27.6,54.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 114.9,75.6 127.4,111.6 90.0,147.6 27.6,126.0 40.1,61.2" fill="#60a5fa" fill-opacity="0.28" stroke="#60a5fa" stroke-width="1.6"/><text x="90.0" y="10.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity 2</text><text x="162.7" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel 2</text><text x="162.7" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff-fit 3</text><text x="90.0" y="178.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric 4</text><text x="17.3" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">verifier 5</text><text x="17.3" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean 4</text></svg>
+    </aside>
   </div>
 
-  <div class="tabs">
-    <button class="tab active" data-target="snapshot-3">Snapshot</button>
-    <button class="tab" data-target="annotated-3">Annotated</button>
-  </div>
-  <div class="pane active" id="snapshot-3">
-    <div class="statement">If it takes 3 kangaroos traveling at the same speed a total of 18 hours to travel across a highway, how many hours will it take four turtles, each traveling at half the speed of a kangaroo, to do so?</div>
-  </div>
-  <div class="pane" id="annotated-3">
-    <div class="statement annot-host">If it takes 3 kangaroos traveling at the same speed <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="Clarify: does &#x27;18 hours total&#x27; mean 18 hours per kangaroo or 18 hours if all three traveled together? The answerkey interprets it as per-kangaroo, but a solver might read it as combined time.">a total of 18 hours to travel across a highway<span class="annot-bubble" role="tooltip"><strong>ambiguity.</strong> Clarify: does &#x27;18 hours total&#x27; mean 18 hours per kangaroo or 18 hours if all three traveled together? The answerkey interprets it as per-kangaroo, but a solver might read it as combined time.</span></span>, how many hours will it take four turtles, each traveling at half the speed of a kangaroo, to do so?</div>
-    <p class="annot-legend dim">Hover (desktop) or tap (touch) a highlighted span for the reviewer's comment.</p>
-  </div>
+  <details class="d-block">
+    <summary>✨ What's working</summary>
+    <ul class="bullets"><li>(no specific strengths surfaced — early draft)</li></ul>
+  </details>
 
-  <div class="actions-block"><h3>📝 Concrete actions for Overleaf</h3><ol><li><code>problemstatement</code>: Clarify whether the 18 hours is the time for one kangaroo or the combined time if all three traveled together. Recommend: &#x27;If it takes one kangaroo 18 hours to travel across a highway, and three kangaroos travel together at the same speed, how many hours will it take four turtles, each traveling at half the speed of a kangaroo, to do so?&#x27; (or similar, depending on intended setup).</li><li><code>answerkey</code>: Resolve the &#x27;total of 4 × 12 = 48 hours&#x27; statement. If turtles travel in parallel (like kangaroos), each takes 12 hours individually, not 48 combined. If the problem intends sequential travel, state that explicitly in the problem statement.</li><li><code>editornotes</code>: Replace the generic checklist with problem-specific notes, e.g., &#x27;Common error: students may multiply 4 × 18 without accounting for the speed ratio, yielding 72 hours.&#x27;</li></ol></div>
+  <details class="d-block">
+    <summary>💡 Things to consider</summary>
+    <ul class="bullets"><li>Does &#x27;total&#x27; mean summed across the 3 kangaroos (so each takes 6h), or 18h of wall-clock with all 3 crossing in parallel? The answerkey assumes the former; the statement should say so explicitly.</li><li>Consider &#x27;each traveling at the same speed&#x27; to parallel the &#x27;each traveling at half the speed&#x27; phrasing later.</li><li>Same total-vs-individual issue on the answer side: 4 turtles in parallel each take 12h; the &#x27;total&#x27; = 48 only holds under the summed interpretation. Worth stating the convention once at the top.</li><li>Once the ambiguity is resolved the problem may read as Basic arithmetic; consider whether Medium still fits.</li></ul>
+  </details>
+
+  <details class="d-block">
+    <summary>👉 Suggested next steps</summary>
+    <ul class="bullets"><li>Disambiguate &#x27;total hours&#x27; — state explicitly that travel times are summed across animals (or that animals cross sequentially). — e.g. If the combined travel time of 3 kangaroos (each crossing the highway once, at the same speed) is 18 hours, how many combined hours will 4 turtles need, each traveling at half a kangaroo&#x27;s speed?</li><li>Re-check difficulty after disambiguation; if the trap is removed, downgrade to Basic.</li><li>State the interpretation convention in one sentence before the computation, so a grader can see why 48 (not 12) is correct. — e.g. Interpreting &#x27;18 hours total&#x27; as the sum of individual crossing times: each kangaroo takes 18/3 = 6 hours...</li></ul>
+  </details>
+
+  <details class="d-block">
+    <summary>📄 Problem text (snapshot · annotated)</summary>
+    <div class="tabs">
+      <button class="tab active" data-target="snap-3">Snapshot</button>
+      <button class="tab" data-target="annot-3">Annotated</button>
+    </div>
+    <div class="pane active" id="snap-3">
+      <div class="statement">If it takes 3 kangaroos traveling at the same speed a total of 18 hours to travel across a highway, how many hours will it take four turtles, each traveling at half the speed of a kangaroo, to do so?</div>
+    </div>
+    <div class="pane" id="annot-3">
+      <div class="statement annot-host">If it takes 3 kangaroos <span class="annot annot-suggestion" data-kind="suggestion" tabindex="0" data-comment="Consider &#x27;each traveling at the same speed&#x27; to parallel the &#x27;each traveling at half the speed&#x27; phrasing later.">traveling at the same speed<span class="annot-bubble"><strong>suggestion:</strong> Consider &#x27;each traveling at the same speed&#x27; to parallel the &#x27;each traveling at half the speed&#x27; phrasing later.</span></span> <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="Does &#x27;total&#x27; mean summed across the 3 kangaroos (so each takes 6h), or 18h of wall-clock with all 3 crossing in parallel? The answerkey assumes the former; the statement should say so explicitly.">a total of 18 hours<span class="annot-bubble"><strong>ambiguity:</strong> Does &#x27;total&#x27; mean summed across the 3 kangaroos (so each takes 6h), or 18h of wall-clock with all 3 crossing in parallel? The answerkey assumes the former; the statement should say so explicitly.</span></span> to travel across a highway, how many hours will it take four turtles, each traveling at half the speed of a kangaroo, to do so?</div>
+      <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Color = kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
+    </div>
+  </details>
+
+  <details class="d-block">
+    <summary>🧪 Verifier (auto-drafted code · validation trace)</summary>
+    
+<div class="verifier-card">
+  <div class="vc-head">
+    <span class="pill v-ready">✓ validated</span>
+    <span class="vc-mode">mode: <code>exact</code></span>
+    <span class="vc-meta dim">oracle: ✓ · rejected 7/7 bad responses</span>
+  </div>
+  <p class="vc-rationale">The problem has a single exact integer answer (48). The verifier checks for the answer in \boxed{}, explicit answer statements, and falls back to the last number in the response, all compared exactly to 48.</p>
+  
+  <details class="vc-details">
+    <summary>Generated Python verifier (77 lines)</summary>
+    <pre class="code"><code>import re
+
+def grade(response: str, context: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Verifier for: Relative Speed and Time Word Problem
+    Expected answer: 48 (exact integer)
+    &quot;&quot;&quot;
+    if not response or not isinstance(response, str):
+        return {&quot;pass&quot;: False, &quot;score&quot;: 0.0, &quot;notes&quot;: &quot;Empty or invalid response.&quot;}
+
+    # Normalize whitespace
+    text = response.strip()
+
+    # Extract all numbers from \boxed{...} first (highest priority)
+    boxed_matches = re.findall(r&#x27;\\boxed\{([^}]*)\}&#x27;, text)
+    for match in reversed(boxed_matches):
+        # Strip whitespace and check if it&#x27;s exactly 48
+        val = match.strip()
+        # Remove any LaTeX formatting like \text{...}
+        val = re.sub(r&#x27;\\text\{[^}]*\}&#x27;, &#x27;&#x27;, val).strip()
+        try:
+            num = float(val)
+            if num == 48.0:
+                return {&quot;pass&quot;: True, &quot;score&quot;: 1.0, &quot;notes&quot;: &quot;Correct answer 48 found in \\boxed{}.&quot;}
+            else:
+                return {&quot;pass&quot;: False, &quot;score&quot;: 0.0, &quot;notes&quot;: f&quot;Found \\boxed{{{val}}} but expected 48.&quot;}
+        except ValueError:
+            pass
+
+    # Look for explicit answer statements like &quot;the answer is 48&quot; or &quot;= 48&quot;
+    # Pattern: answer/result/total is/= 48 (with word boundary)
+    explicit_patterns = [
+        r&#x27;(?:answer|result|total)\s*(?:is|=|:)\s*([\d]+)&#x27;,
+        r&#x27;=\s*([\d]+)\s*hours&#x27;,
+        r&#x27;([\d]+)\s*hours\s*(?:total|in total|altogether)&#x27;,
+        r&#x27;take\s+(?:a\s+total\s+of\s+)?([\d]+)\s*hours&#x27;,
+        r&#x27;takes?\s+([\d]+)\s*hours&#x27;,
+        r&#x27;([\d]+)\s*hours\s*(?:to\s+travel|to\s+cross)&#x27;,
+    ]
+
+    for pattern in explicit_patterns:
+        matches = re.findall(pattern, text, re.IGNORECASE)
+        if matches:
+            # Take the last match as the final answer
+            val = matches[-1].strip()
+            try:
+                num = float(val)
+                if num == 48.0:
+                    return {&quot;pass&quot;: True, &quot;score&quot;: 1.0, &quot;notes&quot;: f&quot;Correct answer 48 found via pattern match.&quot;}
+            except ValueError:
+                pass
+
+    # Fallback: extract all standalone integers/numbers from the response
+    # Look for the last number that appears to be a final answer
+    # Strip LaTeX dollar signs and common delimiters
+    cleaned = re.sub(r&#x27;[\$\\(\\)]&#x27;, &#x27; &#x27;, text)
+    cleaned = re.sub(r&#x27;\\[a-zA-Z]+&#x27;, &#x27; &#x27;, cleaned)  # remove LaTeX commands
+
+    # Find all integers in the text
+    all_numbers = re.findall(r&#x27;\b(\d+)\b&#x27;, cleaned)
+
+    if not all_numbers:
+        return {&quot;pass&quot;: False, &quot;score&quot;: 0.0, &quot;notes&quot;: &quot;Could not extract any number from response.&quot;}
+
+    # Check if 48 appears as a number in the response
+    # But we need to be careful: 48 must be the final/stated answer, not just mentioned
+    # Strategy: check the last number in the response
+    last_number = all_numbers[-1]
+    try:
+        num = float(last_number)
+        if num == 48.0:
+            return {&quot;pass&quot;: True, &quot;score&quot;: 1.0, &quot;notes&quot;: &quot;Correct answer 48 found as last number in response.&quot;}
+        else:
+            return {&quot;pass&quot;: False, &quot;score&quot;: 0.0, &quot;notes&quot;: f&quot;Last number found was {last_number}, expected 48.&quot;}
+    except ValueError:
+        return {&quot;pass&quot;: False, &quot;score&quot;: 0.0, &quot;notes&quot;: &quot;Could not parse final number from response.&quot;}
+
+</code></pre>
+  </details>
+  <details class="vc-details"><summary>Validation trace (7 checks)</summary><table class="checks"><thead><tr><th>verdict</th><th>response (truncated)</th><th>verifier notes</th></tr></thead><tbody><tr><td class="t-r">✓ rejected</td><td><code>The answer is 12 hours.</code></td><td class="dim">Last number found was 12, expected 48.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>Four turtles will take 36 hours total.</code></td><td class="dim">Last number found was 36, expected 48.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>The answer is 24 hours because turtles travel at half speed.</code></td><td class="dim">Last number found was 24, expected 48.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>It will take 6 hours for the turtles to cross the highway.</code></td><td class="dim">Last number found was 6, expected 48.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>I cannot determine the answer from the given information.</code></td><td class="dim">Could not extract any number from response.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>The total time is approximately 50 hours.</code></td><td class="dim">Last number found was 50, expected 48.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>Each turtle takes 12 hours, so the answer is 12.</code></td><td class="dim">Last number found was 12, expected 48.</td></tr></tbody></table></details>
+</div>
+
+  </details>
+
+  
+<details class="bench-block">
+  <summary>🤖 How a frontier LLM did (claude-haiku-4-5-20251001)</summary>
+  <p class="dim">Run: <code>2026-05-28-opus-reviews-haiku-solver</code> · verdict <strong>FAIL</strong> · verifier notes: Last number found was 36, expected 48.</p>
+  <details><summary>Show the model's full response</summary>
+    <pre class="model-response"># Solution
+
+**Step 1: Find the distance traveled**
+
+Since all 3 kangaroos travel at the same speed and together take 18 hours, each individual kangaroo takes 18 hours to cross the highway.
+
+Let&#x27;s say each kangaroo travels at speed $v$.
+- Distance = $v \times 18$ hours
+
+**Step 2: Find the speed of each turtle**
+
+Each turtle travels at half the speed of a kangaroo:
+- Turtle speed = $\frac{v}{2}$
+
+**Step 3: Calculate time for turtles**
+
+Since all 4 turtles travel at the same speed, each turtle takes the same time to cross.
+
+Using distance = speed × time:
+$$18v = \frac{v}{2} \times t$$
+
+$$t = \frac{18v}{\frac{v}{2}} = 18v \times \frac{2}{v} = 36 \text{ hours}$$
+
+The number of turtles doesn&#x27;t affect the time—only their speed matters.
+
+**Final answer: 36 hours**</pre>
+  </details>
+</details>
+
 
   
 
-  <footer class="problem-foot">
-    <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/master/contributors/contributor_01/problems/problem_03.tex" target="_blank">📄 view .tex on github</a>
+  <footer class="p-foot">
+    <span class="dim small">Reviewed by <code>claude-opus-4-7</code> · 2026-05-28 08:15 UTC · content sha <code>067b497a</code></span>
+    <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/master/contributors/contributor_01/problems/problem_03.tex" target="_blank">view .tex →</a>
   </footer>
 </section>
 
-<section class="problem" id="problem-4" data-sha="573989e9abae8daf">
-  <header class="problem-head">
-    <div>
+<section class="problem" id="problem-4" data-sha="573989e9abae8daf" data-verdict="needs-revision">
+  <header class="p-head">
+    <div class="p-title">
+      <span class="p-num">#04</span>
       <h2>Dog Shelter Toys Problem</h2>
-      <div class="meta">
-        Problem #4 · reviewed 2026-05-28 06:51:18 UTC · content 573989e9
-        <span class="pill v-rework">needs-major-rework</span>
-      </div>
     </div>
-    <div class="radar"><svg viewBox="0 0 180 180" width="180" height="180" aria-label="dimensions radar"><polygon points="90.0,76.0 102.1,83.0 102.1,97.0 90.0,104.0 77.9,97.0 77.9,83.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,62.0 114.2,76.0 114.2,104.0 90.0,118.0 65.8,104.0 65.8,76.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,48.0 126.4,69.0 126.4,111.0 90.0,132.0 53.6,111.0 53.6,69.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,34.0 138.5,62.0 138.5,118.0 90.0,146.0 41.5,118.0 41.5,62.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,20.0 150.6,55.0 150.6,125.0 90.0,160.0 29.4,125.0 29.4,55.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,90.0 90.0,90.0 90.0,90.0 90.0,90.0 90.0,90.0 90.0,90.0" fill="#60a5fa" fill-opacity="0.25" stroke="#60a5fa" stroke-width="1.5"/><text x="90.0" y="14.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity —</text><text x="159.3" y="54.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel —</text><text x="159.3" y="134.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff —</text><text x="90.0" y="174.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric —</text><text x="20.7" y="134.0" text-anchor="middle" fill="#94a3b8" font-size="9">verif —</text><text x="20.7" y="54.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean —</text></svg></div>
+    <div class="p-pills">
+      <span class="pill v-revision">△ needs-revision</span>
+      <span class="pill v-rework">✗ haiku failed (score 0)</span>
+    </div>
   </header>
 
-  <div class="digest">
-    <div class="d-col">
-      <h3>✨ Strengths</h3>
-      <ul><li>Clear 1:1 mapping makes the arithmetic straightforward once the English is resolved.</li></ul>
+  <p class="p-tldr"></p>
+
+  <div class="p-cols">
+    <div class="p-actions">
+      <h3>🔧 Quick fixes & next steps</h3>
+      <ol class="qa-list"><li class="qa-item"><span class="qa-where">gradingscheme</span> <span class="qa-what">Fill in the gradingscheme with the canonical numeric answer and exact-match criterion.</span><details class="qa-example"><summary>example LaTeX</summary><pre>Canonical answer: 33. Grading: exact integer match. Accepted equivalent forms: &#x27;33&#x27;, &#x27;33 toys&#x27;. No partial credit.</pre></details></li><li class="qa-item"><span class="qa-where">problemstatement</span> <span class="qa-what">Decide whether the ambiguity is the test or a bug. If it&#x27;s the test, keep the phrasing and document in editornotes that the canonical reading is &#x27;2x the previous count was added&#x27;. If it&#x27;s a bug, rephrase unambiguously (e.g. &#x27;three times as many dogs as before&#x27;).</span></li><li class="qa-item"><span class="qa-where">problemstatement</span> <span class="qa-what">Clarify the final question: &#x27;How many toys does James need in total at the end?&#x27; vs. &#x27;How many toys has James bought in total across all trips?&#x27; These yield 33 vs. 36.</span></li><li class="qa-item"><span class="qa-where">editornotes</span> <span class="qa-what">Document the intended canonical interpretation of &#x27;twice as many more&#x27; so future reviewers and verifier writers don&#x27;t re-litigate it.</span></li></ol>
     </div>
-    <div class="d-col">
-      <h3>💡 Considerations</h3>
-      <ul><li>Could mean: (a) 2×12=24 additional dogs (answerkey interpretation), (b) 12 more dogs (i.e., &#x27;twice as many&#x27; = same count again), or (c) total becomes 2×12=24. Solvers will split on this.</li><li>Gradingscheme is empty; needs enumerated criteria or at minimum an exact-match tolerance.</li><li>Slight redundancy: &#x27;for 4 dogs&#x27; + &#x27;there are 8 more dogs&#x27; could be tightened to &#x27;James has 4 toys for 4 dogs; 8 more dogs arrive.&#x27;</li><li>Consider rephrasing to remove ambiguity: &#x27;When he returns, the shelter now has twice as many dogs as before&#x27; or &#x27;the dog count has doubled&#x27; or &#x27;there are 12 additional dogs&#x27; (explicit number).</li></ul>
-    </div>
-    <div class="d-col">
-      <h3>👉 Next steps</h3>
-      <ul><li>Add explicit grading criteria. At minimum: &#x27;Correct final answer: 33 toys (exact match). Partial credit: +1 for correctly computing 4+8=12, +1 for correctly interpreting the ambiguous phrase and computing 12+24=36, +1 for final subtraction 36−3=33.&#x27; Or, if exact match only: &#x27;Answer must be exactly 33.&#x27;</li><li>Resolve the ambiguity in &#x27;twice as many more dogs than when he left&#x27;. Recommend: &#x27;When James returns from buying toys, he finds the shelter now has twice as many dogs as it did when he left (i.e., 24 additional dogs have arrived).&#x27; This removes the interpretation gap.</li><li>Reconsider the difficulty tag. If the ambiguous phrase is intentional (testing reading comprehension), tag as Medium or Advanced and note that in editornotes. If it&#x27;s unintentional, fix the statement first, then re-evaluate difficulty (likely Basic or Early Medium).</li><li>Add a note explaining the intended interpretation of &#x27;twice as many more dogs.&#x27; If this is testing a known source of student error, cite it; if not, clarify that the phrasing should be unambiguous.</li></ul>
-    </div>
+    <aside class="p-radar">
+      <svg viewBox="0 0 180 180" width="180" height="180" class="radar-svg"><polygon points="90.0,75.6 102.5,82.8 102.5,97.2 90.0,104.4 77.5,97.2 77.5,82.8" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 114.9,75.6 114.9,104.4 90.0,118.8 65.1,104.4 65.1,75.6" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,46.8 127.4,68.4 127.4,111.6 90.0,133.2 52.6,111.6 52.6,68.4" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,32.4 139.9,61.2 139.9,118.8 90.0,147.6 40.1,118.8 40.1,61.2" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,18.0 152.4,54.0 152.4,126.0 90.0,162.0 27.6,126.0 27.6,54.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 139.9,61.2 127.4,111.6 90.0,104.4 65.1,104.4 40.1,61.2" fill="#60a5fa" fill-opacity="0.28" stroke="#60a5fa" stroke-width="1.6"/><text x="90.0" y="10.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity 2</text><text x="162.7" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel 4</text><text x="162.7" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff-fit 3</text><text x="90.0" y="178.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric 1</text><text x="17.3" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">verifier 2</text><text x="17.3" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean 4</text></svg>
+    </aside>
   </div>
 
-  <div class="tabs">
-    <button class="tab active" data-target="snapshot-4">Snapshot</button>
-    <button class="tab" data-target="annotated-4">Annotated</button>
-  </div>
-  <div class="pane active" id="snapshot-4">
-    <div class="statement">James needs to get more toys for his doggie shelter. Each dog needs one toy. James currently has 4 toys on hand for 4 dogs, but there are 8 more dogs in the shelter now. After buying the toys, he went back to see that there are twice as many more dogs than when he left so he had to buy some more toys. When James came back yet again, 3 dogs were gone so he no longer needed those toys. How many toys in total does James need?</div>
-  </div>
-  <div class="pane" id="annotated-4">
-    <div class="statement annot-host">James needs to get more toys for his doggie shelter. <span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="Clear 1:1 mapping makes the arithmetic straightforward once the English is resolved.">Each dog needs one toy.<span class="annot-bubble" role="tooltip"><strong>strong.</strong> Clear 1:1 mapping makes the arithmetic straightforward once the English is resolved.</span></span> <span class="annot annot-nit" data-kind="nit" tabindex="0" data-comment="Slight redundancy: &#x27;for 4 dogs&#x27; + &#x27;there are 8 more dogs&#x27; could be tightened to &#x27;James has 4 toys for 4 dogs; 8 more dogs arrive.&#x27;">James currently has 4 toys on hand for 4 dogs, but there are 8 more dogs in the shelter now.<span class="annot-bubble" role="tooltip"><strong>nit.</strong> Slight redundancy: &#x27;for 4 dogs&#x27; + &#x27;there are 8 more dogs&#x27; could be tightened to &#x27;James has 4 toys for 4 dogs; 8 more dogs arrive.&#x27;</span></span> <span class="annot annot-suggestion" data-kind="suggestion" tabindex="0" data-comment="Consider rephrasing to remove ambiguity: &#x27;When he returns, the shelter now has twice as many dogs as before&#x27; or &#x27;the dog count has doubled&#x27; or &#x27;there are 12 additional dogs&#x27; (explicit number).">After buying the toys, he went back to see that there are twice as many more dogs than when he left<span class="annot-bubble" role="tooltip"><strong>suggestion.</strong> Consider rephrasing to remove ambiguity: &#x27;When he returns, the shelter now has twice as many dogs as before&#x27; or &#x27;the dog count has doubled&#x27; or &#x27;there are 12 additional dogs&#x27; (explicit number).</span></span> so he had to buy some more toys. When James came back yet again, 3 dogs were gone so he no longer needed those toys. How many toys in total does James need?</div>
-    <p class="annot-legend dim">Hover (desktop) or tap (touch) a highlighted span for the reviewer's comment.</p>
-  </div>
+  <details class="d-block">
+    <summary>✨ What's working</summary>
+    <ul class="bullets"><li>Good — flagging the linguistic trap as the capability under test makes the design intent explicit.</li></ul>
+  </details>
 
-  <div class="actions-block"><h3>📝 Concrete actions for Overleaf</h3><ol><li><code>gradingscheme</code>: Add explicit grading criteria. At minimum: &#x27;Correct final answer: 33 toys (exact match). Partial credit: +1 for correctly computing 4+8=12, +1 for correctly interpreting the ambiguous phrase and computing 12+24=36, +1 for final subtraction 36−3=33.&#x27; Or, if exact match only: &#x27;Answer must be exactly 33.&#x27;</li><li><code>problemstatement</code>: Resolve the ambiguity in &#x27;twice as many more dogs than when he left&#x27;. Recommend: &#x27;When James returns from buying toys, he finds the shelter now has twice as many dogs as it did when he left (i.e., 24 additional dogs have arrived).&#x27; This removes the interpretation gap.</li><li><code>problemtags</code>: Reconsider the difficulty tag. If the ambiguous phrase is intentional (testing reading comprehension), tag as Medium or Advanced and note that in editornotes. If it&#x27;s unintentional, fix the statement first, then re-evaluate difficulty (likely Basic or Early Medium).</li><li><code>editornotes</code>: Add a note explaining the intended interpretation of &#x27;twice as many more dogs.&#x27; If this is testing a known source of student error, cite it; if not, clarify that the phrasing should be unambiguous.</li></ol></div>
+  <details class="d-block">
+    <summary>💡 Things to consider</summary>
+    <ul class="bullets"><li>This phrasing supports at least three readings: 2x total (24), 2x more added (so 3x = 36), or &#x27;twice as many more&#x27; = 2 additional. The answerkey picks reading #2 but a solver could justifiably pick any.</li><li>Gradingscheme is empty. Needed: the canonical answer (33), tolerance (exact integer), and ideally a note on accepted alternate readings if any.</li><li>Slightly clearer as &#x27;James has 4 toys for his current 4 dogs, and 8 additional dogs just arrived.&#x27;</li><li>&#x27;In total&#x27; is ambiguous: cumulative toys bought across all trips, or final headcount? Answerkey assumes final headcount = 33, but toys bought might be 36 (no refunds on the 3 departed dogs).</li></ul>
+  </details>
+
+  <details class="d-block">
+    <summary>👉 Suggested next steps</summary>
+    <ul class="bullets"><li>Fill in the gradingscheme with the canonical numeric answer and exact-match criterion. — e.g. Canonical answer: 33. Grading: exact integer match. Accepted equivalent forms: &#x27;33&#x27;, &#x27;33 toys&#x27;. No partial credit.</li><li>Decide whether the ambiguity is the test or a bug. If it&#x27;s the test, keep the phrasing and document in editornotes that the canonical reading is &#x27;2x the previous count was added&#x27;. If it&#x27;s a bug, rephrase unambiguously (e.g. &#x27;three times as many dogs as before&#x27;).</li><li>Clarify the final question: &#x27;How many toys does James need in total at the end?&#x27; vs. &#x27;How many toys has James bought in total across all trips?&#x27; These yield 33 vs. 36.</li><li>Document the intended canonical interpretation of &#x27;twice as many more&#x27; so future reviewers and verifier writers don&#x27;t re-litigate it.</li></ul>
+  </details>
+
+  <details class="d-block">
+    <summary>📄 Problem text (snapshot · annotated)</summary>
+    <div class="tabs">
+      <button class="tab active" data-target="snap-4">Snapshot</button>
+      <button class="tab" data-target="annot-4">Annotated</button>
+    </div>
+    <div class="pane active" id="snap-4">
+      <div class="statement">James needs to get more toys for his doggie shelter. Each dog needs one toy. James currently has 4 toys on hand for 4 dogs, but there are 8 more dogs in the shelter now. After buying the toys, he went back to see that there are twice as many more dogs than when he left so he had to buy some more toys. When James came back yet again, 3 dogs were gone so he no longer needed those toys. How many toys in total does James need?</div>
+    </div>
+    <div class="pane" id="annot-4">
+      <div class="statement annot-host">James needs to get more toys for his doggie shelter. Each dog needs one toy. <span class="annot annot-nit" data-kind="nit" tabindex="0" data-comment="Slightly clearer as &#x27;James has 4 toys for his current 4 dogs, and 8 additional dogs just arrived.&#x27;">James currently has 4 toys on hand for 4 dogs, but there are 8 more dogs in the shelter now<span class="annot-bubble"><strong>nit:</strong> Slightly clearer as &#x27;James has 4 toys for his current 4 dogs, and 8 additional dogs just arrived.&#x27;</span></span>. After buying the toys, he went back to see that there are <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="This phrasing supports at least three readings: 2x total (24), 2x more added (so 3x = 36), or &#x27;twice as many more&#x27; = 2 additional. The answerkey picks reading #2 but a solver could justifiably pick any.">twice as many more dogs than when he left<span class="annot-bubble"><strong>ambiguity:</strong> This phrasing supports at least three readings: 2x total (24), 2x more added (so 3x = 36), or &#x27;twice as many more&#x27; = 2 additional. The answerkey picks reading #2 but a solver could justifiably pick any.</span></span> so he had to buy some more toys. When James came back yet again, 3 dogs were gone so he no longer needed those toys. <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="&#x27;In total&#x27; is ambiguous: cumulative toys bought across all trips, or final headcount? Answerkey assumes final headcount = 33, but toys bought might be 36 (no refunds on the 3 departed dogs).">How many toys in total does James need?<span class="annot-bubble"><strong>ambiguity:</strong> &#x27;In total&#x27; is ambiguous: cumulative toys bought across all trips, or final headcount? Answerkey assumes final headcount = 33, but toys bought might be 36 (no refunds on the 3 departed dogs).</span></span></div>
+      <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Color = kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
+    </div>
+  </details>
+
+  <details class="d-block">
+    <summary>🧪 Verifier (auto-drafted code · validation trace)</summary>
+    
+<div class="verifier-card">
+  <div class="vc-head">
+    <span class="pill v-ready">✓ validated</span>
+    <span class="vc-mode">mode: <code>exact</code></span>
+    <span class="vc-meta dim">oracle: ✓ · rejected 8/8 bad responses</span>
+  </div>
+  <p class="vc-rationale">The answer key unambiguously resolves to 33 toys via a specific interpretation of &#x27;twice as many more&#x27;. This is an exact integer match problem, so we parse the numeric answer from the response and check if it equals 33.</p>
+  
+  <details class="vc-details">
+    <summary>Generated Python verifier (81 lines)</summary>
+    <pre class="code"><code>import re
+
+def grade(response: str, context: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Verifier for Dog Shelter Toys Problem.
+    Expected answer: 33 toys.
+    
+    Grading logic:
+    - Extract the final numeric answer from the response.
+    - Accept if the extracted number equals 33.
+    &quot;&quot;&quot;
+    if not response or not isinstance(response, str):
+        return {&quot;pass&quot;: False, &quot;score&quot;: 0.0, &quot;notes&quot;: &quot;Empty or invalid response.&quot;}
+
+    # Normalize whitespace
+    text = response.strip()
+
+    # Try to find \boxed{...} first
+    boxed_match = re.search(r&#x27;\\boxed\{([^}]+)\}&#x27;, text)
+    if boxed_match:
+        candidate = boxed_match.group(1).strip()
+        # Remove any non-numeric characters except digits
+        candidate_clean = re.sub(r&#x27;[^0-9]&#x27;, &#x27;&#x27;, candidate)
+        if candidate_clean:
+            try:
+                val = int(candidate_clean)
+                if val == 33:
+                    return {&quot;pass&quot;: True, &quot;score&quot;: 1.0, &quot;notes&quot;: f&quot;Extracted answer {val} from \\boxed{{}} matches expected 33.&quot;}
+                else:
+                    return {&quot;pass&quot;: False, &quot;score&quot;: 0.0, &quot;notes&quot;: f&quot;Extracted answer {val} from \\boxed{{}} does not match expected 33.&quot;}
+            except ValueError:
+                pass
+
+    # Look for patterns like &quot;answer is X&quot;, &quot;need X toys&quot;, &quot;total of X&quot;, &quot;needs X toys&quot;, etc.
+    answer_patterns = [
+        r&#x27;(?:answer|total|needs?|required?|buy)\s*(?:is|are|=|:)?\s*([0-9]+)\s*(?:toys?)?&#x27;,
+        r&#x27;([0-9]+)\s*toys?\s*(?:in\s*total|total|needed|required)&#x27;,
+        r&#x27;total\s*(?:of|is|=|:)?\s*([0-9]+)&#x27;,
+        r&#x27;=\s*([0-9]+)\s*(?:toys?)?\s*$&#x27;,
+        r&#x27;(?:^|\s)([0-9]+)\s*(?:toys?)?\s*(?:\.|$)&#x27;,
+    ]
+
+    candidates = []
+    for pattern in answer_patterns:
+        matches = re.findall(pattern, text, re.IGNORECASE | re.MULTILINE)
+        for m in matches:
+            try:
+                candidates.append(int(m))
+            except ValueError:
+                pass
+
+    # Check if 33 is among the candidates
+    if 33 in candidates:
+        return {&quot;pass&quot;: True, &quot;score&quot;: 1.0, &quot;notes&quot;: &quot;Extracted answer 33 matches expected answer.&quot;}
+
+    # Fallback: find all integers in the response and check the last one
+    all_numbers = re.findall(r&#x27;\b([0-9]+)\b&#x27;, text)
+    if all_numbers:
+        # Check the last number
+        last_num = int(all_numbers[-1])
+        if last_num == 33:
+            return {&quot;pass&quot;: True, &quot;score&quot;: 1.0, &quot;notes&quot;: f&quot;Last number in response ({last_num}) matches expected answer 33.&quot;}
+        
+        # Check if 33 appears anywhere as a standalone number
+        all_ints = [int(n) for n in all_numbers]
+        if 33 in all_ints:
+            # Make sure it&#x27;s presented as a final/conclusion answer
+            # Look for 33 near conclusion keywords
+            conclusion_pattern = r&#x27;(?:therefore|thus|so|total|answer|need|final|result|conclusion)[^.]*?\b33\b|\b33\b[^.]*?(?:toys?|total|answer|need)&#x27;
+            if re.search(conclusion_pattern, text, re.IGNORECASE):
+                return {&quot;pass&quot;: True, &quot;score&quot;: 1.0, &quot;notes&quot;: &quot;Found 33 near conclusion keywords, matches expected answer.&quot;}
+            # If 33 is the last meaningful number, accept
+            if all_ints[-1] == 33:
+                return {&quot;pass&quot;: True, &quot;score&quot;: 1.0, &quot;notes&quot;: &quot;Last number 33 matches expected answer.&quot;}
+            # If 33 appears but isn&#x27;t clearly the final answer, be conservative
+            return {&quot;pass&quot;: False, &quot;score&quot;: 0.0, &quot;notes&quot;: f&quot;Found 33 in response but last number is {last_num}; cannot confirm 33 is the final answer.&quot;}
+        
+        return {&quot;pass&quot;: False, &quot;score&quot;: 0.0, &quot;notes&quot;: f&quot;Last extracted number is {last_num}, expected 33.&quot;}
+
+    return {&quot;pass&quot;: False, &quot;score&quot;: 0.0, &quot;notes&quot;: &quot;Could not extract a numeric answer from the response.&quot;}
+
+</code></pre>
+  </details>
+  <details class="vc-details"><summary>Validation trace (8 checks)</summary><table class="checks"><thead><tr><th>verdict</th><th>response (truncated)</th><th>verifier notes</th></tr></thead><tbody><tr><td class="t-r">✓ rejected</td><td><code>The answer is 36 toys.</code></td><td class="dim">Last extracted number is 36, expected 33.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>James needs 24 toys in total.</code></td><td class="dim">Last extracted number is 24, expected 33.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>The total number of toys James needs is 21.</code></td><td class="dim">Last extracted number is 21, expected 33.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>James needs 12 toys.</code></td><td class="dim">Last extracted number is 12, expected 33.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>After all the calculations, James needs 30 toys total.</code></td><td class="dim">Last extracted number is 30, expected 33.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>The answer cannot be determined without more information.</code></td><td class="dim">Could not extract a numeric answer from the response.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>James needs somewhere between 30 and 40 toys.</code></td><td class="dim">Last extracted number is 40, expected 33.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>The answer is 48 toys.</code></td><td class="dim">Last extracted number is 48, expected 33.</td></tr></tbody></table></details>
+</div>
+
+  </details>
+
+  
+<details class="bench-block">
+  <summary>🤖 How a frontier LLM did (claude-haiku-4-5-20251001)</summary>
+  <p class="dim">Run: <code>2026-05-28-opus-reviews-haiku-solver</code> · verdict <strong>FAIL</strong> · verifier notes: Last extracted number is 25, expected 33.</p>
+  <details><summary>Show the model's full response</summary>
+    <pre class="model-response">I need to track the number of dogs and toys James needs at each stage.
+
+**Initial situation:**
+- Dogs: 4
+- Toys on hand: 4
+- Toys needed: 4 (one per dog)
+
+**After first visit (8 more dogs arrive):**
+- Dogs: 4 + 8 = 12
+- Toys needed: 12
+- Toys he has: 4
+- Additional toys to buy: 12 - 4 = 8 toys
+
+**After second visit (twice as many more dogs):**
+- &quot;Twice as many more dogs&quot; means the number of additional dogs doubles
+- Additional dogs when he left: 8
+- New additional dogs: 8 × 2 = 16
+- Total dogs now: 4 + 8 + 16 = 28
+- Toys needed: 28
+- Toys he has: 4 + 8 = 12
+- Additional toys to buy: 28 - 12 = 16 toys
+
+**After third visit (3 dogs are gone):**
+- Dogs remaining: 28 - 3 = 25
+- Toys needed: 25
+- Toys he has: 12 + 16 = 28
+- He no longer needs 3 toys (for the 3 dogs that left)
+
+**Total toys James needs:**
+The question asks how many toys in total James needs. At the end, he needs toys for 25 dogs, so he needs 25 toys total.
+
+Final answer: 25</pre>
+  </details>
+</details>
+
 
   
 
-  <footer class="problem-foot">
-    <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/master/contributors/contributor_01/problems/problem_04.tex" target="_blank">📄 view .tex on github</a>
+  <footer class="p-foot">
+    <span class="dim small">Reviewed by <code>claude-opus-4-7</code> · 2026-05-28 08:16 UTC · content sha <code>573989e9</code></span>
+    <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/master/contributors/contributor_01/problems/problem_04.tex" target="_blank">view .tex →</a>
   </footer>
 </section>
 
-<section class="problem" id="problem-5" data-sha="b6ec0d690402dd7c">
-  <header class="problem-head">
-    <div>
+<section class="problem" id="problem-5" data-sha="b6ec0d690402dd7c" data-verdict="needs-major-rework">
+  <header class="p-head">
+    <div class="p-title">
+      <span class="p-num">#05</span>
       <h2>Problem #5 (untitled draft)</h2>
-      <div class="meta">
-        Problem #5 · reviewed 2026-05-28 06:51:30 UTC · content b6ec0d69
-        <span class="pill v-rework">needs-major-rework</span>
-      </div>
     </div>
-    <div class="radar"><svg viewBox="0 0 180 180" width="180" height="180" aria-label="dimensions radar"><polygon points="90.0,76.0 102.1,83.0 102.1,97.0 90.0,104.0 77.9,97.0 77.9,83.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,62.0 114.2,76.0 114.2,104.0 90.0,118.0 65.8,104.0 65.8,76.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,48.0 126.4,69.0 126.4,111.0 90.0,132.0 53.6,111.0 53.6,69.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,34.0 138.5,62.0 138.5,118.0 90.0,146.0 41.5,118.0 41.5,62.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,20.0 150.6,55.0 150.6,125.0 90.0,160.0 29.4,125.0 29.4,55.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,90.0 90.0,90.0 90.0,90.0 90.0,90.0 90.0,90.0 90.0,90.0" fill="#60a5fa" fill-opacity="0.25" stroke="#60a5fa" stroke-width="1.5"/><text x="90.0" y="14.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity —</text><text x="159.3" y="54.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel —</text><text x="159.3" y="134.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff —</text><text x="90.0" y="174.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric —</text><text x="20.7" y="134.0" text-anchor="middle" fill="#94a3b8" font-size="9">verif —</text><text x="20.7" y="54.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean —</text></svg></div>
+    <div class="p-pills">
+      <span class="pill v-rework">✗ needs-major-rework</span>
+      <span class="pill v-rework">✗ haiku failed (score 0.3)</span>
+    </div>
   </header>
 
-  <div class="digest">
-    <div class="d-col">
-      <h3>✨ Strengths</h3>
-      <ul><li>(no specific strengths surfaced — early draft)</li></ul>
+  <p class="p-tldr">The problem reads as a casual arithmetic puzzle whose own answer key admits it has two valid interpretations — well belo</p>
+
+  <div class="p-cols">
+    <div class="p-actions">
+      <h3>🔧 Quick fixes & next steps</h3>
+      <ol class="qa-list"><li class="qa-item"><span class="qa-where">problemstatement</span> <span class="qa-what">Rewrite the question so exactly one quantity is asked — e.g. &#x27;How many total rides do Chase and Rider together take on a usual day?&#x27; — and define whether &#x27;rides&#x27; counts each person separately.</span><details class="qa-example"><summary>example LaTeX</summary><pre>Chase and Rider each ride three times per day on five usual days of the week, and twice as often on each of the other two days. How many rides do the two of them take together on one usual day?</pre></details></li><li class="qa-item"><span class="qa-where">problemtags</span> <span class="qa-what">Either downgrade difficulty to match the arithmetic level, or replace the content with a problem appropriate to Qualifying-exam-plus.</span></li><li class="qa-item"><span class="qa-where">problemsetup</span> <span class="qa-what">Fill in title, domain, subtopic, contact, and replace all TODO placeholders so the entry can be indexed.</span></li><li class="qa-item"><span class="qa-where">gradingscheme</span> <span class="qa-what">Add a deterministic exact-match criterion against the single canonical answer.</span><details class="qa-example"><summary>example LaTeX</summary><pre>Exact match against integer answer (e.g. 6). No partial credit.</pre></details></li><li class="qa-item"><span class="qa-where">answerkey</span> <span class="qa-what">Reduce to one canonical numeric answer matching the disambiguated statement; remove the &#x27;either 6 or 12&#x27; branching.</span></li></ol>
     </div>
-    <div class="d-col">
-      <h3>💡 Considerations</h3>
-      <ul><li>Does &#x27;twice the times&#x27; mean 2×3=6 rides per person, or 2 rides per person? The answer key assumes the former, but the phrasing is unclear.</li><li>&#x27;One day a week&#x27; is vague: does it ask for rides on a single specific day, or the average per day, or rides on one arbitrary day from the week?</li><li>Grading scheme is empty; add deterministic criteria (e.g., &#x27;Full credit: both 6 and 12 identified with justification; Partial: one answer correct; No credit: other&#x27;).</li><li>If the problem intends two valid answers, the grading scheme must specify how to award credit for each or for recognizing the ambiguity.</li><li>This difficulty tag is mismatched; the problem is arithmetic, not proof or derivation.</li></ul>
-    </div>
-    <div class="d-col">
-      <h3>👉 Next steps</h3>
-      <ul><li>Clarify the scope: does the problem ask for rides on one specific day (and if so, which?), or rides per day on average, or total rides in the week? Rewrite to remove &#x27;one day a week&#x27; ambiguity.</li><li>Clarify &#x27;twice the times&#x27;: does each person ride 2×3=6 times, or 2 times total? Use explicit numbers or a formula.</li><li>Lower difficulty to Basic or Intermediate; this is arithmetic, not qualifying-exam material. If the intent is to test reading comprehension under ambiguity, retag as &#x27;diagnose&#x27; and reframe.</li><li>Add explicit criteria: e.g., &#x27;Full credit (5 pts): Identifies both 6 and 12 with correct reasoning. Partial (2 pts): One answer correct. No credit: Other.&#x27; Or, if only one answer is intended, remove the ambiguity from the problem.</li><li>Fill in all TODO fields: title, domain, subtopic, contributor contact, verb, capability, grading method, and failure mode.</li></ul>
-    </div>
+    <aside class="p-radar">
+      <svg viewBox="0 0 180 180" width="180" height="180" class="radar-svg"><polygon points="90.0,75.6 102.5,82.8 102.5,97.2 90.0,104.4 77.5,97.2 77.5,82.8" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 114.9,75.6 114.9,104.4 90.0,118.8 65.1,104.4 65.1,75.6" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,46.8 127.4,68.4 127.4,111.6 90.0,133.2 52.6,111.6 52.6,68.4" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,32.4 139.9,61.2 139.9,118.8 90.0,147.6 40.1,118.8 40.1,61.2" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,18.0 152.4,54.0 152.4,126.0 90.0,162.0 27.6,126.0 27.6,54.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 114.9,75.6 102.5,97.2 90.0,104.4 65.1,104.4 40.1,61.2" fill="#60a5fa" fill-opacity="0.28" stroke="#60a5fa" stroke-width="1.6"/><text x="90.0" y="10.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity 2</text><text x="162.7" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel 2</text><text x="162.7" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff-fit 1</text><text x="90.0" y="178.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric 1</text><text x="17.3" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">verifier 2</text><text x="17.3" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean 4</text></svg>
+    </aside>
   </div>
 
-  <div class="tabs">
-    <button class="tab active" data-target="snapshot-5">Snapshot</button>
-    <button class="tab" data-target="annotated-5">Annotated</button>
-  </div>
-  <div class="pane active" id="snapshot-5">
-    <div class="statement">Chase and Rider each ride their bikes thrice a day for 5 days; but on two other days, they ride twice the times they do on usual days. How many rides did they take in one day a week?</div>
-  </div>
-  <div class="pane" id="annotated-5">
-    <div class="statement annot-host"><span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="Does &#x27;twice the times&#x27; mean 2×3=6 rides per person, or 2 rides per person? The answer key assumes the former, but the phrasing is unclear.">Chase and Rider each ride their bikes thrice a day for 5 days; but on two other days, they ride twice the times they do on usual days.<span class="annot-bubble" role="tooltip"><strong>ambiguity.</strong> Does &#x27;twice the times&#x27; mean 2×3=6 rides per person, or 2 rides per person? The answer key assumes the former, but the phrasing is unclear.</span></span> <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="&#x27;One day a week&#x27; is vague: does it ask for rides on a single specific day, or the average per day, or rides on one arbitrary day from the week?">How many rides did they take in one day a week?<span class="annot-bubble" role="tooltip"><strong>ambiguity.</strong> &#x27;One day a week&#x27; is vague: does it ask for rides on a single specific day, or the average per day, or rides on one arbitrary day from the week?</span></span></div>
-    <p class="annot-legend dim">Hover (desktop) or tap (touch) a highlighted span for the reviewer's comment.</p>
-  </div>
+  <details class="d-block">
+    <summary>✨ What's working</summary>
+    <ul class="bullets"><li>(no specific strengths surfaced — early draft)</li></ul>
+  </details>
 
-  <div class="actions-block"><h3>📝 Concrete actions for Overleaf</h3><ol><li><code>problemstatement</code>: Clarify the scope: does the problem ask for rides on one specific day (and if so, which?), or rides per day on average, or total rides in the week? Rewrite to remove &#x27;one day a week&#x27; ambiguity.</li><li><code>problemstatement</code>: Clarify &#x27;twice the times&#x27;: does each person ride 2×3=6 times, or 2 times total? Use explicit numbers or a formula.</li><li><code>problemtags</code>: Lower difficulty to Basic or Intermediate; this is arithmetic, not qualifying-exam material. If the intent is to test reading comprehension under ambiguity, retag as &#x27;diagnose&#x27; and reframe.</li><li><code>gradingscheme</code>: Add explicit criteria: e.g., &#x27;Full credit (5 pts): Identifies both 6 and 12 with correct reasoning. Partial (2 pts): One answer correct. No credit: Other.&#x27; Or, if only one answer is intended, remove the ambiguity from the problem.</li><li><code>problemsetup</code>: Fill in all TODO fields: title, domain, subtopic, contributor contact, verb, capability, grading method, and failure mode.</li></ol></div>
+  <details class="d-block">
+    <summary>💡 Things to consider</summary>
+    <ul class="bullets"><li>Template metadata (title, domain, subtopic, tags, grading mode) is still all TODO — fill these in so the problem can be routed.</li><li>Current content is grade-school arithmetic; either retag (e.g. Basic) or replace with a problem that genuinely challenges a qualifying-exam-level solver.</li><li>Ambiguous on three axes: which day, combined vs per-person, and what &#x27;in one day a week&#x27; means grammatically.</li><li>An answer key with two valid answers means the problem statement itself needs to be tightened — pick the intended day and rephrase.</li><li>gradingscheme is empty; without it no verifier can grade this problem.</li></ul>
+  </details>
+
+  <details class="d-block">
+    <summary>👉 Suggested next steps</summary>
+    <ul class="bullets"><li>Rewrite the question so exactly one quantity is asked — e.g. &#x27;How many total rides do Chase and Rider together take on a usual day?&#x27; — and define whether &#x27;rides&#x27; counts each person separately. — e.g. Chase and Rider each ride three times per day on five usual days of the week, and twice as often on each of the other two days. How many rides do the two of them take together on one usual day?</li><li>Either downgrade difficulty to match the arithmetic level, or replace the content with a problem appropriate to Qualifying-exam-plus.</li><li>Fill in title, domain, subtopic, contact, and replace all TODO placeholders so the entry can be indexed.</li><li>Add a deterministic exact-match criterion against the single canonical answer. — e.g. Exact match against integer answer (e.g. 6). No partial credit.</li><li>Reduce to one canonical numeric answer matching the disambiguated statement; remove the &#x27;either 6 or 12&#x27; branching.</li></ul>
+  </details>
+
+  <details class="d-block">
+    <summary>📄 Problem text (snapshot · annotated)</summary>
+    <div class="tabs">
+      <button class="tab active" data-target="snap-5">Snapshot</button>
+      <button class="tab" data-target="annot-5">Annotated</button>
+    </div>
+    <div class="pane active" id="snap-5">
+      <div class="statement">Chase and Rider each ride their bikes thrice a day for 5 days; but on two other days, they ride twice the times they do on usual days. How many rides did they take in one day a week?</div>
+    </div>
+    <div class="pane" id="annot-5">
+      <div class="statement annot-host">Chase and Rider each ride their bikes thrice a day for 5 days; but on two other days, they ride twice the times they do on usual days. <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="Ambiguous on three axes: which day, combined vs per-person, and what &#x27;in one day a week&#x27; means grammatically.">How many rides did they take in one day a week?<span class="annot-bubble"><strong>ambiguity:</strong> Ambiguous on three axes: which day, combined vs per-person, and what &#x27;in one day a week&#x27; means grammatically.</span></span></div>
+      <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Color = kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
+    </div>
+  </details>
+
+  <details class="d-block">
+    <summary>🧪 Verifier (auto-drafted code · validation trace)</summary>
+    
+<div class="verifier-card">
+  <div class="vc-head">
+    <span class="pill v-ready">✓ validated</span>
+    <span class="vc-mode">mode: <code>exact</code></span>
+    <span class="vc-meta dim">oracle: ✓ · rejected 7/7 bad responses</span>
+  </div>
+  <p class="vc-rationale">The answer key explicitly accepts two values (6 for a usual day, 12 for a special day). The verifier checks for these values via final-answer patterns and falls back to presence-checking, rejecting responses that commit to any other number.</p>
+  
+  <details class="vc-details">
+    <summary>Generated Python verifier (119 lines)</summary>
+    <pre class="code"><code>import re
+
+def grade(response: str, context: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Verifier for the Chase and Rider bike rides problem.
+    
+    Acceptable answers: 6 (usual day) or 12 (special day), or both.
+    The answer key explicitly states both 6 and 12 are valid depending on the type of day.
+    A response is accepted if it mentions at least one of {6, 12} as a final answer
+    and does NOT claim a single wrong number as the sole answer.
+    &quot;&quot;&quot;
+    if not response or not response.strip():
+        return {&quot;pass&quot;: False, &quot;score&quot;: 0.0, &quot;notes&quot;: &quot;Empty response.&quot;}
+
+    text = response.lower()
+
+    # Strip LaTeX delimiters
+    text = re.sub(r&#x27;[\$\\(\\)]&#x27;, &#x27; &#x27;, text)
+    text = re.sub(r&#x27;\\boxed\{([^}]*)\}&#x27;, r&#x27; \1 &#x27;, text)
+    text = re.sub(r&#x27;\s+&#x27;, &#x27; &#x27;, text)
+
+    # Extract all standalone integers from the response
+    all_numbers = re.findall(r&#x27;\b(\d+)\b&#x27;, text)
+    all_numbers_int = [int(n) for n in all_numbers]
+
+    # Check if 6 or 12 appear in the response
+    has_6 = 6 in all_numbers_int
+    has_12 = 12 in all_numbers_int
+
+    if not has_6 and not has_12:
+        return {
+            &quot;pass&quot;: False,
+            &quot;score&quot;: 0.0,
+            &quot;notes&quot;: &quot;Response does not contain either acceptable answer (6 or 12).&quot;
+        }
+
+    # Check for boxed answers or explicit final answer patterns
+    # Look for patterns like &#x27;answer is X&#x27;, &#x27;total is X&#x27;, &#x27;= X&#x27;, boxed{X}
+    final_answer_patterns = [
+        r&#x27;answer\s*(?:is|=|:)?\s*(\d+)&#x27;,
+        r&#x27;total\s*(?:is|=|:)?\s*(\d+)&#x27;,
+        r&#x27;=\s*(\d+)\s*rides&#x27;,
+        r&#x27;(\d+)\s*rides?\s*(?:per day|in one day|total|in a day)&#x27;,
+        r&#x27;\\boxed\{(\d+)\}&#x27;,
+        r&#x27;boxed\{(\d+)\}&#x27;,
+        r&#x27;therefore[,\s]+(\d+)&#x27;,
+        r&#x27;thus[,\s]+(\d+)&#x27;,
+        r&#x27;so[,\s]+(\d+)&#x27;,
+    ]
+
+    final_answers = set()
+    for pattern in final_answer_patterns:
+        matches = re.findall(pattern, text)
+        for m in matches:
+            try:
+                final_answers.add(int(m))
+            except ValueError:
+                pass
+
+    # If we found explicit final answers, check them
+    if final_answers:
+        valid = {6, 12}
+        found_valid = final_answers &amp; valid
+        found_invalid = final_answers - valid
+
+        if found_valid and not found_invalid:
+            return {
+                &quot;pass&quot;: True,
+                &quot;score&quot;: 1.0,
+                &quot;notes&quot;: f&quot;Response correctly identifies valid answer(s): {sorted(found_valid)}.&quot;
+            }
+        elif found_valid and found_invalid:
+            # Has some valid answers but also some invalid ones — partial credit
+            return {
+                &quot;pass&quot;: False,
+                &quot;score&quot;: 0.3,
+                &quot;notes&quot;: f&quot;Response mentions valid answer(s) {sorted(found_valid)} but also incorrect value(s) {sorted(found_invalid)} as final answers.&quot;
+            }
+        else:
+            # Only invalid final answers
+            return {
+                &quot;pass&quot;: False,
+                &quot;score&quot;: 0.0,
+                &quot;notes&quot;: f&quot;Response gives incorrect final answer(s): {sorted(found_invalid)}. Expected 6 or 12.&quot;
+            }
+
+    # Fallback: if no explicit final answer pattern found, check if 6 or 12 appear
+    # and no clearly wrong sole answer is given
+    if has_6 or has_12:
+        # Make sure the response isn&#x27;t just mentioning 6 or 12 in passing
+        # while claiming a different answer
+        # Check for wrong sole answers like 3, 9, 18, 24, 30, 36, etc.
+        wrong_sole_patterns = [
+            r&#x27;answer\s*(?:is|=|:)?\s*(\d+)&#x27;,
+            r&#x27;total\s*(?:is|=|:)?\s*(\d+)&#x27;,
+        ]
+        for pattern in wrong_sole_patterns:
+            matches = re.findall(pattern, text)
+            for m in matches:
+                val = int(m)
+                if val not in {6, 12}:
+                    return {
+                        &quot;pass&quot;: False,
+                        &quot;score&quot;: 0.0,
+                        &quot;notes&quot;: f&quot;Response claims answer is {val}, which is not 6 or 12.&quot;
+                    }
+
+        return {
+            &quot;pass&quot;: True,
+            &quot;score&quot;: 0.8,
+            &quot;notes&quot;: f&quot;Response mentions {&#x27;6&#x27; if has_6 else &#x27;&#x27;}{&#x27; and &#x27; if has_6 and has_12 else &#x27;&#x27;}{&#x27;12&#x27; if has_12 else &#x27;&#x27;} without a clear final answer marker; tentatively accepted.&quot;
+        }
+
+    return {
+        &quot;pass&quot;: False,
+        &quot;score&quot;: 0.0,
+        &quot;notes&quot;: &quot;Could not extract a valid answer (6 or 12) from the response.&quot;
+    }
+
+</code></pre>
+  </details>
+  <details class="vc-details"><summary>Validation trace (7 checks)</summary><table class="checks"><thead><tr><th>verdict</th><th>response (truncated)</th><th>verifier notes</th></tr></thead><tbody><tr><td class="t-r">✓ rejected</td><td><code>The answer is 3 rides per day.</code></td><td class="dim">Response does not contain either acceptable answer (6 or 12).</td></tr><tr><td class="t-r">✓ rejected</td><td><code>Chase and Rider take 9 rides total in one day.</code></td><td class="dim">Response does not contain either acceptable answer (6 or 12).</td></tr><tr><td class="t-r">✓ rejected</td><td><code>They take 18 rides on a special day.</code></td><td class="dim">Response does not contain either acceptable answer (6 or 12).</td></tr><tr><td class="t-r">✓ rejected</td><td><code>The total number of rides in one day is 24.</code></td><td class="dim">Response does not contain either acceptable answer (6 or 12).</td></tr><tr><td class="t-r">✓ rejected</td><td><code>I cannot determine the answer from the information given.</code></td><td class="dim">Response does not contain either acceptable answer (6 or 12).</td></tr><tr><td class="t-r">✓ rejected</td><td><code>The answer is somewhere between 5 and 15 rides.</code></td><td class="dim">Response does not contain either acceptable answer (6 or 12).</td></tr><tr><td class="t-r">✓ rejected</td><td><code>They ride 30 times total across the week, so about 4 per day.</code></td><td class="dim">Response does not contain either acceptable answer (6 or 12).</td></tr></tbody></table></details>
+</div>
+
+  </details>
+
+  
+<details class="bench-block">
+  <summary>🤖 How a frontier LLM did (claude-haiku-4-5-20251001)</summary>
+  <p class="dim">Run: <code>2026-05-28-opus-reviews-haiku-solver</code> · verdict <strong>FAIL</strong> · verifier notes: Response mentions valid answer(s) [6, 12] but also incorrect value(s) [15, 27, 54] as final answers.</p>
+  <details><summary>Show the model's full response</summary>
+    <pre class="model-response">I need to carefully parse this problem about Chase and Rider&#x27;s bike rides.
+
+**Given information:**
+- Chase and Rider each ride their bikes thrice a day for 5 days
+- On two other days, they ride twice the times they do on usual days
+- Question: How many rides did they take in one day a week?
+
+**Interpretation:**
+- A week has 7 days
+- 5 days: they ride 3 times per day (usual days)
+- 2 days: they ride 2 × 3 = 6 times per day (double the usual)
+
+**Calculation for one person per week:**
+- Rides on 5 usual days: 5 × 3 = 15 rides
+- Rides on 2 special days: 2 × 6 = 12 rides
+- Total per person per week: 15 + 12 = 27 rides
+
+**For both Chase and Rider:**
+- Total rides per week: 27 × 2 = 54 rides
+
+**Interpretation of &quot;in one day a week&quot;:**
+The question asks &quot;how many rides did they take in one day a week?&quot; This is ambiguous, but the most reasonable interpretation is the total rides per week (since &quot;one day a week&quot; likely means &quot;per week&quot; or is asking for the weekly total).
+
+If it&#x27;s asking for rides on a single day:
+- On usual days: 3 rides per person × 2 people = 6 rides
+- On special days: 6 rides per person × 2 people = 12 rides
+
+Given the phrasing, I believe the question is asking for the total weekly rides.
+
+**Final answer: 54 rides per week** (or if asking for a typical day: 6 rides on usual days, 12 rides on special days)</pre>
+  </details>
+</details>
+
 
   
 
-  <footer class="problem-foot">
-    <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/master/contributors/contributor_01/problems/problem_05.tex" target="_blank">📄 view .tex on github</a>
+  <footer class="p-foot">
+    <span class="dim small">Reviewed by <code>claude-opus-4-7</code> · 2026-05-28 08:16 UTC · content sha <code>b6ec0d69</code></span>
+    <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/master/contributors/contributor_01/problems/problem_05.tex" target="_blank">view .tex →</a>
   </footer>
 </section>
 
-<section class="problem" id="problem-6" data-sha="c084f44a66e7d42b">
-  <header class="problem-head">
-    <div>
+<section class="problem" id="problem-6" data-sha="c084f44a66e7d42b" data-verdict="needs-major-rework">
+  <header class="p-head">
+    <div class="p-title">
+      <span class="p-num">#06</span>
       <h2>Problem #6 (untitled draft)</h2>
-      <div class="meta">
-        Problem #6 · reviewed 2026-05-28 06:51:41 UTC · content c084f44a
-        <span class="pill v-stub">template-stub</span>
-      </div>
     </div>
-    <div class="radar"><svg viewBox="0 0 180 180" width="180" height="180" aria-label="dimensions radar"><polygon points="90.0,76.0 102.1,83.0 102.1,97.0 90.0,104.0 77.9,97.0 77.9,83.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,62.0 114.2,76.0 114.2,104.0 90.0,118.0 65.8,104.0 65.8,76.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,48.0 126.4,69.0 126.4,111.0 90.0,132.0 53.6,111.0 53.6,69.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,34.0 138.5,62.0 138.5,118.0 90.0,146.0 41.5,118.0 41.5,62.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,20.0 150.6,55.0 150.6,125.0 90.0,160.0 29.4,125.0 29.4,55.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,90.0 90.0,90.0 90.0,90.0 90.0,90.0 90.0,90.0 90.0,90.0" fill="#60a5fa" fill-opacity="0.25" stroke="#60a5fa" stroke-width="1.5"/><text x="90.0" y="14.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity —</text><text x="159.3" y="54.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel —</text><text x="159.3" y="134.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff —</text><text x="90.0" y="174.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric —</text><text x="20.7" y="134.0" text-anchor="middle" fill="#94a3b8" font-size="9">verif —</text><text x="20.7" y="54.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean —</text></svg></div>
+    <div class="p-pills">
+      <span class="pill v-rework">✗ needs-major-rework</span>
+      <span class="pill v-rework">✗ haiku failed (score 0)</span>
+    </div>
   </header>
 
-  <div class="digest">
-    <div class="d-col">
-      <h3>✨ Strengths</h3>
-      <ul><li>(no specific strengths surfaced — early draft)</li></ul>
+  <p class="p-tldr"></p>
+
+  <div class="p-cols">
+    <div class="p-actions">
+      <h3>🔧 Quick fixes & next steps</h3>
+      <ol class="qa-list"><li class="qa-item"><span class="qa-where">problemstatement</span> <span class="qa-what">Replace the arithmetic word problem with content appropriate to a Qualifying-exam-plus math/stats/DS benchmark.</span><details class="qa-example"><summary>example LaTeX</summary><pre>e.g. a non-routine probability, inference, or proof problem from the contributor&#x27;s research area.</pre></details></li><li class="qa-item"><span class="qa-where">problemsetup</span> <span class="qa-what">Fill in title, domain, subtopic, and verify the Qualifying-exam-plus difficulty tag matches the new content.</span><details class="qa-example"><summary>example LaTeX</summary><pre>{Asymptotic variance of an M-estimator}{Statistics}{Asymptotic theory}{Qualifying-exam-plus}...</pre></details></li><li class="qa-item"><span class="qa-where">problemtags</span> <span class="qa-what">Replace all TODO placeholders in \problemtags with concrete values.</span><details class="qa-example"><summary>example LaTeX</summary><pre>{prove}{asymptotic reasoning under regularity conditions}{rubric-based}{conflates consistency with asymptotic normality}</pre></details></li><li class="qa-item"><span class="qa-where">gradingscheme</span> <span class="qa-what">Delete the unused rubric mode and fill in the remaining one with concrete criteria.</span><details class="qa-example"><summary>example LaTeX</summary><pre>Mode A — Exact expected answer: 329; Numerical tolerance: 0; Acceptable forms: \$329, 329 USD; Deterministic verifier: integer equality.</pre></details></li><li class="qa-item"><span class="qa-where">editornotes</span> <span class="qa-what">Flag contamination risk: this exact word problem appears in GSM8K and is almost certainly in pretraining corpora.</span></li></ol>
     </div>
-    <div class="d-col">
-      <h3>💡 Considerations</h3>
-      <ul><li>Replace with a descriptive title (e.g., &#x27;Gift Purchase Rebate Calculation&#x27;).</li><li>Select one domain; this is Mathematics (arithmetic).</li><li>Specify the subtopic (e.g., &#x27;Arithmetic / Multi-step word problems&#x27;).</li><li>Select the verb; this is &#x27;compute&#x27;.</li><li>State what capability is being tested (e.g., &#x27;arithmetic fluency&#x27; or &#x27;multi-step calculation&#x27;).</li></ul>
-    </div>
-    <div class="d-col">
-      <h3>👉 Next steps</h3>
-      <ul><li>Replace all TODO fields with concrete values: domain=Mathematics, subtopic=Arithmetic/Multi-step word problems, verb=compute, capability=multi-step arithmetic, grading=exact match, failure_mode=forgetting rebate or misinterpreting unit prices.</li><li>Replace the title TODO with a descriptive name (e.g., &#x27;Gift Purchase Rebate Calculation&#x27;).</li><li>Delete Mode B (proof/derivation). Complete Mode A: set exact expected answer to 329, numerical tolerance to 0, and deterministic verifier to &#x27;check if answer equals 329&#x27;.</li><li>Clarify the necklace price: change &#x27;2 necklaces for \$83&#x27; to either &#x27;2 necklaces for \$83 each&#x27; or &#x27;2 necklaces for a total of \$83&#x27; to match the answerkey assumption.</li><li>Reconsider the difficulty tag: this is elementary arithmetic, not Qualifying-exam-plus. Consider Basic or Intermediate instead, or replace with a problem that requires genuine mathematical reasoning at that level.</li></ul>
-    </div>
+    <aside class="p-radar">
+      <svg viewBox="0 0 180 180" width="180" height="180" class="radar-svg"><polygon points="90.0,75.6 102.5,82.8 102.5,97.2 90.0,104.4 77.5,97.2 77.5,82.8" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 114.9,75.6 114.9,104.4 90.0,118.8 65.1,104.4 65.1,75.6" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,46.8 127.4,68.4 127.4,111.6 90.0,133.2 52.6,111.6 52.6,68.4" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,32.4 139.9,61.2 139.9,118.8 90.0,147.6 40.1,118.8 40.1,61.2" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,18.0 152.4,54.0 152.4,126.0 90.0,162.0 27.6,126.0 27.6,54.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,90.0 90.0,90.0 90.0,90.0 90.0,90.0 90.0,90.0 90.0,90.0" fill="#60a5fa" fill-opacity="0.28" stroke="#60a5fa" stroke-width="1.6"/><text x="90.0" y="10.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity —</text><text x="162.7" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel —</text><text x="162.7" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff-fit —</text><text x="90.0" y="178.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric —</text><text x="17.3" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">verifier —</text><text x="17.3" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean —</text></svg>
+    </aside>
   </div>
 
-  <div class="tabs">
-    <button class="tab active" data-target="snapshot-6">Snapshot</button>
-    <button class="tab" data-target="annotated-6">Annotated</button>
-  </div>
-  <div class="pane active" id="snapshot-6">
-    <div class="statement">Mr.Grey is purchasing gifts for his family. So far he has purchased 3 polo shirts for \$26 each; 2 necklaces for \$83; and 2 computer game for \$90 each. Since Mr.Grey purchased all those using his credit card, he received a \$12 rebate. What is the total cost of the gifts after the rebate?</div>
-  </div>
-  <div class="pane" id="annotated-6">
-    <div class="statement annot-host">Mr.Grey is purchasing gifts for his family. So far he has purchased 3 polo shirts for \$26 each; <span class="annot annot-nit" data-kind="nit" tabindex="0" data-comment="Clarify: is \$83 the total price for both, or per necklace? The answerkey assumes total, but the phrasing is ambiguous.">2 necklaces for \$83<span class="annot-bubble" role="tooltip"><strong>nit.</strong> Clarify: is \$83 the total price for both, or per necklace? The answerkey assumes total, but the phrasing is ambiguous.</span></span>; and 2 computer game for \$90 each. Since Mr.Grey purchased all those using his credit card, he received a \$12 rebate. What is the total cost of the gifts after the rebate?</div>
-    <p class="annot-legend dim">Hover (desktop) or tap (touch) a highlighted span for the reviewer's comment.</p>
-  </div>
+  <details class="d-block">
+    <summary>✨ What's working</summary>
+    <ul class="bullets"><li>(no specific strengths surfaced — early draft)</li></ul>
+  </details>
 
-  <div class="actions-block"><h3>📝 Concrete actions for Overleaf</h3><ol><li><code>problemtags</code>: Replace all TODO fields with concrete values: domain=Mathematics, subtopic=Arithmetic/Multi-step word problems, verb=compute, capability=multi-step arithmetic, grading=exact match, failure_mode=forgetting rebate or misinterpreting unit prices.</li><li><code>problemsetup</code>: Replace the title TODO with a descriptive name (e.g., &#x27;Gift Purchase Rebate Calculation&#x27;).</li><li><code>gradingscheme</code>: Delete Mode B (proof/derivation). Complete Mode A: set exact expected answer to 329, numerical tolerance to 0, and deterministic verifier to &#x27;check if answer equals 329&#x27;.</li><li><code>problemstatement</code>: Clarify the necklace price: change &#x27;2 necklaces for \$83&#x27; to either &#x27;2 necklaces for \$83 each&#x27; or &#x27;2 necklaces for a total of \$83&#x27; to match the answerkey assumption.</li><li><code>problemsetup</code>: Reconsider the difficulty tag: this is elementary arithmetic, not Qualifying-exam-plus. Consider Basic or Intermediate instead, or replace with a problem that requires genuine mathematical reasoning at that level.</li></ol></div>
+  <details class="d-block">
+    <summary>💡 Things to consider</summary>
+    <ul class="bullets"><li>This problem is verbatim from GSM8K — frontier models will have memorized it. Strongly recommend replacing.</li><li>Difficulty tag is set to the hardest tier, but the content is grade-school arithmetic.</li><li>Template scaffolding still present — neither rubric mode has been filled in.</li><li>Problemsetup metadata is entirely unfilled.</li><li>Slightly ambiguous: &#x27;\$83&#x27; could read as per-necklace; the answer key treats it as a total. Worth clarifying if the problem is kept.</li></ul>
+  </details>
+
+  <details class="d-block">
+    <summary>👉 Suggested next steps</summary>
+    <ul class="bullets"><li>Replace the arithmetic word problem with content appropriate to a Qualifying-exam-plus math/stats/DS benchmark. — e.g. e.g. a non-routine probability, inference, or proof problem from the contributor&#x27;s research area.</li><li>Fill in title, domain, subtopic, and verify the Qualifying-exam-plus difficulty tag matches the new content. — e.g. {Asymptotic variance of an M-estimator}{Statistics}{Asymptotic theory}{Qualifying-exam-plus}...</li><li>Replace all TODO placeholders in \problemtags with concrete values. — e.g. {prove}{asymptotic reasoning under regularity conditions}{rubric-based}{conflates consistency with asymptotic normality}</li><li>Delete the unused rubric mode and fill in the remaining one with concrete criteria. — e.g. Mode A — Exact expected answer: 329; Numerical tolerance: 0; Acceptable forms: \$329, 329 USD; Deterministic verifier: integer equality.</li><li>Flag contamination risk: this exact word problem appears in GSM8K and is almost certainly in pretraining corpora.</li></ul>
+  </details>
+
+  <details class="d-block">
+    <summary>📄 Problem text (snapshot · annotated)</summary>
+    <div class="tabs">
+      <button class="tab active" data-target="snap-6">Snapshot</button>
+      <button class="tab" data-target="annot-6">Annotated</button>
+    </div>
+    <div class="pane active" id="snap-6">
+      <div class="statement">Mr.Grey is purchasing gifts for his family. So far he has purchased 3 polo shirts for \$26 each; 2 necklaces for \$83; and 2 computer game for \$90 each. Since Mr.Grey purchased all those using his credit card, he received a \$12 rebate. What is the total cost of the gifts after the rebate?</div>
+    </div>
+    <div class="pane" id="annot-6">
+      <div class="statement annot-host"><span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="This problem is verbatim from GSM8K — frontier models will have memorized it. Strongly recommend replacing.">Mr.Grey is purchasing gifts for his family<span class="annot-bubble"><strong>ambiguity:</strong> This problem is verbatim from GSM8K — frontier models will have memorized it. Strongly recommend replacing.</span></span>. So far he has purchased 3 polo shirts for \$26 each; <span class="annot annot-nit" data-kind="nit" tabindex="0" data-comment="Slightly ambiguous: &#x27;\$83&#x27; could read as per-necklace; the answer key treats it as a total. Worth clarifying if the problem is kept.">2 necklaces for \$83<span class="annot-bubble"><strong>nit:</strong> Slightly ambiguous: &#x27;\$83&#x27; could read as per-necklace; the answer key treats it as a total. Worth clarifying if the problem is kept.</span></span>; and 2 computer game for \$90 each. Since Mr.Grey purchased all those using his credit card, he received a \$12 rebate. What is the total cost of the gifts after the rebate?</div>
+      <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Color = kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
+    </div>
+  </details>
+
+  <details class="d-block">
+    <summary>🧪 Verifier (auto-drafted code · validation trace)</summary>
+    
+<div class="verifier-card">
+  <div class="vc-head">
+    <span class="pill v-ready">✓ validated</span>
+    <span class="vc-mode">mode: <code>exact</code></span>
+    <span class="vc-meta dim">oracle: ✓ · rejected 7/7 bad responses</span>
+  </div>
+  <p class="vc-rationale">The problem is a straightforward arithmetic word problem with a unique numeric answer of $329. The verifier checks for 329 (with or without dollar sign) in boxed notation, explicit answer statements, or as the last numeric value in the response.</p>
+  
+  <details class="vc-details">
+    <summary>Generated Python verifier (54 lines)</summary>
+    <pre class="code"><code>import re
+
+def grade(response: str, context: dict) -&gt; dict:
+    &quot;&quot;&quot;
+    Verifier for Mr. Grey gift problem.
+    Expected answer: $329 (total cost after $12 rebate).
+    &quot;&quot;&quot;
+    if not response or not isinstance(response, str):
+        return {&quot;pass&quot;: False, &quot;score&quot;: 0.0, &quot;notes&quot;: &quot;Empty or invalid response.&quot;}
+
+    # Normalize whitespace
+    text = response.strip()
+
+    # Look for $329 or 329 as the final/boxed answer
+    # Priority: \boxed{329} or \boxed{$329}
+    boxed_pattern = re.search(r&#x27;\\boxed\{\s*\$?\s*329\s*\}&#x27;, text)
+    if boxed_pattern:
+        return {&quot;pass&quot;: True, &quot;score&quot;: 1.0, &quot;notes&quot;: &quot;Found 329 in \\boxed{}.&quot;}
+
+    # Look for explicit answer statements like &quot;= $329&quot;, &quot;= 329&quot;, &quot;is $329&quot;, &quot;is 329&quot;
+    # Also accept &quot;total cost is $329&quot;, &quot;answer is 329&quot;, etc.
+    answer_patterns = [
+        r&#x27;(?:total|cost|answer|final|rebate|result)[^\n]{0,60}\$?\s*329\b&#x27;,
+        r&#x27;\$\s*329\b&#x27;,
+        r&#x27;=\s*\$?\s*329\b&#x27;,
+        r&#x27;\b329\s*dollars?\b&#x27;,
+    ]
+
+    for pat in answer_patterns:
+        if re.search(pat, text, re.IGNORECASE):
+            return {&quot;pass&quot;: True, &quot;score&quot;: 1.0, &quot;notes&quot;: &quot;Found 329 as the answer.&quot;}
+
+    # Fallback: check if 329 appears as a standalone number (not part of a larger number)
+    # but only if no other dollar amounts appear after it that could be the answer
+    # Find all dollar amounts or standalone numbers that look like final answers
+    # Extract all numbers preceded by $ sign
+    dollar_amounts = re.findall(r&#x27;\$\s*(\d+(?:\.\d+)?)&#x27;, text)
+    if dollar_amounts:
+        last_dollar = dollar_amounts[-1].strip()
+        # Remove trailing .00 or .0
+        last_dollar_clean = re.sub(r&#x27;\.0+$&#x27;, &#x27;&#x27;, last_dollar)
+        if last_dollar_clean == &#x27;329&#x27;:
+            return {&quot;pass&quot;: True, &quot;score&quot;: 1.0, &quot;notes&quot;: &quot;Last dollar amount in response is $329.&quot;}
+
+    # Check for standalone 329 as the last number in the response
+    all_numbers = re.findall(r&#x27;\b(\d+(?:\.\d+)?)\b&#x27;, text)
+    if all_numbers:
+        last_num = all_numbers[-1].strip()
+        last_num_clean = re.sub(r&#x27;\.0+$&#x27;, &#x27;&#x27;, last_num)
+        if last_num_clean == &#x27;329&#x27;:
+            return {&quot;pass&quot;: True, &quot;score&quot;: 1.0, &quot;notes&quot;: &quot;Last number in response is 329.&quot;}
+
+    return {&quot;pass&quot;: False, &quot;score&quot;: 0.0, &quot;notes&quot;: &quot;Could not find 329 as the answer in the response.&quot;}
+
+</code></pre>
+  </details>
+  <details class="vc-details"><summary>Validation trace (7 checks)</summary><table class="checks"><thead><tr><th>verdict</th><th>response (truncated)</th><th>verifier notes</th></tr></thead><tbody><tr><td class="t-r">✓ rejected</td><td><code>The total cost of the gifts after the rebate is $341.</code></td><td class="dim">Could not find 329 as the answer in the response.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>Mr. Grey spent $353 in total.</code></td><td class="dim">Could not find 329 as the answer in the response.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>The answer is $317.</code></td><td class="dim">Could not find 329 as the answer in the response.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>After the rebate, Mr. Grey paid $330.</code></td><td class="dim">Could not find 329 as the answer in the response.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>I cannot determine the total without more information.</code></td><td class="dim">Could not find 329 as the answer in the response.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>The total is somewhere between $300 and $400.</code></td><td class="dim">Could not find 329 as the answer in the response.</td></tr><tr><td class="t-r">✓ rejected</td><td><code>The final cost is $180 for the games plus $83 for necklaces plus $78 for shirts </code></td><td class="dim">Could not find 329 as the answer in the response.</td></tr></tbody></table></details>
+</div>
+
+  </details>
+
+  
+<details class="bench-block">
+  <summary>🤖 How a frontier LLM did (claude-haiku-4-5-20251001)</summary>
+  <p class="dim">Run: <code>2026-05-28-opus-reviews-haiku-solver</code> · verdict <strong>FAIL</strong> · verifier notes: Could not find 329 as the answer in the response.</p>
+  <details><summary>Show the model's full response</summary>
+    <pre class="model-response"># Solution
+
+Let me calculate the total cost step by step.
+
+**Individual purchases:**
+- 3 polo shirts at $26 each: 3 × $26 = $78
+- 2 necklaces at $83 each: 2 × $83 = $166
+- 2 computer games at $90 each: 2 × $90 = $180
+
+**Subtotal:**
+$78 + $166 + $180 = $424
+
+**After rebate:**
+$424 - $12 = $412
+
+Final answer: $412</pre>
+  </details>
+</details>
+
 
   
 
-  <footer class="problem-foot">
-    <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/master/contributors/contributor_01/problems/problem_06.tex" target="_blank">📄 view .tex on github</a>
+  <footer class="p-foot">
+    <span class="dim small">Reviewed by <code>claude-opus-4-7</code> · 2026-05-28 08:17 UTC · content sha <code>c084f44a</code></span>
+    <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/master/contributors/contributor_01/problems/problem_06.tex" target="_blank">view .tex →</a>
   </footer>
 </section>
 
 
   <footer class="page-foot">
-    <div>Reviews generated by the AI4Stat/Math auto-reviewer (Claude Haiku 4.5).
-      Source code: <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/lit-review/agents/reviewer/" target="_blank">agents/reviewer/</a>.</div>
-    <div class="visit-note" id="visit-note">…</div>
+    <p>Generated by the AI4Stat/Math auto-reviewer (<a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/tree/lit-review/agents" target="_blank">agents/</a>).
+    Reviews drafted by claude-opus-4-7; verifiers by claude-sonnet-4-6.</p>
   </footer>
-</div>
-<script>
-// Tabs
-document.addEventListener('click', function(e) {
-  var t = e.target;
-  if (!t.classList || !t.classList.contains('tab')) return;
-  var section = t.closest('section.problem');
-  if (!section) return;
-  section.querySelectorAll('.tab').forEach(function(b){ b.classList.remove('active'); });
-  section.querySelectorAll('.pane').forEach(function(p){ p.classList.remove('active'); });
-  t.classList.add('active');
-  var pane = document.getElementById(t.getAttribute('data-target'));
-  if (pane) pane.classList.add('active');
-});
 
-// Visit tracking — per-problem-sha. localStorage key: ai4sm-review-visits
+</div>
+
+<!-- ── chatbot ──────────────────────────────────────────────── -->
+<button class="chat-fab" aria-label="open chat">💬 ask Claude about these reviews</button>
+<aside class="chat-drawer" aria-hidden="true">
+  <header class="chat-head">
+    <h3>Chat about your reviews</h3>
+    <div>
+      <button class="chat-settings" title="settings">⚙</button>
+      <button class="chat-close" title="close">✕</button>
+    </div>
+  </header>
+  <div class="chat-settings-panel">
+    <label for="chat-api-key">Anthropic API key (stored locally, never sent to github)</label>
+    <input id="chat-api-key" type="password" autocomplete="off" placeholder="sk-ant-…">
+    <label for="chat-model">Model (lower-cost models recommended)</label>
+    <select id="chat-model">
+      <option value="claude-haiku-4-5-20251001">Haiku 4.5 (~$0.005/turn — recommended)</option>
+      <option value="claude-sonnet-4-6">Sonnet 4.6 (~$0.025/turn)</option>
+      <option value="claude-opus-4-7">Opus 4.7 (~$0.075/turn)</option>
+    </select>
+    <p class="hint">Your key never leaves your browser. Each chat turn costs ~$0.005-0.08 depending on model. Get a key at <a href="https://console.anthropic.com" target="_blank" style="color:var(--primary)">console.anthropic.com</a>.</p>
+  </div>
+  <div class="chat-body"></div>
+  <div class="chat-input">
+    <textarea placeholder="Ask about your reviews… (Enter to send · Shift+Enter for newline)" rows="1"></textarea>
+    <button>Send</button>
+  </div>
+  <script id="chat-system-context" type="text/plain">You are the auto-review assistant for Zhixian Zhang (folder: contributor_01).
+Your job: help them understand and act on the auto-review of their AI4Stat/Math problem submissions.
+Be specific, kind, and brief. When asked about specific .tex edits, give the exact LaTeX line to copy.
+Use ADHD-friendly formatting: bullets, sections, tables. Preserve full depth and rigor.
+
+## Context: 5 reviewed problems
+
+### Problem 2: Smallest Terminating Decimal with Digit 9  (ready)
+
+Headline: 
+Statement:
+What is the smallest positive integer $n$ such that $\frac{1}{n}$ is a terminating decimal and $n$ contains the digit 9?
+Strengths: Nice — stating the characterization theorem up front makes the answer key self-contained. | Good — pre-empts a common verifier failure where an equivalent form gets rejected.
+Considerations: This appears in the failure-modes tag slot but reads like a fragment. Consider rephrasing as two distinct failure modes, e.g. &#x27;off-by-one (returning a larger valid n)&#x27; and &#x27;rejecting 4096 due to misreading the digit-9 condition&#x27;. | Typo: &#x27;satisfed&#x27; → &#x27;satisfied&#x27;. | Consider downgrading to Intermediate: the required insight (n = 2^a·5^b) is standard and the rest is enumeration.
+Next steps: Clean up the failure-modes tag — currently reads as one run-on fragment. — e.g. {off-by-one: returns a larger valid n such as 8192; incorrect rejection of 4096 due to digit-9 misread} | Fix typo &#x27;not satisfed&#x27; → &#x27;not satisfied&#x27; in the 1001–2000 bullet. | Reconsider difficulty tag — Intermediate may fit better than Advanced. — e.g. {Intermediate}
+Concrete actions:
+  - [problemtags] Clean up the failure-modes tag — currently reads as one run-on fragment.
+  - [answerkey] Fix typo &#x27;not satisfed&#x27; → &#x27;not satisfied&#x27; in the 1001–2000 bullet.
+  - [problemsetup] Reconsider difficulty tag — Intermediate may fit better than Advanced.
+Verifier: mode=exact validated=True (oracle True, rejected 8/8)
+Benchmark (claude-haiku-4-5-20251001): PASS
+
+### Problem 3: Relative Speed and Time Word Problem  (needs-revision)
+
+Headline: 
+Statement:
+If it takes 3 kangaroos traveling at the same speed a total of 18 hours to travel across a highway, how many hours will it take four turtles, each traveling at half the speed of a kangaroo, to do so?
+Strengths: (no specific strengths surfaced — early draft)
+Considerations: Does &#x27;total&#x27; mean summed across the 3 kangaroos (so each takes 6h), or 18h of wall-clock with all 3 crossing in parallel? The answerkey assumes the former; the statement should say so explicitly. | Consider &#x27;each traveling at the same speed&#x27; to parallel the &#x27;each traveling at half the speed&#x27; phrasing later. | Same total-vs-individual issue on the answer side: 4 turtles in parallel each take 12h; the &#x27;total&#x27; = 48 only holds under the summed interpretation. Worth stating the convention once at the top. | Once the ambiguity is resolved the problem may read as Basic arithmetic; consider whether Medium still fits.
+Next steps: Disambiguate &#x27;total hours&#x27; — state explicitly that travel times are summed across animals (or that animals cross sequentially). — e.g. If the combined travel time of 3 kangaroos (each crossing the highway once, at the same speed) is 18 hours, how many combined hours will 4 turtles need, each traveling at half a kangaroo&#x27;s speed? | Re-check difficulty after disambiguation; if the trap is removed, downgrade to Basic. | State the interpretation convention in one sentence before the computation, so a grader can see why 48 (not 12) is correct. — e.g. Interpreting &#x27;18 hours total&#x27; as the sum of individual crossing times: each kangaroo takes 18/3 = 6 hours...
+Concrete actions:
+  - [problemstatement] Disambiguate &#x27;total hours&#x27; — state explicitly that travel times are summed across animals (or that animals cross sequentially).
+  - [problemtags] Re-check difficulty after disambiguation; if the trap is removed, downgrade to Basic.
+  - [answerkey] State the interpretation convention in one sentence before the computation, so a grader can see why 48 (not 12) is correct.
+Verifier: mode=exact validated=True (oracle True, rejected 7/7)
+Benchmark (claude-haiku-4-5-20251001): FAIL
+
+### Problem 4: Dog Shelter Toys Problem  (needs-revision)
+
+Headline: 
+Statement:
+James needs to get more toys for his doggie shelter. Each dog needs one toy. James currently has 4 toys on hand for 4 dogs, but there are 8 more dogs in the shelter now. After buying the toys, he went back to see that there are twice as many more dogs than when he left so he had to buy some more toys. When James came back yet again, 3 dogs were gone so he no longer needed those toys. How many toys in total does James need?
+Strengths: Good — flagging the linguistic trap as the capability under test makes the design intent explicit.
+Considerations: This phrasing supports at least three readings: 2x total (24), 2x more added (so 3x = 36), or &#x27;twice as many more&#x27; = 2 additional. The answerkey picks reading #2 but a solver could justifiably pick any. | Gradingscheme is empty. Needed: the canonical answer (33), tolerance (exact integer), and ideally a note on accepted alternate readings if any. | Slightly clearer as &#x27;James has 4 toys for his current 4 dogs, and 8 additional dogs just arrived.&#x27; | &#x27;In total&#x27; is ambiguous: cumulative toys bought across all trips, or final headcount? Answerkey assumes final headcount = 33, but toys bought might be 36 (no refunds on the 3 departed dogs).
+Next steps: Fill in the gradingscheme with the canonical numeric answer and exact-match criterion. — e.g. Canonical answer: 33. Grading: exact integer match. Accepted equivalent forms: &#x27;33&#x27;, &#x27;33 toys&#x27;. No partial credit. | Decide whether the ambiguity is the test or a bug. If it&#x27;s the test, keep the phrasing and document in editornotes that the canonical reading is &#x27;2x the previous count was added&#x27;. If it&#x27;s a bug, rephrase unambiguously (e.g. &#x27;three times as many dogs as before&#x27;). | Clarify the final question: &#x27;How many toys does James need in total at the end?&#x27; vs. &#x27;How many toys has James bought in total across all trips?&#x27; These yield 33 vs. 36. | Document the intended canonical interpretation of &#x27;twice as many more&#x27; so future reviewers and verifier writers don&#x27;t re-litigate it.
+Concrete actions:
+  - [gradingscheme] Fill in the gradingscheme with the canonical numeric answer and exact-match criterion.
+  - [problemstatement] Decide whether the ambiguity is the test or a bug. If it&#x27;s the test, keep the phrasing and document in editornotes that the canonical reading is &#x27;2x the previous count was added&#x27;. If it&#x27;s a bug, rephrase unambiguously (e.g. &#x27;three times as many dogs as before&#x27;).
+  - [problemstatement] Clarify the final question: &#x27;How many toys does James need in total at the end?&#x27; vs. &#x27;How many toys has James bought in total across all trips?&#x27; These yield 33 vs. 36.
+  - [editornotes] Document the intended canonical interpretation of &#x27;twice as many more&#x27; so future reviewers and verifier writers don&#x27;t re-litigate it.
+Verifier: mode=exact validated=True (oracle True, rejected 8/8)
+Benchmark (claude-haiku-4-5-20251001): FAIL
+
+### Problem 5: TODO: concise problem title (contributor_01 / problem_05)  (needs-major-rework)
+
+Headline: The problem reads as a casual arithmetic puzzle whose own answer key admits it has two valid interpretations — well belo
+Statement:
+Chase and Rider each ride their bikes thrice a day for 5 days; but on two other days, they ride twice the times they do on usual days. How many rides did they take in one day a week?
+Strengths: (no specific strengths surfaced — early draft)
+Considerations: Template metadata (title, domain, subtopic, tags, grading mode) is still all TODO — fill these in so the problem can be routed. | Current content is grade-school arithmetic; either retag (e.g. Basic) or replace with a problem that genuinely challenges a qualifying-exam-level solver. | Ambiguous on three axes: which day, combined vs per-person, and what &#x27;in one day a week&#x27; means grammatically. | An answer key with two valid answers means the problem statement itself needs to be tightened — pick the intended day and rephrase. | gradingscheme is empty; without it no verifier can grade this problem.
+Next steps: Rewrite the question so exactly one quantity is asked — e.g. &#x27;How many total rides do Chase and Rider together take on a usual day?&#x27; — and define whether &#x27;rides&#x27; counts each person separately. — e.g. Chase and Rider each ride three times per day on five usual days of the week, and twice as often on each of the other two days. How many rides do the two of them take together on one usual day? | Either downgrade difficulty to match the arithmetic level, or replace the content with a problem appropriate to Qualifying-exam-plus. | Fill in title, domain, subtopic, contact, and replace all TODO placeholders so the entry can be indexed. | Add a deterministic exact-match criterion against the single canonical answer. — e.g. Exact match against integer answer (e.g. 6). No partial credit. | Reduce to one canonical numeric answer matching the disambiguated statement; remove the &#x27;either 6 or 12&#x27; branching.
+Concrete actions:
+  - [problemstatement] Rewrite the question so exactly one quantity is asked — e.g. &#x27;How many total rides do Chase and Rider together take on a usual day?&#x27; — and define whether &#x27;rides&#x27; counts each person separately.
+  - [problemtags] Either downgrade difficulty to match the arithmetic level, or replace the content with a problem appropriate to Qualifying-exam-plus.
+  - [problemsetup] Fill in title, domain, subtopic, contact, and replace all TODO placeholders so the entry can be indexed.
+  - [gradingscheme] Add a deterministic exact-match criterion against the single canonical answer.
+  - [answerkey] Reduce to one canonical numeric answer matching the disambiguated statement; remove the &#x27;either 6 or 12&#x27; branching.
+Verifier: mode=exact validated=True (oracle True, rejected 7/7)
+Benchmark (claude-haiku-4-5-20251001): FAIL
+
+### Problem 6: TODO: concise problem title (contributor_01 / problem_06)  (needs-major-rework)
+
+Headline: 
+Statement:
+Mr.Grey is purchasing gifts for his family. So far he has purchased 3 polo shirts for \$26 each; 2 necklaces for \$83; and 2 computer game for \$90 each. Since Mr.Grey purchased all those using his credit card, he received a \$12 rebate. What is the total cost of the gifts after the rebate?
+Strengths: (no specific strengths surfaced — early draft)
+Considerations: This problem is verbatim from GSM8K — frontier models will have memorized it. Strongly recommend replacing. | Difficulty tag is set to the hardest tier, but the content is grade-school arithmetic. | Template scaffolding still present — neither rubric mode has been filled in. | Problemsetup metadata is entirely unfilled. | Slightly ambiguous: &#x27;\$83&#x27; could read as per-necklace; the answer key treats it as a total. Worth clarifying if the problem is kept.
+Next steps: Replace the arithmetic word problem with content appropriate to a Qualifying-exam-plus math/stats/DS benchmark. — e.g. e.g. a non-routine probability, inference, or proof problem from the contributor&#x27;s research area. | Fill in title, domain, subtopic, and verify the Qualifying-exam-plus difficulty tag matches the new content. — e.g. {Asymptotic variance of an M-estimator}{Statistics}{Asymptotic theory}{Qualifying-exam-plus}... | Replace all TODO placeholders in \problemtags with concrete values. — e.g. {prove}{asymptotic reasoning under regularity conditions}{rubric-based}{conflates consistency with asymptotic normality} | Delete the unused rubric mode and fill in the remaining one with concrete criteria. — e.g. Mode A — Exact expected answer: 329; Numerical tolerance: 0; Acceptable forms: \$329, 329 USD; Deterministic verifier: integer equality. | Flag contamination risk: this exact word problem appears in GSM8K and is almost certainly in pretraining corpora.
+Concrete actions:
+  - [problemstatement] Replace the arithmetic word problem with content appropriate to a Qualifying-exam-plus math/stats/DS benchmark.
+  - [problemsetup] Fill in title, domain, subtopic, and verify the Qualifying-exam-plus difficulty tag matches the new content.
+  - [problemtags] Replace all TODO placeholders in \problemtags with concrete values.
+  - [gradingscheme] Delete the unused rubric mode and fill in the remaining one with concrete criteria.
+  - [editornotes] Flag contamination risk: this exact word problem appears in GSM8K and is almost certainly in pretraining corpora.
+Verifier: mode=exact validated=True (oracle True, rejected 7/7)
+Benchmark (claude-haiku-4-5-20251001): FAIL
+</script>
+</aside>
+
+<script>
 (function(){
+  // ── tabs ──────────────────────────────────────────────
+  document.addEventListener('click', function(e){
+    var t = e.target;
+    if (!t.classList || !t.classList.contains('tab')) return;
+    var section = t.closest('section.problem');
+    if (!section) return;
+    section.querySelectorAll('.tab').forEach(function(b){ b.classList.remove('active'); });
+    section.querySelectorAll('.pane').forEach(function(p){ p.classList.remove('active'); });
+    t.classList.add('active');
+    var pane = document.getElementById(t.getAttribute('data-target'));
+    if (pane) pane.classList.add('active');
+  });
+
+  // ── nav-chip active-on-scroll ────────────────────────
+  var sections = Array.from(document.querySelectorAll('section.problem'));
+  var chips = {};
+  document.querySelectorAll('.chip').forEach(function(c){
+    chips[c.getAttribute('href').replace('#','')] = c;
+  });
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      var id = en.target.id;
+      if (en.isIntersecting && chips[id]) {
+        Object.values(chips).forEach(function(c){ c.classList.remove('active'); });
+        chips[id].classList.add('active');
+      }
+    });
+  }, {rootMargin:'-30% 0px -55% 0px'});
+  sections.forEach(function(s){ io.observe(s); });
+
+  // ── visit tracking ───────────────────────────────────
   var STORAGE = 'ai4sm-review-visits';
   var visits = {};
   try { visits = JSON.parse(localStorage.getItem(STORAGE) || '{}'); } catch(e){}
@@ -412,39 +1469,169 @@ document.addEventListener('click', function(e) {
     var key = location.pathname + '#' + section.id + ':' + sha;
     var wasSeen = !!visits[key];
     if (!wasSeen) {
-      var meta = section.querySelector('.problem-head .meta');
-      if (meta) meta.insertAdjacentHTML('beforeend',
-        ' <span class="new-since">new since last visit</span>');
+      var h = section.querySelector('.p-pills');
+      if (h) h.insertAdjacentHTML('beforeend',
+        ' <span class="pill v-revision">NEW since last visit</span>');
     }
-    // mark visited when section is in view ≥1s
-    var seenTimer = null;
-    var io = new IntersectionObserver(function(entries){
+    var timer = null;
+    var obs = new IntersectionObserver(function(entries){
       entries.forEach(function(en){
         if (en.isIntersecting) {
-          seenTimer = setTimeout(function(){
+          timer = setTimeout(function(){
             visits[key] = Date.now();
             try { localStorage.setItem(STORAGE, JSON.stringify(visits)); } catch(e){}
-            io.unobserve(section);
-          }, 1000);
-        } else if (seenTimer) {
-          clearTimeout(seenTimer);
-          seenTimer = null;
-        }
+            obs.unobserve(section);
+          }, 1500);
+        } else if (timer) { clearTimeout(timer); timer = null; }
       });
-    }, {threshold: 0.4});
-    io.observe(section);
+    }, {threshold: 0.35});
+    obs.observe(section);
   });
-
-  // Footer note: last-visit timestamp for the page
   var pageKey = '_page_' + location.pathname;
   var last = visits[pageKey];
-  var foot = document.getElementById('visit-note');
-  if (foot) {
-    if (last) foot.textContent = 'Welcome back. Last viewed ' + new Date(last).toLocaleString() + '.';
-    else foot.textContent = 'First visit — pages auto-track which problems you have read.';
+  var ftEl = document.getElementById('first-visit-note');
+  if (ftEl) {
+    ftEl.textContent = last
+      ? 'Welcome back. Last viewed ' + new Date(last).toLocaleString() + '.'
+      : 'First visit — page tracks which problems you have read.';
   }
   visits[pageKey] = Date.now();
   try { localStorage.setItem(STORAGE, JSON.stringify(visits)); } catch(e){}
+})();
+
+// ── chatbot ─────────────────────────────────────────────
+(function(){
+  var STORAGE_KEY = 'ai4sm-review-chat-settings';
+  var HISTORY_KEY = 'ai4sm-review-chat-history-' + location.pathname;
+  var fab = document.querySelector('.chat-fab');
+  var drawer = document.querySelector('.chat-drawer');
+  var closeBtn = document.querySelector('.chat-close');
+  var settingsBtn = document.querySelector('.chat-settings');
+  var settingsPanel = document.querySelector('.chat-settings-panel');
+  var body = document.querySelector('.chat-body');
+  var textarea = document.querySelector('.chat-input textarea');
+  var sendBtn = document.querySelector('.chat-input button');
+  var keyInput = document.querySelector('#chat-api-key');
+  var modelSelect = document.querySelector('#chat-model');
+  var sysCtx = document.querySelector('#chat-system-context').textContent;
+  if (!fab) return;
+
+  function settings(){
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e){ return {}; }
+  }
+  function saveSettings(s){ localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }
+  function history(){
+    try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch(e){ return []; }
+  }
+  function saveHistory(h){ localStorage.setItem(HISTORY_KEY, JSON.stringify(h.slice(-30))); }
+
+  function loadSettings(){
+    var s = settings();
+    if (s.apiKey) keyInput.value = s.apiKey;
+    if (s.model) modelSelect.value = s.model;
+  }
+  loadSettings();
+
+  function render(){
+    body.innerHTML = '';
+    var h = history();
+    if (h.length === 0) {
+      addMsg('system', 'Ask me about your reviews. Examples: "What should I fix first?" · "Show me a clean rewrite of problem 4." · "What did Haiku get wrong on problem 3?"');
+      if (!settings().apiKey) {
+        addMsg('system', '⚙ Click the gear icon to add your Anthropic API key (stored only in your browser).');
+      }
+    } else {
+      h.forEach(function(m){ addMsg(m.role, m.content, /*persist*/false); });
+    }
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function addMsg(role, content, persist){
+    var d = document.createElement('div');
+    d.className = 'msg ' + role;
+    d.textContent = content;
+    body.appendChild(d);
+    body.scrollTop = body.scrollHeight;
+    if (persist && (role === 'user' || role === 'assistant')) {
+      var h = history();
+      h.push({role: role, content: content});
+      saveHistory(h);
+    }
+    return d;
+  }
+
+  function open(){ drawer.classList.add('open'); render(); textarea.focus(); }
+  function close(){ drawer.classList.remove('open'); }
+
+  fab.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+  settingsBtn.addEventListener('click', function(){
+    settingsPanel.classList.toggle('open');
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && drawer.classList.contains('open')) close();
+  });
+
+  keyInput.addEventListener('change', function(){
+    var s = settings(); s.apiKey = keyInput.value.trim(); saveSettings(s);
+  });
+  modelSelect.addEventListener('change', function(){
+    var s = settings(); s.model = modelSelect.value; saveSettings(s);
+  });
+
+  textarea.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+  });
+  sendBtn.addEventListener('click', send);
+
+  async function send(){
+    var msg = textarea.value.trim();
+    if (!msg) return;
+    var s = settings();
+    if (!s.apiKey) {
+      settingsPanel.classList.add('open');
+      addMsg('error', 'No API key set. Add one in the settings panel ⚙ first.');
+      return;
+    }
+    textarea.value = '';
+    addMsg('user', msg, true);
+    sendBtn.disabled = true;
+    var thinking = addMsg('assistant', '…');
+    var hist = history().filter(function(m){ return m.role === 'user' || m.role === 'assistant'; });
+    var messages = hist.map(function(m){ return {role: m.role, content: m.content}; });
+    try {
+      var resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'x-api-key': s.apiKey,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true',
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: s.model || 'claude-haiku-4-5-20251001',
+          max_tokens: 1500,
+          system: sysCtx,
+          messages: messages,
+        }),
+      });
+      var data = await resp.json();
+      if (!resp.ok) {
+        thinking.classList.remove('assistant'); thinking.classList.add('error');
+        thinking.textContent = 'Error: ' + (data.error && data.error.message ? data.error.message : resp.statusText);
+      } else {
+        var text = (data.content && data.content[0] && data.content[0].text) || '(empty response)';
+        thinking.textContent = text;
+        var h = history(); h.push({role: 'assistant', content: text}); saveHistory(h);
+      }
+    } catch (e) {
+      thinking.classList.remove('assistant'); thinking.classList.add('error');
+      thinking.textContent = 'Network error: ' + e.message;
+    } finally {
+      sendBtn.disabled = false;
+      body.scrollTop = body.scrollHeight;
+    }
+  }
 })();
 </script>
 </body></html>
