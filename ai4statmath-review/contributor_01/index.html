@@ -268,6 +268,17 @@ table.checks td code { background:var(--bg); padding:1px 4px; border-radius:3px;
 /* ── benchmark drawer ──────────────────────────────────────────── */
 .bench-block { background:var(--bg-soft); border-radius:8px; padding:8px 14px; margin:10px 0; }
 .bench-block summary { cursor:pointer; color:var(--fg-muted); font-weight:500; font-size:.94em; }
+.dedup-block .dedup-headline { padding:8px 0 6px; }
+.dedup-table { width:100%; border-collapse:collapse; font-size:.86em; }
+.dedup-table th { background:var(--bg-accent); font-weight:600; font-size:.82em;
+                   color:var(--fg-muted); padding:6px 10px; text-align:left;
+                   border-bottom:1px solid var(--border); white-space:nowrap; }
+.dedup-table td { padding:7px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+.dedup-table td.n { text-align:right; font-variant-numeric:tabular-nums; }
+.dedup-table td.stem { font-family:"SF Mono",Consolas,monospace; font-size:.84em;
+                        color:var(--fg-muted); line-height:1.45; max-width:280px; }
+.dedup-table .cos-cell strong { background:rgba(248,113,113,0.16); padding:1px 6px;
+                                 border-radius:4px; color:var(--fg); }
 .bench-framing { padding:8px 12px; border-radius:6px; margin:8px 0 4px; font-size:.92em; }
 .bench-framing.bf-bad  { background:rgba(251,191,36,0.12); border-left:3px solid var(--c-revision); color:#fde68a; }
 .bench-framing.bf-good { background:rgba(52,211,153,0.12); border-left:3px solid var(--c-ready); color:#a7f3d0; }
@@ -628,6 +639,17 @@ def grade(response: str, context: dict) -&gt; dict:
 </details>
 
   
+<details class="d-block dedup-block" id="problem-2-dedup">
+  <summary>🔍 Cross-benchmark matches <span class="dim small">(6 total)</span></summary>
+  <div class="dedup-headline"><span class="pill v-revision">△ 6 adjacent matches (topical, not duplicate)</span></div>
+  <p class="dim small">From the deep-dedup audit (BGE recall × Claude multi-dim judge against the The nine precedent benchmarks judged most likely to collide …). LOWER cos = less similar.</p>
+  <div class="table-wrap"><table class="dedup-table"><thead><tr>
+    <th>verdict</th><th class="n">cos</th><th>source</th><th>matched stem</th><th>judge reason</th>
+  </tr></thead><tbody><tr><td><span class="pill v-revision">△ ADJ</span></td><td class="n cos-cell"><strong>0.822</strong></td><td><code>MathTrap-public</code><br><span class="dim small">54_Trap</span></td><td class="stem">If the last nonzero digit to the right of the decimal point in the decimal expansion of $\frac{77}{a}$ is 9, find the minimum value of positive integer a.</td><td class="dim small">Both concern finding properties of fractions with specific decimal expansions, but ask different questions (last nonzero digit vs. terminating decimal</td></tr><tr><td><span class="pill v-revision">△ ADJ</span></td><td class="n cos-cell"><strong>0.808</strong></td><td><code>MathTrap-public</code><br><span class="dim small">53_Trap</span></td><td class="stem">If the last nonzero digit to the right of the decimal point in the decimal expansion of $\frac{a}{402}$ is 9, find the minimum value of positive integer a.</td><td class="dim small">Both involve decimal expansions of fractions and their properties, but ask different structural questions.</td></tr><tr><td><span class="pill v-revision">△ ADJ</span></td><td class="n cos-cell"><strong>0.795</strong></td><td><code>MathTrap-public</code><br><span class="dim small">52_Trap</span></td><td class="stem">If the last nonzero digit to the right of the decimal point in the decimal expansion of $\frac{19}{a}$ is 9, find the maximum value of positive integer a.</td><td class="dim small">Both concern last nonzero digits in decimal expansions, but candidate asks about terminating decimals and digit constraints.</td></tr><tr><td><span class="pill v-revision">△ ADJ</span></td><td class="n cos-cell"><strong>0.721</strong></td><td><code>MathTrap-public</code><br><span class="dim small">53_Original</span></td><td class="stem">What is the last nonzero digit to the right of the decimal point in the decimal expansion of $\frac{141}{400}$?</td><td class="dim small">Asks for last nonzero digit in decimal expansion, related method but different specific question.</td></tr><tr><td><span class="pill v-revision">△ ADJ</span></td><td class="n cos-cell"><strong>0.721</strong></td><td><code>MathTrap-public</code><br><span class="dim small">52_Original</span></td><td class="stem">What is the last nonzero digit to the right of the decimal point in the decimal expansion of $\frac{141}{400}$?</td><td class="dim small">Asks for last nonzero digit in decimal expansion, related to decimal expansion analysis.</td></tr></tbody></table></div>
+</details>
+
+
+  
 <details class="bench-block" id="problem-2-benchmark">
   <summary>🤖 How a frontier LLM did (claude-haiku-4-5-20251001)</summary>
   <p class="bench-framing bf-bad">⚠ Frontier solved this — the benchmark wants problems that STUMP frontier models. Consider hardening this one (or replacing with a harder variant in the same vein).</p>
@@ -955,6 +977,17 @@ def grade(response: str, context: dict) -&gt; dict:
 </details>
 
   
+<details class="d-block dedup-block" id="problem-3-dedup">
+  <summary>🔍 Cross-benchmark matches <span class="dim small">(1 total)</span></summary>
+  <div class="dedup-headline"><span class="pill v-revision">△ 1 adjacent match (topical, not duplicate)</span></div>
+  <p class="dim small">From the deep-dedup audit (BGE recall × Claude multi-dim judge against the The nine precedent benchmarks judged most likely to collide …). LOWER cos = less similar.</p>
+  <div class="table-wrap"><table class="dedup-table"><thead><tr>
+    <th>verdict</th><th class="n">cos</th><th>source</th><th>matched stem</th><th>judge reason</th>
+  </tr></thead><tbody><tr><td><span class="pill v-revision">△ ADJ</span></td><td class="n cos-cell"><strong>0.596</strong></td><td><code>StatEval-public</code><br><span class="dim small">foundational_88</span></td><td class="stem">A cyclist travels 800 metres uphill for 5 minutes and then cycles downhill at an average speed of $32.4 \ \mathrm{km} \ \mathrm{h}^{-1}$ for $4\frac{1}{2}$ minutes. Calculate the cyclist&#x27;s average spe…</td><td class="dim small">Both involve rate/speed calculations, but candidate is simpler and focuses on time scaling rather than average speed computation.</td></tr></tbody></table></div>
+</details>
+
+
+  
 <details class="bench-block" id="problem-3-benchmark">
   <summary>🤖 How a frontier LLM did (claude-haiku-4-5-20251001)</summary>
   <p class="bench-framing bf-good">✓ Frontier failed — exactly the signal AI4Stat/Math wants. Pending Sonnet/Opus verification, this earns its place in the hard-set.</p>
@@ -1200,6 +1233,8 @@ def grade(response: str, context: dict) -&gt; dict:
 </details>
 
   
+
+  
 <details class="bench-block" id="problem-4-benchmark">
   <summary>🤖 How a frontier LLM did (claude-haiku-4-5-20251001)</summary>
   <p class="bench-framing bf-good">✓ Frontier failed — exactly the signal AI4Stat/Math wants. Pending Sonnet/Opus verification, this earns its place in the hard-set.</p>
@@ -1365,6 +1400,8 @@ Suggested checks:
 
   
 
+  
+
   <footer class="p-foot">
     <span class="dim small">Reviewed by <code>claude-opus-4-7</code> · 2026-05-28 10:15 UTC · content sha <code>b6ec0d69</code></span>
     <span class="dim small">.tex snapshot embedded above</span>
@@ -1498,6 +1535,8 @@ Suggested checks:
 
   
 
+  
+
   <footer class="p-foot">
     <span class="dim small">Reviewed by <code>claude-opus-4-7</code> · 2026-05-28 10:15 UTC · content sha <code>c084f44a</code></span>
     <span class="dim small">.tex snapshot embedded above</span>
@@ -1514,7 +1553,7 @@ Suggested checks:
 
 <!-- ── timeline rail: hierarchical, dynamic, mobile thumb-friendly ─ -->
 <nav class="rail-tl" aria-label="problem timeline">
-  <div class="rail-tl-inner"><div class="rail-section rl-ready" data-target="problem-2">  <a href="#problem-2" class="rail-bullet">    <span class="rl-num">02</span>    <span class="rl-glyph">✓</span>    <span class="rl-title">Smallest Terminating Decimal</span>  </a>  <div class="rail-sub"><a href="#problem-2-fixes">Quick fixes</a><a href="#problem-2-working">What&#x27;s working</a><a href="#problem-2-considerations">Considerations</a><a href="#problem-2-next">Next steps</a><a href="#problem-2-text">Problem text</a><a href="#problem-2-verifier">Verifier</a><a href="#problem-2-benchmark">Benchmark</a></div></div><div class="rail-section rl-revision" data-target="problem-3">  <a href="#problem-3" class="rail-bullet">    <span class="rl-num">03</span>    <span class="rl-glyph">△</span>    <span class="rl-title">Relative Speed and Time Word</span>  </a>  <div class="rail-sub"><a href="#problem-3-fixes">Quick fixes</a><a href="#problem-3-considerations">Considerations</a><a href="#problem-3-next">Next steps</a><a href="#problem-3-text">Problem text</a><a href="#problem-3-verifier">Verifier</a><a href="#problem-3-benchmark">Benchmark</a></div></div><div class="rail-section rl-revision" data-target="problem-4">  <a href="#problem-4" class="rail-bullet">    <span class="rl-num">04</span>    <span class="rl-glyph">△</span>    <span class="rl-title">Dog Shelter Toys Problem</span>  </a>  <div class="rail-sub"><a href="#problem-4-fixes">Quick fixes</a><a href="#problem-4-working">What&#x27;s working</a><a href="#problem-4-considerations">Considerations</a><a href="#problem-4-next">Next steps</a><a href="#problem-4-text">Problem text</a><a href="#problem-4-verifier">Verifier</a><a href="#problem-4-benchmark">Benchmark</a></div></div><div class="rail-section rl-progress" data-target="problem-5">  <a href="#problem-5" class="rail-bullet">    <span class="rl-num">05</span>    <span class="rl-glyph">✎</span>    <span class="rl-title">untitled draft</span>  </a>  <div class="rail-sub"><a href="#problem-5-brainstorming">Brainstorming</a><a href="#problem-5-promising">What&#x27;s promising</a><a href="#problem-5-considerations">Open questions</a><a href="#problem-5-next">Directions</a><a href="#problem-5-text">Problem text</a></div></div><div class="rail-section rl-progress" data-target="problem-6">  <a href="#problem-6" class="rail-bullet">    <span class="rl-num">06</span>    <span class="rl-glyph">✎</span>    <span class="rl-title">untitled draft</span>  </a>  <div class="rail-sub"><a href="#problem-6-brainstorming">Brainstorming</a><a href="#problem-6-promising">What&#x27;s promising</a><a href="#problem-6-considerations">Open questions</a><a href="#problem-6-next">Directions</a><a href="#problem-6-text">Problem text</a></div></div></div>
+  <div class="rail-tl-inner"><div class="rail-section rl-ready" data-target="problem-2">  <a href="#problem-2" class="rail-bullet">    <span class="rl-num">02</span>    <span class="rl-glyph">✓</span>    <span class="rl-title">Smallest Terminating Decimal</span>  </a>  <div class="rail-sub"><a href="#problem-2-fixes">Quick fixes</a><a href="#problem-2-working">What&#x27;s working</a><a href="#problem-2-considerations">Considerations</a><a href="#problem-2-next">Next steps</a><a href="#problem-2-text">Problem text</a><a href="#problem-2-verifier">Verifier</a><a href="#problem-2-dedup">Cross-benchmark matches</a><a href="#problem-2-benchmark">Benchmark</a></div></div><div class="rail-section rl-revision" data-target="problem-3">  <a href="#problem-3" class="rail-bullet">    <span class="rl-num">03</span>    <span class="rl-glyph">△</span>    <span class="rl-title">Relative Speed and Time Word</span>  </a>  <div class="rail-sub"><a href="#problem-3-fixes">Quick fixes</a><a href="#problem-3-considerations">Considerations</a><a href="#problem-3-next">Next steps</a><a href="#problem-3-text">Problem text</a><a href="#problem-3-verifier">Verifier</a><a href="#problem-3-dedup">Cross-benchmark matches</a><a href="#problem-3-benchmark">Benchmark</a></div></div><div class="rail-section rl-revision" data-target="problem-4">  <a href="#problem-4" class="rail-bullet">    <span class="rl-num">04</span>    <span class="rl-glyph">△</span>    <span class="rl-title">Dog Shelter Toys Problem</span>  </a>  <div class="rail-sub"><a href="#problem-4-fixes">Quick fixes</a><a href="#problem-4-working">What&#x27;s working</a><a href="#problem-4-considerations">Considerations</a><a href="#problem-4-next">Next steps</a><a href="#problem-4-text">Problem text</a><a href="#problem-4-verifier">Verifier</a><a href="#problem-4-benchmark">Benchmark</a></div></div><div class="rail-section rl-progress" data-target="problem-5">  <a href="#problem-5" class="rail-bullet">    <span class="rl-num">05</span>    <span class="rl-glyph">✎</span>    <span class="rl-title">untitled draft</span>  </a>  <div class="rail-sub"><a href="#problem-5-brainstorming">Brainstorming</a><a href="#problem-5-promising">What&#x27;s promising</a><a href="#problem-5-considerations">Open questions</a><a href="#problem-5-next">Directions</a><a href="#problem-5-text">Problem text</a></div></div><div class="rail-section rl-progress" data-target="problem-6">  <a href="#problem-6" class="rail-bullet">    <span class="rl-num">06</span>    <span class="rl-glyph">✎</span>    <span class="rl-title">untitled draft</span>  </a>  <div class="rail-sub"><a href="#problem-6-brainstorming">Brainstorming</a><a href="#problem-6-promising">What&#x27;s promising</a><a href="#problem-6-considerations">Open questions</a><a href="#problem-6-next">Directions</a><a href="#problem-6-text">Problem text</a></div></div></div>
 </nav>
 
 <!-- ── chatbot (hidden until proxy live) ────────────────────── -->

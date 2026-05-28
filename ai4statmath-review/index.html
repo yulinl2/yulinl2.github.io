@@ -265,6 +265,17 @@ table.checks td code { background:var(--bg); padding:1px 4px; border-radius:3px;
 /* ── benchmark drawer ──────────────────────────────────────────── */
 .bench-block { background:var(--bg-soft); border-radius:8px; padding:8px 14px; margin:10px 0; }
 .bench-block summary { cursor:pointer; color:var(--fg-muted); font-weight:500; font-size:.94em; }
+.dedup-block .dedup-headline { padding:8px 0 6px; }
+.dedup-table { width:100%; border-collapse:collapse; font-size:.86em; }
+.dedup-table th { background:var(--bg-accent); font-weight:600; font-size:.82em;
+                   color:var(--fg-muted); padding:6px 10px; text-align:left;
+                   border-bottom:1px solid var(--border); white-space:nowrap; }
+.dedup-table td { padding:7px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+.dedup-table td.n { text-align:right; font-variant-numeric:tabular-nums; }
+.dedup-table td.stem { font-family:"SF Mono",Consolas,monospace; font-size:.84em;
+                        color:var(--fg-muted); line-height:1.45; max-width:280px; }
+.dedup-table .cos-cell strong { background:rgba(248,113,113,0.16); padding:1px 6px;
+                                 border-radius:4px; color:var(--fg); }
 .bench-framing { padding:8px 12px; border-radius:6px; margin:8px 0 4px; font-size:.92em; }
 .bench-framing.bf-bad  { background:rgba(251,191,36,0.12); border-left:3px solid var(--c-revision); color:#fde68a; }
 .bench-framing.bf-good { background:rgba(52,211,153,0.12); border-left:3px solid var(--c-ready); color:#a7f3d0; }
