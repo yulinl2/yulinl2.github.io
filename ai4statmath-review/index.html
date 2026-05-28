@@ -65,9 +65,7 @@ body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
 .chip-revision { border-left:3px solid var(--c-revision); }
 .chip-rework   { border-left:3px solid var(--c-rework); }
 .chip-stub     { border-left:3px solid var(--c-stub); }
-.nav-chat { background:var(--primary); color:#0f172a; padding:6px 12px; border-radius:6px;
-            border:none; font-weight:600; font-size:.88em; cursor:pointer; white-space:nowrap; }
-.nav-chat:hover { filter:brightness(1.1); }
+.nav-chat { display:none; }  /* re-enable when chat proxy is live */
 
 /* ── container ─────────────────────────────────────────────────── */
 .container { max-width:980px; margin:0 auto; padding:24px 18px 80px; }
@@ -99,7 +97,21 @@ body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
 /* ── problem cards ─────────────────────────────────────────────── */
 section.problem { background:var(--bg-card); border:1px solid var(--border);
                   border-radius:14px; padding:22px 26px; margin:18px 0;
-                  scroll-margin-top:80px; }
+                  scroll-margin-top:120px; min-width:0;
+                  border-left:4px solid var(--bg-accent); }
+/* Status tint — subtle left border + faded top gradient.
+   Subtle enough not to compete with content; bold enough to register at glance. */
+section.problem[data-verdict="ready"] {
+  border-left-color:var(--c-ready);
+  background:linear-gradient(180deg, rgba(52,211,153,0.05) 0%, var(--bg-card) 80px); }
+section.problem[data-verdict="needs-revision"] {
+  border-left-color:var(--c-revision);
+  background:linear-gradient(180deg, rgba(251,191,36,0.05) 0%, var(--bg-card) 80px); }
+section.problem[data-verdict="needs-major-rework"] {
+  border-left-color:var(--c-rework);
+  background:linear-gradient(180deg, rgba(248,113,113,0.05) 0%, var(--bg-card) 80px); }
+section.problem[data-verdict="template-stub"] {
+  border-left-color:var(--c-stub); }
 .p-head { display:flex; justify-content:space-between; gap:14px; align-items:flex-start;
           flex-wrap:wrap; }
 .p-title { display:flex; align-items:baseline; gap:10px; }
@@ -117,12 +129,13 @@ section.problem { background:var(--bg-card); border:1px solid var(--border);
 .pill.v-rework   { background:#7f1d1d; color:#fecaca; }
 .pill.v-stub     { background:#374151; color:#d1d5db; }
 
-.p-cols { display:grid; grid-template-columns:1fr auto; gap:20px; align-items:center;
-          margin:14px 0 8px; }
+.p-cols { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:20px;
+          align-items:center; margin:14px 0 8px; }
 @media(max-width:720px){ .p-cols { grid-template-columns:1fr; } .p-radar { justify-self:center; } }
+.p-actions { min-width:0; }
 .p-actions h3 { margin:0 0 8px; font-size:.92em; color:var(--fg-muted); }
 .qa-list { margin:0; padding-left:20px; }
-.qa-item { margin:7px 0; }
+.qa-item { margin:7px 0; min-width:0; }
 .qa-where { display:inline-flex; align-items:center; gap:4px; background:var(--bg-accent);
             color:var(--fg); padding:2px 7px 2px 4px; border-radius:4px;
             font-family:"SF Mono",Consolas,monospace; font-size:.78em; margin-right:6px;
@@ -132,7 +145,8 @@ section.problem { background:var(--bg-card); border:1px solid var(--border);
 .qa-example { margin-top:4px; }
 .qa-example summary { font-size:.78em; color:var(--fg-dim); cursor:pointer; }
 .qa-example pre { background:var(--bg); padding:8px 10px; border-radius:4px;
-                  font-size:.84em; overflow-x:auto; margin:4px 0 0; line-height:1.4; }
+                  font-size:.84em; overflow-x:auto; margin:4px 0 0; line-height:1.4;
+                  white-space:pre-wrap; overflow-wrap:anywhere; max-width:100%; }
 
 .d-block { background:var(--bg-soft); border-radius:8px; padding:8px 14px; margin:10px 0; }
 .d-block > summary { cursor:pointer; padding:4px 0; font-weight:500;
@@ -147,27 +161,41 @@ section.problem { background:var(--bg-card); border:1px solid var(--border);
 .small { font-size:.84em; }
 
 /* ── keyword decoration ("skim-resolution" layer) ───────────────── */
-/* Goal: a multi-resolution parallel sampler can pick verbs, warnings,
-   anchors, and inline code out of the prose at a glance. */
-.kw-verb    { color:#a78bfa; font-weight:600; }       /* lavender — invites action */
-.kw-warn    { color:#fca5a5; }                         /* soft red — problem markers */
-.kw-good    { color:#86efac; }                         /* soft green — affirmations */
-.kw-section { font-family:"SF Mono",Consolas,monospace; background:#1e2c44;
-              color:#7dd3fc; padding:0 5px; border-radius:3px; font-size:.93em; }
-.kw-level   { font-weight:600; padding:0 5px; border-radius:3px; font-size:.93em; }
-.kw-level.lv-basic        { color:#86efac; background:#064e3b40; }
-.kw-level.lv-intermediate { color:#fde68a; background:#78350f40; }
-.kw-level.lv-advanced     { color:#fdba74; background:#7c2d1240; }
-.kw-level.lv-research     { color:#fca5a5; background:#7f1d1d40; }
-.kw-num     { font-family:"SF Mono",Consolas,monospace; color:#fbbf24;
-              font-weight:600; font-size:.94em; }
-.kw-math    { font-family:"SF Mono",Consolas,monospace; color:#fbbf24;
-              background:#1e2c44; padding:0 4px; border-radius:3px; font-size:.93em; }
-.kw-code    { font-family:"SF Mono",Consolas,monospace; background:#1e2c44;
-              color:#a78bfa; padding:0 5px; border-radius:3px; font-size:.92em; }
+/* Three orthogonal channels (Grammarly / Word convention):
+   1. **Bold** weight  → action verb (the eye finds "what to DO")
+   2. ~Red wavy~       → warning / typo / bug (the eye finds "what's wrong")
+   3. Mono pill        → "structured thing" (template field / code / math /
+                          quoted literal — a different KIND of token from prose)
+   We do NOT use font color for verbs or warnings — color was noise. */
+
+.kw-verb { font-weight:700; color:inherit; }
+.kw-warn { text-decoration:underline wavy #ef4444; text-decoration-skip-ink:none;
+           text-underline-offset:3px; color:inherit; }
+
+/* Structured things: monospace, muted, distinguishable from prose
+   but not screaming. */
+.kw-section { font-family:"SF Mono",Consolas,monospace; background:#1f2937;
+              color:var(--fg-muted); padding:1px 6px; border-radius:3px;
+              font-size:.88em; }
+.kw-math    { font-family:"SF Mono",Consolas,monospace; background:#1f2937;
+              color:var(--fg-muted); padding:1px 5px; border-radius:3px;
+              font-size:.88em; }
+.kw-code    { font-family:"SF Mono",Consolas,monospace; background:#1f2937;
+              color:var(--fg-muted); padding:1px 5px; border-radius:3px;
+              font-size:.88em; }
 .kw-qstr    { font-family:"SF Mono",Consolas,monospace; background:#0b1220;
-              color:#e5e7eb; padding:0 5px; border-radius:3px; font-size:.93em;
-              border:1px solid var(--bg-accent); }
+              color:var(--fg); padding:1px 6px; border-radius:3px;
+              font-size:.88em; border:1px solid var(--bg-accent); }
+.kw-num     { font-family:"SF Mono",Consolas,monospace; color:var(--fg);
+              font-weight:600; font-size:.94em; }
+
+/* Difficulty levels keep tinted chip — they are a CATEGORY, not just emphasis. */
+.kw-level   { font-weight:600; padding:1px 6px; border-radius:3px;
+              font-size:.88em; background:var(--bg-accent); color:var(--fg); }
+.kw-level.lv-basic        { background:rgba(52,211,153,.18); }
+.kw-level.lv-intermediate { background:rgba(251,191,36,.18); }
+.kw-level.lv-advanced     { background:rgba(249,115,22,.22); }
+.kw-level.lv-research     { background:rgba(248,113,113,.22); }
 
 /* dimension score color coding (used in radar labels) */
 .s-1 { fill:#f87171; }
@@ -250,11 +278,39 @@ footer.page-foot { margin-top:40px; padding-top:22px; border-top:1px solid var(-
                    color:var(--fg-dim); font-size:.85em; text-align:center; }
 footer.page-foot a { color:var(--primary); text-decoration:none; }
 
-/* ── chatbot drawer ────────────────────────────────────────────── */
-.chat-fab { position:fixed; right:18px; bottom:18px; background:var(--primary); color:#0f172a;
-            border:none; padding:12px 18px; border-radius:30px; font-weight:600;
-            cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.4); z-index:60; font-size:.92em; }
-.chat-fab:hover { filter:brightness(1.1); }
+/* ── floating mini-ToC (problem switcher, fingertip-accessible) ── */
+.toc-fab { position:fixed; right:16px; bottom:16px; background:var(--bg-card);
+           color:var(--fg); border:1px solid var(--border); border-radius:50%;
+           width:54px; height:54px; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.45);
+           z-index:60; font-size:1.4em; display:flex; align-items:center;
+           justify-content:center; transition:transform .15s, background .15s; }
+.toc-fab:hover { background:var(--bg-accent); transform:translateY(-2px); }
+.toc-fab[aria-expanded="true"] { background:var(--primary); color:#0f172a; }
+.toc-panel { position:fixed; right:16px; bottom:78px; max-width:300px; min-width:240px;
+             background:var(--bg-card); border:1px solid var(--border);
+             border-radius:12px; box-shadow:0 10px 28px rgba(0,0,0,.5); z-index:59;
+             padding:10px 0; display:none; }
+.toc-panel.open { display:block; animation:tocPop .18s ease-out; }
+@keyframes tocPop { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+.toc-head { padding:4px 14px 8px; border-bottom:1px solid var(--border);
+            color:var(--fg-dim); font-size:.78em; }
+.toc-list { list-style:none; margin:0; padding:6px 0; max-height:50vh; overflow-y:auto; }
+.toc-list a { display:flex; gap:8px; align-items:center; padding:9px 14px;
+              color:var(--fg); text-decoration:none; font-size:.94em;
+              border-left:3px solid transparent; }
+.toc-list a:hover { background:var(--bg-soft); }
+.toc-list a.active { border-left-color:var(--primary); background:var(--bg-soft); }
+.toc-list .tc-num { font-family:"SF Mono",Consolas,monospace; font-size:.84em;
+                    color:var(--fg-dim); min-width:32px; }
+.toc-list .tc-glyph { font-size:.9em; }
+.toc-list .tc-title { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.toc-list .tc-ready    .tc-glyph { color:var(--c-ready); }
+.toc-list .tc-revision .tc-glyph { color:var(--c-revision); }
+.toc-list .tc-rework   .tc-glyph { color:var(--c-rework); }
+.toc-list .tc-stub     .tc-glyph { color:var(--c-stub); }
+
+/* ── chatbot drawer (kept in DOM but hidden until proxy ready) ─── */
+.chat-fab { display:none; }   /* re-enable by setting display:flex when proxy is configured */
 .chat-drawer { position:fixed; right:-440px; top:0; bottom:0; width:420px; max-width:100vw;
                background:var(--bg-card); border-left:1px solid var(--border);
                display:flex; flex-direction:column; transition:right .25s; z-index:65; }

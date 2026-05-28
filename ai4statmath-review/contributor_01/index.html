@@ -68,9 +68,7 @@ body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
 .chip-revision { border-left:3px solid var(--c-revision); }
 .chip-rework   { border-left:3px solid var(--c-rework); }
 .chip-stub     { border-left:3px solid var(--c-stub); }
-.nav-chat { background:var(--primary); color:#0f172a; padding:6px 12px; border-radius:6px;
-            border:none; font-weight:600; font-size:.88em; cursor:pointer; white-space:nowrap; }
-.nav-chat:hover { filter:brightness(1.1); }
+.nav-chat { display:none; }  /* re-enable when chat proxy is live */
 
 /* ── container ─────────────────────────────────────────────────── */
 .container { max-width:980px; margin:0 auto; padding:24px 18px 80px; }
@@ -102,7 +100,21 @@ body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
 /* ── problem cards ─────────────────────────────────────────────── */
 section.problem { background:var(--bg-card); border:1px solid var(--border);
                   border-radius:14px; padding:22px 26px; margin:18px 0;
-                  scroll-margin-top:80px; }
+                  scroll-margin-top:120px; min-width:0;
+                  border-left:4px solid var(--bg-accent); }
+/* Status tint — subtle left border + faded top gradient.
+   Subtle enough not to compete with content; bold enough to register at glance. */
+section.problem[data-verdict="ready"] {
+  border-left-color:var(--c-ready);
+  background:linear-gradient(180deg, rgba(52,211,153,0.05) 0%, var(--bg-card) 80px); }
+section.problem[data-verdict="needs-revision"] {
+  border-left-color:var(--c-revision);
+  background:linear-gradient(180deg, rgba(251,191,36,0.05) 0%, var(--bg-card) 80px); }
+section.problem[data-verdict="needs-major-rework"] {
+  border-left-color:var(--c-rework);
+  background:linear-gradient(180deg, rgba(248,113,113,0.05) 0%, var(--bg-card) 80px); }
+section.problem[data-verdict="template-stub"] {
+  border-left-color:var(--c-stub); }
 .p-head { display:flex; justify-content:space-between; gap:14px; align-items:flex-start;
           flex-wrap:wrap; }
 .p-title { display:flex; align-items:baseline; gap:10px; }
@@ -120,12 +132,13 @@ section.problem { background:var(--bg-card); border:1px solid var(--border);
 .pill.v-rework   { background:#7f1d1d; color:#fecaca; }
 .pill.v-stub     { background:#374151; color:#d1d5db; }
 
-.p-cols { display:grid; grid-template-columns:1fr auto; gap:20px; align-items:center;
-          margin:14px 0 8px; }
+.p-cols { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:20px;
+          align-items:center; margin:14px 0 8px; }
 @media(max-width:720px){ .p-cols { grid-template-columns:1fr; } .p-radar { justify-self:center; } }
+.p-actions { min-width:0; }
 .p-actions h3 { margin:0 0 8px; font-size:.92em; color:var(--fg-muted); }
 .qa-list { margin:0; padding-left:20px; }
-.qa-item { margin:7px 0; }
+.qa-item { margin:7px 0; min-width:0; }
 .qa-where { display:inline-flex; align-items:center; gap:4px; background:var(--bg-accent);
             color:var(--fg); padding:2px 7px 2px 4px; border-radius:4px;
             font-family:"SF Mono",Consolas,monospace; font-size:.78em; margin-right:6px;
@@ -135,7 +148,8 @@ section.problem { background:var(--bg-card); border:1px solid var(--border);
 .qa-example { margin-top:4px; }
 .qa-example summary { font-size:.78em; color:var(--fg-dim); cursor:pointer; }
 .qa-example pre { background:var(--bg); padding:8px 10px; border-radius:4px;
-                  font-size:.84em; overflow-x:auto; margin:4px 0 0; line-height:1.4; }
+                  font-size:.84em; overflow-x:auto; margin:4px 0 0; line-height:1.4;
+                  white-space:pre-wrap; overflow-wrap:anywhere; max-width:100%; }
 
 .d-block { background:var(--bg-soft); border-radius:8px; padding:8px 14px; margin:10px 0; }
 .d-block > summary { cursor:pointer; padding:4px 0; font-weight:500;
@@ -150,27 +164,41 @@ section.problem { background:var(--bg-card); border:1px solid var(--border);
 .small { font-size:.84em; }
 
 /* ── keyword decoration ("skim-resolution" layer) ───────────────── */
-/* Goal: a multi-resolution parallel sampler can pick verbs, warnings,
-   anchors, and inline code out of the prose at a glance. */
-.kw-verb    { color:#a78bfa; font-weight:600; }       /* lavender — invites action */
-.kw-warn    { color:#fca5a5; }                         /* soft red — problem markers */
-.kw-good    { color:#86efac; }                         /* soft green — affirmations */
-.kw-section { font-family:"SF Mono",Consolas,monospace; background:#1e2c44;
-              color:#7dd3fc; padding:0 5px; border-radius:3px; font-size:.93em; }
-.kw-level   { font-weight:600; padding:0 5px; border-radius:3px; font-size:.93em; }
-.kw-level.lv-basic        { color:#86efac; background:#064e3b40; }
-.kw-level.lv-intermediate { color:#fde68a; background:#78350f40; }
-.kw-level.lv-advanced     { color:#fdba74; background:#7c2d1240; }
-.kw-level.lv-research     { color:#fca5a5; background:#7f1d1d40; }
-.kw-num     { font-family:"SF Mono",Consolas,monospace; color:#fbbf24;
-              font-weight:600; font-size:.94em; }
-.kw-math    { font-family:"SF Mono",Consolas,monospace; color:#fbbf24;
-              background:#1e2c44; padding:0 4px; border-radius:3px; font-size:.93em; }
-.kw-code    { font-family:"SF Mono",Consolas,monospace; background:#1e2c44;
-              color:#a78bfa; padding:0 5px; border-radius:3px; font-size:.92em; }
+/* Three orthogonal channels (Grammarly / Word convention):
+   1. **Bold** weight  → action verb (the eye finds "what to DO")
+   2. ~Red wavy~       → warning / typo / bug (the eye finds "what's wrong")
+   3. Mono pill        → "structured thing" (template field / code / math /
+                          quoted literal — a different KIND of token from prose)
+   We do NOT use font color for verbs or warnings — color was noise. */
+
+.kw-verb { font-weight:700; color:inherit; }
+.kw-warn { text-decoration:underline wavy #ef4444; text-decoration-skip-ink:none;
+           text-underline-offset:3px; color:inherit; }
+
+/* Structured things: monospace, muted, distinguishable from prose
+   but not screaming. */
+.kw-section { font-family:"SF Mono",Consolas,monospace; background:#1f2937;
+              color:var(--fg-muted); padding:1px 6px; border-radius:3px;
+              font-size:.88em; }
+.kw-math    { font-family:"SF Mono",Consolas,monospace; background:#1f2937;
+              color:var(--fg-muted); padding:1px 5px; border-radius:3px;
+              font-size:.88em; }
+.kw-code    { font-family:"SF Mono",Consolas,monospace; background:#1f2937;
+              color:var(--fg-muted); padding:1px 5px; border-radius:3px;
+              font-size:.88em; }
 .kw-qstr    { font-family:"SF Mono",Consolas,monospace; background:#0b1220;
-              color:#e5e7eb; padding:0 5px; border-radius:3px; font-size:.93em;
-              border:1px solid var(--bg-accent); }
+              color:var(--fg); padding:1px 6px; border-radius:3px;
+              font-size:.88em; border:1px solid var(--bg-accent); }
+.kw-num     { font-family:"SF Mono",Consolas,monospace; color:var(--fg);
+              font-weight:600; font-size:.94em; }
+
+/* Difficulty levels keep tinted chip — they are a CATEGORY, not just emphasis. */
+.kw-level   { font-weight:600; padding:1px 6px; border-radius:3px;
+              font-size:.88em; background:var(--bg-accent); color:var(--fg); }
+.kw-level.lv-basic        { background:rgba(52,211,153,.18); }
+.kw-level.lv-intermediate { background:rgba(251,191,36,.18); }
+.kw-level.lv-advanced     { background:rgba(249,115,22,.22); }
+.kw-level.lv-research     { background:rgba(248,113,113,.22); }
 
 /* dimension score color coding (used in radar labels) */
 .s-1 { fill:#f87171; }
@@ -253,11 +281,39 @@ footer.page-foot { margin-top:40px; padding-top:22px; border-top:1px solid var(-
                    color:var(--fg-dim); font-size:.85em; text-align:center; }
 footer.page-foot a { color:var(--primary); text-decoration:none; }
 
-/* ── chatbot drawer ────────────────────────────────────────────── */
-.chat-fab { position:fixed; right:18px; bottom:18px; background:var(--primary); color:#0f172a;
-            border:none; padding:12px 18px; border-radius:30px; font-weight:600;
-            cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.4); z-index:60; font-size:.92em; }
-.chat-fab:hover { filter:brightness(1.1); }
+/* ── floating mini-ToC (problem switcher, fingertip-accessible) ── */
+.toc-fab { position:fixed; right:16px; bottom:16px; background:var(--bg-card);
+           color:var(--fg); border:1px solid var(--border); border-radius:50%;
+           width:54px; height:54px; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.45);
+           z-index:60; font-size:1.4em; display:flex; align-items:center;
+           justify-content:center; transition:transform .15s, background .15s; }
+.toc-fab:hover { background:var(--bg-accent); transform:translateY(-2px); }
+.toc-fab[aria-expanded="true"] { background:var(--primary); color:#0f172a; }
+.toc-panel { position:fixed; right:16px; bottom:78px; max-width:300px; min-width:240px;
+             background:var(--bg-card); border:1px solid var(--border);
+             border-radius:12px; box-shadow:0 10px 28px rgba(0,0,0,.5); z-index:59;
+             padding:10px 0; display:none; }
+.toc-panel.open { display:block; animation:tocPop .18s ease-out; }
+@keyframes tocPop { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+.toc-head { padding:4px 14px 8px; border-bottom:1px solid var(--border);
+            color:var(--fg-dim); font-size:.78em; }
+.toc-list { list-style:none; margin:0; padding:6px 0; max-height:50vh; overflow-y:auto; }
+.toc-list a { display:flex; gap:8px; align-items:center; padding:9px 14px;
+              color:var(--fg); text-decoration:none; font-size:.94em;
+              border-left:3px solid transparent; }
+.toc-list a:hover { background:var(--bg-soft); }
+.toc-list a.active { border-left-color:var(--primary); background:var(--bg-soft); }
+.toc-list .tc-num { font-family:"SF Mono",Consolas,monospace; font-size:.84em;
+                    color:var(--fg-dim); min-width:32px; }
+.toc-list .tc-glyph { font-size:.9em; }
+.toc-list .tc-title { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.toc-list .tc-ready    .tc-glyph { color:var(--c-ready); }
+.toc-list .tc-revision .tc-glyph { color:var(--c-revision); }
+.toc-list .tc-rework   .tc-glyph { color:var(--c-rework); }
+.toc-list .tc-stub     .tc-glyph { color:var(--c-stub); }
+
+/* ── chatbot drawer (kept in DOM but hidden until proxy ready) ─── */
+.chat-fab { display:none; }   /* re-enable by setting display:flex when proxy is configured */
 .chat-drawer { position:fixed; right:-440px; top:0; bottom:0; width:420px; max-width:100vw;
                background:var(--bg-card); border-left:1px solid var(--border);
                display:flex; flex-direction:column; transition:right .25s; z-index:65; }
@@ -364,12 +420,12 @@ footer.page-foot a { color:var(--primary); text-decoration:none; }
 
   <details class="d-block">
     <summary>✨ What's working</summary>
-    <ul class="bullets"><li>Nice — stating the characterization theorem up front makes the answer key <span class="kw-good">self-contained</span>.</li><li>Good — pre-empts a common verifier failure where an equivalent form gets rejected.</li></ul>
+    <ul class="bullets"><li>Nice — stating the characterization theorem up front makes the answer key self-contained.</li><li>Good — pre-empts a common verifier failure where an equivalent form gets rejected.</li></ul>
   </details>
 
   <details class="d-block">
     <summary>💡 Things to consider</summary>
-    <ul class="bullets"><li>This appears in the failure-modes tag slot but reads like a <span class="kw-warn">fragment</span>. Consider rephrasing as two distinct failure modes, e.g. &#x27;<span class="kw-warn">off-by-one</span> (returning a larger valid n)&#x27; and &#x27;rejecting <span class="kw-num">4096</span> due to misreading the digit-9 condition&#x27;.</li><li><span class="kw-warn">Typo</span>: &#x27;satisfed&#x27; → &#x27;satisfied&#x27;.</li><li>Consider downgrading to <span class="kw-level lv-intermediate">Intermediate</span>: the required insight (n = 2^a·5^b) is <span class="kw-good">standard</span> and the rest is enumeration.</li></ul>
+    <ul class="bullets"><li>This appears in the failure-modes tag slot but reads like a <span class="kw-warn">fragment</span>. Consider rephrasing as two distinct failure modes, e.g. &#x27;<span class="kw-warn">off-by-one</span> (returning a larger valid n)&#x27; and &#x27;rejecting <span class="kw-num">4096</span> due to misreading the digit-9 condition&#x27;.</li><li><span class="kw-warn">Typo</span>: &#x27;satisfed&#x27; → &#x27;satisfied&#x27;.</li><li>Consider downgrading to <span class="kw-level lv-intermediate">Intermediate</span>: the required insight (n = 2^a·5^b) is standard and the rest is enumeration.</li></ul>
   </details>
 
   <details class="d-block">
@@ -378,17 +434,91 @@ footer.page-foot a { color:var(--primary); text-decoration:none; }
   </details>
 
   <details class="d-block">
-    <summary>📄 Problem text (snapshot · annotated)</summary>
+    <summary>📄 Problem text (snapshot · annotated · raw .tex)</summary>
     <div class="tabs">
       <button class="tab active" data-target="snap-2">Snapshot</button>
       <button class="tab" data-target="annot-2">Annotated</button>
+      <button class="tab" data-target="tex-2">Raw .tex</button>
     </div>
     <div class="pane active" id="snap-2">
       <div class="statement">What is the smallest positive integer $n$ such that $\frac{1}{n}$ is a terminating decimal and $n$ contains the digit 9?</div>
     </div>
     <div class="pane" id="annot-2">
       <div class="statement annot-host">What is the smallest positive integer $n$ such that $\frac{1}{n}$ is a terminating decimal and $n$ contains the digit 9?</div>
-      <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Color = kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
+      <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
+    </div>
+    <div class="pane" id="tex-2">
+      <p class="dim small">Snapshot of the full .tex source at the time of review (content sha <code>4f057767</code>). This is what was reviewed — won't drift if you edit the file later.</p>
+      <pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
+\begin{document}
+
+% Keep this file in sync with the matching problem_02_review.md sidecar.
+
+\problemsetup
+  {Smallest Terminating Decimal with Digit 9}
+  {Mathematics}
+  {Number Theory}
+  {Advanced}
+  {Zhixian Zhang}
+  {zhixian.zhang@rutgers.edu}
+  {Draft}
+\problemtags
+  {compute}
+  {numerical reasoning}
+  {exact match}
+  {not the smallest one, incorrect rejection of the true answer}
+\begin{msbproblem}
+
+\begin{problemstatement}
+What is the smallest positive integer $n$ such that $\frac{1}{n}$ is a terminating decimal and $n$ contains the digit 9?
+\end{problemstatement}
+
+\begin{answerkey}
+To find the smallest positive integer $n$ such that $\frac{1}{n}$ is a terminating decimal, we must first look at the mathematical rule for terminating decimals.
+
+A fraction $\frac{1}{n}$ (in simplest form) will terminate if and only if the prime factorization of its denominator $n$ contains no prime numbers other than $2$ or $5$. Therefore, $n$ must be of the form:
+$$n = 2^a \cdot 5^b$$
+where $a$ and $b$ are non-negative integers.
+
+We need to find the smallest number of this form that contains the digit 9. Let&#x27;s generate the candidates in increasing order systematically by checking combinations of $2^a \cdot 5^b$:
+
+\begin{itemize}
+    \item 1 to 100: 1, 2, 4, 5, 8, 10, 16, 20, 25, 32, 40, 50, 64, 80, 100, not satisfied.
+    \item 101 to 500: 125, 128, 160, 200, 250, 256, 320, 400, 500, not satisfied.
+    \item 501 to 1000: 512, 625, 640, 800, 1000, not satisfied.
+    \item 1001 to 2000: 1024, 1250, 1280, 1600, 2000, not satisfed.
+    \item 2001 to 4000: 2048, 2500, 2560, 3125, 3200, 4000, not satisfied.
+\end{itemize}
+The very next number in the sequence of numbers generated by $2^a \cdot 5^b$ is $2^{12}$:
+$$2^{12} = 4096$$
+Because $4096$ contains the digit 9, and $\frac{1}{4096}$ is a terminating decimal (it is exactly $0.000244140625$), the smallest positive integer $n$ that satisfies both conditions is 4096.
+\end{answerkey}
+
+
+\begin{gradingscheme}
+Use a checklist for this question with the exact numerical answer.
+\begin{itemize}
+\item Exact expected answer is 4096.
+\item The answer must be exactly 4096 without any numerical tolerance.
+\item The integer 4096 and expression $2^{12}$ are acceptable.
+\end{itemize}
+\end{gradingscheme}
+
+\begin{editornotes}
+Suggested checks:
+\begin{itemize}
+\item Is every symbol defined?
+\item Does the rubric use exact answer / tolerance for objective questions or a structural / judge rubric for proof-style questions?
+\item Can the verifier grade deterministically, or at least be audited line by line from the written schema?
+\item Does the problem require non-routine reasoning?
+\item Does the matching review sidecar contain five raw model responses and a failure-mode summary?
+\end{itemize}
+\end{editornotes}
+
+\end{msbproblem}
+
+\end{document}
+</code></pre>
     </div>
   </details>
 
@@ -564,7 +694,7 @@ Continuing to look for the digit 9:
 
   <footer class="p-foot">
     <span class="dim small">Reviewed by <code>claude-opus-4-7</code> · 2026-05-28 08:15 UTC · content sha <code>4f057767</code></span>
-    <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/master/contributors/contributor_01/problems/problem_02.tex" target="_blank">view .tex →</a>
+    <span class="dim small">.tex snapshot embedded above</span>
   </footer>
 </section>
 
@@ -585,7 +715,7 @@ Continuing to look for the digit 9:
   <div class="p-cols">
     <div class="p-actions">
       <h3>🔧 Quick fixes & next steps</h3>
-      <ol class="qa-list"><li class="qa-item"><span class="qa-where"><span class="qa-glyph">📝</span>problemstatement</span> <span class="qa-what"><span class="kw-verb">Disambiguate</span> &#x27;total hours&#x27; — state explicitly that travel times are summed across animals (or that animals cross sequentially).</span><details class="qa-example"><summary>example LaTeX</summary><pre>If the combined travel time of 3 kangaroos (each crossing the highway once, at the same speed) is 18 hours, how many combined hours will 4 turtles need, each traveling at half a kangaroo&#x27;s speed?</pre></details></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">🏷</span>problemtags</span> <span class="qa-what"><span class="kw-verb">Re-check</span> difficulty after disambiguation; if the trap is removed, downgrade to <span class="kw-level lv-basic">Basic</span>.</span></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">🔑</span>answerkey</span> <span class="qa-what"><span class="kw-verb">State</span> the interpretation convention in one sentence before the computation, so a grader can see why 48 (not 12) is <span class="kw-good">correct</span>.</span><details class="qa-example"><summary>example LaTeX</summary><pre>Interpreting &#x27;18 hours total&#x27; as the sum of individual crossing times: each kangaroo takes 18/3 = 6 hours...</pre></details></li></ol>
+      <ol class="qa-list"><li class="qa-item"><span class="qa-where"><span class="qa-glyph">📝</span>problemstatement</span> <span class="qa-what"><span class="kw-verb">Disambiguate</span> &#x27;total hours&#x27; — state explicitly that travel times are summed across animals (or that animals cross sequentially).</span><details class="qa-example"><summary>example LaTeX</summary><pre>If the combined travel time of 3 kangaroos (each crossing the highway once, at the same speed) is 18 hours, how many combined hours will 4 turtles need, each traveling at half a kangaroo&#x27;s speed?</pre></details></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">🏷</span>problemtags</span> <span class="qa-what"><span class="kw-verb">Re-check</span> difficulty after disambiguation; if the trap is removed, downgrade to <span class="kw-level lv-basic">Basic</span>.</span></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">🔑</span>answerkey</span> <span class="qa-what"><span class="kw-verb">State</span> the interpretation convention in one sentence before the computation, so a grader can see why 48 (not 12) is correct.</span><details class="qa-example"><summary>example LaTeX</summary><pre>Interpreting &#x27;18 hours total&#x27; as the sum of individual crossing times: each kangaroo takes 18/3 = 6 hours...</pre></details></li></ol>
     </div>
     <aside class="p-radar">
       <svg viewBox="0 0 180 180" width="180" height="180" class="radar-svg"><polygon points="90.0,75.6 102.5,82.8 102.5,97.2 90.0,104.4 77.5,97.2 77.5,82.8" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 114.9,75.6 114.9,104.4 90.0,118.8 65.1,104.4 65.1,75.6" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,46.8 127.4,68.4 127.4,111.6 90.0,133.2 52.6,111.6 52.6,68.4" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,32.4 139.9,61.2 139.9,118.8 90.0,147.6 40.1,118.8 40.1,61.2" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,18.0 152.4,54.0 152.4,126.0 90.0,162.0 27.6,126.0 27.6,54.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 114.9,75.6 127.4,111.6 90.0,147.6 27.6,126.0 40.1,61.2" fill="#60a5fa" fill-opacity="0.28" stroke="#60a5fa" stroke-width="1.6"/><text x="90.0" y="10.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity <tspan class="s-2" font-weight="700">2</tspan></text><text x="162.7" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel <tspan class="s-2" font-weight="700">2</tspan></text><text x="162.7" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff-fit <tspan class="s-3" font-weight="700">3</tspan></text><text x="90.0" y="178.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric <tspan class="s-4" font-weight="700">4</tspan></text><text x="17.3" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">verifier <tspan class="s-5" font-weight="700">5</tspan></text><text x="17.3" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean <tspan class="s-4" font-weight="700">4</tspan></text></svg>
@@ -604,21 +734,77 @@ Continuing to look for the digit 9:
 
   <details class="d-block">
     <summary>👉 Suggested next steps</summary>
-    <ul class="bullets"><li><span class="kw-verb">Disambiguate</span> &#x27;total hours&#x27; — state explicitly that travel times are summed across animals (or that animals cross sequentially). — e.g. If the combined travel time of 3 kangaroos (each crossing the highway once, at the same speed) is 18 hours, how many combined hours will 4 turtles need, each traveling at half a kangaroo&#x27;s speed?</li><li><span class="kw-verb">Re-check</span> difficulty after disambiguation; if the trap is removed, downgrade to <span class="kw-level lv-basic">Basic</span>.</li><li><span class="kw-verb">State</span> the interpretation convention in one sentence before the computation, so a grader can see why 48 (not 12) is <span class="kw-good">correct</span>. — e.g. Interpreting &#x27;18 hours total&#x27; as the sum of individual crossing times: each kangaroo takes 18/3 = 6 hours...</li></ul>
+    <ul class="bullets"><li><span class="kw-verb">Disambiguate</span> &#x27;total hours&#x27; — state explicitly that travel times are summed across animals (or that animals cross sequentially). — e.g. If the combined travel time of 3 kangaroos (each crossing the highway once, at the same speed) is 18 hours, how many combined hours will 4 turtles need, each traveling at half a kangaroo&#x27;s speed?</li><li><span class="kw-verb">Re-check</span> difficulty after disambiguation; if the trap is removed, downgrade to <span class="kw-level lv-basic">Basic</span>.</li><li><span class="kw-verb">State</span> the interpretation convention in one sentence before the computation, so a grader can see why 48 (not 12) is correct. — e.g. Interpreting &#x27;18 hours total&#x27; as the sum of individual crossing times: each kangaroo takes 18/3 = 6 hours...</li></ul>
   </details>
 
   <details class="d-block">
-    <summary>📄 Problem text (snapshot · annotated)</summary>
+    <summary>📄 Problem text (snapshot · annotated · raw .tex)</summary>
     <div class="tabs">
       <button class="tab active" data-target="snap-3">Snapshot</button>
       <button class="tab" data-target="annot-3">Annotated</button>
+      <button class="tab" data-target="tex-3">Raw .tex</button>
     </div>
     <div class="pane active" id="snap-3">
       <div class="statement">If it takes 3 kangaroos traveling at the same speed a total of 18 hours to travel across a highway, how many hours will it take four turtles, each traveling at half the speed of a kangaroo, to do so?</div>
     </div>
     <div class="pane" id="annot-3">
       <div class="statement annot-host">If it takes 3 kangaroos <span class="annot annot-suggestion" data-kind="suggestion" tabindex="0" data-comment="Consider &#x27;each traveling at the same speed&#x27; to parallel the &#x27;each traveling at half the speed&#x27; phrasing later.">traveling at the same speed<span class="annot-bubble"><strong>suggestion:</strong> Consider &#x27;each traveling at the same speed&#x27; to parallel the &#x27;each traveling at half the speed&#x27; phrasing later.</span></span> <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="Does &#x27;total&#x27; mean summed across the 3 kangaroos (so each takes 6h), or 18h of wall-clock with all 3 crossing in parallel? The answerkey assumes the former; the statement should say so explicitly.">a total of 18 hours<span class="annot-bubble"><strong>ambiguity:</strong> Does &#x27;total&#x27; mean summed across the 3 kangaroos (so each takes 6h), or 18h of wall-clock with all 3 crossing in parallel? The <span class="kw-section">answerkey</span> assumes the former; the statement should say so explicitly.</span></span> to travel across a highway, how many hours will it take four turtles, each traveling at half the speed of a kangaroo, to do so?</div>
-      <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Color = kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
+      <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
+    </div>
+    <div class="pane" id="tex-3">
+      <p class="dim small">Snapshot of the full .tex source at the time of review (content sha <code>067b497a</code>). This is what was reviewed — won't drift if you edit the file later.</p>
+      <pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
+\begin{document}
+
+% Keep this file in sync with the matching problem_03_review.md sidecar.
+
+\problemsetup
+  {Relative Speed and Time Word Problem}
+  {Mathematics}
+  {Arithmetic}
+  {Medium}
+  {Zhixian Zhang}
+  {zhixian.zhang@rutgers.edu}
+  {Draft}
+\problemtags
+  {compute}
+  {numerical reasoning}
+  {exact match}
+  {Total vs. Individual confusion}
+\begin{msbproblem}
+
+\begin{problemstatement}
+If it takes 3 kangaroos traveling at the same speed a total of 18 hours to travel across a highway, how many hours will it take four turtles, each traveling at half the speed of a kangaroo, to do so?
+\end{problemstatement}
+
+\begin{answerkey}
+If it takes 3 kangaroos traveling at the same speed, a total of 18 hours to travel across a highway, one kangaroo takes $18/3 = 6$ hours to cross the highway. 
+A turtle traveling at half the speed of a kangaroo will take $2 \times 6 = 12$ hours to cross the highway. Four turtles will take a total of $4 \times 12 = 48$ hours to travel across the highway.
+\end{answerkey}
+
+\begin{gradingscheme}
+Use a checklist for this question with the exact numerical answer.
+\begin{itemize}
+\item Exact expected answer is 48.
+\item The answer must be exactly 48 without any numerical tolerance.
+\end{itemize}
+\end{gradingscheme}
+
+\begin{editornotes}
+Suggested checks:
+\begin{itemize}
+\item Is every symbol defined?
+\item Does the rubric use exact answer / tolerance for objective questions or a structural / judge rubric for proof-style questions?
+\item Can the verifier grade deterministically, or at least be audited line by line from the written schema?
+\item Does the problem require non-routine reasoning?
+\item Does the matching review sidecar contain five raw model responses and a failure-mode summary?
+\end{itemize}
+\end{editornotes}
+
+\end{msbproblem}
+
+\end{document}
+</code></pre>
     </div>
   </details>
 
@@ -758,7 +944,7 @@ The number of turtles doesn&#x27;t affect the time—only their speed matters.
 
   <footer class="p-foot">
     <span class="dim small">Reviewed by <code>claude-opus-4-7</code> · 2026-05-28 08:15 UTC · content sha <code>067b497a</code></span>
-    <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/master/contributors/contributor_01/problems/problem_03.tex" target="_blank">view .tex →</a>
+    <span class="dim small">.tex snapshot embedded above</span>
   </footer>
 </section>
 
@@ -779,7 +965,7 @@ The number of turtles doesn&#x27;t affect the time—only their speed matters.
   <div class="p-cols">
     <div class="p-actions">
       <h3>🔧 Quick fixes & next steps</h3>
-      <ol class="qa-list"><li class="qa-item"><span class="qa-where"><span class="qa-glyph">⚖</span>gradingscheme</span> <span class="qa-what"><span class="kw-verb">Fill in</span> the <span class="kw-section">gradingscheme</span> with the <span class="kw-good">canonical</span> numeric answer and exact-match criterion.</span><details class="qa-example"><summary>example LaTeX</summary><pre>Canonical answer: 33. Grading: exact integer match. Accepted equivalent forms: &#x27;33&#x27;, &#x27;33 toys&#x27;. No partial credit.</pre></details></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">📝</span>problemstatement</span> <span class="qa-what"><span class="kw-verb">Decide</span> whether the <span class="kw-warn">ambiguity</span> is the test or a bug. If it&#x27;s the test, keep the phrasing and document in <span class="kw-section">editornotes</span> that the <span class="kw-good">canonical</span> reading is &#x27;2x the previous count was added&#x27;. If it&#x27;s a bug, rephrase unambiguously (e.g. &#x27;three times as many dogs as before&#x27;).</span></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">📝</span>problemstatement</span> <span class="qa-what"><span class="kw-verb">Clarify</span> the final question: &#x27;How many toys does James need in total at the end?&#x27; vs. &#x27;How many toys has James bought in total across all trips?&#x27; These yield 33 vs. 36.</span></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">📓</span>editornotes</span> <span class="qa-what"><span class="kw-verb">Document</span> the intended <span class="kw-good">canonical</span> interpretation of &#x27;twice as many more&#x27; so future reviewers and verifier writers don&#x27;t re-litigate it.</span></li></ol>
+      <ol class="qa-list"><li class="qa-item"><span class="qa-where"><span class="qa-glyph">⚖</span>gradingscheme</span> <span class="qa-what"><span class="kw-verb">Fill in</span> the <span class="kw-section">gradingscheme</span> with the canonical numeric answer and exact-match criterion.</span><details class="qa-example"><summary>example LaTeX</summary><pre>Canonical answer: 33. Grading: exact integer match. Accepted equivalent forms: &#x27;33&#x27;, &#x27;33 toys&#x27;. No partial credit.</pre></details></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">📝</span>problemstatement</span> <span class="qa-what"><span class="kw-verb">Decide</span> whether the <span class="kw-warn">ambiguity</span> is the test or a bug. If it&#x27;s the test, keep the phrasing and document in <span class="kw-section">editornotes</span> that the canonical reading is &#x27;2x the previous count was added&#x27;. If it&#x27;s a bug, rephrase unambiguously (e.g. &#x27;three times as many dogs as before&#x27;).</span></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">📝</span>problemstatement</span> <span class="qa-what"><span class="kw-verb">Clarify</span> the final question: &#x27;How many toys does James need in total at the end?&#x27; vs. &#x27;How many toys has James bought in total across all trips?&#x27; These yield 33 vs. 36.</span></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">📓</span>editornotes</span> <span class="qa-what"><span class="kw-verb">Document</span> the intended canonical interpretation of &#x27;twice as many more&#x27; so future reviewers and verifier writers don&#x27;t re-litigate it.</span></li></ol>
     </div>
     <aside class="p-radar">
       <svg viewBox="0 0 180 180" width="180" height="180" class="radar-svg"><polygon points="90.0,75.6 102.5,82.8 102.5,97.2 90.0,104.4 77.5,97.2 77.5,82.8" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 114.9,75.6 114.9,104.4 90.0,118.8 65.1,104.4 65.1,75.6" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,46.8 127.4,68.4 127.4,111.6 90.0,133.2 52.6,111.6 52.6,68.4" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,32.4 139.9,61.2 139.9,118.8 90.0,147.6 40.1,118.8 40.1,61.2" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,18.0 152.4,54.0 152.4,126.0 90.0,162.0 27.6,126.0 27.6,54.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 139.9,61.2 127.4,111.6 90.0,104.4 65.1,104.4 40.1,61.2" fill="#60a5fa" fill-opacity="0.28" stroke="#60a5fa" stroke-width="1.6"/><text x="90.0" y="10.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity <tspan class="s-2" font-weight="700">2</tspan></text><text x="162.7" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel <tspan class="s-4" font-weight="700">4</tspan></text><text x="162.7" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff-fit <tspan class="s-3" font-weight="700">3</tspan></text><text x="90.0" y="178.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric <tspan class="s-1" font-weight="700">1</tspan></text><text x="17.3" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">verifier <tspan class="s-2" font-weight="700">2</tspan></text><text x="17.3" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean <tspan class="s-4" font-weight="700">4</tspan></text></svg>
@@ -788,31 +974,82 @@ The number of turtles doesn&#x27;t affect the time—only their speed matters.
 
   <details class="d-block">
     <summary>✨ What's working</summary>
-    <ul class="bullets"><li>Good — flagging the linguistic trap as the capability under test makes the design intent <span class="kw-good">explicit</span>.</li></ul>
+    <ul class="bullets"><li>Good — flagging the linguistic trap as the capability under test makes the design intent explicit.</li></ul>
   </details>
 
   <details class="d-block">
     <summary>💡 Things to consider</summary>
-    <ul class="bullets"><li>This phrasing supports at least three readings: 2x total (24), 2x more added (so 3x = 36), or &#x27;twice as many more&#x27; = 2 additional. The <span class="kw-section">answerkey</span> picks reading #2 but a solver could justifiably pick any.</li><li><span class="kw-section">Gradingscheme</span> is <span class="kw-warn">empty</span>. Needed: the <span class="kw-good">canonical</span> answer (33), tolerance (exact integer), and ideally a note on accepted alternate readings if any.</li><li>Slightly clearer as &#x27;James has 4 toys for his current 4 dogs, and 8 additional dogs just arrived.&#x27;</li><li>&#x27;In total&#x27; is <span class="kw-warn">ambiguous</span>: cumulative toys bought across all trips, or final headcount? <span class="kw-section">Answerkey</span> assumes final headcount = 33, but toys bought might be 36 (no refunds on the 3 departed dogs).</li></ul>
+    <ul class="bullets"><li>This phrasing supports at least three readings: 2x total (24), 2x more added (so 3x = 36), or &#x27;twice as many more&#x27; = 2 additional. The <span class="kw-section">answerkey</span> picks reading #2 but a solver could justifiably pick any.</li><li><span class="kw-section">Gradingscheme</span> is <span class="kw-warn">empty</span>. Needed: the canonical answer (33), tolerance (exact integer), and ideally a note on accepted alternate readings if any.</li><li>Slightly clearer as &#x27;James has 4 toys for his current 4 dogs, and 8 additional dogs just arrived.&#x27;</li><li>&#x27;In total&#x27; is <span class="kw-warn">ambiguous</span>: cumulative toys bought across all trips, or final headcount? <span class="kw-section">Answerkey</span> assumes final headcount = 33, but toys bought might be 36 (no refunds on the 3 departed dogs).</li></ul>
   </details>
 
   <details class="d-block">
     <summary>👉 Suggested next steps</summary>
-    <ul class="bullets"><li><span class="kw-verb">Fill in</span> the <span class="kw-section">gradingscheme</span> with the <span class="kw-good">canonical</span> numeric answer and exact-match criterion. — e.g. <span class="kw-good">Canonical</span> answer: 33. Grading: exact integer match. Accepted equivalent forms: &#x27;33&#x27;, &#x27;33 toys&#x27;. No partial credit.</li><li><span class="kw-verb">Decide</span> whether the <span class="kw-warn">ambiguity</span> is the test or a bug. If it&#x27;s the test, keep the phrasing and document in <span class="kw-section">editornotes</span> that the <span class="kw-good">canonical</span> reading is &#x27;2x the previous count was added&#x27;. If it&#x27;s a bug, rephrase unambiguously (e.g. &#x27;three times as many dogs as before&#x27;).</li><li><span class="kw-verb">Clarify</span> the final question: &#x27;How many toys does James need in total at the end?&#x27; vs. &#x27;How many toys has James bought in total across all trips?&#x27; These yield 33 vs. 36.</li><li><span class="kw-verb">Document</span> the intended <span class="kw-good">canonical</span> interpretation of &#x27;twice as many more&#x27; so future reviewers and verifier writers don&#x27;t re-litigate it.</li></ul>
+    <ul class="bullets"><li><span class="kw-verb">Fill in</span> the <span class="kw-section">gradingscheme</span> with the canonical numeric answer and exact-match criterion. — e.g. Canonical answer: 33. Grading: exact integer match. Accepted equivalent forms: &#x27;33&#x27;, &#x27;33 toys&#x27;. No partial credit.</li><li><span class="kw-verb">Decide</span> whether the <span class="kw-warn">ambiguity</span> is the test or a bug. If it&#x27;s the test, keep the phrasing and document in <span class="kw-section">editornotes</span> that the canonical reading is &#x27;2x the previous count was added&#x27;. If it&#x27;s a bug, rephrase unambiguously (e.g. &#x27;three times as many dogs as before&#x27;).</li><li><span class="kw-verb">Clarify</span> the final question: &#x27;How many toys does James need in total at the end?&#x27; vs. &#x27;How many toys has James bought in total across all trips?&#x27; These yield 33 vs. 36.</li><li><span class="kw-verb">Document</span> the intended canonical interpretation of &#x27;twice as many more&#x27; so future reviewers and verifier writers don&#x27;t re-litigate it.</li></ul>
   </details>
 
   <details class="d-block">
-    <summary>📄 Problem text (snapshot · annotated)</summary>
+    <summary>📄 Problem text (snapshot · annotated · raw .tex)</summary>
     <div class="tabs">
       <button class="tab active" data-target="snap-4">Snapshot</button>
       <button class="tab" data-target="annot-4">Annotated</button>
+      <button class="tab" data-target="tex-4">Raw .tex</button>
     </div>
     <div class="pane active" id="snap-4">
       <div class="statement">James needs to get more toys for his doggie shelter. Each dog needs one toy. James currently has 4 toys on hand for 4 dogs, but there are 8 more dogs in the shelter now. After buying the toys, he went back to see that there are twice as many more dogs than when he left so he had to buy some more toys. When James came back yet again, 3 dogs were gone so he no longer needed those toys. How many toys in total does James need?</div>
     </div>
     <div class="pane" id="annot-4">
       <div class="statement annot-host">James needs to get more toys for his doggie shelter. Each dog needs one toy. <span class="annot annot-nit" data-kind="nit" tabindex="0" data-comment="Slightly clearer as &#x27;James has 4 toys for his current 4 dogs, and 8 additional dogs just arrived.&#x27;">James currently has 4 toys on hand for 4 dogs, but there are 8 more dogs in the shelter now<span class="annot-bubble"><strong>nit:</strong> Slightly clearer as &#x27;James has 4 toys for his current 4 dogs, and 8 additional dogs just arrived.&#x27;</span></span>. After buying the toys, he went back to see that there are <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="This phrasing supports at least three readings: 2x total (24), 2x more added (so 3x = 36), or &#x27;twice as many more&#x27; = 2 additional. The answerkey picks reading #2 but a solver could justifiably pick any.">twice as many more dogs than when he left<span class="annot-bubble"><strong>ambiguity:</strong> This phrasing supports at least three readings: 2x total (24), 2x more added (so 3x = 36), or &#x27;twice as many more&#x27; = 2 additional. The <span class="kw-section">answerkey</span> picks reading #2 but a solver could justifiably pick any.</span></span> so he had to buy some more toys. When James came back yet again, 3 dogs were gone so he no longer needed those toys. <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="&#x27;In total&#x27; is ambiguous: cumulative toys bought across all trips, or final headcount? Answerkey assumes final headcount = 33, but toys bought might be 36 (no refunds on the 3 departed dogs).">How many toys in total does James need?<span class="annot-bubble"><strong>ambiguity:</strong> &#x27;In total&#x27; is <span class="kw-warn">ambiguous</span>: cumulative toys bought across all trips, or final headcount? <span class="kw-section">Answerkey</span> assumes final headcount = 33, but toys bought might be 36 (no refunds on the 3 departed dogs).</span></span></div>
-      <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Color = kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
+      <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
+    </div>
+    <div class="pane" id="tex-4">
+      <p class="dim small">Snapshot of the full .tex source at the time of review (content sha <code>573989e9</code>). This is what was reviewed — won't drift if you edit the file later.</p>
+      <pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
+\begin{document}
+
+% Keep this file in sync with the matching problem_04_review.md sidecar.
+
+\problemsetup
+  {Dog Shelter Toys Problem}
+  {Mathematics}
+  {Arithmetic}
+  {Medium}
+  {Zhixian Zhang}
+  {zhixian.zhang@rutgers.edu}
+  {Draft}
+\problemtags
+  {compute}
+  {numerical reasoning}
+  {exact match}
+  {&quot;Twice as many more&quot; misinterpretation}
+\begin{msbproblem}
+
+\begin{problemstatement}
+James needs to get more toys for his doggie shelter. Each dog needs one toy. James currently has 4 toys on hand for 4 dogs, but there are 8 more dogs in the shelter now. After buying the toys, he went back to see that there are twice as many more dogs than when he left so he had to buy some more toys. When James came back yet again, 3 dogs were gone so he no longer needed those toys. How many toys in total does James need?
+\end{problemstatement}
+
+\begin{answerkey}
+James initially has 4 dogs with 4 toys and then receives 8 more, bringing the total to $4+8=12$ dogs. When he returns from buying toys, the phrase &quot;twice as many more dogs than when he left&quot; indicates that the shelter gained an additional 2 times his previous count, meaning $12 \times 2=24$ more dogs arrived, surging the total population to $12 + 24=36$ dogs. After James goes out to secure the extra toys and returns a final time, 3 dogs have departed, which reduces the final headcount and means James needs a total of $36-3=33$ toys.
+\end{answerkey}
+
+\begin{gradingscheme}
+%%
+\end{gradingscheme}
+
+\begin{editornotes}
+Suggested checks:
+\begin{itemize}
+\item Is every symbol defined?
+\item Does the rubric use exact answer / tolerance for objective questions or a structural / judge rubric for proof-style questions?
+\item Can the verifier grade deterministically, or at least be audited line by line from the written schema?
+\item Does the problem require non-routine reasoning?
+\item Does the matching review sidecar contain five raw model responses and a failure-mode summary?
+\end{itemize}
+\end{editornotes}
+
+\end{msbproblem}
+
+\end{document}
+</code></pre>
     </div>
   </details>
 
@@ -962,7 +1199,7 @@ Final answer: 25</pre>
 
   <footer class="p-foot">
     <span class="dim small">Reviewed by <code>claude-opus-4-7</code> · 2026-05-28 08:16 UTC · content sha <code>573989e9</code></span>
-    <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/master/contributors/contributor_01/problems/problem_04.tex" target="_blank">view .tex →</a>
+    <span class="dim small">.tex snapshot embedded above</span>
   </footer>
 </section>
 
@@ -983,7 +1220,7 @@ Final answer: 25</pre>
   <div class="p-cols">
     <div class="p-actions">
       <h3>🔧 Quick fixes & next steps</h3>
-      <ol class="qa-list"><li class="qa-item"><span class="qa-where"><span class="qa-glyph">📝</span>problemstatement</span> <span class="qa-what"><span class="kw-verb">Rewrite</span> the question so exactly one quantity is asked — e.g. &#x27;How many total rides do Chase and Rider together take on a usual day?&#x27; — and define whether &#x27;rides&#x27; counts each person separately.</span><details class="qa-example"><summary>example LaTeX</summary><pre>Chase and Rider each ride three times per day on five usual days of the week, and twice as often on each of the other two days. How many rides do the two of them take together on one usual day?</pre></details></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">🏷</span>problemtags</span> <span class="qa-what">Either downgrade difficulty to match the arithmetic level, or replace the content with a problem appropriate to <span class="kw-level lv-research">Qualifying-exam-plus</span>.</span></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">⚙</span>problemsetup</span> <span class="qa-what"><span class="kw-verb">Fill in</span> title, domain, subtopic, contact, and replace all <span class="kw-warn">TODO</span> placeholders so the entry can be indexed.</span></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">⚖</span>gradingscheme</span> <span class="qa-what"><span class="kw-verb">Add</span> a <span class="kw-good">deterministic</span> exact-match criterion against the single <span class="kw-good">canonical</span> answer.</span><details class="qa-example"><summary>example LaTeX</summary><pre>Exact match against integer answer (e.g. 6). No partial credit.</pre></details></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">🔑</span>answerkey</span> <span class="qa-what">Reduce to one <span class="kw-good">canonical</span> numeric answer matching the disambiguated statement; <span class="kw-verb">remove</span> the &#x27;either 6 or 12&#x27; branching.</span></li></ol>
+      <ol class="qa-list"><li class="qa-item"><span class="qa-where"><span class="qa-glyph">📝</span>problemstatement</span> <span class="qa-what"><span class="kw-verb">Rewrite</span> the question so exactly one quantity is asked — e.g. &#x27;How many total rides do Chase and Rider together take on a usual day?&#x27; — and define whether &#x27;rides&#x27; counts each person separately.</span><details class="qa-example"><summary>example LaTeX</summary><pre>Chase and Rider each ride three times per day on five usual days of the week, and twice as often on each of the other two days. How many rides do the two of them take together on one usual day?</pre></details></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">🏷</span>problemtags</span> <span class="qa-what">Either downgrade difficulty to match the arithmetic level, or replace the content with a problem appropriate to <span class="kw-level lv-research">Qualifying-exam-plus</span>.</span></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">⚙</span>problemsetup</span> <span class="qa-what"><span class="kw-verb">Fill in</span> title, domain, subtopic, contact, and replace all <span class="kw-warn">TODO</span> placeholders so the entry can be indexed.</span></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">⚖</span>gradingscheme</span> <span class="qa-what"><span class="kw-verb">Add</span> a deterministic exact-match criterion against the single canonical answer.</span><details class="qa-example"><summary>example LaTeX</summary><pre>Exact match against integer answer (e.g. 6). No partial credit.</pre></details></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">🔑</span>answerkey</span> <span class="qa-what">Reduce to one canonical numeric answer matching the disambiguated statement; <span class="kw-verb">remove</span> the &#x27;either 6 or 12&#x27; branching.</span></li></ol>
     </div>
     <aside class="p-radar">
       <svg viewBox="0 0 180 180" width="180" height="180" class="radar-svg"><polygon points="90.0,75.6 102.5,82.8 102.5,97.2 90.0,104.4 77.5,97.2 77.5,82.8" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 114.9,75.6 114.9,104.4 90.0,118.8 65.1,104.4 65.1,75.6" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,46.8 127.4,68.4 127.4,111.6 90.0,133.2 52.6,111.6 52.6,68.4" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,32.4 139.9,61.2 139.9,118.8 90.0,147.6 40.1,118.8 40.1,61.2" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,18.0 152.4,54.0 152.4,126.0 90.0,162.0 27.6,126.0 27.6,54.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 114.9,75.6 102.5,97.2 90.0,104.4 65.1,104.4 40.1,61.2" fill="#60a5fa" fill-opacity="0.28" stroke="#60a5fa" stroke-width="1.6"/><text x="90.0" y="10.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity <tspan class="s-2" font-weight="700">2</tspan></text><text x="162.7" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel <tspan class="s-2" font-weight="700">2</tspan></text><text x="162.7" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff-fit <tspan class="s-1" font-weight="700">1</tspan></text><text x="90.0" y="178.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric <tspan class="s-1" font-weight="700">1</tspan></text><text x="17.3" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">verifier <tspan class="s-2" font-weight="700">2</tspan></text><text x="17.3" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean <tspan class="s-4" font-weight="700">4</tspan></text></svg>
@@ -1002,21 +1239,79 @@ Final answer: 25</pre>
 
   <details class="d-block">
     <summary>👉 Suggested next steps</summary>
-    <ul class="bullets"><li><span class="kw-verb">Rewrite</span> the question so exactly one quantity is asked — e.g. &#x27;How many total rides do Chase and Rider together take on a usual day?&#x27; — and define whether &#x27;rides&#x27; counts each person separately. — e.g. Chase and Rider each ride three times per day on five usual days of the week, and twice as often on each of the other two days. How many rides do the two of them take together on one usual day?</li><li>Either downgrade difficulty to match the arithmetic level, or replace the content with a problem appropriate to <span class="kw-level lv-research">Qualifying-exam-plus</span>.</li><li><span class="kw-verb">Fill in</span> title, domain, subtopic, contact, and replace all <span class="kw-warn">TODO</span> placeholders so the entry can be indexed.</li><li><span class="kw-verb">Add</span> a <span class="kw-good">deterministic</span> exact-match criterion against the single <span class="kw-good">canonical</span> answer. — e.g. Exact match against integer answer (e.g. 6). No partial credit.</li><li>Reduce to one <span class="kw-good">canonical</span> numeric answer matching the disambiguated statement; <span class="kw-verb">remove</span> the &#x27;either 6 or 12&#x27; branching.</li></ul>
+    <ul class="bullets"><li><span class="kw-verb">Rewrite</span> the question so exactly one quantity is asked — e.g. &#x27;How many total rides do Chase and Rider together take on a usual day?&#x27; — and define whether &#x27;rides&#x27; counts each person separately. — e.g. Chase and Rider each ride three times per day on five usual days of the week, and twice as often on each of the other two days. How many rides do the two of them take together on one usual day?</li><li>Either downgrade difficulty to match the arithmetic level, or replace the content with a problem appropriate to <span class="kw-level lv-research">Qualifying-exam-plus</span>.</li><li><span class="kw-verb">Fill in</span> title, domain, subtopic, contact, and replace all <span class="kw-warn">TODO</span> placeholders so the entry can be indexed.</li><li><span class="kw-verb">Add</span> a deterministic exact-match criterion against the single canonical answer. — e.g. Exact match against integer answer (e.g. 6). No partial credit.</li><li>Reduce to one canonical numeric answer matching the disambiguated statement; <span class="kw-verb">remove</span> the &#x27;either 6 or 12&#x27; branching.</li></ul>
   </details>
 
   <details class="d-block">
-    <summary>📄 Problem text (snapshot · annotated)</summary>
+    <summary>📄 Problem text (snapshot · annotated · raw .tex)</summary>
     <div class="tabs">
       <button class="tab active" data-target="snap-5">Snapshot</button>
       <button class="tab" data-target="annot-5">Annotated</button>
+      <button class="tab" data-target="tex-5">Raw .tex</button>
     </div>
     <div class="pane active" id="snap-5">
       <div class="statement">Chase and Rider each ride their bikes thrice a day for 5 days; but on two other days, they ride twice the times they do on usual days. How many rides did they take in one day a week?</div>
     </div>
     <div class="pane" id="annot-5">
       <div class="statement annot-host">Chase and Rider each ride their bikes thrice a day for 5 days; but on two other days, they ride twice the times they do on usual days. <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="Ambiguous on three axes: which day, combined vs per-person, and what &#x27;in one day a week&#x27; means grammatically.">How many rides did they take in one day a week?<span class="annot-bubble"><strong>ambiguity:</strong> <span class="kw-warn">Ambiguous</span> on three axes: which day, combined vs per-person, and what &#x27;in one day a week&#x27; means grammatically.</span></span></div>
-      <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Color = kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
+      <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
+    </div>
+    <div class="pane" id="tex-5">
+      <p class="dim small">Snapshot of the full .tex source at the time of review (content sha <code>b6ec0d69</code>). This is what was reviewed — won't drift if you edit the file later.</p>
+      <pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
+\begin{document}
+
+% Keep this file in sync with the matching problem_05_review.md sidecar.
+
+\problemsetup
+  {TODO: concise problem title (contributor_01 / problem_05)}
+  {TODO: Mathematics / Statistics / Data Science}
+  {TODO: subtopic}
+  {Qualifying-exam-plus}
+  {Zhixian Zhang}
+  {TODO: contributor contact}
+  {Draft}
+\problemtags
+  {TODO: compute / prove / diagnose / simulate / plan / debug}
+  {TODO: challenged capability}
+  {TODO: exact match / numerical tolerance / structural check / rubric-based / agent-as-judge / programmatic test}
+  {TODO: short observed failure mode}
+\begin{msbproblem}
+
+\begin{problemstatement}
+Chase and Rider each ride their bikes thrice a day for 5 days; but on two other days, they ride twice the times they do on usual days. How many rides did they take in one day a week?
+\end{problemstatement}
+
+\begin{answerkey}
+Chase and Rider each ride 3 times per day on the 5 usual days, so together they ride 3+3=6 times on each of those days.
+On the other 2 days, each rides twice as much — that is, 2×3=6 times per person — so together they ride 6+6=12 times on each of those days.
+
+Since the question does not specify which type of day, there are two possible answers:
+If that day is one of the 5 usual days: 6 rides (total for both).
+If that day is one of the other 2 days: 12 rides (total for both).
+
+Thus, without knowing which day, the answer must be either 6 or 12, depending on the type of day in the week.
+\end{answerkey}
+
+\begin{gradingscheme}
+%%
+\end{gradingscheme}
+
+\begin{editornotes}
+Suggested checks:
+\begin{itemize}
+\item Is every symbol defined?
+\item Does the rubric use exact answer / tolerance for objective questions or a structural / judge rubric for proof-style questions?
+\item Can the verifier grade deterministically, or at least be audited line by line from the written schema?
+\item Does the problem require non-routine reasoning?
+\item Does the matching review sidecar contain five raw model responses and a failure-mode summary?
+\end{itemize}
+\end{editornotes}
+
+\end{msbproblem}
+
+\end{document}
+</code></pre>
     </div>
   </details>
 
@@ -1202,7 +1497,7 @@ Given the phrasing, I believe the question is asking for the total weekly rides.
 
   <footer class="p-foot">
     <span class="dim small">Reviewed by <code>claude-opus-4-7</code> · 2026-05-28 08:16 UTC · content sha <code>b6ec0d69</code></span>
-    <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/master/contributors/contributor_01/problems/problem_05.tex" target="_blank">view .tex →</a>
+    <span class="dim small">.tex snapshot embedded above</span>
   </footer>
 </section>
 
@@ -1242,21 +1537,90 @@ Given the phrasing, I believe the question is asking for the total weekly rides.
 
   <details class="d-block">
     <summary>👉 Suggested next steps</summary>
-    <ul class="bullets"><li><span class="kw-verb">Replace</span> the arithmetic word problem with content appropriate to a <span class="kw-level lv-research">Qualifying-exam-plus</span> math/stats/DS benchmark. — e.g. e.g. a non-routine probability, inference, or proof problem from the contributor&#x27;s <span class="kw-level lv-research">research</span> area.</li><li><span class="kw-verb">Fill in</span> title, domain, subtopic, and verify the <span class="kw-level lv-research">Qualifying-exam-plus</span> difficulty tag matches the new content. — e.g. {Asymptotic variance of an M-estimator}{Statistics}{Asymptotic theory}{<span class="kw-level lv-research">Qualifying-exam-plus</span>}...</li><li><span class="kw-verb">Replace</span> all <span class="kw-warn">TODO</span> placeholders in \<span class="kw-section">problemtags</span> with concrete values. — e.g. {prove}{asymptotic reasoning under regularity conditions}{rubric-based}{conflates consistency with asymptotic normality}</li><li>Delete the unused rubric mode and fill in the remaining one with concrete criteria. — e.g. Mode A — Exact expected answer: <span class="kw-num">329</span>; Numerical tolerance: 0; Acceptable forms: \$<span class="kw-num">329</span>, <span class="kw-num">329</span> USD; <span class="kw-good">Deterministic</span> verifier: integer equality.</li><li>Flag contamination risk: this exact word problem appears in GSM8K and is almost certainly in pretraining corpora.</li></ul>
+    <ul class="bullets"><li><span class="kw-verb">Replace</span> the arithmetic word problem with content appropriate to a <span class="kw-level lv-research">Qualifying-exam-plus</span> math/stats/DS benchmark. — e.g. e.g. a non-routine probability, inference, or proof problem from the contributor&#x27;s <span class="kw-level lv-research">research</span> area.</li><li><span class="kw-verb">Fill in</span> title, domain, subtopic, and verify the <span class="kw-level lv-research">Qualifying-exam-plus</span> difficulty tag matches the new content. — e.g. {Asymptotic variance of an M-estimator}{Statistics}{Asymptotic theory}{<span class="kw-level lv-research">Qualifying-exam-plus</span>}...</li><li><span class="kw-verb">Replace</span> all <span class="kw-warn">TODO</span> placeholders in \<span class="kw-section">problemtags</span> with concrete values. — e.g. {prove}{asymptotic reasoning under regularity conditions}{rubric-based}{conflates consistency with asymptotic normality}</li><li>Delete the unused rubric mode and fill in the remaining one with concrete criteria. — e.g. Mode A — Exact expected answer: <span class="kw-num">329</span>; Numerical tolerance: 0; Acceptable forms: \$<span class="kw-num">329</span>, <span class="kw-num">329</span> USD; Deterministic verifier: integer equality.</li><li>Flag contamination risk: this exact word problem appears in GSM8K and is almost certainly in pretraining corpora.</li></ul>
   </details>
 
   <details class="d-block">
-    <summary>📄 Problem text (snapshot · annotated)</summary>
+    <summary>📄 Problem text (snapshot · annotated · raw .tex)</summary>
     <div class="tabs">
       <button class="tab active" data-target="snap-6">Snapshot</button>
       <button class="tab" data-target="annot-6">Annotated</button>
+      <button class="tab" data-target="tex-6">Raw .tex</button>
     </div>
     <div class="pane active" id="snap-6">
       <div class="statement">Mr.Grey is purchasing gifts for his family. So far he has purchased 3 polo shirts for \$26 each; 2 necklaces for \$83; and 2 computer game for \$90 each. Since Mr.Grey purchased all those using his credit card, he received a \$12 rebate. What is the total cost of the gifts after the rebate?</div>
     </div>
     <div class="pane" id="annot-6">
       <div class="statement annot-host"><span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="This problem is verbatim from GSM8K — frontier models will have memorized it. Strongly recommend replacing.">Mr.Grey is purchasing gifts for his family<span class="annot-bubble"><strong>ambiguity:</strong> This problem is verbatim from GSM8K — frontier models will have memorized it. Strongly recommend replacing.</span></span>. So far he has purchased 3 polo shirts for \$26 each; <span class="annot annot-nit" data-kind="nit" tabindex="0" data-comment="Slightly ambiguous: &#x27;\$83&#x27; could read as per-necklace; the answer key treats it as a total. Worth clarifying if the problem is kept.">2 necklaces for \$83<span class="annot-bubble"><strong>nit:</strong> Slightly <span class="kw-warn">ambiguous</span>: &#x27;\$83&#x27; could read as per-necklace; the answer key treats it as a total. Worth clarifying if the problem is kept.</span></span>; and 2 computer game for \$90 each. Since Mr.Grey purchased all those using his credit card, he received a \$12 rebate. What is the total cost of the gifts after the rebate?</div>
-      <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Color = kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
+      <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
+    </div>
+    <div class="pane" id="tex-6">
+      <p class="dim small">Snapshot of the full .tex source at the time of review (content sha <code>c084f44a</code>). This is what was reviewed — won't drift if you edit the file later.</p>
+      <pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
+\begin{document}
+
+% Keep this file in sync with the matching problem_06_review.md sidecar.
+
+\problemsetup
+  {TODO: concise problem title (contributor_01 / problem_06)}
+  {TODO: Mathematics / Statistics / Data Science}
+  {TODO: subtopic}
+  {Qualifying-exam-plus}
+  {Zhixian Zhang}
+  {TODO: contributor contact}
+  {Draft}
+\problemtags
+  {TODO: compute / prove / diagnose / simulate / plan / debug}
+  {TODO: challenged capability}
+  {TODO: exact match / numerical tolerance / structural check / rubric-based / agent-as-judge / programmatic test}
+  {TODO: short observed failure mode}
+\begin{msbproblem}
+
+\begin{problemstatement}
+Mr.Grey is purchasing gifts for his family. So far he has purchased 3 polo shirts for \$26 each; 2 necklaces for \$83; and 2 computer game for \$90 each. Since Mr.Grey purchased all those using his credit card, he received a \$12 rebate. What is the total cost of the gifts after the rebate?
+\end{problemstatement}
+
+\begin{answerkey}
+Mr.Grey bought 3 polo shirts for \$26 each, which is 3*26=\$78; 2 necklaces for \$83, which is the total price; and 2 computer games for \$90 each, which is 2*90=\$180. The total before the rebate is 78+83+180=\$341. After receiving a 12 rebate, the final cost is 341-12 = \$329.
+\end{answerkey}
+
+\begin{gradingscheme}
+Delete the rubric mode you are not using before submitting.
+
+\textbf{Mode A: multiple-choice / true-false / numerical answer}
+\begin{itemize}
+\item Exact expected answer:
+\item Numerical tolerance, if any:
+\item Acceptable equivalent forms, units, or rounding conventions:
+\item Deterministic verifier:
+\end{itemize}
+
+\textbf{Mode B: proof / derivation / analysis}
+\begin{enumerate}[label=\arabic*.]
+\item TODO: criterion 1 that a correct response must satisfy.
+\item TODO: criterion 2 covering the central derivation, proof step, or logical dependency.
+\item TODO: criterion 3 covering the final conclusion, edge cases, and correctness conditions.
+\item TODO: if using an agent-as-judge, state the pass/fail schema and the evidence the judge must cite.
+\end{enumerate}
+
+The oracle solution above must satisfy every criterion that remains in the final rubric. Do not rely on point totals or vibes-based grading.
+\end{gradingscheme}
+
+\begin{editornotes}
+Suggested checks:
+\begin{itemize}
+\item Is every symbol defined?
+\item Does the rubric use exact answer / tolerance for objective questions or a structural / judge rubric for proof-style questions?
+\item Can the verifier grade deterministically, or at least be audited line by line from the written schema?
+\item Does the problem require non-routine reasoning?
+\item Does the matching review sidecar contain five raw model responses and a failure-mode summary?
+\end{itemize}
+\end{editornotes}
+
+\end{msbproblem}
+
+\end{document}
+</code></pre>
     </div>
   </details>
 
@@ -1363,7 +1727,7 @@ Final answer: $412</pre>
 
   <footer class="p-foot">
     <span class="dim small">Reviewed by <code>claude-opus-4-7</code> · 2026-05-28 08:17 UTC · content sha <code>c084f44a</code></span>
-    <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/master/contributors/contributor_01/problems/problem_06.tex" target="_blank">view .tex →</a>
+    <span class="dim small">.tex snapshot embedded above</span>
   </footer>
 </section>
 
@@ -1375,7 +1739,14 @@ Final answer: $412</pre>
 
 </div>
 
-<!-- ── chatbot ──────────────────────────────────────────────── -->
+<!-- ── floating mini-ToC (problem switcher) ─────────────────── -->
+<button class="toc-fab" aria-label="jump to problem" aria-expanded="false" title="jump to problem">≡</button>
+<aside class="toc-panel" role="dialog" aria-label="problem list">
+  <div class="toc-head">Jump to problem</div>
+  <ul class="toc-list"><li><a href="#problem-2" class="tc-ready"><span class="tc-num">#02</span><span class="tc-glyph">✓</span><span class="tc-title">Smallest Terminating Decimal with Digit 9</span></a></li><li><a href="#problem-3" class="tc-revision"><span class="tc-num">#03</span><span class="tc-glyph">△</span><span class="tc-title">Relative Speed and Time Word Problem</span></a></li><li><a href="#problem-4" class="tc-revision"><span class="tc-num">#04</span><span class="tc-glyph">△</span><span class="tc-title">Dog Shelter Toys Problem</span></a></li><li><a href="#problem-5" class="tc-rework"><span class="tc-num">#05</span><span class="tc-glyph">✗</span><span class="tc-title">Problem #5 (untitled)</span></a></li><li><a href="#problem-6" class="tc-rework"><span class="tc-num">#06</span><span class="tc-glyph">✗</span><span class="tc-title">Problem #6 (untitled)</span></a></li></ul>
+</aside>
+
+<!-- ── chatbot (hidden until proxy live) ────────────────────── -->
 <button class="chat-fab" aria-label="open chat">💬 ask Claude about these reviews</button>
 <aside class="chat-drawer" aria-hidden="true">
   <header class="chat-head">
@@ -1507,11 +1878,15 @@ Benchmark (claude-haiku-4-5-20251001): FAIL
     if (pane) pane.classList.add('active');
   });
 
-  // ── nav-chip active-on-scroll ────────────────────────
+  // ── nav-chip + ToC-item active-on-scroll ─────────────
   var sections = Array.from(document.querySelectorAll('section.problem'));
   var chips = {};
+  var tocItems = {};
   document.querySelectorAll('.chip').forEach(function(c){
     chips[c.getAttribute('href').replace('#','')] = c;
+  });
+  document.querySelectorAll('.toc-list a').forEach(function(a){
+    tocItems[a.getAttribute('href').replace('#','')] = a;
   });
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(en){
@@ -1519,10 +1894,43 @@ Benchmark (claude-haiku-4-5-20251001): FAIL
       if (en.isIntersecting && chips[id]) {
         Object.values(chips).forEach(function(c){ c.classList.remove('active'); });
         chips[id].classList.add('active');
+        // Smooth-scroll the active chip into view within the chips container.
+        try { chips[id].scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'}); } catch(e){}
+        // Also mark the matching ToC item.
+        Object.values(tocItems).forEach(function(a){ a.classList.remove('active'); });
+        if (tocItems[id]) tocItems[id].classList.add('active');
       }
     });
   }, {rootMargin:'-30% 0px -55% 0px'});
   sections.forEach(function(s){ io.observe(s); });
+
+  // ── floating mini-ToC button ─────────────────────────
+  var fab = document.querySelector('.toc-fab');
+  var panel = document.querySelector('.toc-panel');
+  if (fab && panel) {
+    fab.addEventListener('click', function(){
+      var open = panel.classList.toggle('open');
+      fab.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    panel.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){
+        panel.classList.remove('open');
+        fab.setAttribute('aria-expanded', 'false');
+      });
+    });
+    document.addEventListener('click', function(e){
+      if (!panel.contains(e.target) && !fab.contains(e.target)) {
+        panel.classList.remove('open');
+        fab.setAttribute('aria-expanded', 'false');
+      }
+    });
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && panel.classList.contains('open')) {
+        panel.classList.remove('open');
+        fab.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
 
   // ── visit tracking ───────────────────────────────────
   var STORAGE = 'ai4sm-review-visits';
