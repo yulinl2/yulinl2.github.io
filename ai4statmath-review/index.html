@@ -106,7 +106,8 @@ body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
 .dashboard h2 { margin:0 0 12px; font-size:1.05em; color:var(--fg-muted); font-weight:600; }
 .dash-tiles { display:grid; grid-template-columns:repeat(auto-fit, minmax(110px, 1fr)); gap:12px; }
 .tile { background:var(--bg-soft); border-radius:8px; padding:10px 14px; }
-.tile .num { font-size:1.65em; font-weight:700; line-height:1; }
+.tile .num { font-size:1.8em; font-weight:700; line-height:1; }   /* panel R1 visual P2: tile numbers given more weight so they win the squint test over the dash radar */
+.dashboard .dash-radar svg polygon[fill="#60a5fa"] { fill-opacity:0.18; }  /* mute aggregate radar fill */
 .tile .lbl { font-size:.78em; color:var(--fg-dim); margin-top:3px; }
 .tile.t-ready    .num { color:var(--c-ready); }
 .tile.t-revision .num { color:var(--c-revision); }
@@ -213,13 +214,16 @@ section.problem[data-verdict="in-progress"] {
 .kw-num     { font-family:"SF Mono",Consolas,monospace; color:var(--fg);
               font-weight:600; font-size:.94em; }
 
-/* Difficulty levels keep tinted chip — they are a CATEGORY, not just emphasis. */
+/* Difficulty levels: neutral chip on a single violet ramp (panel R1 visual P2:
+   the previous green/amber/red reused the status palette and made the eye
+   parse a level mention as a verdict). Now uses a non-status hue so it
+   cannot be confused with ready/revision/rework. */
 .kw-level   { font-weight:600; padding:1px 6px; border-radius:3px;
               font-size:.88em; background:var(--bg-accent); color:var(--fg); }
-.kw-level.lv-basic        { background:rgba(52,211,153,.18); }
-.kw-level.lv-intermediate { background:rgba(251,191,36,.18); }
-.kw-level.lv-advanced     { background:rgba(249,115,22,.22); }
-.kw-level.lv-research     { background:rgba(248,113,113,.22); }
+.kw-level.lv-basic        { background:rgba(167,139,250,.10); }
+.kw-level.lv-intermediate { background:rgba(167,139,250,.18); }
+.kw-level.lv-advanced     { background:rgba(167,139,250,.28); }
+.kw-level.lv-research     { background:rgba(167,139,250,.38); }
 
 /* dimension score color coding (used in radar labels) */
 .s-1 { fill:#f87171; }
@@ -237,7 +241,8 @@ section.problem[data-verdict="in-progress"] {
 .pane.active { display:block; }
 .statement { font-family:"Georgia","Cambria",serif; font-size:1.02em; line-height:1.65;
              background:var(--bg); padding:14px 18px; border-radius:6px;
-             white-space:pre-wrap; word-break:break-word; }
+             white-space:pre-wrap; word-break:break-word;
+             max-width:72ch;  /* panel R1 visual P3: comfortable reading measure for math-heavy serif text (was running ~110ch at full column width) */ }
 
 .annot { background:rgba(96,165,250,0.14); border-radius:3px; cursor:help;
          position:relative; padding:0 2px; }
