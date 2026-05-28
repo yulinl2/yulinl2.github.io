@@ -65,7 +65,10 @@ body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
 .chip-revision { border-left:3px solid var(--c-revision); }
 .chip-rework   { border-left:3px solid var(--c-rework); }
 .chip-stub     { border-left:3px solid var(--c-stub); }
-.nav-chat { display:none; }  /* re-enable when chat proxy is live */
+.nav-chat { flex:0 0 auto; background:var(--primary); color:#0f172a;
+            padding:6px 12px; border-radius:6px; border:none; font-weight:600;
+            font-size:.88em; cursor:pointer; white-space:nowrap; }
+.nav-chat:hover { filter:brightness(1.1); }
 
 /* ── container ─────────────────────────────────────────────────── */
 .container { max-width:980px; margin:0 auto; padding:24px 18px 80px; }
@@ -112,6 +115,9 @@ section.problem[data-verdict="needs-major-rework"] {
   background:linear-gradient(180deg, rgba(248,113,113,0.05) 0%, var(--bg-card) 80px); }
 section.problem[data-verdict="template-stub"] {
   border-left-color:var(--c-stub); }
+section.problem[data-verdict="in-progress"] {
+  border-left-color:#60a5fa;
+  background:linear-gradient(180deg, rgba(96,165,250,0.05) 0%, var(--bg-card) 80px); }
 .p-head { display:flex; justify-content:space-between; gap:14px; align-items:flex-start;
           flex-wrap:wrap; }
 .p-title { display:flex; align-items:baseline; gap:10px; }
@@ -128,6 +134,7 @@ section.problem[data-verdict="template-stub"] {
 .pill.v-revision { background:#78350f; color:#fde68a; }
 .pill.v-rework   { background:#7f1d1d; color:#fecaca; }
 .pill.v-stub     { background:#374151; color:#d1d5db; }
+.pill.v-progress { background:#1e3a8a; color:#bfdbfe; }
 
 .p-cols { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:20px;
           align-items:center; margin:14px 0 8px; }
@@ -278,36 +285,33 @@ footer.page-foot { margin-top:40px; padding-top:22px; border-top:1px solid var(-
                    color:var(--fg-dim); font-size:.85em; text-align:center; }
 footer.page-foot a { color:var(--primary); text-decoration:none; }
 
-/* ── floating mini-ToC (problem switcher, fingertip-accessible) ── */
-.toc-fab { position:fixed; right:16px; bottom:16px; background:var(--bg-card);
-           color:var(--fg); border:1px solid var(--border); border-radius:50%;
-           width:54px; height:54px; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.45);
-           z-index:60; font-size:1.4em; display:flex; align-items:center;
-           justify-content:center; transition:transform .15s, background .15s; }
-.toc-fab:hover { background:var(--bg-accent); transform:translateY(-2px); }
-.toc-fab[aria-expanded="true"] { background:var(--primary); color:#0f172a; }
-.toc-panel { position:fixed; right:16px; bottom:78px; max-width:300px; min-width:240px;
-             background:var(--bg-card); border:1px solid var(--border);
-             border-radius:12px; box-shadow:0 10px 28px rgba(0,0,0,.5); z-index:59;
-             padding:10px 0; display:none; }
-.toc-panel.open { display:block; animation:tocPop .18s ease-out; }
-@keyframes tocPop { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
-.toc-head { padding:4px 14px 8px; border-bottom:1px solid var(--border);
-            color:var(--fg-dim); font-size:.78em; }
-.toc-list { list-style:none; margin:0; padding:6px 0; max-height:50vh; overflow-y:auto; }
-.toc-list a { display:flex; gap:8px; align-items:center; padding:9px 14px;
-              color:var(--fg); text-decoration:none; font-size:.94em;
-              border-left:3px solid transparent; }
-.toc-list a:hover { background:var(--bg-soft); }
-.toc-list a.active { border-left-color:var(--primary); background:var(--bg-soft); }
-.toc-list .tc-num { font-family:"SF Mono",Consolas,monospace; font-size:.84em;
-                    color:var(--fg-dim); min-width:32px; }
-.toc-list .tc-glyph { font-size:.9em; }
-.toc-list .tc-title { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.toc-list .tc-ready    .tc-glyph { color:var(--c-ready); }
-.toc-list .tc-revision .tc-glyph { color:var(--c-revision); }
-.toc-list .tc-rework   .tc-glyph { color:var(--c-rework); }
-.toc-list .tc-stub     .tc-glyph { color:var(--c-stub); }
+/* ── compact bottom-right problem rail ─────────────────────────── */
+/* Always-expanded vertical stack of pills. Background is transparent;
+   only the pills themselves carry slight opacity so the page shows
+   through the gaps. Small fonts. Fingertip-tappable on mobile. */
+.rail { position:fixed; right:10px; bottom:14px; z-index:60;
+        display:flex; flex-direction:column; gap:4px;
+        background:transparent; max-height:calc(100vh - 32px); overflow-y:auto;
+        scrollbar-width:none; }
+.rail::-webkit-scrollbar { display:none; }
+.rail-item { display:flex; align-items:center; gap:5px;
+             padding:3px 9px; border-radius:11px; font-size:.72em;
+             background:rgba(15,23,42,0.62); color:var(--fg-muted);
+             text-decoration:none; font-variant-numeric:tabular-nums;
+             border:1px solid rgba(255,255,255,0.05);
+             backdrop-filter:blur(6px);
+             transition:background .12s, color .12s, transform .12s; }
+.rail-item:hover { background:rgba(30,41,59,0.92); color:var(--fg);
+                   transform:translateX(-1px); }
+.rail-item.active { background:rgba(30,41,59,0.95); color:var(--fg);
+                    border-color:var(--primary); }
+.rail-item .rl-num { font-family:"SF Mono",Consolas,monospace; }
+.rail-item .rl-glyph { font-size:.95em; }
+.rail-item.rl-ready    .rl-glyph { color:var(--c-ready); }
+.rail-item.rl-revision .rl-glyph { color:var(--c-revision); }
+.rail-item.rl-rework   .rl-glyph { color:var(--c-rework); }
+.rail-item.rl-stub     .rl-glyph { color:var(--c-stub); }
+.rail-item.rl-progress .rl-glyph { color:#60a5fa; }
 
 /* ── chatbot drawer (kept in DOM but hidden until proxy ready) ─── */
 .chat-fab { display:none; }   /* re-enable by setting display:flex when proxy is configured */
