@@ -1356,15 +1356,17 @@ Final answer: $412</pre>
     </div>
   </header>
   <div class="chat-settings-panel">
-    <label for="chat-api-key">Anthropic API key (stored locally, never sent to github)</label>
-    <input id="chat-api-key" type="password" autocomplete="off" placeholder="sk-ant-…">
+    <div id="chat-api-key-row">
+      <label for="chat-api-key">Anthropic API key (stored locally, never sent to github)</label>
+      <input id="chat-api-key" type="password" autocomplete="off" placeholder="sk-ant-…">
+    </div>
     <label for="chat-model">Model (lower-cost models recommended)</label>
     <select id="chat-model">
       <option value="claude-haiku-4-5-20251001">Haiku 4.5 (~$0.005/turn — recommended)</option>
       <option value="claude-sonnet-4-6">Sonnet 4.6 (~$0.025/turn)</option>
       <option value="claude-opus-4-7">Opus 4.7 (~$0.075/turn)</option>
     </select>
-    <p class="hint">Your key never leaves your browser. Each chat turn costs ~$0.005-0.08 depending on model. Get a key at <a href="https://console.anthropic.com" target="_blank" style="color:var(--primary)">console.anthropic.com</a>.</p>
+    <p class="hint" id="chat-key-hint">Your key never leaves your browser. Each chat turn costs ~$0.005-0.08 depending on model. Get a key at <a href="https://console.anthropic.com" target="_blank" style="color:var(--primary)">console.anthropic.com</a>.</p>
   </div>
   <div class="chat-body"></div>
   <div class="chat-input">
@@ -1548,6 +1550,16 @@ Benchmark (claude-haiku-4-5-20251001): FAIL
   var sysCtx = document.querySelector('#chat-system-context').textContent;
   if (!fab) return;
 
+  var PROXY = window.AI4SM_CHAT_PROXY || null;
+  var SITE_TOKEN = window.AI4SM_CHAT_SITE_TOKEN || null;
+  // In proxy mode the key input is hidden — no per-user key needed.
+  if (PROXY) {
+    var keyRow = document.querySelector('#chat-api-key-row');
+    if (keyRow) keyRow.style.display = 'none';
+    var hint = document.querySelector('#chat-key-hint');
+    if (hint) hint.innerHTML = 'Powered by the AI4Stat/Math chat proxy — no setup required. Per-IP daily limit applies; cost is on the project bill.';
+  }
+
   function settings(){
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e){ return {}; }
   }
@@ -1620,9 +1632,9 @@ Benchmark (claude-haiku-4-5-20251001): FAIL
     var msg = textarea.value.trim();
     if (!msg) return;
     var s = settings();
-    if (!s.apiKey) {
+    if (!PROXY && !s.apiKey) {
       settingsPanel.classList.add('open');
-      addMsg('error', 'No API key set. Add one in the settings panel ⚙ first.');
+      addMsg('error', 'No API key set. Add one in the settings panel ⚙ first — or ask the project lead to enable the chat proxy.');
       return;
     }
     textarea.value = '';
@@ -1632,14 +1644,23 @@ Benchmark (claude-haiku-4-5-20251001): FAIL
     var hist = history().filter(function(m){ return m.role === 'user' || m.role === 'assistant'; });
     var messages = hist.map(function(m){ return {role: m.role, content: m.content}; });
     try {
-      var resp = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
+      var url, headers;
+      if (PROXY) {
+        url = PROXY;
+        headers = { 'content-type': 'application/json' };
+        if (SITE_TOKEN) headers['x-ai4sm-site-token'] = SITE_TOKEN;
+      } else {
+        url = 'https://api.anthropic.com/v1/messages';
+        headers = {
           'x-api-key': s.apiKey,
           'anthropic-version': '2023-06-01',
           'anthropic-dangerous-direct-browser-access': 'true',
           'content-type': 'application/json',
-        },
+        };
+      }
+      var resp = await fetch(url, {
+        method: 'POST',
+        headers: headers,
         body: JSON.stringify({
           model: s.model || 'claude-haiku-4-5-20251001',
           max_tokens: 1500,
