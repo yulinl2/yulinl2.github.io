@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>AI4Stat/Math — taxonomy</title>
+<style>
+:root { color-scheme:dark; --fg:#e5e7eb; --fg-dim:#94a3b8; --fg-muted:#cbd5e1;
+        --bg:#0f172a; --bg-card:#1e293b; --bg-soft:#162033; --bg-accent:#334155;
+        --border:#334155; --primary:#60a5fa; --c-ready:#34d399; --c-revision:#fbbf24; }
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; scroll-padding-top:74px; }
+body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+       background:var(--bg); color:var(--fg); line-height:1.55; font-size:15px; }
+.navbar { position:sticky; top:0; z-index:50; background:rgba(15,23,42,.92);
+          backdrop-filter:saturate(160%) blur(10px); border-bottom:1px solid var(--border); }
+.nav-inner { max-width:1180px; margin:0 auto; padding:10px 18px;
+             display:flex; align-items:center; gap:14px; flex-wrap:nowrap; }
+.nav-brand { font-weight:700; font-size:.95em; white-space:nowrap; }
+.nav-brand .sub { color:var(--fg-dim); font-weight:400; font-size:.86em; margin-left:8px; }
+.nav-links { display:flex; gap:4px; overflow-x:auto; flex:1; min-width:0; }
+.nav-links a { display:inline-block; padding:5px 11px; border-radius:6px;
+                font-size:.84em; color:var(--fg-muted); text-decoration:none; white-space:nowrap; }
+.nav-links a:hover, .nav-links a.active { color:var(--fg); background:var(--bg-card); }
+.nav-back { background:var(--bg-card); color:var(--fg); padding:5px 11px;
+            border-radius:6px; text-decoration:none; font-size:.84em;
+            border:1px solid var(--border); white-space:nowrap; }
+.nav-back:hover { border-color:var(--primary); color:var(--primary); }
+@media (max-width:720px) {
+  .nav-inner { flex-wrap:wrap; }
+  .nav-back  { order:1; margin-left:auto; }
+  .nav-links { order:2; flex-basis:100%; margin-top:4px; padding-bottom:2px; }
+}
+.container { max-width:1180px; margin:0 auto; padding:24px 18px 80px; }
+.hero { background:linear-gradient(135deg, var(--bg-card), var(--bg-soft));
+        border:1px solid var(--border); border-radius:14px; padding:22px 26px; margin:14px 0 22px; }
+.hero h1 { margin:0 0 .35rem; font-size:1.5rem; }
+.hero-sub { color:var(--fg-dim); font-size:.94em; }
+h2 { font-size:1.25rem; margin-top:2rem; border-bottom:1px solid var(--border);
+     padding-bottom:.4rem; scroll-margin-top:80px; }
+h3 { margin-top:1rem; font-size:1rem; color:var(--fg); }
+.section-lede { color:var(--fg-muted); font-size:.92em; margin:.2rem 0 1rem; }
+.interp-table { width:100%; border-collapse:collapse; }
+.interp-table tr { border-bottom:1px solid var(--border); }
+.interp-table tr:last-child { border-bottom:none; }
+.interp-table td { padding:6px 10px; vertical-align:top; }
+.interp-table td.il { color:var(--fg-muted); font-size:.92em; width:25%; }
+.interp-table td.ir { color:var(--fg); font-size:.94em; }
+.interp-table td.ir strong { color:var(--primary); }
+.interp-table td.ir code { font-size:.92em; }
+@media(max-width:640px){ .interp-table td.il { width:auto; } .interp-table td { display:block; } }
+.table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch;
+              border:1px solid var(--border); border-radius:8px;
+              background:var(--bg-card); margin:8px 0; }
+table { border-collapse:collapse; min-width:100%; font-size:.9em; }
+th, td { padding:7px 11px; text-align:left; border-bottom:1px solid var(--border);
+         vertical-align:top; }
+th { background:var(--bg-accent); font-weight:600; font-size:.84em;
+     color:var(--fg-muted); position:sticky; top:0; z-index:1; }
+td.n, th.n { text-align:right; font-variant-numeric:tabular-nums; }
+.dim { color:var(--fg-dim); }
+.small { font-size:.84em; }
+code { font-family:"SF Mono",Consolas,monospace; color:var(--primary); }
+.pill { display:inline-block; padding:1px 8px; border-radius:5px; font-size:.78em; font-weight:600; }
+.pill.v-ready    { background:#064e3b; color:#a7f3d0; }
+.pill.v-revision { background:#78350f; color:#fde68a; }
+article.proposal { background:var(--bg-card); border:1px solid var(--border);
+                   border-left:4px solid var(--c-revision); border-radius:12px;
+                   padding:18px 22px; margin:18px 0; }
+.prop-head { display:flex; justify-content:space-between; align-items:flex-start;
+             gap:14px; flex-wrap:wrap; }
+.prop-head h3 { margin:0 0 4px; font-size:1.05rem; }
+.prop-meta { color:var(--fg-dim); font-size:.86em; }
+.prop-link { color:var(--primary); font-size:.86em; text-decoration:none; }
+.prop-link:hover { text-decoration:underline; }
+.prop-summary { color:var(--fg-muted); margin:10px 0; padding:10px 14px;
+                background:var(--bg-soft); border-radius:6px; font-size:.94em; }
+details.prop-section { margin:8px 0; background:var(--bg-soft); border-radius:8px;
+                       padding:6px 14px; }
+details.prop-section > summary { cursor:pointer; color:var(--fg-muted);
+                                  font-size:.94em; padding:4px 0; font-weight:500; }
+ul.bullets { margin:8px 0; padding-left:22px; font-size:.92em; }
+ul.bullets li { margin:5px 0; }
+footer.page-foot { margin-top:40px; padding-top:22px; border-top:1px solid var(--border);
+                   color:var(--fg-dim); font-size:.85em; text-align:center; }
+footer.page-foot a { color:var(--primary); }
+</style></head><body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <div class="nav-brand">Taxonomy <span class="sub">· AI4Stat/Math</span></div>
+    <div class="nav-links">
+      <a href="#tldr">TL;DR</a>
+      <a href="#canonical">Canonical</a>
+      <a href="#proposals">Proposals</a>
+      <a href="#sibling">Sibling</a>
+    </div>
+    <a class="nav-back" href="../">← hub</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<header class="hero">
+  <h1>🌲 Taxonomy</h1>
+  <table class="interp-table" style="margin:8px 0 0">
+    <tr><td class="il">Current canonical</td><td class="ir">v<strong>0.1.0</strong> · last updated 2026-05-28T00:00:00Z · <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/lit-review/data/taxonomy/canonical.yaml" target="_blank"><code>data/taxonomy/canonical.yaml</code></a></td></tr>
+    <tr><td class="il">Pending proposals</td><td class="ir">1 (LLM-drafted, pending lead review)</td></tr>
+    <tr><td class="il">How proposals are made</td><td class="ir"><code>python3 -m agents.taxonomy_curator.run</code> — calls Opus/Sonnet/Haiku on the current canonical + contributor tag inventory, emits a strict-JSON diff</td></tr>
+    <tr><td class="il">How proposals are accepted</td><td class="ir">Manual edit to <code>data/taxonomy/canonical.yaml</code> + version bump. No auto-merge — every accepted delta gets lead sign-off.</td></tr>
+  </table>
+</header>
+
+<section id="tldr">
+  <h2>📖 TL;DR</h2>
+  <table class="interp-table">
+    <tr><td class="il">Domains</td><td class="ir">3 (Mathematics, Statistics, Data Science)</td></tr>
+    <tr><td class="il">Subtopics (all domains)</td><td class="ir">46 total</td></tr>
+    <tr><td class="il">Verb tags</td><td class="ir">8 (<code>compute</code>, <code>prove</code>, <code>diagnose</code>, <code>simulate</code>, <code>plan</code>, <code>debug</code>, <code>explain</code>, <code>counterexample</code>)</td></tr>
+    <tr><td class="il">Capability tags</td><td class="ir">9</td></tr>
+    <tr><td class="il">Grading modes</td><td class="ir"><code>exact</code>, <code>tolerance</code>, <code>structural</code>, <code>rubric</code>, <code>programmatic</code>, <code>judge</code></td></tr>
+    <tr><td class="il">Difficulty levels</td><td class="ir"><code>Basic</code>, <code>Intermediate</code>, <code>Advanced</code>, <code>Research</code></td></tr>
+  </table>
+</section>
+
+<section id="canonical">
+  <h2>📚 Canonical taxonomy</h2>
+  <h3>Domains × subtopics</h3>
+  <div class="table-wrap"><table><thead><tr><th>domain</th><th>description</th><th class="n">N</th><th>subtopics</th></tr></thead><tbody><tr><td><strong>Mathematics</strong></td><td class="dim small">Pure / applied mathematics outside of statistics</td><td class="n">14</td><td><code>Algebra</code>, <code>Number theory</code>, <code>Combinatorics</code>, <code>Calculus / real analysis</code>, <code>Linear algebra</code>, <code>Differential equations</code>, <code>Complex analysis</code>, <code>Topology</code>, <code>Geometry</code>, <code>Discrete math</code>, <code>Optimization (deterministic)</code>, <code>Asymptotic / perturbation methods</code>, <code>Numerical analysis</code>, <code>Mathematical logic</code></td></tr><tr><td><strong>Statistics</strong></td><td class="dim small">Probability, inference, modeling, decision theory</td><td class="n">18</td><td><code>Probability theory</code>, <code>Distributions</code>, <code>Estimation (point + interval)</code>, <code>Hypothesis testing</code>, <code>Bayesian inference</code>, <code>Bayesian computation (MCMC / SMC / variational)</code>, <code>Regression (linear / GLM)</code>, <code>Nonparametric methods</code>, <code>Survival analysis</code>, <code>Multivariate analysis</code>, <code>Time series</code>, <code>Causal inference</code>, <code>Robust statistics</code>, <code>Decision theory</code>, <code>Experimental design</code>, <code>Stochastic processes</code>, <code>Hierarchical / mixed models</code>, <code>High-dimensional statistics</code></td></tr><tr><td><strong>Data Science</strong></td><td class="dim small">ML, signal processing, applied data work</td><td class="n">14</td><td><code>Supervised learning</code>, <code>Unsupervised learning</code>, <code>Reinforcement learning</code>, <code>Deep learning theory</code>, <code>Feature engineering</code>, <code>Model evaluation</code>, <code>Data cleaning / wrangling</code>, <code>Information retrieval</code>, <code>Recommender systems</code>, <code>Time-series ML</code>, <code>Anomaly detection</code>, <code>NLP / text analytics</code>, <code>Computer vision</code>, <code>Privacy / fairness</code></td></tr></tbody></table></div>
+  <h3>Verb tags <span class="dim">(what the problem asks the solver to DO)</span></h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>name</th><th>description</th></tr></thead>
+    <tbody><tr><td><code>compute</code></td><td>produce a specific numeric, symbolic, or set-valued answer</td></tr><tr><td><code>prove</code></td><td>provide a formal derivation, theorem proof, or contradiction</td></tr><tr><td><code>diagnose</code></td><td>identify what&#x27;s wrong / what assumption fails / what to fix</td></tr><tr><td><code>simulate</code></td><td>write or describe a Monte Carlo / numerical experiment</td></tr><tr><td><code>plan</code></td><td>design an experiment, study, or analysis pipeline</td></tr><tr><td><code>debug</code></td><td>locate and fix an error in given code, derivation, or argument</td></tr><tr><td><code>explain</code></td><td>give a conceptual answer in prose with no fixed key</td></tr><tr><td><code>counterexample</code></td><td>construct an example that disproves a stated claim</td></tr></tbody>
+  </table></div>
+  <h3>Capability tags <span class="dim">(which AI capability is being probed)</span></h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>name</th><th>description</th></tr></thead>
+    <tbody><tr><td><code>numerical reasoning</code></td><td>arithmetic, algebraic manipulation under uncertainty / rounding</td></tr><tr><td><code>symbolic manipulation</code></td><td>closed-form algebraic / calculus operations</td></tr><tr><td><code>probabilistic reasoning</code></td><td>handling uncertainty, conditional probability, Bayes</td></tr><tr><td><code>spatial / geometric</code></td><td>diagrams, transformations, topology</td></tr><tr><td><code>combinatorial counting</code></td><td>enumeration, generating functions, partitions</td></tr><tr><td><code>abstract reasoning</code></td><td>proofs requiring structure / induction / contradiction</td></tr><tr><td><code>domain transfer</code></td><td>applying methods from one field to another setting</td></tr><tr><td><code>trap recognition</code></td><td>detecting that a question is malformed / under-determined</td></tr><tr><td><code>long-context reasoning</code></td><td>multi-step problems requiring tracking of many entities</td></tr></tbody>
+  </table></div>
+</section>
+
+<section id="proposals">
+  <h2>📨 Pending proposals</h2>
+  <p class="section-lede">Each card = one LLM proposal run. Click any section heading to expand.</p>
+  
+<article class="proposal" id="prop-data_taxonomy_proposals_2026-05-28T0637-proposal_json">
+  <header class="prop-head">
+    <div>
+      <h3>Proposal · 2026-05-28 06:37 UTC</h3>
+      <div class="prop-meta">vs canonical <code>0.1.0</code> · by <code>claude-haiku-4-5-20251001</code> · cost $0.0089 · status: <span class="pill v-revision">pending review</span></div>
+    </div>
+    <div class="prop-actions">
+      <a class="prop-link" href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/lit-review/data/taxonomy/proposals/2026-05-28T0637-proposal.json" target="_blank">view JSON ↗</a>
+    </div>
+  </header>
+  <p class="prop-summary">Minimal proposal: add 3 missing subtopics (Arithmetic, Asymptotic/perturbation methods already canonical but not yet used), clarify capability tag naming, and flag whitespace in experimental design &amp; trap-recognition coverage.</p>
+  <details class="prop-section" open><summary>➕ Added subtopics <span class="dim">(1)</span></summary><div class="table-wrap"><table><tr><td><code>Mathematics</code></td><td><strong>Arithmetic</strong></td><td class="dim">2 submissions tagged &#x27;Arithmetic&#x27;; distinct from Number Theory (more elementary, computational focus).</td></tr></table></div></details>
+  <details class="prop-section" open><summary>✎ Renamed subtopics <span class="dim">(1)</span></summary><div class="table-wrap"><table><tr><td><code>Statistics</code></td><td><span class="dim">Asymptotic / perturbation methods</span> → <strong>Asymptotic analysis / perturbation methods</strong></td><td class="dim">HARDMath precedent uses &#x27;asymptotic&#x27; as primary term; clarifies scope (boundary layers, multi-scale, WKB).</td></tr></table></div></details>
+  <details class="prop-section" open><summary>⊕ Merged subtopics <span class="dim">(1)</span></summary><div class="table-wrap"><table><tr><td><code>Mathematics</code></td><td><span class="dim">Algebra, Algebra / Functions</span> → <strong>Algebra</strong></td><td class="dim">Submission tag &#x27;Algebra / Functions&#x27; is a variant of canonical &#x27;Algebra&#x27;; no separate subtopic needed.</td></tr></table></div></details>
+  <details class="prop-section" open><summary>➕ Added capability tags <span class="dim">(2)</span></summary><div class="table-wrap"><table><tr><td><strong>combinatorial reasoning</strong></td><td>enumeration, counting arguments, generating functions, Ramsey-type logic</td><td class="dim">Submission inventory shows &#x27;Combinatorial Reasoning&#x27; (1 use); canonical only has &#x27;combinatorial counting&#x27;. Broader term aligns with Combinatorics / Ramsey Theory submission.</td></tr><tr><td><strong>algebraic manipulation</strong></td><td>symbolic equation solving, function composition, polynomial / rational simplification</td><td class="dim">Submission inventory shows &#x27;Algebraic Manipulation / Optimization&#x27; (1 use); currently split across &#x27;symbolic manipulation&#x27; and &#x27;optimization&#x27; capabilities.</td></tr></table></div></details>
+  
+  <details class="prop-section"><summary>🌐 Whitespace observations <span class="dim">(5)</span></summary><div class="table-wrap"><table><thead><tr><th>area</th><th>evidence</th><th>suggestion</th></tr></thead><tbody><tr><td><strong>Difficulty levels</strong></td><td>Submissions use &#x27;Medium&#x27; and &#x27;Qualifying-exam-plus&#x27; but canonical defines &#x27;Basic / Intermediate / Advanced / Research&#x27;. No alignment.</td><td>Map submissions to canonical levels or add &#x27;Qualifying-exam&#x27; as intermediate-advanced bridge; clarify &#x27;Research&#x27; scope.</td></tr><tr><td><strong>Trap recognition / malformed problems</strong></td><td>MathTrap-public (208 problems) defines 5 trap categories; canonical has &#x27;trap recognition&#x27; capability but no verb or subtopic for trap-detection tasks.</td><td>Consider adding &#x27;identify-trap&#x27; verb tag or &#x27;Problem malformedness&#x27; subtopic under Mathematics if benchmark will include adversarial / trick problems.</td></tr><tr><td><strong>Experimental design coverage</strong></td><td>Canonical includes &#x27;Experimental design&#x27; subtopic under Statistics but no submissions yet; StatEval-public includes design-of-experiments.</td><td>Experimental design subtopic is well-placed; monitor for submissions. No action needed yet.</td></tr><tr><td><strong>Ramsey theory / extremal combinatorics</strong></td><td>Submission &#x27;Combinatorics / Ramsey Theory&#x27; (1 use) suggests specialized combinatorial logic beyond generic &#x27;Combinatorics&#x27;.</td><td>Consider renaming canonical &#x27;Combinatorics&#x27; → &#x27;Combinatorics / Ramsey theory&#x27; or add as separate subtopic if submissions grow.</td></tr><tr><td><strong>Grading mode coverage</strong></td><td>All 5 filled submissions use &#x27;exact match&#x27; grading; canonical defines 6 modes. No rubric / programmatic / judge problems yet.</td><td>Grading modes are well-defined; monitor adoption as benchmark scales. Likely to see rubric/judge for proof/explain tasks.</td></tr></tbody></table></div></details>
+  <details class="prop-section"><summary>❓ Open questions <span class="dim">(4)</span></summary><ul class="bullets"><li><strong>Should &#x27;Qualifying-exam-plus&#x27; difficulty map to &#x27;Advanced&#x27; or &#x27;Research&#x27;, or warrant a new level?</strong> <span class='dim'>Submissions use &#x27;Medium&#x27; and &#x27;Qualifying-exam-plus&#x27; but canonical has 4 discrete levels. Unclear if &#x27;Qualifying-exam-plus&#x27; is a variant of Advanced or a distinct tier.</span></li><li><strong>Is &#x27;Combinatorics / Ramsey Theory&#x27; a one-off or signal of demand for extremal combinatorics as a separate subtopic?</strong> <span class='dim'>Only 1 submission so far; too early to split. Recommend monitoring next 10–20 submissions before proposing rename.</span></li><li><strong>Will benchmark include adversarial / trap-detection problems, or is &#x27;trap recognition&#x27; capability only for solver robustness?</strong> <span class='dim'>MathTrap-public exists as precedent; if AI4Stat/Math adopts trap-detection as a task type, verb/subtopic structure should reflect it.</span></li><li><strong>Should &#x27;Optimization (deterministic)&#x27; subtopic be split into &#x27;Convex optimization&#x27; and &#x27;Nonconvex / heuristic optimization&#x27;?</strong> <span class='dim'>No submissions yet, but optimization is a major ML/stats topic. Deferring until submissions clarify scope.</span></li></ul></details>
+</article>
+
+</section>
+
+<section id="sibling">
+  <h2>🔗 Sibling audits</h2>
+  <table class="interp-table">
+    <tr><td class="il">Agent audit</td><td class="ir"><a href="../agent-audit/">↗ /agent-audit/</a> — reviewer / verifier / harness quality</td></tr>
+    <tr><td class="il">Contributor reviews</td><td class="ir"><a href="../">↗ Auto-review hub</a></td></tr>
+    <tr><td class="il">Main lit-review</td><td class="ir"><a href="../../ai4statmath-litreview/">↗ lit-review</a></td></tr>
+  </table>
+</section>
+
+<footer class="page-foot">
+  <p>Generated by <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/lit-review/agents/_audit/build_taxonomy_viewer.py" target="_blank">agents/_audit/build_taxonomy_viewer.py</a> · 2026-05-28 12:06 UTC</p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var links = {};
+  document.querySelectorAll('.nav-links a').forEach(function(a){
+    links[a.getAttribute('href').replace('#','')] = a;
+  });
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (en.isIntersecting && links[en.target.id]) {
+        Object.values(links).forEach(function(l){ l.classList.remove('active'); });
+        links[en.target.id].classList.add('active');
+      }
+    });
+  }, {rootMargin:'-25% 0px -65% 0px'});
+  document.querySelectorAll('section[id]').forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body></html>
