@@ -373,6 +373,12 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
   .rail-tl-inner { gap:1px; }
   .rail-bullet { padding:4px 9px; }
   .rail-bullet .rl-title { font-size:.94em; }
+  /* Scrub hint: when JS activates, add a thin colored stripe on the
+     left edge of the rail telling the thumb "you can drag here". */
+  .rail-tl.rail-scrubbable .rail-tl-inner {
+    position:relative;
+    box-shadow:inset 2px 0 0 0 rgba(96,165,250,0.35);
+  }
 }
 @media (max-width:420px) {
   .rail-tl { width:130px; }
@@ -490,7 +496,7 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
     <div class="hub-tile t-rework"><div class="num">0</div><div class="lbl">rework ✗</div></div>
     <div class="hub-tile t-progress"><div class="num">2</div><div class="lbl">in progress ✎</div></div>
     <div class="hub-tile t-info"><div class="num">5/5</div><div class="lbl">verifiers ✓</div></div>
-    <div class="hub-tile"><div class="num">1/5</div><div class="lbl">LLM passed</div></div>
+    <div class="hub-tile"><div class="num">1/5</div><div class="lbl" title="LOWER is better — the goal is problems that STUMP frontier models. A passing model may mean the problem needs to be hardened.">LLM passed ⚠</div></div>
   </div>
 </section>
 
