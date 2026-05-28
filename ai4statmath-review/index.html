@@ -97,9 +97,11 @@ section.problem { background:var(--bg-card); border:1px solid var(--border);
 .p-actions h3 { margin:0 0 8px; font-size:.92em; color:var(--fg-muted); }
 .qa-list { margin:0; padding-left:20px; }
 .qa-item { margin:7px 0; }
-.qa-where { display:inline-block; background:var(--bg-accent); color:var(--fg);
-            padding:1px 6px; border-radius:3px; font-family:"SF Mono",Consolas,monospace;
-            font-size:.78em; margin-right:6px; }
+.qa-where { display:inline-flex; align-items:center; gap:4px; background:var(--bg-accent);
+            color:var(--fg); padding:2px 7px 2px 4px; border-radius:4px;
+            font-family:"SF Mono",Consolas,monospace; font-size:.78em; margin-right:6px;
+            vertical-align:baseline; }
+.qa-glyph { font-family:-apple-system,sans-serif; font-size:1em; line-height:1; }
 .qa-what { font-size:.96em; }
 .qa-example { margin-top:4px; }
 .qa-example summary { font-size:.78em; color:var(--fg-dim); cursor:pointer; }
@@ -117,6 +119,36 @@ section.problem { background:var(--bg-card); border:1px solid var(--border);
 .d-block ul.bullets li { margin:5px 0; }
 .dim { color:var(--fg-dim); }
 .small { font-size:.84em; }
+
+/* ── keyword decoration ("skim-resolution" layer) ───────────────── */
+/* Goal: a multi-resolution parallel sampler can pick verbs, warnings,
+   anchors, and inline code out of the prose at a glance. */
+.kw-verb    { color:#a78bfa; font-weight:600; }       /* lavender — invites action */
+.kw-warn    { color:#fca5a5; }                         /* soft red — problem markers */
+.kw-good    { color:#86efac; }                         /* soft green — affirmations */
+.kw-section { font-family:"SF Mono",Consolas,monospace; background:#1e2c44;
+              color:#7dd3fc; padding:0 5px; border-radius:3px; font-size:.93em; }
+.kw-level   { font-weight:600; padding:0 5px; border-radius:3px; font-size:.93em; }
+.kw-level.lv-basic        { color:#86efac; background:#064e3b40; }
+.kw-level.lv-intermediate { color:#fde68a; background:#78350f40; }
+.kw-level.lv-advanced     { color:#fdba74; background:#7c2d1240; }
+.kw-level.lv-research     { color:#fca5a5; background:#7f1d1d40; }
+.kw-num     { font-family:"SF Mono",Consolas,monospace; color:#fbbf24;
+              font-weight:600; font-size:.94em; }
+.kw-math    { font-family:"SF Mono",Consolas,monospace; color:#fbbf24;
+              background:#1e2c44; padding:0 4px; border-radius:3px; font-size:.93em; }
+.kw-code    { font-family:"SF Mono",Consolas,monospace; background:#1e2c44;
+              color:#a78bfa; padding:0 5px; border-radius:3px; font-size:.92em; }
+.kw-qstr    { font-family:"SF Mono",Consolas,monospace; background:#0b1220;
+              color:#e5e7eb; padding:0 5px; border-radius:3px; font-size:.93em;
+              border:1px solid var(--bg-accent); }
+
+/* dimension score color coding (used in radar labels) */
+.s-1 { fill:#f87171; }
+.s-2 { fill:#fbbf24; }
+.s-3 { fill:#fde68a; }
+.s-4 { fill:#86efac; }
+.s-5 { fill:#34d399; }
 
 /* ── tabs (snapshot / annotated) ───────────────────────────────── */
 .tabs { display:flex; gap:2px; margin:10px 0 0; border-bottom:1px solid var(--border); }
