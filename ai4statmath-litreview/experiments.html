@@ -57,11 +57,12 @@ body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
 .interp-table td { padding:6px 10px; vertical-align:top; }
 .interp-table td.il { color:var(--fg-muted); font-size:.92em; width:38%;
                        white-space:normal; }
-.interp-table td.ir { color:var(--fg); font-size:.94em; white-space:normal; }
+.interp-table td.ir { color:var(--fg); font-size:.94em; white-space:normal;
+                       overflow-wrap:anywhere; word-break:break-word; }
 .interp-table td.ir strong { color:var(--primary); }
 .interp-table td.ir a { color:var(--primary); text-decoration:none; }
 .interp-table td.ir a:hover { text-decoration:underline; }
-.interp-table td.ir code { font-size:.92em; }
+.interp-table td.ir code { font-size:.92em; overflow-wrap:anywhere; word-break:break-all; }
 @media (max-width:640px) {
   .interp-table td.il { width:auto; }
   .interp-table td { display:block; }
