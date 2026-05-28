@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>AI4Stat/Math — contributor auto-reviews</title>
+<style>
+:root {
+  color-scheme: dark;
+  --fg:#e5e7eb; --fg-dim:#94a3b8; --fg-muted:#cbd5e1;
+  --bg:#0f172a; --bg-card:#1e293b; --bg-accent:#334155;
+  --border:#334155; --primary:#60a5fa;
+  --strong:#34d399; --revise:#fbbf24; --rework:#f87171; --stub:#9ca3af;
+}
+body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+       background:var(--bg); color:var(--fg); line-height:1.55; font-size:15px; }
+.container { max-width:920px; margin:0 auto; padding:30px 24px 80px; }
+.contributor-head h1 { font-size:1.7rem; margin:0 0 .25rem; }
+.contributor-head .sub { color:var(--fg-dim); font-size:.9em; }
+.under-construction { background:#78350f; border-left:3px solid #f59e0b; color:#fed7aa;
+                      padding:8px 14px; border-radius:6px; margin:14px 0; font-size:.88em; }
+.aggregate { background:var(--bg-card); border:1px solid var(--border); border-radius:10px;
+             padding:16px 20px; margin:20px 0; }
+.aggregate h3 { margin:0 0 .5rem; font-size:1em; }
+.agg-tiles { display:flex; gap:14px; flex-wrap:wrap; margin-top:8px; }
+.agg-tile { background:var(--bg); border-radius:6px; padding:8px 12px; min-width:90px; }
+.agg-tile .num { font-size:1.5rem; font-weight:700; line-height:1.1; }
+.agg-tile .lbl { font-size:.78em; color:var(--fg-dim); }
+.toc { background:var(--bg-card); border:1px solid var(--border); border-radius:10px;
+       padding:10px 16px; margin:20px 0; font-size:.92em; }
+.toc a { color:var(--fg-muted); text-decoration:none; margin-right:14px; }
+.toc a:hover { color:var(--primary); }
+.toc .verdict-chip { font-size:.74em; padding:1px 6px; border-radius:3px; margin-left:4px; vertical-align:middle; }
+
+section.problem { background:var(--bg-card); border:1px solid var(--border);
+                  border-radius:12px; padding:22px 26px; margin:24px 0; }
+.problem-head { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; }
+.problem-head h2 { margin:0 0 .25rem; font-size:1.2rem; }
+.problem-head .meta { color:var(--fg-dim); font-size:.84em; }
+.radar { flex:none; }
+
+.pill { display:inline-block; padding:1px 8px; border-radius:4px; font-size:.78em;
+        font-weight:600; margin-left:6px; vertical-align:middle; }
+.v-ready    { background:#064e3b; color:#a7f3d0; }
+.v-revision { background:#78350f; color:#fde68a; }
+.v-rework   { background:#7f1d1d; color:#fecaca; }
+.v-stub     { background:#374151; color:#d1d5db; }
+.v-other    { background:#334155; color:#cbd5e1; }
+
+.digest { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin:16px 0; }
+@media(max-width:720px){ .digest{ grid-template-columns:1fr; } }
+.d-col { background:var(--bg); border-radius:8px; padding:10px 14px; }
+.d-col h3 { margin:0 0 6px; font-size:.86em; color:var(--fg-muted); font-weight:600; }
+.d-col ul { margin:0; padding-left:18px; font-size:.9em; }
+.d-col li { margin:3px 0; }
+
+.tabs { display:flex; gap:4px; margin:14px 0 0; border-bottom:1px solid var(--border); }
+.tab { background:none; border:none; color:var(--fg-muted); padding:8px 14px; cursor:pointer;
+       font-family:inherit; font-size:.92em; border-bottom:2px solid transparent; }
+.tab.active { color:var(--primary); border-bottom-color:var(--primary); }
+.pane { display:none; padding:14px 0; }
+.pane.active { display:block; }
+.statement { font-family:"Georgia","Cambria",serif; font-size:1.02em; line-height:1.65;
+             background:var(--bg); padding:14px 18px; border-radius:6px;
+             white-space:pre-wrap; word-break:break-word; }
+
+.annot { background:rgba(96,165,250,0.12); border-radius:3px; cursor:help;
+         position:relative; padding:0 2px; }
+.annot:hover, .annot:focus-visible { background:rgba(96,165,250,0.25); outline:none; }
+.annot-strong, .annot-praise   { background:rgba(52,211,153,0.18); }
+.annot-strong:hover, .annot-praise:hover { background:rgba(52,211,153,0.32); }
+.annot-nit { background:rgba(156,163,175,0.18); }
+.annot-suggestion { background:rgba(96,165,250,0.18); }
+.annot-ambiguity { background:rgba(251,191,36,0.18); }
+.annot-missing { background:rgba(248,113,113,0.18); }
+.annot-bubble { display:none; position:absolute; left:0; bottom:calc(100% + 4px);
+                background:var(--bg-card); border:1px solid var(--primary); border-radius:6px;
+                padding:8px 12px; font-size:.85em; font-family:-apple-system,sans-serif;
+                line-height:1.4; box-shadow:0 4px 14px rgba(0,0,0,.4); z-index:10;
+                width:280px; max-width:90vw; white-space:normal; }
+.annot:hover .annot-bubble, .annot:focus-visible .annot-bubble { display:block; }
+.annot-legend { font-size:.82em; color:var(--fg-dim); margin:6px 0 0; }
+
+.actions-block { background:var(--bg); border-left:3px solid var(--primary);
+                 padding:12px 16px 12px 18px; margin:14px 0; border-radius:0 8px 8px 0; }
+.actions-block h3 { margin:0 0 6px; font-size:.92em; }
+.actions-block ol { margin:0; padding-left:18px; font-size:.92em; }
+.actions-block li { margin:6px 0; }
+.actions-block code { background:var(--bg-accent); padding:1px 5px; border-radius:3px; font-size:.85em; }
+.example { margin-top:4px; }
+.example summary { font-size:.78em; color:var(--fg-dim); cursor:pointer; }
+.example pre { background:var(--bg-accent); padding:8px 10px; border-radius:4px;
+               font-size:.82em; overflow-x:auto; margin:4px 0 0; }
+
+details.timeline { margin:14px 0 0; background:var(--bg); border-radius:6px;
+                   padding:6px 14px; font-size:.86em; }
+details.timeline summary { cursor:pointer; color:var(--fg-muted); padding:4px 0; }
+details.timeline ul { margin:6px 0 8px; padding-left:20px; }
+details.timeline .ts { color:var(--fg-dim); font-variant-numeric:tabular-nums; margin-right:8px; }
+details.timeline .sha { color:var(--fg-muted); font-family:"SF Mono",Consolas,monospace;
+                       font-size:.84em; margin-right:8px; }
+
+.problem-foot { margin-top:16px; border-top:1px solid var(--border); padding-top:10px;
+                font-size:.85em; }
+.problem-foot a { color:var(--fg-muted); text-decoration:none; }
+.problem-foot a:hover { color:var(--primary); }
+.dim { color:var(--fg-dim); }
+
+footer.page-foot { margin-top:40px; padding-top:24px; border-top:1px solid var(--border);
+                   color:var(--fg-dim); font-size:.86em; }
+footer.page-foot a { color:var(--fg-muted); }
+.visit-note { margin-top:14px; font-size:.84em; color:var(--fg-dim); }
+.new-since { color:var(--primary); font-weight:600; }
+
+.card { display:block; background:var(--bg-card); border:1px solid var(--border);
+         border-radius:10px; padding:18px 22px; margin:12px 0; color:var(--fg);
+         text-decoration:none; transition:transform .12s, border-color .12s; }
+.card:hover { transform:translateY(-2px); border-color:var(--primary); }
+.card h2 { margin:0 0 .25rem; font-size:1.1rem; }
+.card .meta { color:var(--fg-dim); font-size:.86em; }
+</style></head><body>
+<div class="container">
+  <h1>Contributor auto-review pages</h1>
+  <p class="dim">Per-contributor LLM-drafted review of AI4Stat/Math problem submissions. One page per opted-in contributor; click to read.</p>
+  <div class="under-construction">
+    🚧 Under construction. Pages are draft-quality first passes; the lead still does the canonical review.
+  </div>
+  <a class="card" href="contributor_01/index.html"><h2>Zhixian Zhang</h2><div class="meta">5 problems reviewed · 0 ready</div></a>
+  <footer class="page-foot">
+    Generated by <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/lit-review/agents/reviewer/build_contributor_html.py" target="_blank">agents/reviewer/build_contributor_html.py</a>.
+  </footer>
+</div>
+</body></html>

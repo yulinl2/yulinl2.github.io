@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Zhixian Zhang — auto-review</title>
+<script>
+  window.MathJax = { tex: { inlineMath: [['$', '$']] } };
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+:root {
+  color-scheme: dark;
+  --fg:#e5e7eb; --fg-dim:#94a3b8; --fg-muted:#cbd5e1;
+  --bg:#0f172a; --bg-card:#1e293b; --bg-accent:#334155;
+  --border:#334155; --primary:#60a5fa;
+  --strong:#34d399; --revise:#fbbf24; --rework:#f87171; --stub:#9ca3af;
+}
+body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+       background:var(--bg); color:var(--fg); line-height:1.55; font-size:15px; }
+.container { max-width:920px; margin:0 auto; padding:30px 24px 80px; }
+.contributor-head h1 { font-size:1.7rem; margin:0 0 .25rem; }
+.contributor-head .sub { color:var(--fg-dim); font-size:.9em; }
+.under-construction { background:#78350f; border-left:3px solid #f59e0b; color:#fed7aa;
+                      padding:8px 14px; border-radius:6px; margin:14px 0; font-size:.88em; }
+.aggregate { background:var(--bg-card); border:1px solid var(--border); border-radius:10px;
+             padding:16px 20px; margin:20px 0; }
+.aggregate h3 { margin:0 0 .5rem; font-size:1em; }
+.agg-tiles { display:flex; gap:14px; flex-wrap:wrap; margin-top:8px; }
+.agg-tile { background:var(--bg); border-radius:6px; padding:8px 12px; min-width:90px; }
+.agg-tile .num { font-size:1.5rem; font-weight:700; line-height:1.1; }
+.agg-tile .lbl { font-size:.78em; color:var(--fg-dim); }
+.toc { background:var(--bg-card); border:1px solid var(--border); border-radius:10px;
+       padding:10px 16px; margin:20px 0; font-size:.92em; }
+.toc a { color:var(--fg-muted); text-decoration:none; margin-right:14px; }
+.toc a:hover { color:var(--primary); }
+.toc .verdict-chip { font-size:.74em; padding:1px 6px; border-radius:3px; margin-left:4px; vertical-align:middle; }
+
+section.problem { background:var(--bg-card); border:1px solid var(--border);
+                  border-radius:12px; padding:22px 26px; margin:24px 0; }
+.problem-head { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; }
+.problem-head h2 { margin:0 0 .25rem; font-size:1.2rem; }
+.problem-head .meta { color:var(--fg-dim); font-size:.84em; }
+.radar { flex:none; }
+
+.pill { display:inline-block; padding:1px 8px; border-radius:4px; font-size:.78em;
+        font-weight:600; margin-left:6px; vertical-align:middle; }
+.v-ready    { background:#064e3b; color:#a7f3d0; }
+.v-revision { background:#78350f; color:#fde68a; }
+.v-rework   { background:#7f1d1d; color:#fecaca; }
+.v-stub     { background:#374151; color:#d1d5db; }
+.v-other    { background:#334155; color:#cbd5e1; }
+
+.digest { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin:16px 0; }
+@media(max-width:720px){ .digest{ grid-template-columns:1fr; } }
+.d-col { background:var(--bg); border-radius:8px; padding:10px 14px; }
+.d-col h3 { margin:0 0 6px; font-size:.86em; color:var(--fg-muted); font-weight:600; }
+.d-col ul { margin:0; padding-left:18px; font-size:.9em; }
+.d-col li { margin:3px 0; }
+
+.tabs { display:flex; gap:4px; margin:14px 0 0; border-bottom:1px solid var(--border); }
+.tab { background:none; border:none; color:var(--fg-muted); padding:8px 14px; cursor:pointer;
+       font-family:inherit; font-size:.92em; border-bottom:2px solid transparent; }
+.tab.active { color:var(--primary); border-bottom-color:var(--primary); }
+.pane { display:none; padding:14px 0; }
+.pane.active { display:block; }
+.statement { font-family:"Georgia","Cambria",serif; font-size:1.02em; line-height:1.65;
+             background:var(--bg); padding:14px 18px; border-radius:6px;
+             white-space:pre-wrap; word-break:break-word; }
+
+.annot { background:rgba(96,165,250,0.12); border-radius:3px; cursor:help;
+         position:relative; padding:0 2px; }
+.annot:hover, .annot:focus-visible { background:rgba(96,165,250,0.25); outline:none; }
+.annot-strong, .annot-praise   { background:rgba(52,211,153,0.18); }
+.annot-strong:hover, .annot-praise:hover { background:rgba(52,211,153,0.32); }
+.annot-nit { background:rgba(156,163,175,0.18); }
+.annot-suggestion { background:rgba(96,165,250,0.18); }
+.annot-ambiguity { background:rgba(251,191,36,0.18); }
+.annot-missing { background:rgba(248,113,113,0.18); }
+.annot-bubble { display:none; position:absolute; left:0; bottom:calc(100% + 4px);
+                background:var(--bg-card); border:1px solid var(--primary); border-radius:6px;
+                padding:8px 12px; font-size:.85em; font-family:-apple-system,sans-serif;
+                line-height:1.4; box-shadow:0 4px 14px rgba(0,0,0,.4); z-index:10;
+                width:280px; max-width:90vw; white-space:normal; }
+.annot:hover .annot-bubble, .annot:focus-visible .annot-bubble { display:block; }
+.annot-legend { font-size:.82em; color:var(--fg-dim); margin:6px 0 0; }
+
+.actions-block { background:var(--bg); border-left:3px solid var(--primary);
+                 padding:12px 16px 12px 18px; margin:14px 0; border-radius:0 8px 8px 0; }
+.actions-block h3 { margin:0 0 6px; font-size:.92em; }
+.actions-block ol { margin:0; padding-left:18px; font-size:.92em; }
+.actions-block li { margin:6px 0; }
+.actions-block code { background:var(--bg-accent); padding:1px 5px; border-radius:3px; font-size:.85em; }
+.example { margin-top:4px; }
+.example summary { font-size:.78em; color:var(--fg-dim); cursor:pointer; }
+.example pre { background:var(--bg-accent); padding:8px 10px; border-radius:4px;
+               font-size:.82em; overflow-x:auto; margin:4px 0 0; }
+
+details.timeline { margin:14px 0 0; background:var(--bg); border-radius:6px;
+                   padding:6px 14px; font-size:.86em; }
+details.timeline summary { cursor:pointer; color:var(--fg-muted); padding:4px 0; }
+details.timeline ul { margin:6px 0 8px; padding-left:20px; }
+details.timeline .ts { color:var(--fg-dim); font-variant-numeric:tabular-nums; margin-right:8px; }
+details.timeline .sha { color:var(--fg-muted); font-family:"SF Mono",Consolas,monospace;
+                       font-size:.84em; margin-right:8px; }
+
+.problem-foot { margin-top:16px; border-top:1px solid var(--border); padding-top:10px;
+                font-size:.85em; }
+.problem-foot a { color:var(--fg-muted); text-decoration:none; }
+.problem-foot a:hover { color:var(--primary); }
+.dim { color:var(--fg-dim); }
+
+footer.page-foot { margin-top:40px; padding-top:24px; border-top:1px solid var(--border);
+                   color:var(--fg-dim); font-size:.86em; }
+footer.page-foot a { color:var(--fg-muted); }
+.visit-note { margin-top:14px; font-size:.84em; color:var(--fg-dim); }
+.new-since { color:var(--primary); font-weight:600; }
+</style>
+</head><body>
+<div class="container">
+  <header class="contributor-head">
+    <h1>Zhixian Zhang <span class="dim" style="font-size:.6em">· auto-review</span></h1>
+    <div class="sub">contributor folder: <code>contributor_01</code></div>
+  </header>
+
+  <div class="under-construction">
+    🚧 <strong>Under construction.</strong> This is an auto-generated review surface (LLM-drafted, the lead has not yet validated). Treat as a structured first pass — not the canonical decision. The lead will sign off / amend during human review. Feedback welcome.
+  </div>
+
+  <div class="aggregate">
+    <h3>📊 Progress at a glance</h3>
+    <div class="agg-tiles">
+      <div class="agg-tile"><div class="num">5</div><div class="lbl">problems reviewed</div></div>
+      <div class="agg-tile"><div class="num">0</div><div class="lbl">ready</div></div>
+      <div class="agg-tile"><div class="num">2</div><div class="lbl">needs revision</div></div>
+      <div class="agg-tile"><div class="num">2</div><div class="lbl">major rework</div></div>
+      <div class="agg-tile"><div class="num">1</div><div class="lbl">template stubs</div></div>
+    </div>
+  </div>
+
+  <div class="toc"><a href="#problem-2">#2 Smallest Terminating Decimal with Digit 9</a><span class="pill verdict-chip v-revision">needs-revision</span> · <a href="#problem-3">#3 Relative Speed and Time Word Problem</a><span class="pill verdict-chip v-revision">needs-revision</span> · <a href="#problem-4">#4 Dog Shelter Toys Problem</a><span class="pill verdict-chip v-rework">needs-major-rework</span> · <a href="#problem-5">#5 Problem #5 (untitled draft)</a><span class="pill verdict-chip v-rework">needs-major-rework</span> · <a href="#problem-6">#6 Problem #6 (untitled draft)</a><span class="pill verdict-chip v-stub">template-stub</span></div>
+
+  
+<section class="problem" id="problem-2" data-sha="4f057767b1bebc82">
+  <header class="problem-head">
+    <div>
+      <h2>Smallest Terminating Decimal with Digit 9</h2>
+      <div class="meta">
+        Problem #2 · reviewed 2026-05-28 06:50:56 UTC · content 4f057767
+        <span class="pill v-revision">needs-revision</span>
+      </div>
+    </div>
+    <div class="radar"><svg viewBox="0 0 180 180" width="180" height="180" aria-label="dimensions radar"><polygon points="90.0,76.0 102.1,83.0 102.1,97.0 90.0,104.0 77.9,97.0 77.9,83.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,62.0 114.2,76.0 114.2,104.0 90.0,118.0 65.8,104.0 65.8,76.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,48.0 126.4,69.0 126.4,111.0 90.0,132.0 53.6,111.0 53.6,69.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,34.0 138.5,62.0 138.5,118.0 90.0,146.0 41.5,118.0 41.5,62.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,20.0 150.6,55.0 150.6,125.0 90.0,160.0 29.4,125.0 29.4,55.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,20.0 114.2,76.0 114.2,104.0 90.0,160.0 29.4,125.0 65.8,76.0" fill="#60a5fa" fill-opacity="0.25" stroke="#60a5fa" stroke-width="1.5"/><text x="90.0" y="14.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity 5</text><text x="159.3" y="54.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel 2</text><text x="159.3" y="134.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff 2</text><text x="90.0" y="174.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric 5</text><text x="20.7" y="134.0" text-anchor="middle" fill="#94a3b8" font-size="9">verif 5</text><text x="20.7" y="54.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean 2</text></svg></div>
+  </header>
+
+  <div class="digest">
+    <div class="d-col">
+      <h3>✨ Strengths</h3>
+      <ul><li>(no specific strengths surfaced — early draft)</li></ul>
+    </div>
+    <div class="d-col">
+      <h3>💡 Considerations</h3>
+      <ul><li>This problem is routine once the terminating decimal criterion is recalled; consider downgrading to Intermediate or adding a twist (e.g., &#x27;prove that 4096 is minimal&#x27;).</li><li>This tag in \problemtags is cryptic and appears to be a note-to-self; remove or clarify for the public-facing problem.</li><li>The enumeration is helpful but could be more compact; consider listing only the candidates that contain 9 (none in this range) rather than all candidates.</li></ul>
+    </div>
+    <div class="d-col">
+      <h3>👉 Next steps</h3>
+      <ul><li>Remove or clarify the tag &#x27;not the smallest one, incorrect rejection of the true answer&#x27;—it reads as an internal note rather than a problem tag.</li><li>Consider downgrading difficulty from Advanced to Intermediate, or add a secondary part (e.g., &#x27;Prove that 4096 is the smallest&#x27;) to justify the Advanced tag.</li><li>Add a note that this problem is a well-known competition-math setup; verify that the specific wording and context are sufficiently novel for the benchmark.</li></ul>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-target="snapshot-2">Snapshot</button>
+    <button class="tab" data-target="annotated-2">Annotated</button>
+  </div>
+  <div class="pane active" id="snapshot-2">
+    <div class="statement">What is the smallest positive integer $n$ such that $\frac{1}{n}$ is a terminating decimal and $n$ contains the digit 9?</div>
+  </div>
+  <div class="pane" id="annotated-2">
+    <div class="statement annot-host">What is the smallest positive integer $n$ such that $\frac{1}{n}$ is a terminating decimal and $n$ contains the digit 9?</div>
+    <p class="annot-legend dim">Hover (desktop) or tap (touch) a highlighted span for the reviewer's comment.</p>
+  </div>
+
+  <div class="actions-block"><h3>📝 Concrete actions for Overleaf</h3><ol><li><code>problemtags</code>: Remove or clarify the tag &#x27;not the smallest one, incorrect rejection of the true answer&#x27;—it reads as an internal note rather than a problem tag.</li><li><code>problemsetup</code>: Consider downgrading difficulty from Advanced to Intermediate, or add a secondary part (e.g., &#x27;Prove that 4096 is the smallest&#x27;) to justify the Advanced tag.</li><li><code>editornotes</code>: Add a note that this problem is a well-known competition-math setup; verify that the specific wording and context are sufficiently novel for the benchmark.</li></ol></div>
+
+  
+
+  <footer class="problem-foot">
+    <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/master/contributors/contributor_01/problems/problem_02.tex" target="_blank">📄 view .tex on github</a>
+  </footer>
+</section>
+
+<section class="problem" id="problem-3" data-sha="067b497aba6636b4">
+  <header class="problem-head">
+    <div>
+      <h2>Relative Speed and Time Word Problem</h2>
+      <div class="meta">
+        Problem #3 · reviewed 2026-05-28 06:51:06 UTC · content 067b497a
+        <span class="pill v-revision">needs-revision</span>
+      </div>
+    </div>
+    <div class="radar"><svg viewBox="0 0 180 180" width="180" height="180" aria-label="dimensions radar"><polygon points="90.0,76.0 102.1,83.0 102.1,97.0 90.0,104.0 77.9,97.0 77.9,83.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,62.0 114.2,76.0 114.2,104.0 90.0,118.0 65.8,104.0 65.8,76.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,48.0 126.4,69.0 126.4,111.0 90.0,132.0 53.6,111.0 53.6,69.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,34.0 138.5,62.0 138.5,118.0 90.0,146.0 41.5,118.0 41.5,62.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,20.0 150.6,55.0 150.6,125.0 90.0,160.0 29.4,125.0 29.4,55.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,34.0 114.2,76.0 138.5,118.0 90.0,160.0 29.4,125.0 53.6,69.0" fill="#60a5fa" fill-opacity="0.25" stroke="#60a5fa" stroke-width="1.5"/><text x="90.0" y="14.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity 4</text><text x="159.3" y="54.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel 2</text><text x="159.3" y="134.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff 4</text><text x="90.0" y="174.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric 5</text><text x="20.7" y="134.0" text-anchor="middle" fill="#94a3b8" font-size="9">verif 5</text><text x="20.7" y="54.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean 3</text></svg></div>
+  </header>
+
+  <div class="digest">
+    <div class="d-col">
+      <h3>✨ Strengths</h3>
+      <ul><li>(no specific strengths surfaced — early draft)</li></ul>
+    </div>
+    <div class="d-col">
+      <h3>💡 Considerations</h3>
+      <ul><li>Clarify: does &#x27;18 hours total&#x27; mean 18 hours per kangaroo or 18 hours if all three traveled together? The answerkey interprets it as per-kangaroo, but a solver might read it as combined time.</li><li>The answerkey conflates &#x27;four turtles each taking 12 hours&#x27; with &#x27;total of 48 hours.&#x27; If turtles travel in parallel (like kangaroos did), each takes 12 hours, not 48 combined. Clarify the problem intent: are turtles traveling together or separately?</li><li>The editornotes section reads like a template checklist; consider replacing with problem-specific guidance (e.g., &#x27;Watch for solvers who multiply 4 × 18 directly without adjusting for speed ratio&#x27;).</li></ul>
+    </div>
+    <div class="d-col">
+      <h3>👉 Next steps</h3>
+      <ul><li>Clarify whether the 18 hours is the time for one kangaroo or the combined time if all three traveled together. Recommend: &#x27;If it takes one kangaroo 18 hours to travel across a highway, and three kangaroos travel together at the same speed, how many hours will it take four turtles, each traveling at half the speed of a kangaroo, to do so?&#x27; (or similar, depending on intended setup).</li><li>Resolve the &#x27;total of 4 × 12 = 48 hours&#x27; statement. If turtles travel in parallel (like kangaroos), each takes 12 hours individually, not 48 combined. If the problem intends sequential travel, state that explicitly in the problem statement.</li><li>Replace the generic checklist with problem-specific notes, e.g., &#x27;Common error: students may multiply 4 × 18 without accounting for the speed ratio, yielding 72 hours.&#x27;</li></ul>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-target="snapshot-3">Snapshot</button>
+    <button class="tab" data-target="annotated-3">Annotated</button>
+  </div>
+  <div class="pane active" id="snapshot-3">
+    <div class="statement">If it takes 3 kangaroos traveling at the same speed a total of 18 hours to travel across a highway, how many hours will it take four turtles, each traveling at half the speed of a kangaroo, to do so?</div>
+  </div>
+  <div class="pane" id="annotated-3">
+    <div class="statement annot-host">If it takes 3 kangaroos traveling at the same speed <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="Clarify: does &#x27;18 hours total&#x27; mean 18 hours per kangaroo or 18 hours if all three traveled together? The answerkey interprets it as per-kangaroo, but a solver might read it as combined time.">a total of 18 hours to travel across a highway<span class="annot-bubble" role="tooltip"><strong>ambiguity.</strong> Clarify: does &#x27;18 hours total&#x27; mean 18 hours per kangaroo or 18 hours if all three traveled together? The answerkey interprets it as per-kangaroo, but a solver might read it as combined time.</span></span>, how many hours will it take four turtles, each traveling at half the speed of a kangaroo, to do so?</div>
+    <p class="annot-legend dim">Hover (desktop) or tap (touch) a highlighted span for the reviewer's comment.</p>
+  </div>
+
+  <div class="actions-block"><h3>📝 Concrete actions for Overleaf</h3><ol><li><code>problemstatement</code>: Clarify whether the 18 hours is the time for one kangaroo or the combined time if all three traveled together. Recommend: &#x27;If it takes one kangaroo 18 hours to travel across a highway, and three kangaroos travel together at the same speed, how many hours will it take four turtles, each traveling at half the speed of a kangaroo, to do so?&#x27; (or similar, depending on intended setup).</li><li><code>answerkey</code>: Resolve the &#x27;total of 4 × 12 = 48 hours&#x27; statement. If turtles travel in parallel (like kangaroos), each takes 12 hours individually, not 48 combined. If the problem intends sequential travel, state that explicitly in the problem statement.</li><li><code>editornotes</code>: Replace the generic checklist with problem-specific notes, e.g., &#x27;Common error: students may multiply 4 × 18 without accounting for the speed ratio, yielding 72 hours.&#x27;</li></ol></div>
+
+  
+
+  <footer class="problem-foot">
+    <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/master/contributors/contributor_01/problems/problem_03.tex" target="_blank">📄 view .tex on github</a>
+  </footer>
+</section>
+
+<section class="problem" id="problem-4" data-sha="573989e9abae8daf">
+  <header class="problem-head">
+    <div>
+      <h2>Dog Shelter Toys Problem</h2>
+      <div class="meta">
+        Problem #4 · reviewed 2026-05-28 06:51:18 UTC · content 573989e9
+        <span class="pill v-rework">needs-major-rework</span>
+      </div>
+    </div>
+    <div class="radar"><svg viewBox="0 0 180 180" width="180" height="180" aria-label="dimensions radar"><polygon points="90.0,76.0 102.1,83.0 102.1,97.0 90.0,104.0 77.9,97.0 77.9,83.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,62.0 114.2,76.0 114.2,104.0 90.0,118.0 65.8,104.0 65.8,76.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,48.0 126.4,69.0 126.4,111.0 90.0,132.0 53.6,111.0 53.6,69.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,34.0 138.5,62.0 138.5,118.0 90.0,146.0 41.5,118.0 41.5,62.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,20.0 150.6,55.0 150.6,125.0 90.0,160.0 29.4,125.0 29.4,55.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,90.0 90.0,90.0 90.0,90.0 90.0,90.0 90.0,90.0 90.0,90.0" fill="#60a5fa" fill-opacity="0.25" stroke="#60a5fa" stroke-width="1.5"/><text x="90.0" y="14.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity —</text><text x="159.3" y="54.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel —</text><text x="159.3" y="134.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff —</text><text x="90.0" y="174.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric —</text><text x="20.7" y="134.0" text-anchor="middle" fill="#94a3b8" font-size="9">verif —</text><text x="20.7" y="54.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean —</text></svg></div>
+  </header>
+
+  <div class="digest">
+    <div class="d-col">
+      <h3>✨ Strengths</h3>
+      <ul><li>Clear 1:1 mapping makes the arithmetic straightforward once the English is resolved.</li></ul>
+    </div>
+    <div class="d-col">
+      <h3>💡 Considerations</h3>
+      <ul><li>Could mean: (a) 2×12=24 additional dogs (answerkey interpretation), (b) 12 more dogs (i.e., &#x27;twice as many&#x27; = same count again), or (c) total becomes 2×12=24. Solvers will split on this.</li><li>Gradingscheme is empty; needs enumerated criteria or at minimum an exact-match tolerance.</li><li>Slight redundancy: &#x27;for 4 dogs&#x27; + &#x27;there are 8 more dogs&#x27; could be tightened to &#x27;James has 4 toys for 4 dogs; 8 more dogs arrive.&#x27;</li><li>Consider rephrasing to remove ambiguity: &#x27;When he returns, the shelter now has twice as many dogs as before&#x27; or &#x27;the dog count has doubled&#x27; or &#x27;there are 12 additional dogs&#x27; (explicit number).</li></ul>
+    </div>
+    <div class="d-col">
+      <h3>👉 Next steps</h3>
+      <ul><li>Add explicit grading criteria. At minimum: &#x27;Correct final answer: 33 toys (exact match). Partial credit: +1 for correctly computing 4+8=12, +1 for correctly interpreting the ambiguous phrase and computing 12+24=36, +1 for final subtraction 36−3=33.&#x27; Or, if exact match only: &#x27;Answer must be exactly 33.&#x27;</li><li>Resolve the ambiguity in &#x27;twice as many more dogs than when he left&#x27;. Recommend: &#x27;When James returns from buying toys, he finds the shelter now has twice as many dogs as it did when he left (i.e., 24 additional dogs have arrived).&#x27; This removes the interpretation gap.</li><li>Reconsider the difficulty tag. If the ambiguous phrase is intentional (testing reading comprehension), tag as Medium or Advanced and note that in editornotes. If it&#x27;s unintentional, fix the statement first, then re-evaluate difficulty (likely Basic or Early Medium).</li><li>Add a note explaining the intended interpretation of &#x27;twice as many more dogs.&#x27; If this is testing a known source of student error, cite it; if not, clarify that the phrasing should be unambiguous.</li></ul>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-target="snapshot-4">Snapshot</button>
+    <button class="tab" data-target="annotated-4">Annotated</button>
+  </div>
+  <div class="pane active" id="snapshot-4">
+    <div class="statement">James needs to get more toys for his doggie shelter. Each dog needs one toy. James currently has 4 toys on hand for 4 dogs, but there are 8 more dogs in the shelter now. After buying the toys, he went back to see that there are twice as many more dogs than when he left so he had to buy some more toys. When James came back yet again, 3 dogs were gone so he no longer needed those toys. How many toys in total does James need?</div>
+  </div>
+  <div class="pane" id="annotated-4">
+    <div class="statement annot-host">James needs to get more toys for his doggie shelter. <span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="Clear 1:1 mapping makes the arithmetic straightforward once the English is resolved.">Each dog needs one toy.<span class="annot-bubble" role="tooltip"><strong>strong.</strong> Clear 1:1 mapping makes the arithmetic straightforward once the English is resolved.</span></span> <span class="annot annot-nit" data-kind="nit" tabindex="0" data-comment="Slight redundancy: &#x27;for 4 dogs&#x27; + &#x27;there are 8 more dogs&#x27; could be tightened to &#x27;James has 4 toys for 4 dogs; 8 more dogs arrive.&#x27;">James currently has 4 toys on hand for 4 dogs, but there are 8 more dogs in the shelter now.<span class="annot-bubble" role="tooltip"><strong>nit.</strong> Slight redundancy: &#x27;for 4 dogs&#x27; + &#x27;there are 8 more dogs&#x27; could be tightened to &#x27;James has 4 toys for 4 dogs; 8 more dogs arrive.&#x27;</span></span> <span class="annot annot-suggestion" data-kind="suggestion" tabindex="0" data-comment="Consider rephrasing to remove ambiguity: &#x27;When he returns, the shelter now has twice as many dogs as before&#x27; or &#x27;the dog count has doubled&#x27; or &#x27;there are 12 additional dogs&#x27; (explicit number).">After buying the toys, he went back to see that there are twice as many more dogs than when he left<span class="annot-bubble" role="tooltip"><strong>suggestion.</strong> Consider rephrasing to remove ambiguity: &#x27;When he returns, the shelter now has twice as many dogs as before&#x27; or &#x27;the dog count has doubled&#x27; or &#x27;there are 12 additional dogs&#x27; (explicit number).</span></span> so he had to buy some more toys. When James came back yet again, 3 dogs were gone so he no longer needed those toys. How many toys in total does James need?</div>
+    <p class="annot-legend dim">Hover (desktop) or tap (touch) a highlighted span for the reviewer's comment.</p>
+  </div>
+
+  <div class="actions-block"><h3>📝 Concrete actions for Overleaf</h3><ol><li><code>gradingscheme</code>: Add explicit grading criteria. At minimum: &#x27;Correct final answer: 33 toys (exact match). Partial credit: +1 for correctly computing 4+8=12, +1 for correctly interpreting the ambiguous phrase and computing 12+24=36, +1 for final subtraction 36−3=33.&#x27; Or, if exact match only: &#x27;Answer must be exactly 33.&#x27;</li><li><code>problemstatement</code>: Resolve the ambiguity in &#x27;twice as many more dogs than when he left&#x27;. Recommend: &#x27;When James returns from buying toys, he finds the shelter now has twice as many dogs as it did when he left (i.e., 24 additional dogs have arrived).&#x27; This removes the interpretation gap.</li><li><code>problemtags</code>: Reconsider the difficulty tag. If the ambiguous phrase is intentional (testing reading comprehension), tag as Medium or Advanced and note that in editornotes. If it&#x27;s unintentional, fix the statement first, then re-evaluate difficulty (likely Basic or Early Medium).</li><li><code>editornotes</code>: Add a note explaining the intended interpretation of &#x27;twice as many more dogs.&#x27; If this is testing a known source of student error, cite it; if not, clarify that the phrasing should be unambiguous.</li></ol></div>
+
+  
+
+  <footer class="problem-foot">
+    <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/master/contributors/contributor_01/problems/problem_04.tex" target="_blank">📄 view .tex on github</a>
+  </footer>
+</section>
+
+<section class="problem" id="problem-5" data-sha="b6ec0d690402dd7c">
+  <header class="problem-head">
+    <div>
+      <h2>Problem #5 (untitled draft)</h2>
+      <div class="meta">
+        Problem #5 · reviewed 2026-05-28 06:51:30 UTC · content b6ec0d69
+        <span class="pill v-rework">needs-major-rework</span>
+      </div>
+    </div>
+    <div class="radar"><svg viewBox="0 0 180 180" width="180" height="180" aria-label="dimensions radar"><polygon points="90.0,76.0 102.1,83.0 102.1,97.0 90.0,104.0 77.9,97.0 77.9,83.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,62.0 114.2,76.0 114.2,104.0 90.0,118.0 65.8,104.0 65.8,76.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,48.0 126.4,69.0 126.4,111.0 90.0,132.0 53.6,111.0 53.6,69.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,34.0 138.5,62.0 138.5,118.0 90.0,146.0 41.5,118.0 41.5,62.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,20.0 150.6,55.0 150.6,125.0 90.0,160.0 29.4,125.0 29.4,55.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,90.0 90.0,90.0 90.0,90.0 90.0,90.0 90.0,90.0 90.0,90.0" fill="#60a5fa" fill-opacity="0.25" stroke="#60a5fa" stroke-width="1.5"/><text x="90.0" y="14.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity —</text><text x="159.3" y="54.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel —</text><text x="159.3" y="134.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff —</text><text x="90.0" y="174.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric —</text><text x="20.7" y="134.0" text-anchor="middle" fill="#94a3b8" font-size="9">verif —</text><text x="20.7" y="54.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean —</text></svg></div>
+  </header>
+
+  <div class="digest">
+    <div class="d-col">
+      <h3>✨ Strengths</h3>
+      <ul><li>(no specific strengths surfaced — early draft)</li></ul>
+    </div>
+    <div class="d-col">
+      <h3>💡 Considerations</h3>
+      <ul><li>Does &#x27;twice the times&#x27; mean 2×3=6 rides per person, or 2 rides per person? The answer key assumes the former, but the phrasing is unclear.</li><li>&#x27;One day a week&#x27; is vague: does it ask for rides on a single specific day, or the average per day, or rides on one arbitrary day from the week?</li><li>Grading scheme is empty; add deterministic criteria (e.g., &#x27;Full credit: both 6 and 12 identified with justification; Partial: one answer correct; No credit: other&#x27;).</li><li>If the problem intends two valid answers, the grading scheme must specify how to award credit for each or for recognizing the ambiguity.</li><li>This difficulty tag is mismatched; the problem is arithmetic, not proof or derivation.</li></ul>
+    </div>
+    <div class="d-col">
+      <h3>👉 Next steps</h3>
+      <ul><li>Clarify the scope: does the problem ask for rides on one specific day (and if so, which?), or rides per day on average, or total rides in the week? Rewrite to remove &#x27;one day a week&#x27; ambiguity.</li><li>Clarify &#x27;twice the times&#x27;: does each person ride 2×3=6 times, or 2 times total? Use explicit numbers or a formula.</li><li>Lower difficulty to Basic or Intermediate; this is arithmetic, not qualifying-exam material. If the intent is to test reading comprehension under ambiguity, retag as &#x27;diagnose&#x27; and reframe.</li><li>Add explicit criteria: e.g., &#x27;Full credit (5 pts): Identifies both 6 and 12 with correct reasoning. Partial (2 pts): One answer correct. No credit: Other.&#x27; Or, if only one answer is intended, remove the ambiguity from the problem.</li><li>Fill in all TODO fields: title, domain, subtopic, contributor contact, verb, capability, grading method, and failure mode.</li></ul>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-target="snapshot-5">Snapshot</button>
+    <button class="tab" data-target="annotated-5">Annotated</button>
+  </div>
+  <div class="pane active" id="snapshot-5">
+    <div class="statement">Chase and Rider each ride their bikes thrice a day for 5 days; but on two other days, they ride twice the times they do on usual days. How many rides did they take in one day a week?</div>
+  </div>
+  <div class="pane" id="annotated-5">
+    <div class="statement annot-host"><span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="Does &#x27;twice the times&#x27; mean 2×3=6 rides per person, or 2 rides per person? The answer key assumes the former, but the phrasing is unclear.">Chase and Rider each ride their bikes thrice a day for 5 days; but on two other days, they ride twice the times they do on usual days.<span class="annot-bubble" role="tooltip"><strong>ambiguity.</strong> Does &#x27;twice the times&#x27; mean 2×3=6 rides per person, or 2 rides per person? The answer key assumes the former, but the phrasing is unclear.</span></span> <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="&#x27;One day a week&#x27; is vague: does it ask for rides on a single specific day, or the average per day, or rides on one arbitrary day from the week?">How many rides did they take in one day a week?<span class="annot-bubble" role="tooltip"><strong>ambiguity.</strong> &#x27;One day a week&#x27; is vague: does it ask for rides on a single specific day, or the average per day, or rides on one arbitrary day from the week?</span></span></div>
+    <p class="annot-legend dim">Hover (desktop) or tap (touch) a highlighted span for the reviewer's comment.</p>
+  </div>
+
+  <div class="actions-block"><h3>📝 Concrete actions for Overleaf</h3><ol><li><code>problemstatement</code>: Clarify the scope: does the problem ask for rides on one specific day (and if so, which?), or rides per day on average, or total rides in the week? Rewrite to remove &#x27;one day a week&#x27; ambiguity.</li><li><code>problemstatement</code>: Clarify &#x27;twice the times&#x27;: does each person ride 2×3=6 times, or 2 times total? Use explicit numbers or a formula.</li><li><code>problemtags</code>: Lower difficulty to Basic or Intermediate; this is arithmetic, not qualifying-exam material. If the intent is to test reading comprehension under ambiguity, retag as &#x27;diagnose&#x27; and reframe.</li><li><code>gradingscheme</code>: Add explicit criteria: e.g., &#x27;Full credit (5 pts): Identifies both 6 and 12 with correct reasoning. Partial (2 pts): One answer correct. No credit: Other.&#x27; Or, if only one answer is intended, remove the ambiguity from the problem.</li><li><code>problemsetup</code>: Fill in all TODO fields: title, domain, subtopic, contributor contact, verb, capability, grading method, and failure mode.</li></ol></div>
+
+  
+
+  <footer class="problem-foot">
+    <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/master/contributors/contributor_01/problems/problem_05.tex" target="_blank">📄 view .tex on github</a>
+  </footer>
+</section>
+
+<section class="problem" id="problem-6" data-sha="c084f44a66e7d42b">
+  <header class="problem-head">
+    <div>
+      <h2>Problem #6 (untitled draft)</h2>
+      <div class="meta">
+        Problem #6 · reviewed 2026-05-28 06:51:41 UTC · content c084f44a
+        <span class="pill v-stub">template-stub</span>
+      </div>
+    </div>
+    <div class="radar"><svg viewBox="0 0 180 180" width="180" height="180" aria-label="dimensions radar"><polygon points="90.0,76.0 102.1,83.0 102.1,97.0 90.0,104.0 77.9,97.0 77.9,83.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,62.0 114.2,76.0 114.2,104.0 90.0,118.0 65.8,104.0 65.8,76.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,48.0 126.4,69.0 126.4,111.0 90.0,132.0 53.6,111.0 53.6,69.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,34.0 138.5,62.0 138.5,118.0 90.0,146.0 41.5,118.0 41.5,62.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,20.0 150.6,55.0 150.6,125.0 90.0,160.0 29.4,125.0 29.4,55.0" fill="none" stroke="#334155" stroke-width="0.5"/><polygon points="90.0,90.0 90.0,90.0 90.0,90.0 90.0,90.0 90.0,90.0 90.0,90.0" fill="#60a5fa" fill-opacity="0.25" stroke="#60a5fa" stroke-width="1.5"/><text x="90.0" y="14.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity —</text><text x="159.3" y="54.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel —</text><text x="159.3" y="134.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff —</text><text x="90.0" y="174.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric —</text><text x="20.7" y="134.0" text-anchor="middle" fill="#94a3b8" font-size="9">verif —</text><text x="20.7" y="54.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean —</text></svg></div>
+  </header>
+
+  <div class="digest">
+    <div class="d-col">
+      <h3>✨ Strengths</h3>
+      <ul><li>(no specific strengths surfaced — early draft)</li></ul>
+    </div>
+    <div class="d-col">
+      <h3>💡 Considerations</h3>
+      <ul><li>Replace with a descriptive title (e.g., &#x27;Gift Purchase Rebate Calculation&#x27;).</li><li>Select one domain; this is Mathematics (arithmetic).</li><li>Specify the subtopic (e.g., &#x27;Arithmetic / Multi-step word problems&#x27;).</li><li>Select the verb; this is &#x27;compute&#x27;.</li><li>State what capability is being tested (e.g., &#x27;arithmetic fluency&#x27; or &#x27;multi-step calculation&#x27;).</li></ul>
+    </div>
+    <div class="d-col">
+      <h3>👉 Next steps</h3>
+      <ul><li>Replace all TODO fields with concrete values: domain=Mathematics, subtopic=Arithmetic/Multi-step word problems, verb=compute, capability=multi-step arithmetic, grading=exact match, failure_mode=forgetting rebate or misinterpreting unit prices.</li><li>Replace the title TODO with a descriptive name (e.g., &#x27;Gift Purchase Rebate Calculation&#x27;).</li><li>Delete Mode B (proof/derivation). Complete Mode A: set exact expected answer to 329, numerical tolerance to 0, and deterministic verifier to &#x27;check if answer equals 329&#x27;.</li><li>Clarify the necklace price: change &#x27;2 necklaces for \$83&#x27; to either &#x27;2 necklaces for \$83 each&#x27; or &#x27;2 necklaces for a total of \$83&#x27; to match the answerkey assumption.</li><li>Reconsider the difficulty tag: this is elementary arithmetic, not Qualifying-exam-plus. Consider Basic or Intermediate instead, or replace with a problem that requires genuine mathematical reasoning at that level.</li></ul>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-target="snapshot-6">Snapshot</button>
+    <button class="tab" data-target="annotated-6">Annotated</button>
+  </div>
+  <div class="pane active" id="snapshot-6">
+    <div class="statement">Mr.Grey is purchasing gifts for his family. So far he has purchased 3 polo shirts for \$26 each; 2 necklaces for \$83; and 2 computer game for \$90 each. Since Mr.Grey purchased all those using his credit card, he received a \$12 rebate. What is the total cost of the gifts after the rebate?</div>
+  </div>
+  <div class="pane" id="annotated-6">
+    <div class="statement annot-host">Mr.Grey is purchasing gifts for his family. So far he has purchased 3 polo shirts for \$26 each; <span class="annot annot-nit" data-kind="nit" tabindex="0" data-comment="Clarify: is \$83 the total price for both, or per necklace? The answerkey assumes total, but the phrasing is ambiguous.">2 necklaces for \$83<span class="annot-bubble" role="tooltip"><strong>nit.</strong> Clarify: is \$83 the total price for both, or per necklace? The answerkey assumes total, but the phrasing is ambiguous.</span></span>; and 2 computer game for \$90 each. Since Mr.Grey purchased all those using his credit card, he received a \$12 rebate. What is the total cost of the gifts after the rebate?</div>
+    <p class="annot-legend dim">Hover (desktop) or tap (touch) a highlighted span for the reviewer's comment.</p>
+  </div>
+
+  <div class="actions-block"><h3>📝 Concrete actions for Overleaf</h3><ol><li><code>problemtags</code>: Replace all TODO fields with concrete values: domain=Mathematics, subtopic=Arithmetic/Multi-step word problems, verb=compute, capability=multi-step arithmetic, grading=exact match, failure_mode=forgetting rebate or misinterpreting unit prices.</li><li><code>problemsetup</code>: Replace the title TODO with a descriptive name (e.g., &#x27;Gift Purchase Rebate Calculation&#x27;).</li><li><code>gradingscheme</code>: Delete Mode B (proof/derivation). Complete Mode A: set exact expected answer to 329, numerical tolerance to 0, and deterministic verifier to &#x27;check if answer equals 329&#x27;.</li><li><code>problemstatement</code>: Clarify the necklace price: change &#x27;2 necklaces for \$83&#x27; to either &#x27;2 necklaces for \$83 each&#x27; or &#x27;2 necklaces for a total of \$83&#x27; to match the answerkey assumption.</li><li><code>problemsetup</code>: Reconsider the difficulty tag: this is elementary arithmetic, not Qualifying-exam-plus. Consider Basic or Intermediate instead, or replace with a problem that requires genuine mathematical reasoning at that level.</li></ol></div>
+
+  
+
+  <footer class="problem-foot">
+    <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/master/contributors/contributor_01/problems/problem_06.tex" target="_blank">📄 view .tex on github</a>
+  </footer>
+</section>
+
+
+  <footer class="page-foot">
+    <div>Reviews generated by the AI4Stat/Math auto-reviewer (Claude Haiku 4.5).
+      Source code: <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/lit-review/agents/reviewer/" target="_blank">agents/reviewer/</a>.</div>
+    <div class="visit-note" id="visit-note">…</div>
+  </footer>
+</div>
+<script>
+// Tabs
+document.addEventListener('click', function(e) {
+  var t = e.target;
+  if (!t.classList || !t.classList.contains('tab')) return;
+  var section = t.closest('section.problem');
+  if (!section) return;
+  section.querySelectorAll('.tab').forEach(function(b){ b.classList.remove('active'); });
+  section.querySelectorAll('.pane').forEach(function(p){ p.classList.remove('active'); });
+  t.classList.add('active');
+  var pane = document.getElementById(t.getAttribute('data-target'));
+  if (pane) pane.classList.add('active');
+});
+
+// Visit tracking — per-problem-sha. localStorage key: ai4sm-review-visits
+(function(){
+  var STORAGE = 'ai4sm-review-visits';
+  var visits = {};
+  try { visits = JSON.parse(localStorage.getItem(STORAGE) || '{}'); } catch(e){}
+  document.querySelectorAll('section.problem').forEach(function(section){
+    var sha = section.getAttribute('data-sha') || '';
+    var key = location.pathname + '#' + section.id + ':' + sha;
+    var wasSeen = !!visits[key];
+    if (!wasSeen) {
+      var meta = section.querySelector('.problem-head .meta');
+      if (meta) meta.insertAdjacentHTML('beforeend',
+        ' <span class="new-since">new since last visit</span>');
+    }
+    // mark visited when section is in view ≥1s
+    var seenTimer = null;
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting) {
+          seenTimer = setTimeout(function(){
+            visits[key] = Date.now();
+            try { localStorage.setItem(STORAGE, JSON.stringify(visits)); } catch(e){}
+            io.unobserve(section);
+          }, 1000);
+        } else if (seenTimer) {
+          clearTimeout(seenTimer);
+          seenTimer = null;
+        }
+      });
+    }, {threshold: 0.4});
+    io.observe(section);
+  });
+
+  // Footer note: last-visit timestamp for the page
+  var pageKey = '_page_' + location.pathname;
+  var last = visits[pageKey];
+  var foot = document.getElementById('visit-note');
+  if (foot) {
+    if (last) foot.textContent = 'Welcome back. Last viewed ' + new Date(last).toLocaleString() + '.';
+    else foot.textContent = 'First visit — pages auto-track which problems you have read.';
+  }
+  visits[pageKey] = Date.now();
+  try { localStorage.setItem(STORAGE, JSON.stringify(visits)); } catch(e){}
+})();
+</script>
+</body></html>
