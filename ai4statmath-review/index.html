@@ -34,15 +34,21 @@ body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
 .nav-chips::-webkit-scrollbar { height:6px; }
 .nav-chips::-webkit-scrollbar-thumb { background:var(--bg-accent); border-radius:3px; }
 .nav-chat { flex:0 0 auto; }
+.nav-back { flex:0 0 auto; background:var(--bg-card); color:var(--fg);
+            padding:6px 11px; border-radius:6px; text-decoration:none;
+            font-size:.86em; border:1px solid var(--border); white-space:nowrap; }
+.nav-back:hover { border-color:var(--primary); color:var(--primary); }
 
 /* On mobile (<720px): wrap the inner so chips drop to row 2 full-width.
-   HTML order is brand → chips → chat. We bump `chat` ahead of chips with
-   `order` so row 1 stays `[brand … chat]` and chips fall to row 2. */
+   HTML order is brand → chips → chat → back. We bump chat+back ahead of
+   chips with `order` so row 1 stays `[brand … chat back]` and chips fall
+   to row 2. */
 @media (max-width:720px) {
   .nav-inner { flex-wrap:wrap; }
   .nav-brand { order:1; }
   .nav-chat  { order:2; margin-left:auto; }
-  .nav-chips { order:3; flex-basis:100%; margin-top:4px; padding-bottom:2px; }
+  .nav-back  { order:3; }
+  .nav-chips { order:4; flex-basis:100%; margin-top:4px; padding-bottom:2px; }
 }
 @media (max-width:480px) {
   /* narrow: hide the "auto-review" subtitle so name + email + chat fit row 1. */
@@ -72,13 +78,23 @@ body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
 
 /* ── container ─────────────────────────────────────────────────── */
 .container { max-width:980px; margin:0 auto; padding:24px 18px 80px; }
+/* reserve the right gutter for the mobile icon-rail so content never sits under it */
+@media (max-width:720px) { .container { padding-right:58px; } }
 
 /* ── hero ──────────────────────────────────────────────────────── */
 .hero { background:linear-gradient(135deg, var(--bg-card), var(--bg-soft));
         border:1px solid var(--border); border-radius:14px; padding:22px 26px; margin-bottom:18px; }
 .hero h1 { margin:0 0 .25rem; font-size:1.7rem; }
-.hero .hero-sub { color:var(--fg-dim); font-size:.95em; }
+.hero .hero-sub { color:var(--fg-muted); font-size:.95em; }
 .hero .timestamp { color:var(--fg-muted); font-size:.86em; margin-top:8px; }
+.purpose-table { width:100%; border-collapse:collapse; margin:12px 0 4px; }
+.purpose-table tr { border-bottom:1px solid var(--border); }
+.purpose-table tr:last-child { border-bottom:none; }
+.purpose-table td { padding:7px 10px; vertical-align:top; font-size:.9em; }
+.purpose-table td.pl { color:var(--fg-muted); white-space:nowrap; width:1%; font-weight:600; }
+.purpose-table td.pr { color:var(--fg); }
+.purpose-table td.pr .pill { margin-right:4px; }
+@media (max-width:560px) { .purpose-table td { display:block; } .purpose-table td.pl { padding-bottom:0; } }
 .uc-banner { background:#78350f; border-left:3px solid #f59e0b; color:#fed7aa;
              padding:9px 14px; border-radius:8px; margin:14px 0 4px; font-size:.86em; }
 
@@ -320,11 +336,20 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
 
    Mobile: rail is touch-friendly. The whole rail is fixed-position so
    it stays at the thumb without page scroll. Tap any row to jump. */
-.rail-tl { position:fixed; right:0; top:64px; bottom:0; z-index:60;
-           width:230px; padding:8px 10px 14px;
-           display:flex; flex-direction:column;
-           background:transparent; pointer-events:none;
-           font-size:.78em; overflow:hidden; }
+/* Panel round 1 (visual designer + engineer P1): the rail overlapped the
+   980px content column at every common laptop width and covered the
+   dashboard tiles on mobile. Fix: HIDE by default; only show where it has
+   genuine room — wide desktop (right margin) or a reserved mobile gutter.
+   In the awkward middle (721–1459px) the sticky navbar chips carry nav. */
+.rail-tl { display:none; }
+/* Wide desktop: container is 980px centered; show the rail only when the
+   right margin can host its ~240px without overlapping content. */
+@media (min-width:1460px) {
+  .rail-tl { display:flex; position:fixed; right:max(8px, calc((100vw - 980px)/2 - 248px));
+             top:64px; bottom:0; z-index:60; width:228px; padding:8px 10px 14px;
+             flex-direction:column; background:transparent; pointer-events:none;
+             font-size:.78em; overflow:hidden; }
+}
 .rail-tl-inner { pointer-events:auto; display:flex; flex-direction:column;
                  gap:2px; overflow-y:auto; flex:1;
                  scrollbar-width:none; padding-right:4px;
@@ -366,24 +391,21 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
               padding-left:8px; }
 .rail-sub a:hover { color:var(--fg); border-left-color:var(--primary); }
 
-/* Mobile: narrow + bottom-right; can be thumb-flicked. */
+/* Mobile: a NARROW icon rail (num + glyph only) in a reserved right gutter,
+   so it never overlaps content. Tap to jump. 44px targets for touch.
+   The page reserves the gutter via .container padding-right (set below). */
 @media (max-width:720px) {
-  .rail-tl { width:160px; top:auto; bottom:14px; height:auto; max-height:60vh;
-             padding:0 8px 0 0; right:6px; }
-  .rail-tl-inner { gap:1px; }
-  .rail-bullet { padding:4px 9px; }
-  .rail-bullet .rl-title { font-size:.94em; }
-  /* Scrub hint: when JS activates, add a thin colored stripe on the
-     left edge of the rail telling the thumb "you can drag here". */
-  .rail-tl.rail-scrubbable .rail-tl-inner {
-    position:relative;
-    box-shadow:inset 2px 0 0 0 rgba(96,165,250,0.35);
-  }
-}
-@media (max-width:420px) {
-  .rail-tl { width:130px; }
-  /* on the smallest screens, drop titles in off-view rows to save width. */
-  .rail-section:not(.active) .rail-bullet .rl-title { display:none; }
+  .rail-tl { display:flex; position:fixed; right:0; top:auto; bottom:0;
+             height:auto; max-height:72vh; width:52px; padding:0 4px 10px 0;
+             flex-direction:column; background:transparent; pointer-events:none;
+             z-index:60; overflow:hidden; }
+  .rail-tl-inner { pointer-events:auto; gap:3px; padding-right:2px; }
+  .rail-bullet { padding:0 6px; min-height:44px; justify-content:center;
+                 gap:3px; border-radius:9px; }
+  .rail-bullet .rl-title { display:none; }   /* titles would overlap content */
+  .rail-bullet .rl-num { min-width:0; font-size:.86em; }
+  .rail-sub { display:none !important; }      /* sub-anchors expand leftward → overlap; off on mobile */
+  .rail-section.active .rail-bullet { padding:0 6px; }
 }
 
 /* ── chatbot drawer (kept in DOM but hidden until proxy ready) ─── */
@@ -496,7 +518,7 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
     <div class="hub-tile t-rework"><div class="num">0</div><div class="lbl">rework ✗</div></div>
     <div class="hub-tile t-progress"><div class="num">2</div><div class="lbl">in progress ✎</div></div>
     <div class="hub-tile t-info"><div class="num">5/5</div><div class="lbl">verifiers ✓</div></div>
-    <div class="hub-tile"><div class="num">1/5</div><div class="lbl" title="LOWER is better — the goal is problems that STUMP frontier models. A passing model may mean the problem needs to be hardened.">LLM passed ⚠</div></div>
+    <div class="hub-tile t-ready"><div class="num">4/5</div><div class="lbl" title="Problems that stumped the test model. HIGHER is better — the goal is problems models cannot solve. 1 were solved (= too easy).">stumped a model ✓</div></div>
   </div>
 </section>
 
