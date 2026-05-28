@@ -99,6 +99,7 @@ body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
 .tile.t-revision .num { color:var(--c-revision); }
 .tile.t-rework   .num { color:var(--c-rework); }
 .tile.t-verif    .num { color:var(--primary); }
+.tile.t-progress .num { color:#60a5fa; }
 
 /* ── problem cards ─────────────────────────────────────────────── */
 section.problem { background:var(--bg-card); border:1px solid var(--border);
@@ -178,7 +179,7 @@ section.problem[data-verdict="in-progress"] {
                           quoted literal — a different KIND of token from prose)
    We do NOT use font color for verbs or warnings — color was noise. */
 
-.kw-verb { font-weight:700; color:inherit; }
+.kw-subject { font-weight:700; color:inherit; }
 .kw-warn { text-decoration:underline wavy #ef4444; text-decoration-skip-ink:none;
            text-underline-offset:3px; color:inherit; }
 
@@ -267,6 +268,9 @@ table.checks td code { background:var(--bg); padding:1px 4px; border-radius:3px;
 /* ── benchmark drawer ──────────────────────────────────────────── */
 .bench-block { background:var(--bg-soft); border-radius:8px; padding:8px 14px; margin:10px 0; }
 .bench-block summary { cursor:pointer; color:var(--fg-muted); font-weight:500; font-size:.94em; }
+.bench-framing { padding:8px 12px; border-radius:6px; margin:8px 0 4px; font-size:.92em; }
+.bench-framing.bf-bad  { background:rgba(251,191,36,0.12); border-left:3px solid var(--c-revision); color:#fde68a; }
+.bench-framing.bf-good { background:rgba(52,211,153,0.12); border-left:3px solid var(--c-ready); color:#a7f3d0; }
 .model-response { background:var(--bg); padding:12px 14px; border-radius:6px; font-size:.86em;
                   white-space:pre-wrap; max-height:340px; overflow-y:auto;
                   border:1px solid var(--border); line-height:1.5; }
@@ -288,33 +292,85 @@ footer.page-foot { margin-top:40px; padding-top:22px; border-top:1px solid var(-
                    color:var(--fg-dim); font-size:.85em; text-align:center; }
 footer.page-foot a { color:var(--primary); text-decoration:none; }
 
-/* ── compact bottom-right problem rail ─────────────────────────── */
-/* Always-expanded vertical stack of pills. Background is transparent;
-   only the pills themselves carry slight opacity so the page shows
-   through the gaps. Small fonts. Fingertip-tappable on mobile. */
-.rail { position:fixed; right:10px; bottom:14px; z-index:60;
-        display:flex; flex-direction:column; gap:4px;
-        background:transparent; max-height:calc(100vh - 32px); overflow-y:auto;
-        scrollbar-width:none; }
-.rail::-webkit-scrollbar { display:none; }
-.rail-item { display:flex; align-items:center; gap:5px;
-             padding:3px 9px; border-radius:11px; font-size:.72em;
-             background:rgba(15,23,42,0.62); color:var(--fg-muted);
-             text-decoration:none; font-variant-numeric:tabular-nums;
-             border:1px solid rgba(255,255,255,0.05);
-             backdrop-filter:blur(6px);
-             transition:background .12s, color .12s, transform .12s; }
-.rail-item:hover { background:rgba(30,41,59,0.92); color:var(--fg);
-                   transform:translateX(-1px); }
-.rail-item.active { background:rgba(30,41,59,0.95); color:var(--fg);
-                    border-color:var(--primary); }
-.rail-item .rl-num { font-family:"SF Mono",Consolas,monospace; }
-.rail-item .rl-glyph { font-size:.95em; }
-.rail-item.rl-ready    .rl-glyph { color:var(--c-ready); }
-.rail-item.rl-revision .rl-glyph { color:var(--c-revision); }
-.rail-item.rl-rework   .rl-glyph { color:var(--c-rework); }
-.rail-item.rl-stub     .rl-glyph { color:var(--c-stub); }
-.rail-item.rl-progress .rl-glyph { color:#60a5fa; }
+/* ── tooltip convention (port from lit-review) ─────────────────── */
+abbr.term { text-decoration:none; border-bottom:1px dotted var(--fg-dim);
+            cursor:help; }
+abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
+#tt { position:absolute; display:none; max-width:320px;
+      background:var(--bg-card); color:var(--fg); border:1px solid var(--primary);
+      border-radius:8px; padding:10px 12px; font-size:.86em; line-height:1.45;
+      box-shadow:0 8px 24px rgba(0,0,0,.32); z-index:200; pointer-events:auto; }
+#tt.on { display:block; }
+.tile t-progress { /* defined below in tiles section */ }
+
+/* ── timeline rail: floats above text, dynamic + hierarchical ───── */
+/* Vertical rail on the right side. Always-visible. Backgroundless;
+   only the items carry slight backdrop blur. The section currently in
+   view expands to reveal its sub-anchors (TL;DR / fixes / promising /
+   considerations / next steps / problem text / verifier / benchmark).
+   Off-view problems collapse to a single bullet+number+glyph row.
+
+   Mobile: rail is touch-friendly. The whole rail is fixed-position so
+   it stays at the thumb without page scroll. Tap any row to jump. */
+.rail-tl { position:fixed; right:0; top:64px; bottom:0; z-index:60;
+           width:230px; padding:8px 10px 14px;
+           display:flex; flex-direction:column;
+           background:transparent; pointer-events:none;
+           font-size:.78em; overflow:hidden; }
+.rail-tl-inner { pointer-events:auto; display:flex; flex-direction:column;
+                 gap:2px; overflow-y:auto; flex:1;
+                 scrollbar-width:none; padding-right:4px;
+                 mask-image:linear-gradient(180deg, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
+                 -webkit-mask-image:linear-gradient(180deg, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%); }
+.rail-tl-inner::-webkit-scrollbar { display:none; }
+.rail-section { display:flex; flex-direction:column; }
+.rail-bullet { display:flex; align-items:center; gap:6px;
+               padding:5px 10px; border-radius:10px;
+               background:rgba(15,23,42,0.55);
+               color:var(--fg-muted); text-decoration:none;
+               border:1px solid rgba(255,255,255,0.04);
+               backdrop-filter:blur(6px);
+               font-variant-numeric:tabular-nums;
+               transition:background .14s, color .14s, padding .15s; }
+.rail-bullet:hover { background:rgba(30,41,59,0.88); color:var(--fg); }
+.rail-bullet .rl-num { font-family:"SF Mono",Consolas,monospace; font-size:.94em;
+                       color:var(--fg-dim); flex:none; min-width:22px; }
+.rail-bullet .rl-glyph { flex:none; font-size:.95em; }
+.rail-bullet .rl-title { flex:1; overflow:hidden; text-overflow:ellipsis;
+                         white-space:nowrap; font-weight:500; }
+.rail-section.active .rail-bullet { background:rgba(30,41,59,0.95);
+                                    color:var(--fg);
+                                    border-color:var(--primary);
+                                    padding-top:7px; padding-bottom:7px; }
+.rail-section.rl-ready    .rl-glyph { color:var(--c-ready); }
+.rail-section.rl-revision .rl-glyph { color:var(--c-revision); }
+.rail-section.rl-rework   .rl-glyph { color:var(--c-rework); }
+.rail-section.rl-stub     .rl-glyph { color:var(--c-stub); }
+.rail-section.rl-progress .rl-glyph { color:#60a5fa; }
+
+/* Sub-anchors — only visible for the section in view. */
+.rail-sub { display:none; margin:2px 0 4px 22px; flex-direction:column; gap:2px; }
+.rail-section.active .rail-sub { display:flex; animation:railFadeIn .2s ease-out; }
+@keyframes railFadeIn { from { opacity:0; transform:translateX(4px); } to { opacity:1; transform:translateX(0); } }
+.rail-sub a { display:block; padding:2px 8px; font-size:.86em;
+              color:var(--fg-muted); text-decoration:none;
+              border-left:2px solid rgba(255,255,255,0.06);
+              padding-left:8px; }
+.rail-sub a:hover { color:var(--fg); border-left-color:var(--primary); }
+
+/* Mobile: narrow + bottom-right; can be thumb-flicked. */
+@media (max-width:720px) {
+  .rail-tl { width:160px; top:auto; bottom:14px; height:auto; max-height:60vh;
+             padding:0 8px 0 0; right:6px; }
+  .rail-tl-inner { gap:1px; }
+  .rail-bullet { padding:4px 9px; }
+  .rail-bullet .rl-title { font-size:.94em; }
+}
+@media (max-width:420px) {
+  .rail-tl { width:130px; }
+  /* on the smallest screens, drop titles in off-view rows to save width. */
+  .rail-section:not(.active) .rail-bullet .rl-title { display:none; }
+}
 
 /* ── chatbot drawer (kept in DOM but hidden until proxy ready) ─── */
 .chat-fab { display:none; }   /* re-enable by setting display:flex when proxy is configured */
@@ -384,15 +440,16 @@ footer.page-foot a { color:var(--primary); text-decoration:none; }
       <h2>📈 Progress at a glance</h2>
       <div class="dash-tiles">
         <div class="tile"><div class="num">5</div><div class="lbl">problems</div></div>
-        <div class="tile t-ready"><div class="num">1</div><div class="lbl">ready ✓</div></div>
-        <div class="tile t-revision"><div class="num">2</div><div class="lbl">revise △</div></div>
-        <div class="tile t-rework"><div class="num">0</div><div class="lbl">rework ✗</div></div>
-        <div class="tile t-verif"><div class="num">5/5</div><div class="lbl">verifiers ✓</div></div>
-        <div class="tile"><div class="num">1/5</div><div class="lbl">LLM solved</div></div>
+        <div class="tile t-ready"><div class="num">1</div><div class="lbl"><abbr class="term" data-tip="Ready: could be accepted as-is; only nits remain.">ready</abbr> ✓</div></div>
+        <div class="tile t-revision"><div class="num">2</div><div class="lbl"><abbr class="term" data-tip="Needs revision: one or two concrete actions before it&#x27;s ready.">revise</abbr> △</div></div>
+        <div class="tile t-rework"><div class="num">0</div><div class="lbl"><abbr class="term" data-tip="Needs major rework: substantive issues with the problem itself (under-specified, contaminated, mistargeted).">rework</abbr> ✗</div></div>
+        <div class="tile t-progress"><div class="num">2</div><div class="lbl"><abbr class="term" data-tip="In progress: contributor is still drafting (title still TODO). Auto-reviewer is in encouragement-mode for these — brainstorming directions instead of critique.">in progress</abbr> ✎</div></div>
+        <div class="tile t-verif"><div class="num">5/5</div><div class="lbl"><abbr class="term" data-tip="A verifier is validated when (a) it grades the answer key as pass AND (b) it rejects every plausibly-wrong response the LLM was asked to generate.">verifiers</abbr> ✓</div></div>
+        <div class="tile"><div class="num">1/5</div><div class="lbl"><abbr class="term" data-tip="Number of problems where Haiku 4.5 (zero-shot) solved correctly. LOWER is better — the goal is problems that stump frontier models.">LLM passed</abbr></div></div>
       </div>
     </div>
     <div class="dash-radar">
-      <svg viewBox="0 0 200 200" width="200" height="200" class="radar-svg"><polygon points="100.0,84.0 113.9,92.0 113.9,108.0 100.0,116.0 86.1,108.0 86.1,92.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="100.0,68.0 127.7,84.0 127.7,116.0 100.0,132.0 72.3,116.0 72.3,84.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="100.0,52.0 141.6,76.0 141.6,124.0 100.0,148.0 58.4,124.0 58.4,76.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="100.0,36.0 155.4,68.0 155.4,132.0 100.0,164.0 44.6,132.0 44.6,68.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="100.0,20.0 169.3,60.0 169.3,140.0 100.0,180.0 30.7,140.0 30.7,60.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="100.0,52.0 141.6,76.0 141.6,124.0 100.0,148.0 44.6,132.0 44.6,68.0" fill="#60a5fa" fill-opacity="0.28" stroke="#60a5fa" stroke-width="1.6"/><text x="100.0" y="12.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity <tspan class="s-3" font-weight="700">3</tspan></text><text x="179.7" y="58.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel <tspan class="s-3" font-weight="700">3</tspan></text><text x="179.7" y="150.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff-fit <tspan class="s-3" font-weight="700">3</tspan></text><text x="100.0" y="196.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric <tspan class="s-3" font-weight="700">3</tspan></text><text x="20.3" y="150.0" text-anchor="middle" fill="#94a3b8" font-size="9">verifier <tspan class="s-4" font-weight="700">4</tspan></text><text x="20.3" y="58.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean <tspan class="s-4" font-weight="700">4</tspan></text></svg>
+      <svg viewBox="0 0 200 200" width="200" height="200" class="radar-svg"><polygon points="100.0,84.0 113.9,92.0 113.9,108.0 100.0,116.0 86.1,108.0 86.1,92.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="100.0,68.0 127.7,84.0 127.7,116.0 100.0,132.0 72.3,116.0 72.3,84.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="100.0,52.0 141.6,76.0 141.6,124.0 100.0,148.0 58.4,124.0 58.4,76.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="100.0,36.0 155.4,68.0 155.4,132.0 100.0,164.0 44.6,132.0 44.6,68.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="100.0,20.0 169.3,60.0 169.3,140.0 100.0,180.0 30.7,140.0 30.7,60.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="100.0,52.0 141.6,76.0 141.6,124.0 100.0,148.0 44.6,132.0 44.6,68.0" fill="#60a5fa" fill-opacity="0.28" stroke="#60a5fa" stroke-width="1.6"/><g class="radar-label"><title>Clarity: can a stranger in the same field read the statement once and understand exactly what&#x27;s asked? 1 = ambiguous, 5 = crystal.</title><text x="100.0" y="12.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">clarity <tspan class="s-3" font-weight="700">3</tspan></text></g><g class="radar-label"><title>Novelty: does this problem add something the Tier-A precedents don&#x27;t already do? 1 = duplicate, 5 = genuinely new setup or capability.</title><text x="179.7" y="58.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">novel <tspan class="s-3" font-weight="700">3</tspan></text></g><g class="radar-label"><title>Difficulty fit: does the difficulty label match what the problem actually requires? 5 = the tag matches; lower = mismatch.</title><text x="179.7" y="150.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">diff-fit <tspan class="s-3" font-weight="700">3</tspan></text></g><g class="radar-label"><title>Rubric quality: is the gradingscheme + answerkey written such that a verifier can grade deterministically? 1 = vibes-based, 5 = enumerated criteria.</title><text x="100.0" y="196.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">rubric <tspan class="s-3" font-weight="700">3</tspan></text></g><g class="radar-label"><title>Verifier-ready: given the gradingscheme + answerkey, could a deterministic verifier be written today? 1 = no, needs human judge; 5 = trivially.</title><text x="20.3" y="150.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">verifier <tspan class="s-4" font-weight="700">4</tspan></text></g><g class="radar-label"><title>Contamination-clean: lower contamination_risk = cleaner. 5 = no plausible pretraining source; 1 = verbatim/near-verbatim from a well-known source.</title><text x="20.3" y="58.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">clean <tspan class="s-4" font-weight="700">4</tspan></text></g></svg>
       <div class="dim small" style="text-align:center;margin-top:4px">average across problems</div>
     </div>
   </div>
@@ -406,51 +463,51 @@ footer.page-foot a { color:var(--primary); text-decoration:none; }
     </div>
     <div class="p-pills">
       <span class="pill v-ready">✓ ready</span>
-      <span class="pill v-ready">✓ haiku solved it</span>
+      <abbr class="term pill v-revision" data-tip="⚠ Haiku 4.5 solved this — neutral-to-bad. AI4Stat/Math&#x27;s goal is problems that STUMP frontier models. A Haiku pass is a heads-up that the problem may need to be hardened, or replaced with a harder variant in the same vein.">⚠ haiku solved it</abbr>
     </div>
   </header>
 
   <p class="p-tldr"></p>
 
-  <div class="p-cols">
+  <div class="p-cols" id="problem-2-fixes">
     <div class="p-actions">
       <h3>🔧 Quick fixes & next steps</h3>
-      <ol class="qa-list"><li class="qa-item"><span class="qa-where"><span class="qa-glyph">🔑</span>answerkey</span> <span class="qa-what"><span class="kw-verb">Fix</span> the &#x27;not satisfed&#x27; <span class="kw-warn">typo</span> in the <span class="kw-num">1001</span>–<span class="kw-num">2000</span> bullet.</span><details class="qa-example"><summary>example LaTeX</summary><pre>1024, 1250, 1280, 1600, 2000, not satisfied.</pre></details></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">⚙</span>problemsetup</span> <span class="qa-what"><span class="kw-verb">Reconsider</span> the difficulty tag — <span class="kw-level lv-intermediate">Intermediate</span> may fit better than <span class="kw-level lv-advanced">Advanced</span> given the routine technique.</span></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">⚖</span>gradingscheme</span> <span class="qa-what">Optionally accept further equivalent forms (e.g. &#x27;4.<span class="kw-num">096</span> \times 10^3&#x27; or the LaTeX form <span class="kw-math">$2^{12}$</span> with whitespace variants) so the string-matcher doesn&#x27;t false-reject.</span><details class="qa-example"><summary>example LaTeX</summary><pre>Accepted forms: 4096, $2^{12}$, 2^12, 2**12.</pre></details></li></ol>
+      <ol class="qa-list"><li class="qa-item"><span class="qa-where"><span class="qa-glyph">🔑</span>answerkey</span> <span class="qa-what">Fix the &#x27;not satisfed&#x27; <span class="kw-warn">typo</span> in the <span class="kw-num">1001</span>–<span class="kw-num">2000</span> bullet.</span><details class="qa-example"><summary>example LaTeX</summary><pre>1024, 1250, 1280, 1600, 2000, not satisfied.</pre></details></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">⚙</span>problemsetup</span> <span class="qa-what">Reconsider the <span class="kw-subject">difficulty tag</span> — <span class="kw-level lv-intermediate">Intermediate</span> may fit better than <span class="kw-level lv-advanced">Advanced</span> given the routine technique.</span></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">⚖</span>gradingscheme</span> <span class="qa-what">Optionally accept further equivalent forms (e.g. &#x27;4.<span class="kw-num">096</span> \times 10^3&#x27; or the LaTeX form <span class="kw-math">$2^{12}$</span> with whitespace variants) so the string-matcher doesn&#x27;t false-reject.</span><details class="qa-example"><summary>example LaTeX</summary><pre>Accepted forms: 4096, $2^{12}$, 2^12, 2**12.</pre></details></li></ol>
     </div>
-    <aside class="p-radar"><svg viewBox="0 0 180 180" width="180" height="180" class="radar-svg"><polygon points="90.0,75.6 102.5,82.8 102.5,97.2 90.0,104.4 77.5,97.2 77.5,82.8" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 114.9,75.6 114.9,104.4 90.0,118.8 65.1,104.4 65.1,75.6" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,46.8 127.4,68.4 127.4,111.6 90.0,133.2 52.6,111.6 52.6,68.4" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,32.4 139.9,61.2 139.9,118.8 90.0,147.6 40.1,118.8 40.1,61.2" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,18.0 152.4,54.0 152.4,126.0 90.0,162.0 27.6,126.0 27.6,54.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,18.0 139.9,61.2 127.4,111.6 90.0,162.0 27.6,126.0 52.6,68.4" fill="#60a5fa" fill-opacity="0.28" stroke="#60a5fa" stroke-width="1.6"/><text x="90.0" y="10.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity <tspan class="s-5" font-weight="700">5</tspan></text><text x="162.7" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel <tspan class="s-4" font-weight="700">4</tspan></text><text x="162.7" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff-fit <tspan class="s-3" font-weight="700">3</tspan></text><text x="90.0" y="178.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric <tspan class="s-5" font-weight="700">5</tspan></text><text x="17.3" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">verifier <tspan class="s-5" font-weight="700">5</tspan></text><text x="17.3" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean <tspan class="s-3" font-weight="700">3</tspan></text></svg></aside>
+    <aside class="p-radar"><svg viewBox="0 0 180 180" width="180" height="180" class="radar-svg"><polygon points="90.0,75.6 102.5,82.8 102.5,97.2 90.0,104.4 77.5,97.2 77.5,82.8" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 114.9,75.6 114.9,104.4 90.0,118.8 65.1,104.4 65.1,75.6" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,46.8 127.4,68.4 127.4,111.6 90.0,133.2 52.6,111.6 52.6,68.4" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,32.4 139.9,61.2 139.9,118.8 90.0,147.6 40.1,118.8 40.1,61.2" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,18.0 152.4,54.0 152.4,126.0 90.0,162.0 27.6,126.0 27.6,54.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,18.0 139.9,61.2 127.4,111.6 90.0,162.0 27.6,126.0 52.6,68.4" fill="#60a5fa" fill-opacity="0.28" stroke="#60a5fa" stroke-width="1.6"/><g class="radar-label"><title>Clarity: can a stranger in the same field read the statement once and understand exactly what&#x27;s asked? 1 = ambiguous, 5 = crystal.</title><text x="90.0" y="10.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">clarity <tspan class="s-5" font-weight="700">5</tspan></text></g><g class="radar-label"><title>Novelty: does this problem add something the Tier-A precedents don&#x27;t already do? 1 = duplicate, 5 = genuinely new setup or capability.</title><text x="162.7" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">novel <tspan class="s-4" font-weight="700">4</tspan></text></g><g class="radar-label"><title>Difficulty fit: does the difficulty label match what the problem actually requires? 5 = the tag matches; lower = mismatch.</title><text x="162.7" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">diff-fit <tspan class="s-3" font-weight="700">3</tspan></text></g><g class="radar-label"><title>Rubric quality: is the gradingscheme + answerkey written such that a verifier can grade deterministically? 1 = vibes-based, 5 = enumerated criteria.</title><text x="90.0" y="178.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">rubric <tspan class="s-5" font-weight="700">5</tspan></text></g><g class="radar-label"><title>Verifier-ready: given the gradingscheme + answerkey, could a deterministic verifier be written today? 1 = no, needs human judge; 5 = trivially.</title><text x="17.3" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">verifier <tspan class="s-5" font-weight="700">5</tspan></text></g><g class="radar-label"><title>Contamination-clean: lower contamination_risk = cleaner. 5 = no plausible pretraining source; 1 = verbatim/near-verbatim from a well-known source.</title><text x="17.3" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">clean <tspan class="s-3" font-weight="700">3</tspan></text></g></svg></aside>
   </div>
 
-  <details class="d-block" open>
+  <details class="d-block" id="problem-2-working">
     <summary>✨ What's working</summary>
-    <ul class="bullets"><li>Tight, unambiguous prompt — one variable, two conditions, one deliverable.</li><li>Good — pre-empting equivalent answer forms is exactly what a verifier needs.</li></ul>
+    <ul class="bullets"><li>Tight, unambiguous prompt — one variable, two conditions, one <span class="kw-subject">deliverable</span>.</li><li>Good — pre-empting equivalent answer forms is exactly what a <span class="kw-subject">verifier</span> needs.</li></ul>
   </details>
 
-  <details class="d-block">
+  <details class="d-block" id="problem-2-considerations">
     <summary>💡 Things to consider</summary>
     <ul class="bullets"><li><span class="kw-warn">Typo</span>: &#x27;satisfed&#x27; → &#x27;satisfied&#x27;.</li><li>Consider &#x27;<span class="kw-level lv-intermediate">Intermediate</span>&#x27;: the solution is one standard lemma plus a finite enumeration, no non-routine technique.</li></ul>
   </details>
 
-  <details class="d-block">
+  <details class="d-block" open id="problem-2-next">
     <summary>👉 Suggested next steps</summary>
-    <ul class="bullets"><li><span class="kw-verb">Fix</span> the &#x27;not satisfed&#x27; <span class="kw-warn">typo</span> in the <span class="kw-num">1001</span>–<span class="kw-num">2000</span> bullet. — e.g. <span class="kw-num">1024</span>, <span class="kw-num">1250</span>, <span class="kw-num">1280</span>, <span class="kw-num">1600</span>, <span class="kw-num">2000</span>, not satisfied.</li><li><span class="kw-verb">Reconsider</span> the difficulty tag — <span class="kw-level lv-intermediate">Intermediate</span> may fit better than <span class="kw-level lv-advanced">Advanced</span> given the routine technique.</li><li>Optionally accept further equivalent forms (e.g. &#x27;4.<span class="kw-num">096</span> \times 10^3&#x27; or the LaTeX form <span class="kw-math">$2^{12}$</span> with whitespace variants) so the string-matcher doesn&#x27;t false-reject. — e.g. Accepted forms: <span class="kw-num">4096</span>, <span class="kw-math">$2^{12}$</span>, 2^12, 2**12.</li></ul>
+    <ul class="bullets"><li>Fix the &#x27;not satisfed&#x27; <span class="kw-warn">typo</span> in the <span class="kw-num">1001</span>–<span class="kw-num">2000</span> bullet. — e.g. <span class="kw-num">1024</span>, <span class="kw-num">1250</span>, <span class="kw-num">1280</span>, <span class="kw-num">1600</span>, <span class="kw-num">2000</span>, not satisfied.</li><li>Reconsider the <span class="kw-subject">difficulty tag</span> — <span class="kw-level lv-intermediate">Intermediate</span> may fit better than <span class="kw-level lv-advanced">Advanced</span> given the routine technique.</li><li>Optionally accept further equivalent forms (e.g. &#x27;4.<span class="kw-num">096</span> \times 10^3&#x27; or the LaTeX form <span class="kw-math">$2^{12}$</span> with whitespace variants) so the string-matcher doesn&#x27;t false-reject. — e.g. Accepted forms: <span class="kw-num">4096</span>, <span class="kw-math">$2^{12}$</span>, 2^12, 2**12.</li></ul>
   </details>
 
-  <details class="d-block">
-    <summary>📄 Problem text (snapshot · annotated · raw .tex)</summary>
+  <details class="d-block" id="problem-2-text">
+    <summary>📄 Problem text (annotated · snapshot · raw .tex)</summary>
     <div class="tabs">
-      <button class="tab active" data-target="snap-2">Snapshot</button>
-      <button class="tab" data-target="annot-2">Annotated</button>
+      <button class="tab active" data-target="annot-2">Annotated</button>
+      <button class="tab" data-target="snap-2">Snapshot</button>
       <button class="tab" data-target="tex-2">Raw .tex</button>
     </div>
-    <div class="pane active" id="snap-2">
-      <div class="statement">What is the smallest positive integer $n$ such that $\frac{1}{n}$ is a terminating decimal and $n$ contains the digit 9?</div>
-    </div>
-    <div class="pane" id="annot-2">
-      <div class="statement annot-host">What is the <span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="Tight, unambiguous prompt — one variable, two conditions, one deliverable.">smallest positive integer $n$ such that $\frac{1}{n}$ is a terminating decimal and $n$ contains the digit 9<span class="annot-bubble"><strong>strong:</strong> Tight, unambiguous prompt — one variable, two conditions, one deliverable.</span></span>?</div>
+    <div class="pane active" id="annot-2">
+      <div class="statement annot-host">What is the <span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="Tight, unambiguous prompt — one variable, two conditions, one deliverable.">smallest positive integer $n$ such that $\frac{1}{n}$ is a terminating decimal and $n$ contains the digit 9<span class="annot-bubble"><strong>strong:</strong> Tight, unambiguous prompt — one variable, two conditions, one <span class="kw-subject">deliverable</span>.</span></span>?</div>
       <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
     </div>
+    <div class="pane" id="snap-2">
+      <div class="statement">What is the smallest positive integer $n$ such that $\frac{1}{n}$ is a terminating decimal and $n$ contains the digit 9?</div>
+    </div>
     <div class="pane" id="tex-2">
-      <p class="dim small">Snapshot of the full .tex source at the time of review (content sha <code>4f057767</code>). This is what was reviewed — won't drift if you edit the file later.</p>
+      <p class="dim small">Snapshot of the full .tex source at the time of review (<abbr class="term" data-tip="A 16-hex-char hash of `problemstatement + answerkey + gradingscheme`. The review is keyed on this so the same .tex content is reviewed exactly once.">content sha</abbr> <code>4f057767</code>). This is what was reviewed — won't drift if you edit the file later.</p>
       <pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
 \begin{document}
 
@@ -524,7 +581,7 @@ Suggested checks:
     </div>
   </details>
 
-  <details class="d-block"><summary>🧪 Verifier (auto-drafted code · validation trace)</summary>
+  <details class="d-block" id="problem-2-verifier"><summary>🧪 Verifier (auto-drafted code · validation trace)</summary>
 <div class="verifier-card">
   <div class="vc-head">
     <span class="pill v-ready">✓ validated</span>
@@ -571,8 +628,9 @@ def grade(response: str, context: dict) -&gt; dict:
 </details>
 
   
-<details class="bench-block">
+<details class="bench-block" id="problem-2-benchmark">
   <summary>🤖 How a frontier LLM did (claude-haiku-4-5-20251001)</summary>
+  <p class="bench-framing bf-bad">⚠ Frontier solved this — the benchmark wants problems that STUMP frontier models. Consider hardening this one (or replacing with a harder variant in the same vein).</p>
   <p class="dim">Run: <code>2026-05-28-opus-reviews-haiku-solver</code> · verdict <strong>PASS</strong> · verifier notes: Response contains the correct answer 4096.</p>
   <details><summary>Show the model's full response</summary>
     <pre class="model-response">I need to find the smallest positive integer $n$ such that:
@@ -705,51 +763,48 @@ Continuing to look for the digit 9:
     </div>
     <div class="p-pills">
       <span class="pill v-revision">△ needs-revision</span>
-      <span class="pill v-rework">✗ haiku failed (score 0)</span>
+      <abbr class="term pill v-ready" data-tip="✓ Haiku 4.5 failed to solve this — a GOOD sign. The point of the benchmark is to find problems frontier models miss. Once Sonnet/Opus also fail, this becomes part of the hard-set.">✓ haiku stumped</abbr>
     </div>
   </header>
 
   <p class="p-tldr"></p>
 
-  <div class="p-cols">
+  <div class="p-cols" id="problem-3-fixes">
     <div class="p-actions">
       <h3>🔧 Quick fixes & next steps</h3>
-      <ol class="qa-list"><li class="qa-item"><span class="qa-where"><span class="qa-glyph">📝</span>problemstatement</span> <span class="qa-what"><span class="kw-verb">Disambiguate</span> what &#x27;total hours&#x27; means in both the premise and the question. Make explicit that times are summed across individuals (not wall-clock for the group).</span><details class="qa-example"><summary>example LaTeX</summary><pre>If the combined crossing times of 3 kangaroos (each traveling at the same speed) sum to 18 hours, what is the combined crossing time of 4 turtles, each traveling at half a kangaroo&#x27;s speed?</pre></details></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">🏷</span>problemtags</span> <span class="qa-what"><span class="kw-verb">Reconsider</span> difficulty: if the <span class="kw-warn">ambiguity</span> is removed, the problem is one-step arithmetic and likely &#x27;<span class="kw-level lv-basic">Basic</span>&#x27;. If you keep &#x27;<span class="kw-level lv-intermediate">Medium</span>&#x27;, the failure mode should explicitly be the <span class="kw-warn">ambiguity</span> trap.</span></li></ol>
+      <ol class="qa-list"><li class="qa-item"><span class="qa-where"><span class="qa-glyph">📝</span>problemstatement</span> <span class="qa-what">Disambiguate what &#x27;total hours&#x27; means in both the premise and the question. Make explicit that times are summed across individuals (not wall-clock for the group).</span><details class="qa-example"><summary>example LaTeX</summary><pre>If the combined crossing times of 3 kangaroos (each traveling at the same speed) sum to 18 hours, what is the combined crossing time of 4 turtles, each traveling at half a kangaroo&#x27;s speed?</pre></details></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">🏷</span>problemtags</span> <span class="qa-what">Reconsider <span class="kw-subject">difficulty</span>: if the <span class="kw-subject">ambiguity</span> is removed, the problem is one-step arithmetic and likely &#x27;<span class="kw-level lv-basic">Basic</span>&#x27;. If you keep &#x27;<span class="kw-level lv-intermediate">Medium</span>&#x27;, the <span class="kw-subject">failure mode</span> should explicitly be the <span class="kw-subject">ambiguity</span> trap.</span></li></ol>
     </div>
-    <aside class="p-radar"><svg viewBox="0 0 180 180" width="180" height="180" class="radar-svg"><polygon points="90.0,75.6 102.5,82.8 102.5,97.2 90.0,104.4 77.5,97.2 77.5,82.8" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 114.9,75.6 114.9,104.4 90.0,118.8 65.1,104.4 65.1,75.6" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,46.8 127.4,68.4 127.4,111.6 90.0,133.2 52.6,111.6 52.6,68.4" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,32.4 139.9,61.2 139.9,118.8 90.0,147.6 40.1,118.8 40.1,61.2" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,18.0 152.4,54.0 152.4,126.0 90.0,162.0 27.6,126.0 27.6,54.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 114.9,75.6 127.4,111.6 90.0,147.6 27.6,126.0 40.1,61.2" fill="#60a5fa" fill-opacity="0.28" stroke="#60a5fa" stroke-width="1.6"/><text x="90.0" y="10.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity <tspan class="s-2" font-weight="700">2</tspan></text><text x="162.7" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel <tspan class="s-2" font-weight="700">2</tspan></text><text x="162.7" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff-fit <tspan class="s-3" font-weight="700">3</tspan></text><text x="90.0" y="178.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric <tspan class="s-4" font-weight="700">4</tspan></text><text x="17.3" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">verifier <tspan class="s-5" font-weight="700">5</tspan></text><text x="17.3" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean <tspan class="s-4" font-weight="700">4</tspan></text></svg></aside>
+    <aside class="p-radar"><svg viewBox="0 0 180 180" width="180" height="180" class="radar-svg"><polygon points="90.0,75.6 102.5,82.8 102.5,97.2 90.0,104.4 77.5,97.2 77.5,82.8" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 114.9,75.6 114.9,104.4 90.0,118.8 65.1,104.4 65.1,75.6" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,46.8 127.4,68.4 127.4,111.6 90.0,133.2 52.6,111.6 52.6,68.4" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,32.4 139.9,61.2 139.9,118.8 90.0,147.6 40.1,118.8 40.1,61.2" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,18.0 152.4,54.0 152.4,126.0 90.0,162.0 27.6,126.0 27.6,54.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 114.9,75.6 127.4,111.6 90.0,147.6 27.6,126.0 40.1,61.2" fill="#60a5fa" fill-opacity="0.28" stroke="#60a5fa" stroke-width="1.6"/><g class="radar-label"><title>Clarity: can a stranger in the same field read the statement once and understand exactly what&#x27;s asked? 1 = ambiguous, 5 = crystal.</title><text x="90.0" y="10.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">clarity <tspan class="s-2" font-weight="700">2</tspan></text></g><g class="radar-label"><title>Novelty: does this problem add something the Tier-A precedents don&#x27;t already do? 1 = duplicate, 5 = genuinely new setup or capability.</title><text x="162.7" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">novel <tspan class="s-2" font-weight="700">2</tspan></text></g><g class="radar-label"><title>Difficulty fit: does the difficulty label match what the problem actually requires? 5 = the tag matches; lower = mismatch.</title><text x="162.7" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">diff-fit <tspan class="s-3" font-weight="700">3</tspan></text></g><g class="radar-label"><title>Rubric quality: is the gradingscheme + answerkey written such that a verifier can grade deterministically? 1 = vibes-based, 5 = enumerated criteria.</title><text x="90.0" y="178.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">rubric <tspan class="s-4" font-weight="700">4</tspan></text></g><g class="radar-label"><title>Verifier-ready: given the gradingscheme + answerkey, could a deterministic verifier be written today? 1 = no, needs human judge; 5 = trivially.</title><text x="17.3" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">verifier <tspan class="s-5" font-weight="700">5</tspan></text></g><g class="radar-label"><title>Contamination-clean: lower contamination_risk = cleaner. 5 = no plausible pretraining source; 1 = verbatim/near-verbatim from a well-known source.</title><text x="17.3" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">clean <tspan class="s-4" font-weight="700">4</tspan></text></g></svg></aside>
   </div>
 
-  <details class="d-block" open>
-    <summary>✨ What's working</summary>
-    <ul class="bullets"><li>(no specific strengths surfaced — early draft)</li></ul>
-  </details>
+  
 
-  <details class="d-block">
+  <details class="d-block" id="problem-3-considerations">
     <summary>💡 Things to consider</summary>
-    <ul class="bullets"><li><span class="kw-warn">Ambiguous</span>: is 18h the sum of individual crossing times, or the elapsed time for the group? The <span class="kw-section">answerkey</span> assumes the former (18/3=6), but a solver could read it as the latter (each kangaroo takes 18h).</li><li>This applies the &#x27;sum of individual times&#x27; convention again. Whether &#x27;how many hours will it take four turtles&#x27; means total summed time or wall-clock time is exactly the kind of confusion the problem flags — but the intended reading should be stated explicitly.</li><li>Once the <span class="kw-warn">ambiguity</span> is resolved, the arithmetic is one-step; consider &#x27;<span class="kw-level lv-basic">Basic</span>&#x27; unless the <span class="kw-warn">ambiguity</span> itself is the intended challenge.</li></ul>
+    <ul class="bullets"><li><span class="kw-warn">Ambiguous</span>: is 18h the sum of individual crossing times, or the elapsed time for the group? The <span class="kw-section">answerkey</span> assumes the former (18/3=6), but a solver could read it as the latter (each kangaroo takes 18h).</li><li>This applies the &#x27;sum of individual times&#x27; <span class="kw-subject">convention</span> again. Whether &#x27;how many hours will it take four turtles&#x27; means total summed time or wall-clock time is exactly the kind of confusion the problem flags — but the intended reading should be stated explicitly.</li><li>Once the <span class="kw-subject">ambiguity</span> is resolved, the arithmetic is one-step; consider &#x27;<span class="kw-level lv-basic">Basic</span>&#x27; unless the <span class="kw-subject">ambiguity</span> itself is the intended challenge.</li></ul>
   </details>
 
-  <details class="d-block">
+  <details class="d-block" open id="problem-3-next">
     <summary>👉 Suggested next steps</summary>
-    <ul class="bullets"><li><span class="kw-verb">Disambiguate</span> what &#x27;total hours&#x27; means in both the premise and the question. Make explicit that times are summed across individuals (not wall-clock for the group). — e.g. If the combined crossing times of 3 kangaroos (each traveling at the same speed) sum to 18 hours, what is the combined crossing time of 4 turtles, each traveling at half a kangaroo&#x27;s speed?</li><li><span class="kw-verb">Reconsider</span> difficulty: if the <span class="kw-warn">ambiguity</span> is removed, the problem is one-step arithmetic and likely &#x27;<span class="kw-level lv-basic">Basic</span>&#x27;. If you keep &#x27;<span class="kw-level lv-intermediate">Medium</span>&#x27;, the failure mode should explicitly be the <span class="kw-warn">ambiguity</span> trap.</li></ul>
+    <ul class="bullets"><li>Disambiguate what &#x27;total hours&#x27; means in both the premise and the question. Make explicit that times are summed across individuals (not wall-clock for the group). — e.g. If the combined crossing times of 3 kangaroos (each traveling at the same speed) sum to 18 hours, what is the combined crossing time of 4 turtles, each traveling at half a kangaroo&#x27;s speed?</li><li>Reconsider <span class="kw-subject">difficulty</span>: if the <span class="kw-subject">ambiguity</span> is removed, the problem is one-step arithmetic and likely &#x27;<span class="kw-level lv-basic">Basic</span>&#x27;. If you keep &#x27;<span class="kw-level lv-intermediate">Medium</span>&#x27;, the <span class="kw-subject">failure mode</span> should explicitly be the <span class="kw-subject">ambiguity</span> trap.</li></ul>
   </details>
 
-  <details class="d-block">
-    <summary>📄 Problem text (snapshot · annotated · raw .tex)</summary>
+  <details class="d-block" id="problem-3-text">
+    <summary>📄 Problem text (annotated · snapshot · raw .tex)</summary>
     <div class="tabs">
-      <button class="tab active" data-target="snap-3">Snapshot</button>
-      <button class="tab" data-target="annot-3">Annotated</button>
+      <button class="tab active" data-target="annot-3">Annotated</button>
+      <button class="tab" data-target="snap-3">Snapshot</button>
       <button class="tab" data-target="tex-3">Raw .tex</button>
     </div>
-    <div class="pane active" id="snap-3">
-      <div class="statement">If it takes 3 kangaroos traveling at the same speed a total of 18 hours to travel across a highway, how many hours will it take four turtles, each traveling at half the speed of a kangaroo, to do so?</div>
-    </div>
-    <div class="pane" id="annot-3">
+    <div class="pane active" id="annot-3">
       <div class="statement annot-host">If it takes 3 kangaroos traveling at the same speed <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="Ambiguous: is 18h the sum of individual crossing times, or the elapsed time for the group? The answerkey assumes the former (18/3=6), but a solver could read it as the latter (each kangaroo takes 18h).">a total of 18 hours<span class="annot-bubble"><strong>ambiguity:</strong> <span class="kw-warn">Ambiguous</span>: is 18h the sum of individual crossing times, or the elapsed time for the group? The <span class="kw-section">answerkey</span> assumes the former (18/3=6), but a solver could read it as the latter (each kangaroo takes 18h).</span></span> to travel across a highway, how many hours will it take four turtles, each traveling at half the speed of a kangaroo, to do so?</div>
       <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
     </div>
+    <div class="pane" id="snap-3">
+      <div class="statement">If it takes 3 kangaroos traveling at the same speed a total of 18 hours to travel across a highway, how many hours will it take four turtles, each traveling at half the speed of a kangaroo, to do so?</div>
+    </div>
     <div class="pane" id="tex-3">
-      <p class="dim small">Snapshot of the full .tex source at the time of review (content sha <code>067b497a</code>). This is what was reviewed — won't drift if you edit the file later.</p>
+      <p class="dim small">Snapshot of the full .tex source at the time of review (<abbr class="term" data-tip="A 16-hex-char hash of `problemstatement + answerkey + gradingscheme`. The review is keyed on this so the same .tex content is reviewed exactly once.">content sha</abbr> <code>067b497a</code>). This is what was reviewed — won't drift if you edit the file later.</p>
       <pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
 \begin{document}
 
@@ -805,7 +860,7 @@ Suggested checks:
     </div>
   </details>
 
-  <details class="d-block"><summary>🧪 Verifier (auto-drafted code · validation trace)</summary>
+  <details class="d-block" id="problem-3-verifier"><summary>🧪 Verifier (auto-drafted code · validation trace)</summary>
 <div class="verifier-card">
   <div class="vc-head">
     <span class="pill v-ready">✓ validated</span>
@@ -900,8 +955,9 @@ def grade(response: str, context: dict) -&gt; dict:
 </details>
 
   
-<details class="bench-block">
+<details class="bench-block" id="problem-3-benchmark">
   <summary>🤖 How a frontier LLM did (claude-haiku-4-5-20251001)</summary>
+  <p class="bench-framing bf-good">✓ Frontier failed — exactly the signal AI4Stat/Math wants. Pending Sonnet/Opus verification, this earns its place in the hard-set.</p>
   <p class="dim">Run: <code>2026-05-28-opus-reviews-haiku-solver</code> · verdict <strong>FAIL</strong> · verifier notes: Last number found was 36, expected 48.</p>
   <details><summary>Show the model's full response</summary>
     <pre class="model-response"># Solution
@@ -950,51 +1006,51 @@ The number of turtles doesn&#x27;t affect the time—only their speed matters.
     </div>
     <div class="p-pills">
       <span class="pill v-revision">△ needs-revision</span>
-      <span class="pill v-rework">✗ haiku failed (score 0)</span>
+      <abbr class="term pill v-ready" data-tip="✓ Haiku 4.5 failed to solve this — a GOOD sign. The point of the benchmark is to find problems frontier models miss. Once Sonnet/Opus also fail, this becomes part of the hard-set.">✓ haiku stumped</abbr>
     </div>
   </header>
 
   <p class="p-tldr"></p>
 
-  <div class="p-cols">
+  <div class="p-cols" id="problem-4-fixes">
     <div class="p-actions">
       <h3>🔧 Quick fixes & next steps</h3>
-      <ol class="qa-list"><li class="qa-item"><span class="qa-where"><span class="qa-glyph">⚖</span>gradingscheme</span> <span class="qa-what"><span class="kw-verb">Fill in</span> the <span class="kw-section">gradingscheme</span> with the accepted answer and tolerance, e.g. <span class="kw-verb">state</span> that 33 is correct and explicitly list the intended interpretation of &#x27;twice as many more&#x27;.</span><details class="qa-example"><summary>example LaTeX</summary><pre>Exact match: 33. Accepted interpretation: &#x27;twice as many more&#x27; means the population increased by 2× the prior count (i.e. +24 dogs).</pre></details></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">📝</span>problemstatement</span> <span class="qa-what">Either disambiguate the wording or explicitly flag that interpretation is part of the task. If <span class="kw-warn">ambiguity</span> is the point, the rubric should reward the model that surfaces the <span class="kw-warn">ambiguity</span>, not punish one reading.</span></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">📝</span>problemstatement</span> <span class="qa-what"><span class="kw-verb">Clarify</span> whether &#x27;how many toys in total does James need&#x27; means total purchased across trips or final headcount, given 3 dogs left after toys were already acquired.</span></li></ol>
+      <ol class="qa-list"><li class="qa-item"><span class="qa-where"><span class="qa-glyph">⚖</span>gradingscheme</span> <span class="qa-what">Fill in the <span class="kw-section">gradingscheme</span> with the accepted answer and <span class="kw-subject">tolerance</span>, e.g. state that 33 is correct and explicitly list the intended <span class="kw-subject">interpretation</span> of &#x27;twice as many more&#x27;.</span><details class="qa-example"><summary>example LaTeX</summary><pre>Exact match: 33. Accepted interpretation: &#x27;twice as many more&#x27; means the population increased by 2× the prior count (i.e. +24 dogs).</pre></details></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">📝</span>problemstatement</span> <span class="qa-what">Either disambiguate the wording or explicitly flag that <span class="kw-subject">interpretation</span> is part of the task. If <span class="kw-subject">ambiguity</span> is the point, the <span class="kw-subject">rubric</span> should reward the model that surfaces the <span class="kw-subject">ambiguity</span>, not punish one reading.</span></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">📝</span>problemstatement</span> <span class="qa-what">Clarify whether &#x27;how many toys in total does James need&#x27; means total purchased across trips or final headcount, given 3 dogs left after toys were already acquired.</span></li></ol>
     </div>
-    <aside class="p-radar"><svg viewBox="0 0 180 180" width="180" height="180" class="radar-svg"><polygon points="90.0,75.6 102.5,82.8 102.5,97.2 90.0,104.4 77.5,97.2 77.5,82.8" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 114.9,75.6 114.9,104.4 90.0,118.8 65.1,104.4 65.1,75.6" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,46.8 127.4,68.4 127.4,111.6 90.0,133.2 52.6,111.6 52.6,68.4" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,32.4 139.9,61.2 139.9,118.8 90.0,147.6 40.1,118.8 40.1,61.2" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,18.0 152.4,54.0 152.4,126.0 90.0,162.0 27.6,126.0 27.6,54.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 139.9,61.2 127.4,111.6 90.0,104.4 65.1,104.4 40.1,61.2" fill="#60a5fa" fill-opacity="0.28" stroke="#60a5fa" stroke-width="1.6"/><text x="90.0" y="10.0" text-anchor="middle" fill="#94a3b8" font-size="9">clarity <tspan class="s-2" font-weight="700">2</tspan></text><text x="162.7" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">novel <tspan class="s-4" font-weight="700">4</tspan></text><text x="162.7" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">diff-fit <tspan class="s-3" font-weight="700">3</tspan></text><text x="90.0" y="178.0" text-anchor="middle" fill="#94a3b8" font-size="9">rubric <tspan class="s-1" font-weight="700">1</tspan></text><text x="17.3" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9">verifier <tspan class="s-2" font-weight="700">2</tspan></text><text x="17.3" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9">clean <tspan class="s-4" font-weight="700">4</tspan></text></svg></aside>
+    <aside class="p-radar"><svg viewBox="0 0 180 180" width="180" height="180" class="radar-svg"><polygon points="90.0,75.6 102.5,82.8 102.5,97.2 90.0,104.4 77.5,97.2 77.5,82.8" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 114.9,75.6 114.9,104.4 90.0,118.8 65.1,104.4 65.1,75.6" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,46.8 127.4,68.4 127.4,111.6 90.0,133.2 52.6,111.6 52.6,68.4" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,32.4 139.9,61.2 139.9,118.8 90.0,147.6 40.1,118.8 40.1,61.2" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,18.0 152.4,54.0 152.4,126.0 90.0,162.0 27.6,126.0 27.6,54.0" fill="none" stroke="#334155" stroke-width="0.4"/><polygon points="90.0,61.2 139.9,61.2 127.4,111.6 90.0,104.4 65.1,104.4 40.1,61.2" fill="#60a5fa" fill-opacity="0.28" stroke="#60a5fa" stroke-width="1.6"/><g class="radar-label"><title>Clarity: can a stranger in the same field read the statement once and understand exactly what&#x27;s asked? 1 = ambiguous, 5 = crystal.</title><text x="90.0" y="10.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">clarity <tspan class="s-2" font-weight="700">2</tspan></text></g><g class="radar-label"><title>Novelty: does this problem add something the Tier-A precedents don&#x27;t already do? 1 = duplicate, 5 = genuinely new setup or capability.</title><text x="162.7" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">novel <tspan class="s-4" font-weight="700">4</tspan></text></g><g class="radar-label"><title>Difficulty fit: does the difficulty label match what the problem actually requires? 5 = the tag matches; lower = mismatch.</title><text x="162.7" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">diff-fit <tspan class="s-3" font-weight="700">3</tspan></text></g><g class="radar-label"><title>Rubric quality: is the gradingscheme + answerkey written such that a verifier can grade deterministically? 1 = vibes-based, 5 = enumerated criteria.</title><text x="90.0" y="178.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">rubric <tspan class="s-1" font-weight="700">1</tspan></text></g><g class="radar-label"><title>Verifier-ready: given the gradingscheme + answerkey, could a deterministic verifier be written today? 1 = no, needs human judge; 5 = trivially.</title><text x="17.3" y="136.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">verifier <tspan class="s-2" font-weight="700">2</tspan></text></g><g class="radar-label"><title>Contamination-clean: lower contamination_risk = cleaner. 5 = no plausible pretraining source; 1 = verbatim/near-verbatim from a well-known source.</title><text x="17.3" y="52.0" text-anchor="middle" fill="#94a3b8" font-size="9" style="cursor:help">clean <tspan class="s-4" font-weight="700">4</tspan></text></g></svg></aside>
   </div>
 
-  <details class="d-block" open>
+  <details class="d-block" id="problem-4-working">
     <summary>✨ What's working</summary>
-    <ul class="bullets"><li>Good — the tag signals the <span class="kw-warn">ambiguity</span> is the point of the problem. Make this explicit in the <span class="kw-section">problemstatement</span> or <span class="kw-section">editornotes</span>.</li></ul>
+    <ul class="bullets"><li>Good — the tag signals the <span class="kw-subject">ambiguity</span> is the point of the problem. Make this explicit in the <span class="kw-section">problemstatement</span> or <span class="kw-section">editornotes</span>.</li></ul>
   </details>
 
-  <details class="d-block">
+  <details class="d-block" id="problem-4-considerations">
     <summary>💡 Things to consider</summary>
-    <ul class="bullets"><li>This phrasing is genuinely <span class="kw-warn">ambiguous</span>: it could mean (a) the new total is 2× the old (so 24 dogs, +12 toys), or (b) 2× more were added (so +24 dogs, total 36). The <span class="kw-section">answerkey</span> commits to (b) but a careful solver could justifiably pick (a).</li><li><span class="kw-section">Gradingscheme</span> is <span class="kw-warn">empty</span>. For a problem whose whole point is a contested interpretation, you need to state which reading counts as correct.</li><li>&#x27;In total&#x27; is <span class="kw-warn">unclear</span>: cumulative toys purchased across all trips, or the final count he needs on hand? The <span class="kw-section">answerkey</span> computes the latter (33) but ignores that 3 toys are now surplus.</li><li>If 3 dogs left after toys were bought, James already owns those toys — so &#x27;needs&#x27; = 33 only if we ignore the 3 surplus. <span class="kw-verb">Clarify</span> whether the question is &#x27;how many did he buy&#x27; vs &#x27;how many does he need now&#x27;.</li></ul>
+    <ul class="bullets"><li>This phrasing is genuinely <span class="kw-warn">ambiguous</span>: it could mean (a) the new total is 2× the old (so 24 dogs, +12 toys), or (b) 2× more were added (so +24 dogs, total 36). The <span class="kw-section">answerkey</span> commits to (b) but a careful solver could justifiably pick (a).</li><li><span class="kw-section">Gradingscheme</span> is <span class="kw-warn">empty</span>. For a problem whose whole point is a contested <span class="kw-subject">interpretation</span>, you need to state which reading counts as correct.</li><li>&#x27;In total&#x27; is <span class="kw-warn">unclear</span>: cumulative toys purchased across all trips, or the final count he needs on hand? The <span class="kw-section">answerkey</span> computes the latter (33) but ignores that 3 toys are now surplus.</li><li>If 3 dogs left after toys were bought, James already owns those toys — so &#x27;needs&#x27; = 33 only if we ignore the 3 surplus. Clarify whether the question is &#x27;how many did he buy&#x27; vs &#x27;how many does he need now&#x27;.</li></ul>
   </details>
 
-  <details class="d-block">
+  <details class="d-block" open id="problem-4-next">
     <summary>👉 Suggested next steps</summary>
-    <ul class="bullets"><li><span class="kw-verb">Fill in</span> the <span class="kw-section">gradingscheme</span> with the accepted answer and tolerance, e.g. <span class="kw-verb">state</span> that 33 is correct and explicitly list the intended interpretation of &#x27;twice as many more&#x27;. — e.g. Exact match: 33. Accepted interpretation: &#x27;twice as many more&#x27; means the population increased by 2× the prior count (i.e. +24 dogs).</li><li>Either disambiguate the wording or explicitly flag that interpretation is part of the task. If <span class="kw-warn">ambiguity</span> is the point, the rubric should reward the model that surfaces the <span class="kw-warn">ambiguity</span>, not punish one reading.</li><li><span class="kw-verb">Clarify</span> whether &#x27;how many toys in total does James need&#x27; means total purchased across trips or final headcount, given 3 dogs left after toys were already acquired.</li></ul>
+    <ul class="bullets"><li>Fill in the <span class="kw-section">gradingscheme</span> with the accepted answer and <span class="kw-subject">tolerance</span>, e.g. state that 33 is correct and explicitly list the intended <span class="kw-subject">interpretation</span> of &#x27;twice as many more&#x27;. — e.g. <span class="kw-subject">Exact match</span>: 33. Accepted <span class="kw-subject">interpretation</span>: &#x27;twice as many more&#x27; means the population increased by 2× the prior count (i.e. +24 dogs).</li><li>Either disambiguate the wording or explicitly flag that <span class="kw-subject">interpretation</span> is part of the task. If <span class="kw-subject">ambiguity</span> is the point, the <span class="kw-subject">rubric</span> should reward the model that surfaces the <span class="kw-subject">ambiguity</span>, not punish one reading.</li><li>Clarify whether &#x27;how many toys in total does James need&#x27; means total purchased across trips or final headcount, given 3 dogs left after toys were already acquired.</li></ul>
   </details>
 
-  <details class="d-block">
-    <summary>📄 Problem text (snapshot · annotated · raw .tex)</summary>
+  <details class="d-block" id="problem-4-text">
+    <summary>📄 Problem text (annotated · snapshot · raw .tex)</summary>
     <div class="tabs">
-      <button class="tab active" data-target="snap-4">Snapshot</button>
-      <button class="tab" data-target="annot-4">Annotated</button>
+      <button class="tab active" data-target="annot-4">Annotated</button>
+      <button class="tab" data-target="snap-4">Snapshot</button>
       <button class="tab" data-target="tex-4">Raw .tex</button>
     </div>
-    <div class="pane active" id="snap-4">
-      <div class="statement">James needs to get more toys for his doggie shelter. Each dog needs one toy. James currently has 4 toys on hand for 4 dogs, but there are 8 more dogs in the shelter now. After buying the toys, he went back to see that there are twice as many more dogs than when he left so he had to buy some more toys. When James came back yet again, 3 dogs were gone so he no longer needed those toys. How many toys in total does James need?</div>
-    </div>
-    <div class="pane" id="annot-4">
-      <div class="statement annot-host">James needs to get more toys for his doggie shelter. Each dog needs one toy. James currently has 4 toys on hand for 4 dogs, but there are 8 more dogs in the shelter now. After buying the toys, he went back to see that there are <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="This phrasing is genuinely ambiguous: it could mean (a) the new total is 2× the old (so 24 dogs, +12 toys), or (b) 2× more were added (so +24 dogs, total 36). The answerkey commits to (b) but a careful solver could justifiably pick (a).">twice as many more dogs than when he left<span class="annot-bubble"><strong>ambiguity:</strong> This phrasing is genuinely <span class="kw-warn">ambiguous</span>: it could mean (a) the new total is 2× the old (so 24 dogs, +12 toys), or (b) 2× more were added (so +24 dogs, total 36). The <span class="kw-section">answerkey</span> commits to (b) but a careful solver could justifiably pick (a).</span></span> so he had to buy some more toys. When James came back yet again, <span class="annot annot-suggestion" data-kind="suggestion" tabindex="0" data-comment="If 3 dogs left after toys were bought, James already owns those toys — so &#x27;needs&#x27; = 33 only if we ignore the 3 surplus. Clarify whether the question is &#x27;how many did he buy&#x27; vs &#x27;how many does he need now&#x27;.">3 dogs were gone so he no longer needed those toys<span class="annot-bubble"><strong>suggestion:</strong> If 3 dogs left after toys were bought, James already owns those toys — so &#x27;needs&#x27; = 33 only if we ignore the 3 surplus. <span class="kw-verb">Clarify</span> whether the question is &#x27;how many did he buy&#x27; vs &#x27;how many does he need now&#x27;.</span></span>. <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="&#x27;In total&#x27; is unclear: cumulative toys purchased across all trips, or the final count he needs on hand? The answerkey computes the latter (33) but ignores that 3 toys are now surplus.">How many toys in total does James need?<span class="annot-bubble"><strong>ambiguity:</strong> &#x27;In total&#x27; is <span class="kw-warn">unclear</span>: cumulative toys purchased across all trips, or the final count he needs on hand? The <span class="kw-section">answerkey</span> computes the latter (33) but ignores that 3 toys are now surplus.</span></span></div>
+    <div class="pane active" id="annot-4">
+      <div class="statement annot-host">James needs to get more toys for his doggie shelter. Each dog needs one toy. James currently has 4 toys on hand for 4 dogs, but there are 8 more dogs in the shelter now. After buying the toys, he went back to see that there are <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="This phrasing is genuinely ambiguous: it could mean (a) the new total is 2× the old (so 24 dogs, +12 toys), or (b) 2× more were added (so +24 dogs, total 36). The answerkey commits to (b) but a careful solver could justifiably pick (a).">twice as many more dogs than when he left<span class="annot-bubble"><strong>ambiguity:</strong> This phrasing is genuinely <span class="kw-warn">ambiguous</span>: it could mean (a) the new total is 2× the old (so 24 dogs, +12 toys), or (b) 2× more were added (so +24 dogs, total 36). The <span class="kw-section">answerkey</span> commits to (b) but a careful solver could justifiably pick (a).</span></span> so he had to buy some more toys. When James came back yet again, <span class="annot annot-suggestion" data-kind="suggestion" tabindex="0" data-comment="If 3 dogs left after toys were bought, James already owns those toys — so &#x27;needs&#x27; = 33 only if we ignore the 3 surplus. Clarify whether the question is &#x27;how many did he buy&#x27; vs &#x27;how many does he need now&#x27;.">3 dogs were gone so he no longer needed those toys<span class="annot-bubble"><strong>suggestion:</strong> If 3 dogs left after toys were bought, James already owns those toys — so &#x27;needs&#x27; = 33 only if we ignore the 3 surplus. Clarify whether the question is &#x27;how many did he buy&#x27; vs &#x27;how many does he need now&#x27;.</span></span>. <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="&#x27;In total&#x27; is unclear: cumulative toys purchased across all trips, or the final count he needs on hand? The answerkey computes the latter (33) but ignores that 3 toys are now surplus.">How many toys in total does James need?<span class="annot-bubble"><strong>ambiguity:</strong> &#x27;In total&#x27; is <span class="kw-warn">unclear</span>: cumulative toys purchased across all trips, or the final count he needs on hand? The <span class="kw-section">answerkey</span> computes the latter (33) but ignores that 3 toys are now surplus.</span></span></div>
       <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
     </div>
+    <div class="pane" id="snap-4">
+      <div class="statement">James needs to get more toys for his doggie shelter. Each dog needs one toy. James currently has 4 toys on hand for 4 dogs, but there are 8 more dogs in the shelter now. After buying the toys, he went back to see that there are twice as many more dogs than when he left so he had to buy some more toys. When James came back yet again, 3 dogs were gone so he no longer needed those toys. How many toys in total does James need?</div>
+    </div>
     <div class="pane" id="tex-4">
-      <p class="dim small">Snapshot of the full .tex source at the time of review (content sha <code>573989e9</code>). This is what was reviewed — won't drift if you edit the file later.</p>
+      <p class="dim small">Snapshot of the full .tex source at the time of review (<abbr class="term" data-tip="A 16-hex-char hash of `problemstatement + answerkey + gradingscheme`. The review is keyed on this so the same .tex content is reviewed exactly once.">content sha</abbr> <code>573989e9</code>). This is what was reviewed — won't drift if you edit the file later.</p>
       <pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
 \begin{document}
 
@@ -1045,7 +1101,7 @@ Suggested checks:
     </div>
   </details>
 
-  <details class="d-block"><summary>🧪 Verifier (auto-drafted code · validation trace)</summary>
+  <details class="d-block" id="problem-4-verifier"><summary>🧪 Verifier (auto-drafted code · validation trace)</summary>
 <div class="verifier-card">
   <div class="vc-head">
     <span class="pill v-ready">✓ validated</span>
@@ -1144,8 +1200,9 @@ def grade(response: str, context: dict) -&gt; dict:
 </details>
 
   
-<details class="bench-block">
+<details class="bench-block" id="problem-4-benchmark">
   <summary>🤖 How a frontier LLM did (claude-haiku-4-5-20251001)</summary>
+  <p class="bench-framing bf-good">✓ Frontier failed — exactly the signal AI4Stat/Math wants. Pending Sonnet/Opus verification, this earns its place in the hard-set.</p>
   <p class="dim">Run: <code>2026-05-28-opus-reviews-haiku-solver</code> · verdict <strong>FAIL</strong> · verifier notes: Last extracted number is 25, expected 33.</p>
   <details><summary>Show the model's full response</summary>
     <pre class="model-response">I need to track the number of dogs and toys James needs at each stage.
@@ -1204,9 +1261,9 @@ Final answer: 25</pre>
     </div>
   </header>
 
-  <p class="p-tldr">There&#x27;s a fun seed here — playing with <span class="kw-warn">ambiguity</span> in word problems is a surprisingly rich direction for probing how models handle <span class="kw-warn">under-specified</span> questions.</p>
+  <p class="p-tldr">There&#x27;s a fun seed here — playing with <span class="kw-subject">ambiguity</span> in word problems is a surprisingly rich direction for probing how models handle <span class="kw-warn">under-specified</span> questions.</p>
 
-  <div class="p-cols">
+  <div class="p-cols" id="problem-5-brainstorming">
     <div class="p-actions">
       <h3>🧠 Brainstorming directions</h3>
       <p class="dim">Add your ideas below — this is your sandbox.</p>
@@ -1214,37 +1271,37 @@ Final answer: 25</pre>
     
   </div>
 
-  <details class="d-block" open>
+  <details class="d-block" open id="problem-5-promising">
     <summary>💭 What's promising</summary>
-    <ul class="bullets"><li>The &#x27;which day in the week?&#x27; <span class="kw-warn">ambiguity</span> is actually a real reasoning trap — models often pick one branch silently instead of flagging both.</li><li>You&#x27;re already thinking like a benchmark designer: the <span class="kw-section">answerkey</span> enumerates both interpretations rather than picking one.</li><li>Arithmetic word problems with a twist (<span class="kw-warn">ambiguous</span> referent) are underrepresented in Tier-A sets that focus on clean math.</li></ul>
+    <ul class="bullets"><li>The &#x27;which day in the week?&#x27; <span class="kw-subject">ambiguity</span> is actually a real reasoning trap — models often pick one branch silently instead of flagging both.</li><li>You&#x27;re already thinking like a benchmark designer: the <span class="kw-section">answerkey</span> enumerates both <span class="kw-subject">interpretations</span> rather than picking one.</li><li>Arithmetic word problems with a twist (<span class="kw-warn">ambiguous</span> referent) are underrepresented in Tier-A sets that focus on clean math.</li></ul>
   </details>
 
-  <details class="d-block">
+  <details class="d-block" id="problem-5-considerations">
     <summary>❓ Open questions to think through</summary>
-    <ul class="bullets"><li>Have you considered what *capability* this problem is really probing — arithmetic, or the meta-skill of detecting <span class="kw-warn">ambiguity</span> and refusing to commit?</li><li>What if the difficulty tag were reframed? &#x27;<span class="kw-level lv-research">Qualifying-exam-plus</span>&#x27; suggests heavy machinery, but the interesting challenge here is pragmatic reasoning, not math depth.</li><li>One direction: is the <span class="kw-warn">ambiguity</span> the *bug* or the *feature*? If it&#x27;s the feature, the rubric should reward models that surface both branches; if it&#x27;s a bug, the wording needs a fix.</li><li>Have you thought about whether &#x27;one day a week&#x27; is the cleanest phrasing? A solver might also wonder whether the week has 7 days vs. the 5+2=7 implied here.</li></ul>
+    <ul class="bullets"><li>Have you considered what *capability* this problem is really probing — arithmetic, or the meta-skill of detecting <span class="kw-subject">ambiguity</span> and refusing to commit?</li><li>What if the <span class="kw-subject">difficulty tag</span> were reframed? &#x27;<span class="kw-level lv-research">Qualifying-exam-plus</span>&#x27; suggests heavy machinery, but the interesting challenge here is pragmatic reasoning, not math depth.</li><li>One direction: is the <span class="kw-subject">ambiguity</span> the *bug* or the *feature*? If it&#x27;s the feature, the <span class="kw-subject">rubric</span> should reward models that surface both branches; if it&#x27;s a bug, the wording needs a fix.</li><li>Have you thought about whether &#x27;one day a week&#x27; is the cleanest phrasing? A solver might also wonder whether the week has 7 days vs. the 5+2=7 implied here.</li></ul>
   </details>
 
-  <details class="d-block">
+  <details class="d-block" open id="problem-5-next">
     <summary>🌱 Directions to explore</summary>
-    <ul class="bullets"><li>Try drafting two versions: (a) <span class="kw-warn">ambiguity</span>-as-feature, where the gold answer is &#x27;either 6 or 12, and here&#x27;s why&#x27;, and (b) <span class="kw-warn">ambiguity</span>-resolved, where you pick one day explicitly. Compare which is more diagnostic.</li><li>Run the current wording past 3-5 models and see whether they (i) pick one branch silently, (ii) enumerate both, or (iii) ask for clarification. That observed failure mode could become the <span class="kw-code">`problemtags`</span> entry.</li><li>Look at GSM8K-style &#x27;trick&#x27; problems and BIG-Bench&#x27;s &#x27;disambiguation_qa&#x27; for precedents — they handle the &#x27;is the model brave enough to say it&#x27;s <span class="kw-warn">ambiguous</span>?&#x27; angle.</li><li>Consider scaling up: a family of word problems where surface arithmetic is trivial but the referent is <span class="kw-warn">ambiguous</span> could become a small thematic cluster rather than a single item.</li></ul>
+    <ul class="bullets"><li>Try drafting two versions: (a) <span class="kw-subject">ambiguity</span>-as-feature, where the gold answer is &#x27;either 6 or 12, and here&#x27;s why&#x27;, and (b) <span class="kw-subject">ambiguity</span>-resolved, where you pick one day explicitly. Compare which is more diagnostic.</li><li>Run the current wording past 3-5 models and see whether they (i) pick one branch silently, (ii) enumerate both, or (iii) ask for clarification. That observed <span class="kw-subject">failure mode</span> could become the <span class="kw-code">`problemtags`</span> entry.</li><li>Look at GSM8K-style &#x27;trick&#x27; problems and BIG-Bench&#x27;s &#x27;disambiguation_qa&#x27; for precedents — they handle the &#x27;is the model brave enough to say it&#x27;s <span class="kw-warn">ambiguous</span>?&#x27; angle.</li><li>Consider scaling up: a family of word problems where surface arithmetic is trivial but the referent is <span class="kw-warn">ambiguous</span> could become a small thematic cluster rather than a single item.</li></ul>
   </details>
 
-  <details class="d-block">
-    <summary>📄 Problem text (snapshot · annotated · raw .tex)</summary>
+  <details class="d-block" id="problem-5-text">
+    <summary>📄 Problem text (annotated · snapshot · raw .tex)</summary>
     <div class="tabs">
-      <button class="tab active" data-target="snap-5">Snapshot</button>
-      <button class="tab" data-target="annot-5">Annotated</button>
+      <button class="tab active" data-target="annot-5">Annotated</button>
+      <button class="tab" data-target="snap-5">Snapshot</button>
       <button class="tab" data-target="tex-5">Raw .tex</button>
     </div>
-    <div class="pane active" id="snap-5">
-      <div class="statement">Chase and Rider each ride their bikes thrice a day for 5 days; but on two other days, they ride twice the times they do on usual days. How many rides did they take in one day a week?</div>
-    </div>
-    <div class="pane" id="annot-5">
-      <div class="statement annot-host">Chase and Rider each <span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="Clean setup phrase — establishes the baseline cleanly before the twist.">ride their bikes thrice a day for 5 days<span class="annot-bubble"><strong>strong:</strong> Clean setup phrase — establishes the baseline cleanly before the twist.</span></span>; but <span class="annot annot-suggestion" data-kind="suggestion" tabindex="0" data-comment="This is where the ambiguity gets seeded. Worth deciding: is &#x27;twice the times&#x27; meant to be the productive ambiguity, or is the productive ambiguity only in &#x27;one day a week&#x27; below?">on two other days, they ride twice the times they do on usual days<span class="annot-bubble"><strong>suggestion:</strong> This is where the <span class="kw-warn">ambiguity</span> gets seeded. Worth deciding: is &#x27;twice the times&#x27; meant to be the productive <span class="kw-warn">ambiguity</span>, or is the productive <span class="kw-warn">ambiguity</span> only in &#x27;one day a week&#x27; below?</span></span>. <span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="The pivot — &#x27;one day a week&#x27; is doing the diagnostic work here. This is the sentence the whole problem could be built around.">How many rides did they take in one day a week?<span class="annot-bubble"><strong>strong:</strong> The pivot — &#x27;one day a week&#x27; is doing the diagnostic work here. This is the sentence the whole problem could be built around.</span></span></div>
+    <div class="pane active" id="annot-5">
+      <div class="statement annot-host">Chase and Rider each <span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="Clean setup phrase — establishes the baseline cleanly before the twist.">ride their bikes thrice a day for 5 days<span class="annot-bubble"><strong>strong:</strong> Clean setup phrase — establishes the baseline cleanly before the twist.</span></span>; but <span class="annot annot-suggestion" data-kind="suggestion" tabindex="0" data-comment="This is where the ambiguity gets seeded. Worth deciding: is &#x27;twice the times&#x27; meant to be the productive ambiguity, or is the productive ambiguity only in &#x27;one day a week&#x27; below?">on two other days, they ride twice the times they do on usual days<span class="annot-bubble"><strong>suggestion:</strong> This is where the <span class="kw-subject">ambiguity</span> gets seeded. Worth deciding: is &#x27;twice the times&#x27; meant to be the productive <span class="kw-subject">ambiguity</span>, or is the productive <span class="kw-subject">ambiguity</span> only in &#x27;one day a week&#x27; below?</span></span>. <span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="The pivot — &#x27;one day a week&#x27; is doing the diagnostic work here. This is the sentence the whole problem could be built around.">How many rides did they take in one day a week?<span class="annot-bubble"><strong>strong:</strong> The pivot — &#x27;one day a week&#x27; is doing the diagnostic work here. This is the sentence the whole problem could be built around.</span></span></div>
       <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
     </div>
+    <div class="pane" id="snap-5">
+      <div class="statement">Chase and Rider each ride their bikes thrice a day for 5 days; but on two other days, they ride twice the times they do on usual days. How many rides did they take in one day a week?</div>
+    </div>
     <div class="pane" id="tex-5">
-      <p class="dim small">Snapshot of the full .tex source at the time of review (content sha <code>b6ec0d69</code>). This is what was reviewed — won't drift if you edit the file later.</p>
+      <p class="dim small">Snapshot of the full .tex source at the time of review (<abbr class="term" data-tip="A 16-hex-char hash of `problemstatement + answerkey + gradingscheme`. The review is keyed on this so the same .tex content is reviewed exactly once.">content sha</abbr> <code>b6ec0d69</code>). This is what was reviewed — won't drift if you edit the file later.</p>
       <pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
 \begin{document}
 
@@ -1328,7 +1385,7 @@ Suggested checks:
 
   <p class="p-tldr">Nice start sketching out a multi-step arithmetic word problem — the everyday shopping scenario is a friendly hook to build from.</p>
 
-  <div class="p-cols">
+  <div class="p-cols" id="problem-6-brainstorming">
     <div class="p-actions">
       <h3>🧠 Brainstorming directions</h3>
       <p class="dim">Add your ideas below — this is your sandbox.</p>
@@ -1336,37 +1393,37 @@ Suggested checks:
     
   </div>
 
-  <details class="d-block" open>
+  <details class="d-block" open id="problem-6-promising">
     <summary>💭 What's promising</summary>
-    <ul class="bullets"><li>The narrative is concrete and grounded (real items, real prices) — easy for a solver to parse without extra setup.</li><li>There&#x27;s a natural multi-step structure: per-item totals, sum, then rebate. That&#x27;s a clean skeleton you can layer complexity onto.</li><li>The arithmetic in your <span class="kw-section">answerkey</span> checks out cleanly (<span class="kw-math">$78 + $</span>83 + <span class="kw-math">$180 - $</span>12 = $<span class="kw-num">329</span>), so the oracle solution is already solid.</li></ul>
+    <ul class="bullets"><li>The narrative is concrete and grounded (real items, real prices) — easy for a solver to parse without extra setup.</li><li>There&#x27;s a natural multi-step structure: per-item totals, sum, then rebate. That&#x27;s a clean skeleton you can layer complexity onto.</li><li>The arithmetic in your <span class="kw-section">answerkey</span> checks out cleanly (<span class="kw-math">$78 + $</span>83 + <span class="kw-math">$180 - $</span>12 = $<span class="kw-num">329</span>), so the <span class="kw-subject">oracle</span> solution is already solid.</li></ul>
   </details>
 
-  <details class="d-block">
+  <details class="d-block" id="problem-6-considerations">
     <summary>❓ Open questions to think through</summary>
-    <ul class="bullets"><li>Have you thought about which capability you actually want to probe? Right now this is grade-school arithmetic — what would make it &#x27;<span class="kw-level lv-research">qualifying-exam-plus</span>&#x27;? Maybe symbolic reasoning, units, or adversarial wording?</li><li>What if the difficulty came from <span class="kw-warn">ambiguity</span> in the problem (e.g. is the rebate per-item or total? does it apply before or after tax?) rather than from harder numbers?</li><li>One direction: this kind of problem is *very* close to GSM8K territory — contamination is a real concern. Could you twist it so frontier models stumble in a specific, diagnosable way?</li><li>Have you considered making this a *diagnosis* problem — e.g. &#x27;here&#x27;s a model&#x27;s <span class="kw-warn">wrong</span> solution, identify the <span class="kw-warn">error</span>&#x27; — rather than a compute problem?</li></ul>
+    <ul class="bullets"><li>Have you thought about which capability you actually want to probe? Right now this is grade-school arithmetic — what would make it &#x27;<span class="kw-level lv-research">qualifying-exam-plus</span>&#x27;? Maybe symbolic reasoning, units, or adversarial wording?</li><li>What if the <span class="kw-subject">difficulty</span> came from <span class="kw-subject">ambiguity</span> in the problem (e.g. is the rebate per-item or total? does it apply before or after tax?) rather than from harder numbers?</li><li>One direction: this kind of problem is *very* close to GSM8K territory — contamination is a real concern. Could you twist it so frontier models stumble in a specific, diagnosable way?</li><li>Have you considered making this a *diagnosis* problem — e.g. &#x27;here&#x27;s a model&#x27;s <span class="kw-warn">wrong</span> solution, identify the <span class="kw-warn">error</span>&#x27; — rather than a compute problem?</li></ul>
   </details>
 
-  <details class="d-block">
+  <details class="d-block" open id="problem-6-next">
     <summary>🌱 Directions to explore</summary>
-    <ul class="bullets"><li>Browse a few GSM8K-style problems and ask: what&#x27;s a failure mode you&#x27;ve personally observed in frontier models on this kind of arithmetic? That observed failure could become the spine of the problem.</li><li>Try adding a layer that requires careful reading: a conditional discount, a misleading detail, or a unit conversion. See if the model trips where a human wouldn&#x27;t.</li><li>If you want to stay arithmetic-flavored, consider a problem about *rebate policy design* — e.g. given customer purchase distributions, recommend a rebate threshold. That moves it toward data-science reasoning.</li><li><span class="kw-verb">Fill in</span> the title/tags once you&#x27;ve decided on the angle — the verb (compute vs. diagnose vs. plan) often clarifies what you&#x27;re really testing.</li></ul>
+    <ul class="bullets"><li>Browse a few GSM8K-style problems and ask: what&#x27;s a <span class="kw-subject">failure mode</span> you&#x27;ve personally observed in frontier models on this kind of arithmetic? That observed failure could become the spine of the problem.</li><li>Try adding a layer that requires careful reading: a conditional discount, a misleading detail, or a unit conversion. See if the model trips where a human wouldn&#x27;t.</li><li>If you want to stay arithmetic-flavored, consider a problem about *rebate policy design* — e.g. given customer purchase distributions, recommend a rebate threshold. That moves it toward data-science reasoning.</li><li>Fill in the <span class="kw-subject">title</span>/tags once you&#x27;ve decided on the angle — the verb (compute vs. diagnose vs. plan) often clarifies what you&#x27;re really testing.</li></ul>
   </details>
 
-  <details class="d-block">
-    <summary>📄 Problem text (snapshot · annotated · raw .tex)</summary>
+  <details class="d-block" id="problem-6-text">
+    <summary>📄 Problem text (annotated · snapshot · raw .tex)</summary>
     <div class="tabs">
-      <button class="tab active" data-target="snap-6">Snapshot</button>
-      <button class="tab" data-target="annot-6">Annotated</button>
+      <button class="tab active" data-target="annot-6">Annotated</button>
+      <button class="tab" data-target="snap-6">Snapshot</button>
       <button class="tab" data-target="tex-6">Raw .tex</button>
     </div>
-    <div class="pane active" id="snap-6">
-      <div class="statement">Mr.Grey is purchasing gifts for his family. So far he has purchased 3 polo shirts for \$26 each; 2 necklaces for \$83; and 2 computer game for \$90 each. Since Mr.Grey purchased all those using his credit card, he received a \$12 rebate. What is the total cost of the gifts after the rebate?</div>
-    </div>
-    <div class="pane" id="annot-6">
-      <div class="statement annot-host"><span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="Friendly, concrete setup — a good anchor to build a more demanding version on top of.">Mr.Grey is purchasing gifts for his family.<span class="annot-bubble"><strong>strong:</strong> Friendly, concrete setup — a good anchor to build a more demanding version on top of.</span></span> So far he has purchased <span class="annot annot-suggestion" data-kind="suggestion" tabindex="0" data-comment="Small ambiguity worth deciding intentionally: &#x27;2 necklaces for $83&#x27; reads as $83 total, while the polos and games are per-item. That asymmetry could be a feature (tests careful reading) or a bug — your call.">3 polo shirts for \$26 each; 2 necklaces for \$83; and 2 computer game for \$90 each<span class="annot-bubble"><strong>suggestion:</strong> Small <span class="kw-warn">ambiguity</span> worth deciding intentionally: &#x27;2 necklaces for <span class="kw-math">$83&#x27; reads as $</span>83 total, while the polos and games are per-item. That asymmetry could be a feature (tests careful reading) or a bug — your call.</span></span>. Since Mr.Grey purchased all those using his credit card, he received a \$12 rebate. What is the total cost of the gifts after the rebate?</div>
+    <div class="pane active" id="annot-6">
+      <div class="statement annot-host"><span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="Friendly, concrete setup — a good anchor to build a more demanding version on top of.">Mr.Grey is purchasing gifts for his family.<span class="annot-bubble"><strong>strong:</strong> Friendly, concrete setup — a good anchor to build a more demanding version on top of.</span></span> So far he has purchased <span class="annot annot-suggestion" data-kind="suggestion" tabindex="0" data-comment="Small ambiguity worth deciding intentionally: &#x27;2 necklaces for $83&#x27; reads as $83 total, while the polos and games are per-item. That asymmetry could be a feature (tests careful reading) or a bug — your call.">3 polo shirts for \$26 each; 2 necklaces for \$83; and 2 computer game for \$90 each<span class="annot-bubble"><strong>suggestion:</strong> Small <span class="kw-subject">ambiguity</span> worth deciding intentionally: &#x27;2 necklaces for <span class="kw-math">$83&#x27; reads as $</span>83 total, while the polos and games are per-item. That asymmetry could be a feature (tests careful reading) or a bug — your call.</span></span>. Since Mr.Grey purchased all those using his credit card, he received a \$12 rebate. What is the total cost of the gifts after the rebate?</div>
       <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
     </div>
+    <div class="pane" id="snap-6">
+      <div class="statement">Mr.Grey is purchasing gifts for his family. So far he has purchased 3 polo shirts for \$26 each; 2 necklaces for \$83; and 2 computer game for \$90 each. Since Mr.Grey purchased all those using his credit card, he received a \$12 rebate. What is the total cost of the gifts after the rebate?</div>
+    </div>
     <div class="pane" id="tex-6">
-      <p class="dim small">Snapshot of the full .tex source at the time of review (content sha <code>c084f44a</code>). This is what was reviewed — won't drift if you edit the file later.</p>
+      <p class="dim small">Snapshot of the full .tex source at the time of review (<abbr class="term" data-tip="A 16-hex-char hash of `problemstatement + answerkey + gradingscheme`. The review is keyed on this so the same .tex content is reviewed exactly once.">content sha</abbr> <code>c084f44a</code>). This is what was reviewed — won't drift if you edit the file later.</p>
       <pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
 \begin{document}
 
@@ -1455,8 +1512,10 @@ Suggested checks:
 
 </div>
 
-<!-- ── compact bottom-right problem rail (always expanded) ──── -->
-<nav class="rail" aria-label="problem quick-nav"><a href="#problem-2" class="rail-item rl-ready" data-target="problem-2" title="Smallest Terminating Decimal with Digit 9"><span class="rl-num">02</span><span class="rl-glyph">✓</span></a><a href="#problem-3" class="rail-item rl-revision" data-target="problem-3" title="Relative Speed and Time Word Problem"><span class="rl-num">03</span><span class="rl-glyph">△</span></a><a href="#problem-4" class="rail-item rl-revision" data-target="problem-4" title="Dog Shelter Toys Problem"><span class="rl-num">04</span><span class="rl-glyph">△</span></a><a href="#problem-5" class="rail-item rl-progress" data-target="problem-5" title="TODO: concise problem title (contributor_01 / problem_05)"><span class="rl-num">05</span><span class="rl-glyph">✎</span></a><a href="#problem-6" class="rail-item rl-progress" data-target="problem-6" title="TODO: concise problem title (contributor_01 / problem_06)"><span class="rl-num">06</span><span class="rl-glyph">✎</span></a></nav>
+<!-- ── timeline rail: hierarchical, dynamic, mobile thumb-friendly ─ -->
+<nav class="rail-tl" aria-label="problem timeline">
+  <div class="rail-tl-inner"><div class="rail-section rl-ready" data-target="problem-2">  <a href="#problem-2" class="rail-bullet">    <span class="rl-num">02</span>    <span class="rl-glyph">✓</span>    <span class="rl-title">Smallest Terminating Decimal</span>  </a>  <div class="rail-sub"><a href="#problem-2-fixes">Quick fixes</a><a href="#problem-2-working">What&#x27;s working</a><a href="#problem-2-considerations">Considerations</a><a href="#problem-2-next">Next steps</a><a href="#problem-2-text">Problem text</a><a href="#problem-2-verifier">Verifier</a><a href="#problem-2-benchmark">Benchmark</a></div></div><div class="rail-section rl-revision" data-target="problem-3">  <a href="#problem-3" class="rail-bullet">    <span class="rl-num">03</span>    <span class="rl-glyph">△</span>    <span class="rl-title">Relative Speed and Time Word</span>  </a>  <div class="rail-sub"><a href="#problem-3-fixes">Quick fixes</a><a href="#problem-3-working">What&#x27;s working</a><a href="#problem-3-considerations">Considerations</a><a href="#problem-3-next">Next steps</a><a href="#problem-3-text">Problem text</a><a href="#problem-3-verifier">Verifier</a><a href="#problem-3-benchmark">Benchmark</a></div></div><div class="rail-section rl-revision" data-target="problem-4">  <a href="#problem-4" class="rail-bullet">    <span class="rl-num">04</span>    <span class="rl-glyph">△</span>    <span class="rl-title">Dog Shelter Toys Problem</span>  </a>  <div class="rail-sub"><a href="#problem-4-fixes">Quick fixes</a><a href="#problem-4-working">What&#x27;s working</a><a href="#problem-4-considerations">Considerations</a><a href="#problem-4-next">Next steps</a><a href="#problem-4-text">Problem text</a><a href="#problem-4-verifier">Verifier</a><a href="#problem-4-benchmark">Benchmark</a></div></div><div class="rail-section rl-progress" data-target="problem-5">  <a href="#problem-5" class="rail-bullet">    <span class="rl-num">05</span>    <span class="rl-glyph">✎</span>    <span class="rl-title">untitled draft</span>  </a>  <div class="rail-sub"><a href="#problem-5-brainstorming">Brainstorming</a><a href="#problem-5-promising">What&#x27;s promising</a><a href="#problem-5-considerations">Open questions</a><a href="#problem-5-next">Directions</a><a href="#problem-5-text">Problem text</a></div></div><div class="rail-section rl-progress" data-target="problem-6">  <a href="#problem-6" class="rail-bullet">    <span class="rl-num">06</span>    <span class="rl-glyph">✎</span>    <span class="rl-title">untitled draft</span>  </a>  <div class="rail-sub"><a href="#problem-6-brainstorming">Brainstorming</a><a href="#problem-6-promising">What&#x27;s promising</a><a href="#problem-6-considerations">Open questions</a><a href="#problem-6-next">Directions</a><a href="#problem-6-text">Problem text</a></div></div></div>
+</nav>
 
 <!-- ── chatbot (hidden until proxy live) ────────────────────── -->
 <button class="chat-fab" aria-label="open chat">💬 ask Claude about these reviews</button>
@@ -1562,6 +1621,48 @@ Benchmark (claude-haiku-4-5-20251001): FAIL
 </aside>
 
 <script>
+// ── tooltip controller: hover (desktop) + tap-toggle (touch) ────
+(function(){
+  var tt = document.createElement('div'); tt.id = 'tt';
+  document.body.appendChild(tt);
+  function show(el){
+    var txt = el.getAttribute('data-tip') || '';
+    if (!txt) return;
+    tt.innerHTML = '';
+    var p = document.createElement('p'); p.style.margin = '0';
+    p.textContent = txt;
+    tt.appendChild(p);
+    tt.classList.add('on');
+    var r = el.getBoundingClientRect();
+    var ttR = tt.getBoundingClientRect();
+    var x = r.left + window.scrollX + (r.width - ttR.width) / 2;
+    var y = r.bottom + window.scrollY + 6;
+    x = Math.max(8, Math.min(x, window.innerWidth - ttR.width - 8));
+    if (y + ttR.height > window.scrollY + window.innerHeight - 8) {
+      y = r.top + window.scrollY - ttR.height - 6;
+    }
+    tt.style.left = x + 'px';
+    tt.style.top  = y + 'px';
+  }
+  function hide(){ tt.classList.remove('on'); }
+  document.addEventListener('mouseover', function(e){
+    var el = e.target.closest && e.target.closest('abbr.term');
+    if (el) show(el);
+  });
+  document.addEventListener('mouseout', function(e){
+    var el = e.target.closest && e.target.closest('abbr.term');
+    if (el && (!e.relatedTarget || !el.contains(e.relatedTarget))) hide();
+  });
+  document.addEventListener('click', function(e){
+    var el = e.target.closest && e.target.closest('abbr.term');
+    if (el) { show(el); return; }
+    if (tt.classList.contains('on') && !tt.contains(e.target)) hide();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') hide();
+  });
+})();
+
 (function(){
   // ── tabs ──────────────────────────────────────────────
   document.addEventListener('click', function(e){
@@ -1576,15 +1677,15 @@ Benchmark (claude-haiku-4-5-20251001): FAIL
     if (pane) pane.classList.add('active');
   });
 
-  // ── nav-chip + rail-item active-on-scroll ────────────
+  // ── nav-chip + rail-section active-on-scroll ─────────
   var sections = Array.from(document.querySelectorAll('section.problem'));
   var chips = {};
-  var railItems = {};
+  var railSections = {};
   document.querySelectorAll('.chip').forEach(function(c){
     chips[c.getAttribute('href').replace('#','')] = c;
   });
-  document.querySelectorAll('.rail-item').forEach(function(a){
-    railItems[a.getAttribute('href').replace('#','')] = a;
+  document.querySelectorAll('.rail-section').forEach(function(s){
+    railSections[s.getAttribute('data-target')] = s;
   });
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(en){
@@ -1593,12 +1694,44 @@ Benchmark (claude-haiku-4-5-20251001): FAIL
         Object.values(chips).forEach(function(c){ c.classList.remove('active'); });
         chips[id].classList.add('active');
         try { chips[id].scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'}); } catch(e){}
-        Object.values(railItems).forEach(function(a){ a.classList.remove('active'); });
-        if (railItems[id]) railItems[id].classList.add('active');
+        Object.values(railSections).forEach(function(s){ s.classList.remove('active'); });
+        if (railSections[id]) {
+          railSections[id].classList.add('active');
+          // also scroll the rail itself so the active section is visible
+          try { railSections[id].scrollIntoView({behavior:'smooth', block:'nearest'}); } catch(e){}
+        }
       }
     });
   }, {rootMargin:'-30% 0px -55% 0px'});
   sections.forEach(function(s){ io.observe(s); });
+
+  // ── auto-open <details> when navigated to via anchor ──
+  // If the URL hash points at a collapsible (e.g. #problem-2-next), open it.
+  function openTargetedDetails(){
+    var h = location.hash.replace('#','');
+    if (!h) return;
+    var el = document.getElementById(h);
+    if (!el) return;
+    // open any <details> ancestors so the target is actually visible
+    var node = el;
+    while (node && node !== document.body) {
+      if (node.tagName === 'DETAILS') { node.open = true; }
+      node = node.parentElement;
+    }
+    // also: if el itself is a <details>, open it
+    if (el.tagName === 'DETAILS') { el.open = true; }
+    // smooth-scroll into view after a tick (let layout settle)
+    setTimeout(function(){
+      try { el.scrollIntoView({behavior:'smooth', block:'start'}); } catch(e){}
+    }, 50);
+  }
+  window.addEventListener('hashchange', openTargetedDetails);
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (a && a.getAttribute('href').length > 1) setTimeout(openTargetedDetails, 10);
+  });
+  // first paint: honour the hash that was in the URL
+  if (location.hash) setTimeout(openTargetedDetails, 100);
 
   // ── visit tracking ───────────────────────────────────
   var STORAGE = 'ai4sm-review-visits';

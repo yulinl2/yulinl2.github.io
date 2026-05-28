@@ -96,6 +96,7 @@ body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
 .tile.t-revision .num { color:var(--c-revision); }
 .tile.t-rework   .num { color:var(--c-rework); }
 .tile.t-verif    .num { color:var(--primary); }
+.tile.t-progress .num { color:#60a5fa; }
 
 /* ── problem cards ─────────────────────────────────────────────── */
 section.problem { background:var(--bg-card); border:1px solid var(--border);
@@ -175,7 +176,7 @@ section.problem[data-verdict="in-progress"] {
                           quoted literal — a different KIND of token from prose)
    We do NOT use font color for verbs or warnings — color was noise. */
 
-.kw-verb { font-weight:700; color:inherit; }
+.kw-subject { font-weight:700; color:inherit; }
 .kw-warn { text-decoration:underline wavy #ef4444; text-decoration-skip-ink:none;
            text-underline-offset:3px; color:inherit; }
 
@@ -264,6 +265,9 @@ table.checks td code { background:var(--bg); padding:1px 4px; border-radius:3px;
 /* ── benchmark drawer ──────────────────────────────────────────── */
 .bench-block { background:var(--bg-soft); border-radius:8px; padding:8px 14px; margin:10px 0; }
 .bench-block summary { cursor:pointer; color:var(--fg-muted); font-weight:500; font-size:.94em; }
+.bench-framing { padding:8px 12px; border-radius:6px; margin:8px 0 4px; font-size:.92em; }
+.bench-framing.bf-bad  { background:rgba(251,191,36,0.12); border-left:3px solid var(--c-revision); color:#fde68a; }
+.bench-framing.bf-good { background:rgba(52,211,153,0.12); border-left:3px solid var(--c-ready); color:#a7f3d0; }
 .model-response { background:var(--bg); padding:12px 14px; border-radius:6px; font-size:.86em;
                   white-space:pre-wrap; max-height:340px; overflow-y:auto;
                   border:1px solid var(--border); line-height:1.5; }
@@ -285,33 +289,85 @@ footer.page-foot { margin-top:40px; padding-top:22px; border-top:1px solid var(-
                    color:var(--fg-dim); font-size:.85em; text-align:center; }
 footer.page-foot a { color:var(--primary); text-decoration:none; }
 
-/* ── compact bottom-right problem rail ─────────────────────────── */
-/* Always-expanded vertical stack of pills. Background is transparent;
-   only the pills themselves carry slight opacity so the page shows
-   through the gaps. Small fonts. Fingertip-tappable on mobile. */
-.rail { position:fixed; right:10px; bottom:14px; z-index:60;
-        display:flex; flex-direction:column; gap:4px;
-        background:transparent; max-height:calc(100vh - 32px); overflow-y:auto;
-        scrollbar-width:none; }
-.rail::-webkit-scrollbar { display:none; }
-.rail-item { display:flex; align-items:center; gap:5px;
-             padding:3px 9px; border-radius:11px; font-size:.72em;
-             background:rgba(15,23,42,0.62); color:var(--fg-muted);
-             text-decoration:none; font-variant-numeric:tabular-nums;
-             border:1px solid rgba(255,255,255,0.05);
-             backdrop-filter:blur(6px);
-             transition:background .12s, color .12s, transform .12s; }
-.rail-item:hover { background:rgba(30,41,59,0.92); color:var(--fg);
-                   transform:translateX(-1px); }
-.rail-item.active { background:rgba(30,41,59,0.95); color:var(--fg);
-                    border-color:var(--primary); }
-.rail-item .rl-num { font-family:"SF Mono",Consolas,monospace; }
-.rail-item .rl-glyph { font-size:.95em; }
-.rail-item.rl-ready    .rl-glyph { color:var(--c-ready); }
-.rail-item.rl-revision .rl-glyph { color:var(--c-revision); }
-.rail-item.rl-rework   .rl-glyph { color:var(--c-rework); }
-.rail-item.rl-stub     .rl-glyph { color:var(--c-stub); }
-.rail-item.rl-progress .rl-glyph { color:#60a5fa; }
+/* ── tooltip convention (port from lit-review) ─────────────────── */
+abbr.term { text-decoration:none; border-bottom:1px dotted var(--fg-dim);
+            cursor:help; }
+abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
+#tt { position:absolute; display:none; max-width:320px;
+      background:var(--bg-card); color:var(--fg); border:1px solid var(--primary);
+      border-radius:8px; padding:10px 12px; font-size:.86em; line-height:1.45;
+      box-shadow:0 8px 24px rgba(0,0,0,.32); z-index:200; pointer-events:auto; }
+#tt.on { display:block; }
+.tile t-progress { /* defined below in tiles section */ }
+
+/* ── timeline rail: floats above text, dynamic + hierarchical ───── */
+/* Vertical rail on the right side. Always-visible. Backgroundless;
+   only the items carry slight backdrop blur. The section currently in
+   view expands to reveal its sub-anchors (TL;DR / fixes / promising /
+   considerations / next steps / problem text / verifier / benchmark).
+   Off-view problems collapse to a single bullet+number+glyph row.
+
+   Mobile: rail is touch-friendly. The whole rail is fixed-position so
+   it stays at the thumb without page scroll. Tap any row to jump. */
+.rail-tl { position:fixed; right:0; top:64px; bottom:0; z-index:60;
+           width:230px; padding:8px 10px 14px;
+           display:flex; flex-direction:column;
+           background:transparent; pointer-events:none;
+           font-size:.78em; overflow:hidden; }
+.rail-tl-inner { pointer-events:auto; display:flex; flex-direction:column;
+                 gap:2px; overflow-y:auto; flex:1;
+                 scrollbar-width:none; padding-right:4px;
+                 mask-image:linear-gradient(180deg, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
+                 -webkit-mask-image:linear-gradient(180deg, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%); }
+.rail-tl-inner::-webkit-scrollbar { display:none; }
+.rail-section { display:flex; flex-direction:column; }
+.rail-bullet { display:flex; align-items:center; gap:6px;
+               padding:5px 10px; border-radius:10px;
+               background:rgba(15,23,42,0.55);
+               color:var(--fg-muted); text-decoration:none;
+               border:1px solid rgba(255,255,255,0.04);
+               backdrop-filter:blur(6px);
+               font-variant-numeric:tabular-nums;
+               transition:background .14s, color .14s, padding .15s; }
+.rail-bullet:hover { background:rgba(30,41,59,0.88); color:var(--fg); }
+.rail-bullet .rl-num { font-family:"SF Mono",Consolas,monospace; font-size:.94em;
+                       color:var(--fg-dim); flex:none; min-width:22px; }
+.rail-bullet .rl-glyph { flex:none; font-size:.95em; }
+.rail-bullet .rl-title { flex:1; overflow:hidden; text-overflow:ellipsis;
+                         white-space:nowrap; font-weight:500; }
+.rail-section.active .rail-bullet { background:rgba(30,41,59,0.95);
+                                    color:var(--fg);
+                                    border-color:var(--primary);
+                                    padding-top:7px; padding-bottom:7px; }
+.rail-section.rl-ready    .rl-glyph { color:var(--c-ready); }
+.rail-section.rl-revision .rl-glyph { color:var(--c-revision); }
+.rail-section.rl-rework   .rl-glyph { color:var(--c-rework); }
+.rail-section.rl-stub     .rl-glyph { color:var(--c-stub); }
+.rail-section.rl-progress .rl-glyph { color:#60a5fa; }
+
+/* Sub-anchors — only visible for the section in view. */
+.rail-sub { display:none; margin:2px 0 4px 22px; flex-direction:column; gap:2px; }
+.rail-section.active .rail-sub { display:flex; animation:railFadeIn .2s ease-out; }
+@keyframes railFadeIn { from { opacity:0; transform:translateX(4px); } to { opacity:1; transform:translateX(0); } }
+.rail-sub a { display:block; padding:2px 8px; font-size:.86em;
+              color:var(--fg-muted); text-decoration:none;
+              border-left:2px solid rgba(255,255,255,0.06);
+              padding-left:8px; }
+.rail-sub a:hover { color:var(--fg); border-left-color:var(--primary); }
+
+/* Mobile: narrow + bottom-right; can be thumb-flicked. */
+@media (max-width:720px) {
+  .rail-tl { width:160px; top:auto; bottom:14px; height:auto; max-height:60vh;
+             padding:0 8px 0 0; right:6px; }
+  .rail-tl-inner { gap:1px; }
+  .rail-bullet { padding:4px 9px; }
+  .rail-bullet .rl-title { font-size:.94em; }
+}
+@media (max-width:420px) {
+  .rail-tl { width:130px; }
+  /* on the smallest screens, drop titles in off-view rows to save width. */
+  .rail-section:not(.active) .rail-bullet .rl-title { display:none; }
+}
 
 /* ── chatbot drawer (kept in DOM but hidden until proxy ready) ─── */
 .chat-fab { display:none; }   /* re-enable by setting display:flex when proxy is configured */
