@@ -23,13 +23,39 @@ body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
 .navbar { position:sticky; top:0; z-index:50; background:rgba(15,23,42,0.92);
           backdrop-filter:saturate(160%) blur(10px); border-bottom:1px solid var(--border); }
 .nav-inner { max-width:980px; margin:0 auto; padding:10px 18px; display:flex;
-             align-items:center; gap:14px; }
-.nav-brand { font-weight:700; font-size:.95em; white-space:nowrap; }
-.nav-brand .sub { color:var(--fg-dim); font-weight:400; font-size:.9em; margin-left:6px; }
-.nav-chips { flex:1; display:flex; gap:6px; overflow-x:auto; padding:2px 0;
-             scrollbar-width:thin; scrollbar-color:var(--bg-accent) transparent; }
+             align-items:center; gap:14px; flex-wrap:nowrap; }
+.nav-brand { font-weight:700; font-size:.95em; white-space:nowrap;
+             display:flex; align-items:baseline; gap:8px; min-width:0; flex-shrink:1;
+             overflow:hidden; text-overflow:ellipsis; }
+.nav-brand .name { font-weight:700; }
+.nav-brand .contact { font-weight:400; font-size:.84em; }
+.nav-brand .contact a { color:var(--fg-dim); text-decoration:none; }
+.nav-brand .contact a:hover { color:var(--primary); }
+.nav-brand .sub { color:var(--fg-dim); font-weight:400; font-size:.86em; }
+.nav-chips { flex:1 1 0; min-width:0; display:flex; gap:6px; overflow-x:auto;
+             padding:2px 0; scrollbar-width:thin; scrollbar-color:var(--bg-accent) transparent; }
 .nav-chips::-webkit-scrollbar { height:6px; }
 .nav-chips::-webkit-scrollbar-thumb { background:var(--bg-accent); border-radius:3px; }
+.nav-chat { flex:0 0 auto; }
+
+/* On mobile (<720px): wrap the inner so chips drop to row 2 full-width.
+   HTML order is brand → chips → chat. We bump `chat` ahead of chips with
+   `order` so row 1 stays `[brand … chat]` and chips fall to row 2. */
+@media (max-width:720px) {
+  .nav-inner { flex-wrap:wrap; }
+  .nav-brand { order:1; }
+  .nav-chat  { order:2; margin-left:auto; }
+  .nav-chips { order:3; flex-basis:100%; margin-top:4px; padding-bottom:2px; }
+}
+@media (max-width:480px) {
+  /* narrow: hide the "auto-review" subtitle so name + email + chat fit row 1. */
+  .nav-brand .sub { display:none; }
+  .nav-brand .contact { font-size:.78em; }
+}
+@media (max-width:360px) {
+  /* ultra-narrow: drop contact too, keep just name */
+  .nav-brand .contact { display:none; }
+}
 .chip { display:inline-flex; align-items:center; gap:4px; padding:5px 11px;
         border-radius:6px; font-size:.84em; text-decoration:none; color:var(--fg);
         background:var(--bg-card); border:1px solid var(--border); white-space:nowrap;
@@ -274,7 +300,11 @@ footer.page-foot a { color:var(--primary); text-decoration:none; }
 
 <nav class="navbar">
   <div class="nav-inner">
-    <div class="nav-brand">Zhixian Zhang <span class="sub">· auto-review</span></div>
+    <div class="nav-brand">
+      <span class="name">Zhixian Zhang</span>
+      <span class="contact">·&nbsp;<a href="mailto:zhixian.zhang@rutgers.edu">zhixian.zhang@rutgers.edu</a></span>
+      <span class="sub">· auto-review</span>
+    </div>
     <div class="nav-chips"><a class="chip chip-ready" href="#problem-2"><span class="ch-num">#02</span> <span class="ch-kw">Smallest Terminating</span> <span class="dim">✓</span></a><a class="chip chip-revision" href="#problem-3"><span class="ch-num">#03</span> <span class="ch-kw">Relative Speed</span> <span class="dim">△</span></a><a class="chip chip-revision" href="#problem-4"><span class="ch-num">#04</span> <span class="ch-kw">Dog Shelter</span> <span class="dim">△</span></a><a class="chip chip-rework" href="#problem-5"><span class="ch-num">#05</span> <span class="ch-kw">untitled</span> <span class="dim">✗</span></a><a class="chip chip-rework" href="#problem-6"><span class="ch-num">#06</span> <span class="ch-kw">untitled</span> <span class="dim">✗</span></a></div>
     <button class="nav-chat" onclick="document.querySelector('.chat-fab').click();">💬 chat</button>
   </div>
