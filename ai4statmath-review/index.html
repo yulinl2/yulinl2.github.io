@@ -311,6 +311,7 @@ table.checks td code { background:var(--bg); padding:1px 4px; border-radius:3px;
 .bench-framing { padding:8px 12px; border-radius:6px; margin:8px 0 4px; font-size:.92em; }
 .bench-framing.bf-bad  { background:rgba(251,191,36,0.12); border-left:3px solid var(--c-revision); color:#fde68a; }
 .bench-framing.bf-good { background:rgba(52,211,153,0.12); border-left:3px solid var(--c-ready); color:#a7f3d0; }
+.bench-framing.bf-uncertain { background:rgba(156,163,175,0.10); border-left:3px solid var(--c-stub); color:#cbd5e1; }
 .model-response { background:var(--bg); padding:12px 14px; border-radius:6px; font-size:.86em;
                   white-space:pre-wrap; max-height:340px; overflow-y:auto;
                   border:1px solid var(--border); line-height:1.5; }
@@ -534,7 +535,7 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
     <div class="hub-tile t-rework"><div class="num">0</div><div class="lbl">rework ✗</div></div>
     <div class="hub-tile t-progress"><div class="num">2</div><div class="lbl">in progress ✎</div></div>
     <div class="hub-tile t-info"><div class="num">5/5</div><div class="lbl">verifiers ✓</div></div>
-    <div class="hub-tile t-ready"><div class="num">4/5</div><div class="lbl" title="Problems that stumped the test model. HIGHER is better — the goal is problems models cannot solve. 1 were solved (= too easy).">stumped a model ✓</div></div>
+    <div class="hub-tile t-ready"><div class="num">5/5</div><div class="lbl" title="Problems that stumped the test model. HIGHER is better — the goal is problems models cannot solve. 0 were solved (= too easy).">stumped a model ✓</div></div>
   </div>
 </section>
 
@@ -546,7 +547,7 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
       <th>verdicts</th><th class="n">verifiers ✓</th><th class="n">LLM</th>
       <th>last reviewed</th><th></th>
     </tr></thead>
-    <tbody><tr><td><a href="contributor_01/index.html"><strong>Zhixian Zhang</strong></a></td><td class="dim">zhixian.zhang@rutgers.edu</td><td class="n">5</td><td class="pills-cell"><span class="pill v-ready">✓ 1</span><span class="pill v-revision">△ 2</span><span class="pill v-progress">✎ 2</span></td><td class="n">5/5</td><td class="n">1/5 pass</td><td class="dim small">2026-05-28 10:17 UTC</td><td><a href="contributor_01/index.html">view →</a></td></tr></tbody>
+    <tbody><tr><td><a href="contributor_01/index.html"><strong>Zhixian Zhang</strong></a></td><td class="dim">zhixian.zhang@rutgers.edu</td><td class="n">5</td><td class="pills-cell"><span class="pill v-ready">✓ 1</span><span class="pill v-revision">△ 2</span><span class="pill v-progress">✎ 2</span></td><td class="n">5/5</td><td class="n">0/5 pass</td><td class="dim small">2026-05-28 10:17 UTC</td><td><a href="contributor_01/index.html">view →</a></td></tr></tbody>
   </table>
 </section>
 

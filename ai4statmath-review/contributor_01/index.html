@@ -314,6 +314,7 @@ table.checks td code { background:var(--bg); padding:1px 4px; border-radius:3px;
 .bench-framing { padding:8px 12px; border-radius:6px; margin:8px 0 4px; font-size:.92em; }
 .bench-framing.bf-bad  { background:rgba(251,191,36,0.12); border-left:3px solid var(--c-revision); color:#fde68a; }
 .bench-framing.bf-good { background:rgba(52,211,153,0.12); border-left:3px solid var(--c-ready); color:#a7f3d0; }
+.bench-framing.bf-uncertain { background:rgba(156,163,175,0.10); border-left:3px solid var(--c-stub); color:#cbd5e1; }
 .model-response { background:var(--bg); padding:12px 14px; border-radius:6px; font-size:.86em;
                   white-space:pre-wrap; max-height:340px; overflow-y:auto;
                   border:1px solid var(--border); line-height:1.5; }
@@ -522,7 +523,9 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
         <div class="tile t-rework"><div class="num">0</div><div class="lbl"><abbr class="term" data-tip="Needs major rework: substantive issues with the problem itself (under-specified, contaminated, mistargeted).">rework</abbr> ✗</div></div>
         <div class="tile t-progress"><div class="num">2</div><div class="lbl"><abbr class="term" data-tip="In progress: contributor is still drafting (title still TODO). Auto-reviewer is in encouragement-mode for these — brainstorming directions instead of critique.">in progress</abbr> ✎</div></div>
         <div class="tile t-verif"><div class="num">5/5</div><div class="lbl"><abbr class="term" data-tip="A verifier is validated when (a) it grades the answer key as pass AND (b) it rejects every plausibly-wrong response the LLM was asked to generate.">verifiers</abbr> ✓</div></div>
-        <div class="tile t-ready"><div class="num">4/5</div><div class="lbl"><abbr class="term" data-tip="Problems that stumped the test model (Haiku 4.5, single zero-shot sample). HIGHER is better — the goal is problems models cannot solve. 1 of 5 were solved (= too easy).">stumped a model ✓</abbr></div></div>
+        <div class="tile t-ready"><div class="num">0</div><div class="lbl"><abbr class="term" data-tip="Problems where the test model failed all k samples convincingly (Wilson 95% CI upper bound below 0.5). HIGHER is better — the goal is problems models cannot solve.">stumped ✓</abbr></div></div>
+        
+        <div class="tile t-stub"><div class="num">5</div><div class="lbl"><abbr class="term" data-tip="Mixed results at this k — Wilson CI straddles 0.5. Need more samples for a confident call. The honest state of most k=3 runs.">uncertain ?</abbr></div></div>
       </div>
     </div>
     <div class="dash-radar">
@@ -540,7 +543,7 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
     </div>
     <div class="p-pills">
       <span class="pill v-ready">✓ ready</span>
-      <abbr class="term pill v-revision" data-tip="⚠ Haiku 4.5 (a fast/small model) solved this. Even a small model getting it is a strong hint the problem is too easy for the hard-set — consider hardening it. (A frontier model was not run here.)">⚠ haiku solved it — likely too easy</abbr> <span class="small dim" title="single zero-shot sample — not replicated">n=1</span>
+      <abbr class="term pill v-stub" data-tip="haiku solved 2/3 (95% CI [0.21, 0.94]); k=3 zero-shot samples at temperature 0.7. ? At k=3 samples, Wilson 95% CI straddles 50% — we genuinely cannot call this stumped or solved with statistical confidence at this N. Re-run with higher k for tighter bounds (at k=3, even 3/3 has a lower bound of 0.44; at k=7, 7/7 gets you above 0.65).">? haiku 2/3 — uncertain</abbr> <span class="small dim" title="k=3 samples; 95% CI [0.21, 0.94] straddles 0.5 — need more samples">k=3</span>
     </div>
   </header>
 
@@ -717,11 +720,99 @@ def grade(response: str, context: dict) -&gt; dict:
 
   
 <details class="bench-block" id="problem-2-benchmark">
-  <summary>🤖 How an LLM did (claude-haiku-4-5-20251001)</summary>
-  <p class="bench-framing bf-bad">⚠ A fast/small model solved this — even a small model getting it is a strong hint it's too easy for the hard-set. Consider a harder variant in the same vein.</p>
-  <p class="dim">Run: <code>2026-05-28-opus-reviews-haiku-solver</code> · verdict <strong>PASS</strong> (single zero-shot sample — not replicated) · verifier notes: Response contains the correct answer 4096.</p>
-  <details><summary>Show the model's full response</summary>
-    <pre class="model-response">I need to find the smallest positive integer $n$ such that:
+  <summary>🤖 How an LLM did (claude-haiku-4-5-20251001) · k=3 samples</summary>
+  <p class="bench-framing bf-uncertain">? A fast/small model passed 2/3 samples — Wilson 95% CI [0.21, 0.94] straddles 0.5, so we cannot call this stumped or solved with confidence at this N. Re-run with higher k for tighter bounds (at k=3 even 3/3 is just lo=0.44).</p>
+  <p class="dim">Run: <code>2026-05-28-k3-smoke</code> · pass-rate <strong>2/3</strong> · 95% CI <strong>[0.21, 0.94]</strong> · temperature 0.7 · cost $0.0267</p>
+  <div class="table-wrap"><table><thead><tr><th class="n">k</th><th>outcome</th><th>verifier notes</th><th class="n">latency</th><th class="n">cost</th></tr></thead><tbody><tr><td class="n">1</td><td>✓ PASS</td><td class="dim small">Response contains the correct answer 4096.</td><td class="n dim small">8.4s</td><td class="n dim small">$0.0103</td></tr><tr><td class="n">2</td><td>✗ fail</td><td class="dim small">Could not find the correct answer (4096 or 2^12) in the response.</td><td class="n dim small">6.0s</td><td class="n dim small">$0.0061</td></tr><tr><td class="n">3</td><td>✓ PASS</td><td class="dim small">Response contains the correct answer 4096.</td><td class="n dim small">9.3s</td><td class="n dim small">$0.0103</td></tr></tbody></table></div>
+  <details><summary class="dim small">k=1 PASS — response</summary><pre class="model-response">I need to find the smallest positive integer $n$ such that:
+1. $\frac{1}{n}$ is a terminating decimal
+2. $n$ contains the digit 9
+
+**When is $\frac{1}{n}$ a terminating decimal?**
+
+A fraction in lowest terms is a terminating decimal if and only if the denominator has no prime factors other than 2 and 5.
+
+So $n$ must be of the form $n = 2^a \cdot 5^b$ where $a, b \geq 0$.
+
+**Finding the smallest such $n$ containing the digit 9:**
+
+I need to find the smallest number of the form $2^a \cdot 5^b$ that contains the digit 9.
+
+Let me systematically check powers and products:
+
+Powers of 2: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, ...
+- 512 contains a 5 but no 9
+
+Powers of 5: 1, 5, 25, 125, 625, 3125, ...
+- 3125 contains no 9
+
+Products $2^a \cdot 5^b$:
+- $2 \cdot 5 = 10$ (no 9)
+- $4 \cdot 5 = 20$ (no 9)
+- $8 \cdot 5 = 40$ (no 9)
+- $16 \cdot 5 = 80$ (no 9)
+- $32 \cdot 5 = 160$ (no 9)
+- $64 \cdot 5 = 320$ (no 9)
+- $128 \cdot 5 = 640$ (no 9)
+- $256 \cdot 5 = 1280$ (no 9)
+- $512 \cdot 5 = 2560$ (no 9)
+- $2 \cdot 25 = 50$ (no 9)
+- $4 \cdot 25 = 100$ (no 9)
+- $8 \cdot 25 = 200$ (no 9)
+- $16 \cdot 25 = 400$ (no 9)
+- $32 \cdot 25 = 800$ (no 9)
+- $64 \cdot 25 = 1600$ (no 9)
+- $128 \cdot 25 = 3200$ (no 9)
+- $2 \cdot 125 = 250$ (no 9)
+- $4 \cdot 125 = 500$ (no 9)
+- $8 \cdot 125 = 1000$ (no 9)
+- $16 \cdot 125 = 2000$ (no 9)
+- $32 \cdot 125 = 4000$ (no 9)
+- $64 \cdot 125 = 8000$ (no 9)
+- $128 \cdot 125 = 16000$ (no 9)
+- $2 \cdot 625 = 1250$ (no 9)
+- $4 \cdot 625 = 2500$ (no 9)
+- $8 \cdot 625 = 5000$ (no 9)
+- $16 \cdot 625 = 10000$ (no 9)
+- $2 \cdot 3125 = 6250$ (no 9)
+- $4 \cdot 3125 = 12500$ (no 9)
+- $8 \cdot 3125 = 25000$ (no 9)
+- $2^9 = 512$ (no 9)
+- $2^{10} = 1024$ (no 9)
+- $5^4 = 625$ (no 9)
+- $5^5 = 3125$ (no 9)
+- $2 \cdot 5^5 = 6250$ (no 9)
+- $2^5 \cdot 5^2 = 32 \cdot 25 = 800$ (no 9)
+- $2^6 \cdot 5 = 64 \cdot 5 = 320$ (no 9)
+- $2^7 \cdot 5 = 128 \cdot 5 = 640$ (no 9)
+- $2^8 \cdot 5 = 256 \cdot 5 = 1280$ (no 9)
+- $2^9 \cdot 5 = 512 \cdot 5 = 2560$ (no 9)
+- $2^{10} \cdot 5 = 1024 \cdot 5 = 5120$ (no 9)
+- $2^{11} \cdot 5 = 2048 \cdot 5 = 10240$ (no 9)
+- $2^{12} \cdot 5 = 4096 \cdot 5 = 20480$ (no 9)
+- $2^{13} \cdot 5 = 8192 \cdot 5 = 40960$ (no 9)
+- $2^{14} \cdot 5 = 16384 \cdot 5 = 81920$ (no 9)
+- $2^{15} \cdot 5 = 32768 \cdot 5 = 163840$ (no 9)
+- $2^{16} \cdot 5 = 65536 \cdot 5 = 327680$ (no 9)
+- $2^{17} \cdot 5 = 131072 \cdot 5 = 655360$ (no 9)
+- $2^{18} \cdot 5 = 262144 \cdot 5 = 1310720$ (no 9)
+- $2^{19} \cdot 5 = 524288 \cdot 5 = 2621440$ (no 9)
+- $2^{20} \cdot 5 = 1048576 \cdot 5 = 5242880$ (no 9)
+- $2^{21} \cdot 5 = 2097152 \cdot 5 = 10485760$ (no 9)
+- $2^{22} \cdot 5 = 4194304 \cdot 5 = 20971520$ (no 9)
+- $2^{23} \cdot 5 = 8388608 \cdot 5 = 41943040$ (no 9)
+- $2^{24} \cdot 5 = 16777216 \cdot 5 = 83886080$ (no 9)
+- $2^{25} \cdot 5 = 33554432 \cdot 5 = 167772160$ (no 9)
+- $2^{26} \cdot 5 = 67108864 \cdot 5 = 335544320$ (no 9)
+- $2^{27} \cdot 5 = 134217728 \cdot 5 = 671088640$ (no 9)
+- $2^{28} \cdot 5 = 268435456 \cdot 5 = 1342177280$ (no 9)
+- $2^{29} \cdot 5 = 536870912 \cdot 5 = 2684354560$ (no 9)
+- $2^{30} \cdot 5 = 1073741824 \cdot 5 = 5368709120$ (no 9)
+- $2^{31} \cdot 5 = 2147483648 \cdot 5 = 10737418240$ (no 9)
+- $2^{32} \cdot 5 = 4294967296 \cdot 5 = 21474836480$ (no 9)
+- $2^{33} \cdot 5 = 8589934592 \cdot 5 = 42949672960$ (contains 9!)
+
+Let me also check $2^</pre></details><details><summary class="dim small">k=2 fail — response</summary><pre class="model-response">I need to find the smallest positive integer $n$ such that:
 1. $\frac{1}{n}$ is a terminating decimal
 2. $n$ contains the digit 9
 
@@ -735,103 +826,77 @@ So $n$ must be of the form $n = 2^a \cdot 5^b$ where $a, b \geq 0$.
 
 I need to find the smallest number of the form $2^a \cdot 5^b$ that contains the digit 9.
 
-Let me systematically check powers and products:
-- Powers of 2: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, ...
-- Powers of 5: 1, 5, 25, 125, 625, 3125, ...
-- Mixed products: Let me organize by size
+Let me systematically check small values:
+- $2^0 \cdot 5^0 = 1$ (no 9)
+- $2^1 \cdot 5^0 = 2$ (no 9)
+- $2^2 \cdot 5^0 = 4$ (no 9)
+- $2^3 \cdot 5^0 = 8$ (no 9)
+- $2^4 \cdot 5^0 = 16$ (no 9)
+- $2^5 \cdot 5^0 = 32$ (no 9)
+- $2^6 \cdot 5^0 = 64$ (no 9)
+- $2^7 \cdot 5^0 = 128$ (no 9)
+- $2^8 \cdot 5^0 = 256$ (no 9)
+- $2^9 \cdot 5^0 = 512$ (no 9)
+- $2^{10} \cdot 5^0 = 1024$ (no 9)
 
-Small values of $2^a \cdot 5^b$:
-- $2^0 \cdot 5^0 = 1$
-- $2^1 \cdot 5^0 = 2$
-- $2^0 \cdot 5^1 = 5$
-- $2^2 \cdot 5^0 = 4$
-- $2^1 \cdot 5^1 = 10$
-- $2^3 \cdot 5^0 = 8$
-- $2^0 \cdot 5^2 = 25$
-- $2^2 \cdot 5^1 = 20$
-- $2^4 \cdot 5^0 = 16$
-- $2^1 \cdot 5^2 = 50$
-- $2^3 \cdot 5^1 = 40$
-- $2^5 \cdot 5^0 = 32$
-- $2^0 \cdot 5^3 = 125$
-- $2^2 \cdot 5^2 = 100$
-- $2^4 \cdot 5^1 = 80$
-- $2^6 \cdot 5^0 = 64$
-- $2^1 \cdot 5^3 = 250$
-- $2^3 \cdot 5^2 = 200$
-- $2^5 \cdot 5^1 = 160$
-- $2^7 \cdot 5^0 = 128$
-- $2^0 \cdot 5^4 = 625$
-- $2^2 \cdot 5^3 = 500$
-- $2^4 \cdot 5^2 = 400$
-- $2^6 \cdot 5^1 = 320$
-- $2^8 \cdot 5^0 = 256$
-- $2^1 \cdot 5^4 = 1250$
-- $2^3 \cdot 5^3 = 1000$
-- $2^5 \cdot 5^2 = 800$
-- $2^7 \cdot 5^1 = 640$
-- $2^9 \cdot 5^0 = 512$
+Now checking powers of 5:
+- $2^0 \cdot 5^1 = 5$ (no 9)
+- $2^0 \cdot 5^2 = 25$ (no 9)
+- $2^0 \cdot 5^3 = 125$ (no 9)
+- $2^0 \cdot 5^4 = 625$ (no 9)
+- $2^0 \cdot 5^5 = 3125$ (no 9)
+- $2^0 \cdot 5^6 = 15625$ (no 9)
+- $2^0 \cdot 5^7 = 78125$ (no 9)
+- $2^0 \cdot 5^8 = 390625$ (contains 9!) ✓
 
-Continuing to look for the digit 9:
-- $2^0 \cdot 5^5 = 3125$
-- $2^2 \cdot 5^4 = 2500$
-- $2^4 \cdot 5^3 = 2000$
-- $2^6 \cdot 5^2 = 1600$
-- $2^8 \cdot 5^1 = 1280$
-- $2^{10} \cdot 5^0 = 1024$
-- $2^1 \cdot 5^5 = 6250$
-- $2^3 \cdot 5^4 = 5000$
-- $2^5 \cdot 5^3 = 4000$
-- $2^7 \cdot 5^2 = 3200$
-- $2^9 \cdot 5^1 = 2560$
-- $2^{11} \cdot 5^0 = 2048$
-- $2^2 \cdot 5^5 = 12500$
-- $2^4 \cdot 5^4 = 10000$
-- $2^6 \cdot 5^3 = 8000$
-- $2^8 \cdot 5^2 = 6400$
-- $2^{10} \cdot 5^1 = 5120$
-- $2^{12} \cdot 5^0 = 4096$
-- $2^3 \cdot 5^5 = 25000$
-- $2^5 \cdot 5^4 = 20000$
-- $2^7 \cdot 5^3 = 16000$
-- $2^9 \cdot 5^2 = 12800$
-- $2^{11} \cdot 5^1 = 10240$
-- $2^{13} \cdot 5^0 = 8192$
-- $2^4 \cdot 5^5 = 50000$
-- $2^6 \cdot 5^4 = 40000$
-- $2^8 \cdot 5^3 = 32000$
-- $2^{10} \cdot 5^2 = 25600$
-- $2^{12} \cdot 5^1 = 20480$
-- $2^{14} \cdot 5^0 = 16384$
-- $2^5 \cdot 5^5 = 100000$
-- $2^7 \cdot 5^4 = 80000$
-- $2^9 \cdot 5^3 = 64000$
-- $2^{11} \cdot 5^2 = 51200$
-- $2^{13} \cdot 5^1 = 40960$
-- $2^{15} \cdot 5^0 = 32768$
-- $2^6 \cdot 5^5 = 200000$
-- $2^8 \cdot 5^4 = 160000$
-- $2^{10} \cdot 5^3 = 128000$
-- $2^{12} \cdot 5^2 = 102400$
-- $2^{14} \cdot 5^1 = 81920$
-- $2^{16} \cdot 5^0 = 65536$
-- $2^7 \cdot 5^5 = 400000$
-- $2^9 \cdot 5^4 = 320000$
-- $2^{11} \cdot 5^3 = 256000$
-- $2^{13} \cdot 5^2 = 204800$
-- $2^{15} \cdot 5^1 = 163840$
-- $2^{17} \cdot 5^0 = 131072$
-- $2^8 \cdot 5^5 = 800000$
-- $2^{10} \cdot 5^4 = 640000$
-- $2^{12} \cdot 5^3 = 512000$
-- $2^{14} \cdot 5^2 = 409600$
-- $2^{16} \cdot 5^1 = 327680$
-- $2^{18} \cdot 5^0 = 262144$
-- $2^9 \cdot 5^5 = 1600000$
-- $2^{11} \cdot 5^4 = 1280000$
-- $2^{13} \cdot 5^3 = 1024000$
-- $2^{15} \cdot 5^2 =</pre>
-  </details>
+Now I should check mixed powers to see if there&#x27;s something smaller than 390625:
+- $2^1 \cdot 5^8 = 2 \cdot 390625 = 781250$ (larger)
+- $2^2 \cdot 5^7 = 4 \cdot 78125 = 312500$ (no 9)
+- $2^3 \cdot 5^7 = 8 \cdot 78125 = 625000$ (no 9)
+- $2^4 \cdot 5^6 = 16 \cdot 15625 = 250000$ (no 9)
+- $2^5 \cdot 5^6 = 32 \cdot 15625 = 500000$ (no 9)
+- $2^6 \cdot 5^6 = 64 \cdot 15625 = 1000000$ (no 9)
+- $2^7 \cdot 5^5 = 128 \cdot 3125 = 400000$ (no 9)
+- $2^8 \cdot 5^5 = 256 \cdot 3125 = 800000$ (no 9)
+- $2^9 \cdot 5^4 = 512 \cdot 625 = 320000$ (no 9)
+- $2^{10} \cdot 5^4 = 1024 \cdot 625 = 640000$ (no 9)
+
+Since $2^0 \cdot 5^8 = 390625$ contains a 9 and is smaller than the mixed cases I&#x27;ve checked, let me verify this is indeed the smallest by noting that any number of the form $2^a \cdot 5^b$ less than 390625 would have been found in my systematic search above.
+
+**Verification:** $\frac{1}{390625} = \frac{1}{5^8} = \frac{2^8}{2^8 \cdot 5^8} = \frac{256}{10^8} = 0.00000256$ ✓
+
+Final answer: **390625**</pre></details><details><summary class="dim small">k=3 PASS — response</summary><pre class="model-response">I need to find the smallest positive integer $n$ such that:
+1. $\frac{1}{n}$ is a terminating decimal
+2. $n$ contains the digit 9
+
+**When is $\frac{1}{n}$ a terminating decimal?**
+
+A fraction in lowest terms is a terminating decimal if and only if the denominator has no prime factors other than 2 and 5.
+
+So $n$ must be of the form $n = 2^a \cdot 5^b$ where $a, b \geq 0$.
+
+**Finding the smallest such $n$ containing the digit 9:**
+
+I need to find the smallest number of the form $2^a \cdot 5^b$ that contains the digit 9.
+
+Let me list powers of 2 and 5, and their products systematically:
+
+Powers of 2: 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, ...
+Powers of 5: 1, 5, 25, 125, 625, 3125, ...
+
+Products $2^a \cdot 5^b$ in increasing order:
+- 1, 2, 4, 5, 8, 10, 16, 20, 25, 32, 40, 50, 64, 80, 100, 125, 128, 160, 200, 250, 256, 320, 400, 500, 512, 625, 640, 800, 1000, 1024, 1250, 1280, 1600, 2000, 2048, 2500, 2560, 3125, 3200, 4000, 4096, 5000, 5120, 6250, 6400, 8000, 8192, 10000, 10240, 12500, 12800, 16000, 16384, 20000, 20480, 25000, 25600, 32000, 32768, 40000, 40960, 50000, 51200, 64000, 65536, 80000, 81920, 100000, ...
+
+Checking these for the digit 9:
+- None of the small values contain 9
+- Continuing: 512 (no 9), 625 (no 9), 640 (no 9), 800 (no 9), 1000 (no 9), 1024 (no 9), 1250 (no 9), 1280 (no 9), 1600 (no 9), 2000 (no 9), 2048 (no 9), 2500 (no 9), 2560 (no 9), 3125 (no 9), 3200 (no 9), 4000 (no 9), 4096 (no 9), 5000 (no 9), 5120 (no 9), 6250 (no 9), 6400 (no 9), 8000 (no 9), 8192 (no 9), 10000 (no 9), 10240 (no 9), 12500 (no 9), 12800 (no 9), 16000 (no 9), 16384 (no 9), 20000 (no 9), 20480 (no 9), 25000 (no 9), 25600 (no 9), 32000 (no 9), 32768 (no 9), 40000 (no 9), 40960 (no 9), 50000 (no 9), 51200 (no 9), 64000 (no 9), 65536 (no 9), 80000 (no 9), 81920 (no 9), 100000 (no 9), 102400 (no 9), 125000 (no 9), 128000 (no 9), 160000 (no 9), 163840 (no 9), 200000 (no 9), 204800 (no 9), 250000 (no 9), 256000 (no 9), 320000 (no 9), 327680 (no 9), 400000 (no 9), 409600 (no 9), 500000 (no 9), 512000 (no 9), 640000 (no 9), 655360 (no 9), 800000 (no 9), 819200 (no 9), 1000000 (no 9), 1024000 (no 9), 1280000 (no 9), 1310720 (no 9), 1600000 (no 9), 1638400 (no 9), 2000000 (no 9), 2048000 (no 9), 2500000 (no 9), 2560000 (no 9), 3200000 (no 9), 3276800 (no 9), 4000000 (no 9), 4096000 (no 9), 5000000 (no 9), 5120000 (no 9), 6400000 (no 9), 6553600 (no 9), 8000000 (no 9), 8192000 (no 9), 10000000 (no 9), 10240000 (no 9), 12800000 (no 9), 13107200 (no 9), 16000000 (no 9), 16384000 (no 9), 20000000 (no 9), 20480000 (no 9), 25000000 (no 9), 25600000 (no 9), 32000000 (no 9), 32768000 (no 9), 40000000 (no 9), 40960000 (no 9), 50000000 (no 9), 51200000 (no 9), 64000000 (no 9), 65536000 (no 9), 80000000 (no 9), 81920000 (no 9), 100000000 (no 9), 102400000 (no 9), 125000000 (no 9), 128000000 (no 9), 160000000 (no 9), 163840000 (no 9), 200000000 (no 9), 204800000 (no 9), 250000000 (no 9), 256000000 (no 9), 320000000 (no 9), 327680000 (no 9), 400000000 (no 9), 409600000 (no 9), 500000000 (no 9), 512000000 (no 9), 640000000 (no 9), 655360000 (no 9), 800000000 (no 9), 819200000 (no 9), 1000000000 (no 9), 1024000000 (no 9), 1280000000 (no 9), 1310720000 (no 9), 1600000000 (no 9), 1638400000 (no 9), 1953125 (no 9), 1920 (no 9), 1920 = $2^7 \cdot 3 \cdot 5$ (not of form $2^a5^b$), 
+
+Let me recalculate: $2^a \cdot 5^b$. Checking $2^9 = 512$, $5^3 = 125$, $2^5 \cdot 5^2 = 32 \cdot 25 = 800$, $2^{10} = 1024$...
+
+Actually $2^9 \cdot 5 = 512 \cdot 5 = 2560$ (no 9).
+$2 \cdot 5^4 = 2 \cdot 625 = 1250$ (no 9).
+$2^7 \cdot 5^2 = 128 \cdot 25 = 3200$ (no 9).
+$2^4 \cdot 5^3 = 16 \cdot 125 = 2000$ (no 9).</pre></details>
 </details>
 
   
@@ -850,7 +915,7 @@ Continuing to look for the digit 9:
     </div>
     <div class="p-pills">
       <span class="pill v-revision">△ needs-revision</span>
-      <abbr class="term pill v-ready" data-tip="✓ Haiku 4.5 (a fast/small model) failed to solve this — a promising early sign, since the goal is problems that stump strong models. NOT yet proof of hardness: confirm against a frontier model (Sonnet/Opus) before counting it toward the hard-set.">✓ haiku stumped</abbr> <span class="small dim" title="single zero-shot sample — not replicated">n=1</span>
+      <abbr class="term pill v-stub" data-tip="haiku solved 0/3 (95% CI [0.00, 0.56]); k=3 zero-shot samples at temperature 0.7. ? At k=3 samples, Wilson 95% CI straddles 50% — we genuinely cannot call this stumped or solved with statistical confidence at this N. Re-run with higher k for tighter bounds (at k=3, even 3/3 has a lower bound of 0.44; at k=7, 7/7 gets you above 0.65).">? haiku 0/3 — uncertain</abbr> <span class="small dim" title="k=3 samples; 95% CI [0.00, 0.56] straddles 0.5 — need more samples">k=3</span>
     </div>
   </header>
 
@@ -1054,15 +1119,64 @@ def grade(response: str, context: dict) -&gt; dict:
 
   
 <details class="bench-block" id="problem-3-benchmark">
-  <summary>🤖 How an LLM did (claude-haiku-4-5-20251001)</summary>
-  <p class="bench-framing bf-good">✓ A fast/small model was stumped — a promising early sign, not yet proof of hardness. Confirm against a frontier model (Sonnet/Opus) before counting it toward the hard-set.</p>
-  <p class="dim">Run: <code>2026-05-28-opus-reviews-haiku-solver</code> · verdict <strong>FAIL</strong> (single zero-shot sample — not replicated) · verifier notes: Last number found was 36, expected 48.</p>
-  <details><summary>Show the model's full response</summary>
-    <pre class="model-response"># Solution
+  <summary>🤖 How an LLM did (claude-haiku-4-5-20251001) · k=3 samples</summary>
+  <p class="bench-framing bf-uncertain">? A fast/small model passed 0/3 samples — Wilson 95% CI [0.00, 0.56] straddles 0.5, so we cannot call this stumped or solved with confidence at this N. Re-run with higher k for tighter bounds (at k=3 even 3/3 is just lo=0.44).</p>
+  <p class="dim">Run: <code>2026-05-28-haiku-k3</code> · pass-rate <strong>0/3</strong> · 95% CI <strong>[0.00, 0.56]</strong> · temperature 0.7 · cost $0.0038</p>
+  <div class="table-wrap"><table><thead><tr><th class="n">k</th><th>outcome</th><th>verifier notes</th><th class="n">latency</th><th class="n">cost</th></tr></thead><tbody><tr><td class="n">1</td><td>✗ fail</td><td class="dim small">Last number found was 36, expected 48.</td><td class="n dim small">2.5s</td><td class="n dim small">$0.0012</td></tr><tr><td class="n">2</td><td>✗ fail</td><td class="dim small">Last number found was 36, expected 48.</td><td class="n dim small">2.6s</td><td class="n dim small">$0.0013</td></tr><tr><td class="n">3</td><td>✗ fail</td><td class="dim small">Last number found was 36, expected 48.</td><td class="n dim small">2.5s</td><td class="n dim small">$0.0013</td></tr></tbody></table></div>
+  <details><summary class="dim small">k=1 fail — response</summary><pre class="model-response"># Solution
 
 **Step 1: Find the distance traveled**
 
-Since all 3 kangaroos travel at the same speed and together take 18 hours, each individual kangaroo takes 18 hours to cross the highway.
+3 kangaroos traveling at the same speed take 18 hours total to cross the highway.
+
+Since all kangaroos travel at the same speed and presumably cover the same distance, each kangaroo takes 18 hours.
+
+Distance = speed × time, so: D = k × 18 (where k = kangaroo speed)
+
+**Step 2: Find the turtle speed**
+
+Each turtle travels at half the speed of a kangaroo:
+- Turtle speed = k/2
+
+**Step 3: Calculate time for turtles**
+
+Using D = speed × time:
+- 18k = (k/2) × t
+- 18k = kt/2
+- t = 36 hours
+
+Since all 4 turtles travel at the same speed and cover the same distance, they each take 36 hours.
+
+**Final answer: 36 hours**</pre></details><details><summary class="dim small">k=2 fail — response</summary><pre class="model-response"># Solution
+
+**Step 1: Find the distance traveled**
+
+Since all 3 kangaroos travel at the same speed and together take 18 hours, this is measuring the time for one trip across the highway (not 3 separate trips). The distance is covered in 18 hours at kangaroo speed.
+
+Let&#x27;s say the kangaroo speed = k and the distance = d
+
+Then: d = k × 18
+
+**Step 2: Find the turtle speed and time**
+
+Each turtle travels at half the kangaroo speed: turtle speed = k/2
+
+For 4 turtles traveling together at the same speed, they still only need to cover the distance d once.
+
+Time = Distance ÷ Speed = d ÷ (k/2)
+
+**Step 3: Calculate**
+
+Time = (k × 18) ÷ (k/2)
+Time = (k × 18) × (2/k)
+Time = 18 × 2
+Time = 36 hours
+
+**Final answer: 36 hours**</pre></details><details><summary class="dim small">k=3 fail — response</summary><pre class="model-response"># Solution
+
+**Step 1: Find the distance traveled**
+
+Since 3 kangaroos traveling at the same speed take 18 hours to cross the highway, and they all travel together at the same speed, the time is 18 hours regardless of how many kangaroos there are.
 
 Let&#x27;s say each kangaroo travels at speed $v$.
 - Distance = $v \times 18$ hours
@@ -1074,17 +1188,11 @@ Each turtle travels at half the speed of a kangaroo:
 
 **Step 3: Calculate time for turtles**
 
-Since all 4 turtles travel at the same speed, each turtle takes the same time to cross.
+The number of turtles doesn&#x27;t affect the time (they travel together at the same speed), just like the number of kangaroos didn&#x27;t.
 
-Using distance = speed × time:
-$$18v = \frac{v}{2} \times t$$
+Time for turtles = $\frac{\text{Distance}}{\text{Speed}} = \frac{18v}{\frac{v}{2}} = 18v \times \frac{2}{v} = 36$ hours
 
-$$t = \frac{18v}{\frac{v}{2}} = 18v \times \frac{2}{v} = 36 \text{ hours}$$
-
-The number of turtles doesn&#x27;t affect the time—only their speed matters.
-
-**Final answer: 36 hours**</pre>
-  </details>
+**Final answer: 36 hours**</pre></details>
 </details>
 
   
@@ -1103,7 +1211,7 @@ The number of turtles doesn&#x27;t affect the time—only their speed matters.
     </div>
     <div class="p-pills">
       <span class="pill v-revision">△ needs-revision</span>
-      <abbr class="term pill v-ready" data-tip="✓ Haiku 4.5 (a fast/small model) failed to solve this — a promising early sign, since the goal is problems that stump strong models. NOT yet proof of hardness: confirm against a frontier model (Sonnet/Opus) before counting it toward the hard-set.">✓ haiku stumped</abbr> <span class="small dim" title="single zero-shot sample — not replicated">n=1</span>
+      <abbr class="term pill v-stub" data-tip="haiku solved 1/3 (95% CI [0.06, 0.79]); k=3 zero-shot samples at temperature 0.7. ? At k=3 samples, Wilson 95% CI straddles 50% — we genuinely cannot call this stumped or solved with statistical confidence at this N. Re-run with higher k for tighter bounds (at k=3, even 3/3 has a lower bound of 0.44; at k=7, 7/7 gets you above 0.65).">? haiku 1/3 — uncertain</abbr> <span class="small dim" title="k=3 samples; 95% CI [0.06, 0.79] straddles 0.5 — need more samples">k=3</span>
     </div>
   </header>
 
@@ -1300,18 +1408,71 @@ def grade(response: str, context: dict) -&gt; dict:
 
   
 <details class="bench-block" id="problem-4-benchmark">
-  <summary>🤖 How an LLM did (claude-haiku-4-5-20251001)</summary>
-  <p class="bench-framing bf-good">✓ A fast/small model was stumped — a promising early sign, not yet proof of hardness. Confirm against a frontier model (Sonnet/Opus) before counting it toward the hard-set.</p>
-  <p class="dim">Run: <code>2026-05-28-opus-reviews-haiku-solver</code> · verdict <strong>FAIL</strong> (single zero-shot sample — not replicated) · verifier notes: Last extracted number is 25, expected 33.</p>
-  <details><summary>Show the model's full response</summary>
-    <pre class="model-response">I need to track the number of dogs and toys James needs at each stage.
+  <summary>🤖 How an LLM did (claude-haiku-4-5-20251001) · k=3 samples</summary>
+  <p class="bench-framing bf-uncertain">? A fast/small model passed 1/3 samples — Wilson 95% CI [0.06, 0.79] straddles 0.5, so we cannot call this stumped or solved with confidence at this N. Re-run with higher k for tighter bounds (at k=3 even 3/3 is just lo=0.44).</p>
+  <p class="dim">Run: <code>2026-05-28-haiku-k3</code> · pass-rate <strong>1/3</strong> · 95% CI <strong>[0.06, 0.79]</strong> · temperature 0.7 · cost $0.0052</p>
+  <div class="table-wrap"><table><thead><tr><th class="n">k</th><th>outcome</th><th>verifier notes</th><th class="n">latency</th><th class="n">cost</th></tr></thead><tbody><tr><td class="n">1</td><td>✗ fail</td><td class="dim small">Last extracted number is 25, expected 33.</td><td class="n dim small">2.0s</td><td class="n dim small">$0.0013</td></tr><tr><td class="n">2</td><td>✓ PASS</td><td class="dim small">Extracted answer 33 matches expected answer.</td><td class="n dim small">2.6s</td><td class="n dim small">$0.0017</td></tr><tr><td class="n">3</td><td>✗ fail</td><td class="dim small">Last extracted number is 17, expected 33.</td><td class="n dim small">3.7s</td><td class="n dim small">$0.0022</td></tr></tbody></table></div>
+  <details><summary class="dim small">k=1 fail — response</summary><pre class="model-response"># Solution
+
+Let me work through this step-by-step.
+
+**Initial situation:**
+- James has 4 toys for 4 dogs
+- There are 8 more dogs in the shelter now
+- Total dogs now: 4 + 8 = 12 dogs
+- Toys needed: 12 toys
+
+**After first purchase and return:**
+- When James returns, there are twice as many more dogs than when he left
+- &quot;Twice as many more dogs&quot; means the increase is doubled
+- The increase when he left was 8 dogs
+- New increase: 2 × 8 = 16 additional dogs
+- Total dogs now: 12 + 16 = 28 dogs
+- Toys needed: 28 toys
+
+**After second return:**
+- 3 dogs are gone
+- Total dogs now: 28 - 3 = 25 dogs
+- Toys needed: 25 toys
+
+**Final answer: 25**</pre></details><details><summary class="dim small">k=2 PASS — response</summary><pre class="model-response"># Solution
+
+Let me track the number of dogs and toys needed step by step.
 
 **Initial situation:**
 - Dogs: 4
 - Toys on hand: 4
-- Toys needed: 4 (one per dog)
+- Toys needed: 4 ✓ (sufficient)
 
-**After first visit (8 more dogs arrive):**
+**After first purchase (8 more dogs arrive):**
+- Dogs: 4 + 8 = 12
+- Toys needed: 12
+- Toys he had: 4
+- Additional toys to buy: 12 - 4 = 8 toys
+
+**After second purchase (twice as many dogs as when he left):**
+- When he left, there were 12 dogs
+- &quot;Twice as many more dogs&quot; = 2 × 12 = 24 additional dogs arrive
+- Total dogs: 12 + 24 = 36
+- Toys needed: 36
+- Toys he had: 4 + 8 = 12
+- Additional toys to buy: 36 - 12 = 24 toys
+
+**After third visit (3 dogs are gone):**
+- Dogs: 36 - 3 = 33
+- Toys no longer needed: 3
+- Total toys James needs: 36 - 3 = 33
+
+The toys he needs to have on hand total 33 toys (one for each remaining dog).
+
+**Final answer: 33**</pre></details><details><summary class="dim small">k=3 fail — response</summary><pre class="model-response">I need to track the number of dogs and toys James needs through each stage.
+
+**Initial situation:**
+- Dogs: 4
+- Toys on hand: 4
+- Toys needed: 4 (one per dog) ✓
+
+**After first discovery (8 more dogs arrive):**
 - Dogs: 4 + 8 = 12
 - Toys needed: 12
 - Toys he has: 4
@@ -1319,24 +1480,29 @@ def grade(response: str, context: dict) -&gt; dict:
 
 **After second visit (twice as many more dogs):**
 - &quot;Twice as many more dogs&quot; means the number of additional dogs doubles
-- Additional dogs when he left: 8
-- New additional dogs: 8 × 2 = 16
-- Total dogs now: 4 + 8 + 16 = 28
-- Toys needed: 28
+- Additional dogs were: 8
+- Now additional dogs: 8 × 2 = 16
+- Total dogs: 4 + 16 = 20
+- Toys needed: 20
 - Toys he has: 4 + 8 = 12
-- Additional toys to buy: 28 - 12 = 16 toys
+- Additional toys to buy: 20 - 12 = 8 more toys
 
 **After third visit (3 dogs are gone):**
-- Dogs remaining: 28 - 3 = 25
-- Toys needed: 25
-- Toys he has: 12 + 16 = 28
-- He no longer needs 3 toys (for the 3 dogs that left)
+- Dogs: 20 - 3 = 17
+- Toys needed: 17
+- Toys he has: 12 + 8 = 20
+- Toys no longer needed: 3
 
 **Total toys James needs:**
-The question asks how many toys in total James needs. At the end, he needs toys for 25 dogs, so he needs 25 toys total.
+The question asks &quot;How many toys in total does James need?&quot; at the end.
 
-Final answer: 25</pre>
-  </details>
+After the final visit, James has 20 toys and needs 17 toys (since 3 dogs are gone).
+
+The total number of toys James needs to have in the end is **17 toys**.
+
+(Alternatively, if the question is asking for the total number of toys he had to purchase throughout the process: 8 + 8 = 16 toys purchased)
+
+Final answer: 17</pre></details>
 </details>
 
   
@@ -1667,7 +1833,7 @@ Concrete actions:
   - [problemsetup] Reconsider the difficulty tag — Intermediate may fit better than Advanced given the routine technique.
   - [gradingscheme] Optionally accept further equivalent forms (e.g. &#x27;4.096 \times 10^3&#x27; or the LaTeX form $2^{12}$ with whitespace variants) so the string-matcher doesn&#x27;t false-reject.
 Verifier: mode=exact validated=True (oracle True, rejected 8/8)
-Benchmark (claude-haiku-4-5-20251001): PASS
+Benchmark (claude-haiku-4-5-20251001): FAIL
 
 ### Problem 3: Relative Speed and Time Word Problem  (needs-revision)
 
