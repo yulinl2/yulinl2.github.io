@@ -289,7 +289,12 @@ pre.code { background:#0b1220; padding:12px 14px; border-radius:6px; overflow-x:
            border:1px solid var(--border); max-width:100%; }
 .bench-block .model-response,
 pre.code, pre.tex-source { max-width:100%; }
-section.problem details { min-width:0; max-width:100%; overflow:hidden; }
+/* `overflow:clip` not `:hidden` — see co-PI scroll-bug fix 2026-05-29.
+   `overflow:hidden` makes a scroll container that absorbs wheel events on
+   contributor review pages (where many <details> sit in problem sections);
+   `overflow:clip` provides the same visual clipping with no phantom scroll
+   container, so wheel events chain to the document. */
+section.problem details { min-width:0; max-width:100%; overflow:clip; }
 section.problem details[open] > div, section.problem details[open] > p,
 section.problem details[open] > pre { max-width:100%; }
 pre.code code { white-space:pre; }
