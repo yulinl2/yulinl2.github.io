@@ -160,10 +160,10 @@ footer.page-foot a { color:var(--primary); }
 <header class="hero">
   <h1>🤖 Agent audit</h1>
   <table class="interp-table" style="margin:8px 0 0">
-    <tr><td class="il">Scope</td><td class="ir">Methodology audit of the 4-agent stack: <abbr class="term" data-tip="agents/reviewer/ — drafts a ReviewJSON per problem (dimensions + annotations + actions + digest). Default model: claude-opus-4-7. SYSTEM.md is the prompt.">reviewer</abbr> · <abbr class="term" data-tip="agents/verifier_writer/ — drafts a Python grader per problem with answer key. Default model: claude-sonnet-4-6. Output gated on validation (oracle + N bad-responses).">verifier-writer</abbr> · <abbr class="term" data-tip="agents/benchmark_harness/ — zero-shot runner. Reads a problem, asks an LLM, runs the validated verifier, records pass/fail + trace. Default model: claude-haiku-4-5-20251001.">benchmark-harness</abbr> · <abbr class="term" data-tip="agents/taxonomy_curator/ — proposes deltas to data/taxonomy/canonical.yaml against current contributor tag usage.">taxonomy-curator</abbr></td></tr>
+    <tr><td class="il">Scope</td><td class="ir">Methodology audit of the 4-agent stack: <abbr class="term" data-tip="agents/reviewer/ — drafts a ReviewJSON per problem (dimensions + annotations + actions + digest). Default model: claude-opus-4-7. SYSTEM.md is the prompt.">reviewer</abbr> (LLM judges each submission, returns rubric + per-dimension scores) · <abbr class="term" data-tip="agents/verifier_writer/ — drafts a Python grader per problem with answer key. Default model: claude-sonnet-4-6. Output gated on validation (oracle + N bad-responses).">verifier-writer</abbr> (LLM emits Python that auto-checks the claimed answer) · <abbr class="term" data-tip="agents/benchmark_harness/ — zero-shot runner. Reads a problem, asks an LLM, runs the validated verifier, records pass/fail + trace. Default model: claude-haiku-4-5-20251001.">benchmark-harness</abbr> (runs LLMs as solvers to surface problems that stump them) · <abbr class="term" data-tip="agents/taxonomy_curator/ — proposes deltas to data/taxonomy/canonical.yaml against current contributor tag usage.">taxonomy-curator</abbr> (LLM proposes adds/renames to the canonical tag set)</td></tr>
     <tr><td class="il">Question</td><td class="ir">Are the auto-drafted outputs internally consistent + calibrated enough to ship?</td></tr>
     <tr><td class="il">Data</td><td class="ir"><code>data/reviews/</code> (5) · <code>data/verifier_drafts/</code> (5) · <code>data/benchmark-runs/</code> (2) · <code>data/taxonomy/proposals/</code> (1)</td></tr>
-    <tr><td class="il">Generated</td><td class="ir">2026-05-29 07:35 UTC · total LLM cost across the stack so far: <strong>$0.86</strong></td></tr>
+    <tr><td class="il">Generated</td><td class="ir">2026-05-29 07:40 UTC · total LLM cost across the stack so far: <strong>$0.86</strong></td></tr>
   </table>
 </header>
 
@@ -172,8 +172,8 @@ footer.page-foot a { color:var(--primary); }
   <table class="interp-table">
     <tr><td class="il">Reviewer verdict distribution</td><td class="ir"><span class="pill v-ready">✓ ready <span class="n">1</span></span><span class="pill v-revision">△ needs-revision <span class="n">2</span></span><span class="pill v-progress">✎ in-progress <span class="n">2</span></span></td></tr>
     <tr><td class="il">Reviewer avg cost / latency</td><td class="ir">$0.120 · 20s · models: <code>claude-opus-4-7</code> (5)</td></tr>
-    <tr><td class="il">Verifier <abbr class="term" data-tip="A verifier is `validated` iff (a) it grades the answer key as pass AND (b) it rejects every plausibly-wrong response the LLM was asked to generate (≥3, all must be rejected). Failure → flagged for human review.">validated</abbr> rate</td><td class="ir"><strong>5/5</strong> (100%) — 5/5 pass the <abbr class="term" data-tip="The answer-key text itself. Used to test that the verifier accepts the correct answer.">oracle</abbr> test</td></tr>
-    <tr><td class="il">Benchmark harness</td><td class="ir"><strong>0/0</strong> across 1 model · LOWER is better (goal: stump frontier models)</td></tr>
+    <tr><td class="il">Verifier <abbr class="term" data-tip="A verifier is `validated` iff (a) it grades the answer key as pass AND (b) it rejects every plausibly-wrong response the LLM was asked to generate (≥3, all must be rejected). Failure → flagged for human review.">validated</abbr> rate</td><td class="ir"><strong>5/5</strong> (100%) — 5/5 pass the <abbr class="term" data-tip="The answer-key text itself. Used to test that the verifier accepts the correct answer.">oracle</abbr> test (the LLM-generated verifier returns the right verdict on the LLM-generated solution)</td></tr>
+    <tr><td class="il">Benchmark harness — solver pass rate</td><td class="ir">across 1 model, frontier LLMs solved <strong>0/0</strong> — <em>goal: KEEP THIS LOW</em> (problems easily solved by frontier models don't test much)</td></tr>
     <tr><td class="il">Taxonomy proposals</td><td class="ir">1 pending review</td></tr>
   </table>
 </section>
@@ -233,7 +233,7 @@ footer.page-foot a { color:var(--primary); }
 </section>
 
 <footer class="page-foot">
-  <p>Generated by <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/lit-review/agents/_audit/build_agent_audit.py" target="_blank" rel="noopener">agents/_audit/build_agent_audit.py</a> · last built 2026-05-29 07:35 UTC</p>
+  <p>Generated by <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/blob/lit-review/agents/_audit/build_agent_audit.py" target="_blank" rel="noopener">agents/_audit/build_agent_audit.py</a> · last built 2026-05-29 07:40 UTC</p>
 </footer>
 
 </div>
