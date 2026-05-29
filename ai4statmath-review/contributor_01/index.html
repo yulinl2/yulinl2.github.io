@@ -90,7 +90,13 @@ body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
 .hero h1 { margin:0 0 .25rem; font-size:1.7rem; }
 .hero .hero-sub { color:var(--fg-muted); font-size:.95em; }
 .hero .timestamp { color:var(--fg-muted); font-size:.86em; margin-top:8px; }
-.purpose-table { width:100%; border-collapse:collapse; margin:12px 0 4px; }
+.hero-more { margin:10px 0 4px; }
+.hero-more > summary { cursor:pointer; color:var(--fg-muted); font-size:.88em;
+                       padding:4px 0; list-style:none; }
+.hero-more > summary::before { content:"›"; margin-right:7px; color:var(--fg-dim);
+                               display:inline-block; transition:transform .15s; }
+.hero-more[open] > summary::before { transform:rotate(90deg); }
+.purpose-table { width:100%; border-collapse:collapse; margin:6px 0 4px; }
 .purpose-table tr { border-bottom:1px solid var(--border); }
 .purpose-table tr:last-child { border-bottom:none; }
 .purpose-table td { padding:7px 10px; vertical-align:top; font-size:.9em; }
@@ -223,10 +229,15 @@ section.problem[data-verdict="in-progress"] {
    cannot be confused with ready/revision/rework. */
 .kw-level   { font-weight:600; padding:1px 6px; border-radius:3px;
               font-size:.88em; background:var(--bg-accent); color:var(--fg); }
-.kw-level.lv-basic        { background:rgba(167,139,250,.10); }
-.kw-level.lv-intermediate { background:rgba(167,139,250,.18); }
-.kw-level.lv-advanced     { background:rgba(167,139,250,.28); }
-.kw-level.lv-research     { background:rgba(167,139,250,.38); }
+/* R-2 regression fix (pseudo-recursive round 2): the round-1 violet ramp
+   (0.10→0.38) was indistinguishable at a glance. Widened spread + a left
+   border weight that grows with level, so Basic→Research reads at a glance
+   while staying off the status palette. The level word still carries the
+   primary signal; the chip is secondary emphasis. */
+.kw-level.lv-basic        { background:rgba(167,139,250,.12); box-shadow:inset 2px 0 0 rgba(167,139,250,.35); }
+.kw-level.lv-intermediate { background:rgba(167,139,250,.22); box-shadow:inset 2px 0 0 rgba(167,139,250,.55); }
+.kw-level.lv-advanced     { background:rgba(167,139,250,.34); box-shadow:inset 3px 0 0 rgba(167,139,250,.75); }
+.kw-level.lv-research     { background:rgba(167,139,250,.50); box-shadow:inset 3px 0 0 rgba(167,139,250,1); }
 
 /* dimension score color coding (used in radar labels) */
 .s-1 { fill:#f87171; }
@@ -475,14 +486,31 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
 
   <div class="hero">
     <h1>📊 Zhixian Zhang's problem reviews</h1>
-    <div class="hero-sub">Auto-drafted review of Zhixian Zhang's submissions to the <strong>AI4Stat/Math benchmark</strong> — a collection of math/stats problems built to <strong>stump frontier AI models</strong>. Drafted by <code>claude-opus-4-7</code>; the lead reviewer's edits are the final word.</div>
-    <table class="purpose-table">
-      <tr><td class="pl">🎯 The goal</td><td class="pr">Problems that current frontier models <strong>cannot solve</strong>. So a model <em>solving</em> a problem (⚠) is a weakness; a model being <em>stumped</em> (✓) is the win. That inverts the usual intuition — watch for it below.</td></tr>
-      <tr><td class="pl">🔤 Status glyphs</td><td class="pr"><span class="pill v-ready">✓ ready</span> <span class="pill v-revision">△ needs-revision</span> <span class="pill v-rework">✗ rework</span> <span class="pill v-progress">✎ in-progress draft</span></td></tr>
-    </table>
+    <div class="hero-sub">Auto-drafted review of Zhixian Zhang's submissions to the <strong>AI4Stat/Math benchmark</strong> — math/stats problems built to <strong>stump frontier AI models</strong>, so a model <em>solving</em> one (⚠) is a weakness and being <em>stumped</em> (✓) is the win. Drafted by <code>claude-opus-4-7</code>; the lead reviewer's edits are final.</div>
+    <details class="hero-more" id="hero-more">
+      <summary>How to read this page — goal &amp; status glyphs</summary>
+      <table class="purpose-table">
+        <tr><td class="pl">🎯 The goal</td><td class="pr">Problems that current frontier models <strong>cannot solve</strong>. A model <em>solving</em> a problem (⚠) is a weakness; a model being <em>stumped</em> (✓) is the win — that inverts the usual intuition.</td></tr>
+        <tr><td class="pl">🔤 Status glyphs</td><td class="pr"><span class="pill v-ready">✓ ready</span> <span class="pill v-revision">△ needs-revision</span> <span class="pill v-rework">✗ rework</span> <span class="pill v-progress">✎ in-progress draft</span></td></tr>
+      </table>
+    </details>
     <div class="timestamp">⏱ Last reviewed <strong>2026-05-28 10:17 UTC</strong> · total LLM cost: <strong>$0.79</strong> · <span id="first-visit-note"></span></div>
-    <div class="uc-banner">🚧 <strong>Auto-generated draft.</strong> Everything below was written by an AI; the lead reviewer confirms or overrides it. Feedback → <a href="mailto:yulinli@bu.edu" style="color:inherit;text-decoration:underline">email the lead</a>.</div>
+    <div class="uc-banner">🚧 <strong>Auto-generated draft.</strong> AI-written; the lead reviewer confirms or overrides. Feedback → <a href="mailto:yulinli@bu.edu" style="color:inherit;text-decoration:underline">email the lead</a>.</div>
   </div>
+  <script>
+    // R-1 regression fix (pseudo-recursive round 2): the goal-frame I added in
+    // round 1 turned the hero into a ~1.85-screen wall on mobile. Keep the
+    // one-line purpose always visible; the detailed goal+legend is a disclosure
+    // OPEN on first visit (learner P0 audience) and collapsed on return.
+    (function(){
+      try {
+        var seen = localStorage.getItem('ai4sm-hero-more-seen');
+        var d = document.getElementById('hero-more');
+        if (d && !seen) { d.open = true; }
+        if (d) d.addEventListener('toggle', function(){ if (!d.open) localStorage.setItem('ai4sm-hero-more-seen','1'); });
+      } catch(e) { var d2=document.getElementById('hero-more'); if(d2) d2.open=true; }
+    })();
+  </script>
 
   <div class="dashboard">
     <div>
