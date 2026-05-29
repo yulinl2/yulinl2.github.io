@@ -724,14 +724,14 @@
       "group": "TP",
       "title": "Adult Census benchmark with MNAR injection",
       "category": "experiment",
-      "status": "in-progress",
+      "status": "done",
       "priority": "high",
       "owner": "claude",
       "repo": "fairee-experiment",
       "refs": [
         "exp/benchmarks/adult_benchmark.py"
       ],
-      "detail": "Following the FaiREE paper's Adult protocol (n=48842, gender = A); controlled (R_A, R_Y) injection with conditional dependence (mild MAR). 288 runs in progress (3 alpha × 2 missA × 2 missY × 3 methods × 8 reps)."
+      "detail": "8 reps × 3 alpha × 2 miss_A × 2 miss_y × 3 methods = 288 runs (~7 min). Headline: FaiREE-EOO at no missingness matches arxiv 2211.15072 Table 3 (ACC=0.847, |DEOO|=0.043 at alpha=0.10). With 20% A+Y missing the gap stays at 0.054, accuracy unchanged at 0.848. Naive's gap grows from 0.081 to 0.107 under missingness; FaiREE-missing's pessimistic high-threshold rule on missing-A test rows keeps it controlled."
     },
     {
       "id": "F-4",
