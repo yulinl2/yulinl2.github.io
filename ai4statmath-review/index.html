@@ -97,7 +97,8 @@ body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
 .purpose-table tr { border-bottom:1px solid var(--border); }
 .purpose-table tr:last-child { border-bottom:none; }
 .purpose-table td { padding:7px 10px; vertical-align:top; font-size:.9em; }
-.purpose-table td.pl { color:var(--fg-muted); white-space:nowrap; width:1%; font-weight:600; }
+.purpose-table td.pl { color:var(--fg-muted); white-space:nowrap; width:1%; font-weight:600; min-width:0; }
+@media (max-width:560px) { .purpose-table td.pl { white-space:normal; width:auto; } }
 .purpose-table td.pr { color:var(--fg); }
 .purpose-table td.pr .pill { margin-right:4px; }
 @media (max-width:560px) { .purpose-table td { display:block; } .purpose-table td.pl { padding-bottom:0; } }
@@ -285,7 +286,12 @@ section.problem[data-verdict="in-progress"] {
 .vc-details summary { cursor:pointer; color:var(--fg-dim); font-size:.86em; padding:3px 0; }
 pre.code { background:#0b1220; padding:12px 14px; border-radius:6px; overflow-x:auto;
            font-size:.78em; line-height:1.45; max-height:380px; overflow-y:auto;
-           border:1px solid var(--border); }
+           border:1px solid var(--border); max-width:100%; }
+.bench-block .model-response,
+pre.code, pre.tex-source { max-width:100%; }
+section.problem details { min-width:0; max-width:100%; overflow:hidden; }
+section.problem details[open] > div, section.problem details[open] > p,
+section.problem details[open] > pre { max-width:100%; }
 pre.code code { white-space:pre; }
 table.checks { width:100%; border-collapse:collapse; font-size:.84em; margin-top:6px; }
 table.checks th, table.checks td { text-align:left; padding:5px 8px;
