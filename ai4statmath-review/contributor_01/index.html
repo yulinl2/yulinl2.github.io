@@ -425,7 +425,16 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
              height:auto; max-height:72vh; width:52px; padding:0 4px 10px 0;
              flex-direction:column; background:transparent; pointer-events:none;
              z-index:60; overflow:hidden; }
-  .rail-tl-inner { pointer-events:auto; gap:3px; padding-right:2px; }
+  /* Co-PI report 2026-05-29: page wouldn't scroll when wheel/touch landed on
+     rail area. Cause: rail-tl-inner had `overflow-y:auto` (a scroll container)
+     plus `pointer-events:auto` (caught dead-space). When rail content fits,
+     Chrome/Safari still absorbed wheel into the empty scroll container.
+     Fix: drop the scroll container entirely on mobile (rail-tl already clips
+     via overflow:hidden); pointer-events on the inner go to `none` so dead
+     space between bullets passes wheel/touch through to the page; bullets
+     re-enable pointer-events:auto so taps still work. */
+  .rail-tl-inner { pointer-events:none; overflow:visible; gap:3px; padding-right:2px; }
+  .rail-tl-inner .rail-bullet { pointer-events:auto; }
   .rail-bullet { padding:0 6px; min-height:44px; justify-content:center;
                  gap:3px; border-radius:9px; }
   .rail-bullet .rl-title { display:none; }   /* titles would overlap content */
