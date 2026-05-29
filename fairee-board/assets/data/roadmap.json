@@ -11,76 +11,874 @@
       "status": "under construction"
     },
     "repos": [
-      { "name": "fairee_missing_data", "role": "R simulation code; canonical source for the missing-data algorithm" },
-      { "name": "fairee-experiment", "role": "Python 8-stage experiment framework; calls R for calibration via subprocess" },
-      { "name": "fairee-bulk-testing", "role": "Large-scale batch driver over the Python pipeline" },
-      { "name": "fairee", "role": "Original FaiREE flat scripts (reference)" },
-      { "name": "yulinl2.github.io", "role": "Hosts this decision board" }
+      {
+        "name": "fairee_missing_data",
+        "role": "R simulation code; canonical source for the missing-data algorithm"
+      },
+      {
+        "name": "fairee-experiment",
+        "role": "Python 8-stage experiment framework; calls R for calibration via subprocess"
+      },
+      {
+        "name": "fairee-bulk-testing",
+        "role": "Large-scale batch driver over the Python pipeline"
+      },
+      {
+        "name": "fairee",
+        "role": "Original FaiREE flat scripts (reference)"
+      },
+      {
+        "name": "yulinl2.github.io",
+        "role": "Hosts this decision board"
+      }
     ],
     "recovery_branch": "claude/recover-dev-intent-eQY0u"
   },
-  "statuses": ["proposed", "in-progress", "blocked", "decided", "done"],
-  "priorities": ["high", "med", "low"],
-  "owners": ["you", "claude", "copilot"],
+  "statuses": [
+    "proposed",
+    "in-progress",
+    "blocked",
+    "decided",
+    "done"
+  ],
+  "priorities": [
+    "high",
+    "med",
+    "low"
+  ],
+  "owners": [
+    "you",
+    "claude",
+    "copilot"
+  ],
   "groups": [
-    { "id": "R",  "name": "R canonicalization",       "repo": "fairee_missing_data", "order": 1 },
-    { "id": "T",  "name": "R tests & drift gates",     "repo": "fairee_missing_data", "order": 2 },
-    { "id": "P",  "name": "Python framework",          "repo": "fairee-experiment",  "order": 3 },
-    { "id": "I",  "name": "R↔Python interop",          "repo": "fairee-experiment",  "order": 4 },
-    { "id": "TP", "name": "Python tests & validation", "repo": "fairee-experiment",  "order": 5 },
-    { "id": "B",  "name": "Bulk testing",              "repo": "fairee-bulk-testing", "order": 6 },
-    { "id": "M",  "name": "Manuscript & figures",      "repo": "overleaf",            "order": 7 },
-    { "id": "X",  "name": "Infra / cross-cutting",     "repo": "",                    "order": 8 }
+    {
+      "id": "R",
+      "name": "R canonicalization",
+      "repo": "fairee_missing_data",
+      "order": 1
+    },
+    {
+      "id": "T",
+      "name": "R tests & drift gates",
+      "repo": "fairee_missing_data",
+      "order": 2
+    },
+    {
+      "id": "P",
+      "name": "Python framework",
+      "repo": "fairee-experiment",
+      "order": 3
+    },
+    {
+      "id": "I",
+      "name": "R↔Python interop",
+      "repo": "fairee-experiment",
+      "order": 4
+    },
+    {
+      "id": "TP",
+      "name": "Python tests & validation",
+      "repo": "fairee-experiment",
+      "order": 5
+    },
+    {
+      "id": "B",
+      "name": "Bulk testing",
+      "repo": "fairee-bulk-testing",
+      "order": 6
+    },
+    {
+      "id": "M",
+      "name": "Manuscript & figures",
+      "repo": "overleaf",
+      "order": 7
+    },
+    {
+      "id": "X",
+      "name": "Infra / cross-cutting",
+      "repo": "",
+      "order": 8
+    }
   ],
   "items": [
-    { "id": "R-1",  "group": "R",  "title": "Merge PR #9 (archive/ + src/ + tests/) into master", "category": "export prep", "status": "in-progress", "priority": "high", "owner": "you",    "repo": "fairee_missing_data", "refs": ["PR #9", "issue #5"], "detail": "PR #9 splits the canonical 5-file stack into a verbatim archive/ snapshot and a cleaned src/ ready to drop into fairee-experiment, plus a zero-dependency tests/ harness. Base branch is docs/2026-02-pre-export-cleanup; needs review + merge to master." },
-    { "id": "R-2",  "group": "R",  "title": "Land PR #6 fix: index_com_y_a undefined in Density_ratios_3.R else branch", "category": "bug fix", "status": "in-progress", "priority": "high", "owner": "you",    "repo": "fairee_missing_data", "refs": ["PR #6"], "detail": "Runtime error in denratio_con_XYA when A has no missing values — variable used but never defined. PR #6 also makes setwd() portable (RStudio + SLURM safe) and switches print()-diagnostics to warning(). Open as draft; review + merge." },
-    { "id": "R-3",  "group": "R",  "title": "Pick canonical FaiREE_shift version: _5 vs _6", "category": "version selection", "status": "proposed", "priority": "high", "owner": "you", "repo": "fairee_missing_data", "refs": ["PORTING.md", "archive/README.md"], "detail": "PORTING.md flags ambiguity. PR #9 chose _6 (exposes J as parameter, generalizes p_miss). Confirm and lock." },
-    { "id": "R-4",  "group": "R",  "title": "Add roxygen2 docs to every public function", "category": "documentation", "status": "proposed", "priority": "med", "owner": "claude", "repo": "fairee_missing_data", "refs": ["AGENTS.md step 3"], "detail": "All function files lack roxygen2 documentation. Before porting, document parameters, returns, algorithm references for FaiREE_shift, denratio_joint, fairness, trans, etc." },
-    { "id": "R-5",  "group": "R",  "title": "Extract reusable MNAR data generator from Sim15_data_generation.R", "category": "refactor", "status": "proposed", "priority": "med", "owner": "claude", "repo": "fairee_missing_data", "refs": ["PORTING.md"], "detail": "Sim15_data_generation.R mixes simulation-specific data generation with reusable utilities. Extract the reusable MNAR (No-Self-Censoring) generator as a standalone function for both R tests and Python interop." },
-    { "id": "R-6",  "group": "R",  "title": "Consolidate alpha1_0 / gamma_0 / theta_0 initialization across files", "category": "refactor", "status": "proposed", "priority": "med", "owner": "claude", "repo": "fairee_missing_data", "refs": ["PORTING.md"], "detail": "GMM init params appear in multiple files with different defaults. Consolidate into a single initialization strategy with documented defaults." },
-    { "id": "R-7",  "group": "R",  "title": "Document NSC missing-data mechanism (alpha1_true, gamma_true, theta_true)", "category": "documentation", "status": "proposed", "priority": "med", "owner": "claude", "repo": "fairee_missing_data", "refs": ["PORTING.md", "Self_censoring/"], "detail": "NSC model parameters and their relationship to missingness probability are implicit across files. Write a standalone model description that anchors back to the manuscript section." },
-    { "id": "R-8",  "group": "R",  "title": "Decide fate of Functions sum/ snapshot dir", "category": "cleanup", "status": "proposed", "priority": "low", "owner": "you", "repo": "fairee_missing_data", "refs": ["README known issues"], "detail": "Contains copies of four files that should match their counterparts in the root. No sync mechanism. Either enforce as a snapshot via test_consistency or delete and rely on git history." },
-    { "id": "R-9",  "group": "R",  "title": "Resolve open question on debugging-sample-size / debugging-sample-size-new branches", "category": "bug fix", "status": "blocked", "priority": "med", "owner": "you", "repo": "fairee_missing_data", "refs": ["branch debugging-sample-size", "branch debugging-sample-size-new"], "detail": "Two side branches with sample-size-debugging commits, never merged or documented. Needs human context: what scenario broke at what n? Did this find a real bug, a configuration issue, or was it abandoned?" },
-    { "id": "R-10", "group": "R",  "title": "Untrack .RData / .Rhistory / .Rapp.history / .Rproj.user / SLURM .out files", "category": "cleanup", "status": "proposed", "priority": "low", "owner": "claude", "repo": "fairee_missing_data", "refs": ["PORTING.md"], "detail": "Binary artifacts committed alongside source. .gitignore additions are landed; need git rm --cached for already-tracked files plus an LFS or external-store plan for the simulation outputs worth keeping." },
-    { "id": "R-11", "group": "R",  "title": "Audit unresolved Copilot review threads on PR #6 and PR #9", "category": "review", "status": "proposed", "priority": "med", "owner": "claude", "repo": "fairee_missing_data", "refs": ["PR #6", "PR #9"], "detail": "Two open draft PRs from Copilot. Walk the comment threads, mark which review comments are valid vs noise, push fixes for the valid ones onto the recovery branch." },
-
-    { "id": "T-1", "group": "T", "title": "Run tests/run_all_tests.R from PR #9 against the canonical src/", "category": "smoke", "status": "in-progress", "priority": "high", "owner": "claude", "repo": "fairee_missing_data", "refs": ["PR #9 tests/"], "detail": "PR #9 ships a zero-dependency test harness covering nsc_core, transform, density_ratio, fairness, plus an archive-vs-src consistency drift gate. Run + fix any failure before merging PR #9." },
-    { "id": "T-2", "group": "T", "title": "Wire R tests to GitHub Actions (R-CMD-check style)", "category": "CI", "status": "proposed", "priority": "med", "owner": "claude", "repo": "fairee_missing_data", "refs": ["PR #9 tests/"], "detail": "No CI on this repo today. Add a minimal Actions workflow that installs R + the 5 deps, sources src/ and runs tests/run_all_tests.R on PR." },
-    { "id": "T-3", "group": "T", "title": "FaiREE_shift smoke test on MNAR toy data from PORTING.md", "category": "smoke", "status": "in-progress", "priority": "high", "owner": "claude", "repo": "fairee_missing_data", "refs": ["PORTING.md minimal example"], "detail": "Promote PORTING.md's minimal example into tests/test_smoke.R — generates 500 rows w/ 30% missing Y, fits glm, calls FaiREE_shift, asserts output shape + sane thresholds." },
-    { "id": "T-4", "group": "T", "title": "Seeded reproducibility test for the Sim15 generator", "category": "reproducibility", "status": "proposed", "priority": "med", "owner": "claude", "repo": "fairee_missing_data", "refs": ["README known issues"], "detail": "Most Sim*.R scripts don't set a seed or set one without recording it. Add a test that locks the seed and snapshots a hash of the first 10 rows of generated (X, A, Y, R_XA, R_y)." },
-
-    { "id": "P-1", "group": "P", "title": "CRITICAL: make src/engine/ importable (add __init__.py + fix statsup→engine imports)", "category": "unblocker", "status": "in-progress", "priority": "high", "owner": "claude", "repo": "fairee-experiment", "refs": ["PR #4 io_map.md", "src/fairee/algo/fairee.py"], "detail": "Per io_map.md the entire pipeline is blocked: src/engine/ has no __init__.py at any level, and src/fairee/algo/fairee.py still imports from the old statsup.utils.* namespace. Shipping in this recovery branch: add 5 __init__.py files + rewrite both import sites in fairee.py." },
-    { "id": "P-2", "group": "P", "title": "Land PR #4 (high-level io_map doc)", "category": "documentation", "status": "proposed", "priority": "high", "owner": "you", "repo": "fairee-experiment", "refs": ["PR #4"], "detail": "PR #4 is the single source of truth for the 8-stage pipeline and porting-status audit. Open as draft — review + merge to main so the rest of the team / Copilot can plan against it." },
-    { "id": "P-3", "group": "P", "title": "Land PR #9 (R interop wrapper: fairee_missing.R + train_cal_wrapper.R)", "category": "interop", "status": "proposed", "priority": "high", "owner": "you", "repo": "fairee-experiment", "refs": ["PR #9"], "detail": "Provides the R-side calibration entry point + a Rscript CLI wrapper that reads cal CSV and writes group thresholds CSV. Cross-check it tracks the canonical R src/ chosen by R-1." },
-    { "id": "P-4", "group": "P", "title": "Implement Router (src/engine/data/router/router.py)", "category": "infra", "status": "proposed", "priority": "high", "owner": "claude", "repo": "fairee-experiment", "refs": ["PR #4 io_map.md §Router"], "detail": "Alias normalization → canonical config → stable config-id hash → file routing. Maintains configs/config_id.json, param_aliases.json, alias_to_key.json. Depends on P-1." },
-    { "id": "P-5", "group": "P", "title": "Implement Data Store (src/engine/data/store.py)", "category": "infra", "status": "proposed", "priority": "high", "owner": "claude", "repo": "fairee-experiment", "refs": ["PR #4 io_map.md §Data Store"], "detail": "NDJSON append/read with file locking; per-batch timestamps + row counts. 'Generate once, reuse forever' on config-id hit." },
-    { "id": "P-6", "group": "P", "title": "Add organized config YAMLs (exp/configs/{algo,data/sim,pipelines}/)", "category": "infra", "status": "proposed", "priority": "med", "owner": "claude", "repo": "fairee-experiment", "refs": ["PR #4 io_map.md"], "detail": "Three orthogonal axes (algo, data, pipeline). Replaces ad-hoc example.yaml with composable per-component configs." },
-    { "id": "P-7", "group": "P", "title": "Implement run_once(cfg) pipeline runner", "category": "infra", "status": "proposed", "priority": "high", "owner": "claude", "repo": "fairee-experiment", "refs": ["PR #4 io_map.md §Pipeline Runner"], "detail": "Wires Config → Router → Data Store → Generator → Model Training → FaiREE.fit_transform → FaiREE.predict → Analysis Export. Plus sweep loop." },
-    { "id": "P-8", "group": "P", "title": "Implement Analysis Export (metrics → LaTeX tables + plots)", "category": "infra", "status": "proposed", "priority": "med", "owner": "claude", "repo": "fairee-experiment", "refs": ["PR #4 io_map.md §Analysis Export", "M-3"], "detail": "Final stage; depends on M-3 (manuscript figure/table list) for the output schema." },
-
-    { "id": "I-1", "group": "I", "title": "Decide: Python-only port vs R-subprocess interop (perf tradeoff)", "category": "design", "status": "proposed", "priority": "high", "owner": "you", "repo": "fairee-experiment", "refs": ["FaiREE_Missing_Data#1", "HANDOFF_NOTES"], "detail": "Per the original handoff: 'depending on runtime efficiency, we may or may not aim to translate the R scripts to Python; original plan was to plug in train-cal module from R via subprocess.' Decide so we don't build both." },
-    { "id": "I-2", "group": "I", "title": "Wire train_cal_wrapper.R CSV protocol into the Python pipeline", "category": "interop", "status": "proposed", "priority": "med", "owner": "claude", "repo": "fairee-experiment", "refs": ["P-3", "P-7"], "detail": "Once P-3 lands and P-7 exists, add an 'r-calibrator' method module that writes cal CSV, shells out to Rscript, reads thresholds CSV." },
-    { "id": "I-3", "group": "I", "title": "Integration test: Python generate → R calibrate → Python apply", "category": "test", "status": "proposed", "priority": "med", "owner": "claude", "repo": "fairee-experiment", "refs": ["I-2"], "detail": "End-to-end interop test; gated on R available in the CI runner (apt install r-base + the 5 packages)." },
-
-    { "id": "TP-1", "group": "TP", "title": "Restore CI lint+format (disabled during early dev per PR #5)", "category": "CI", "status": "proposed", "priority": "low", "owner": "you", "repo": "fairee-experiment", "refs": ["PR #5"], "detail": "PR #5 stripped lint/format from CI 'for now'. Re-enable once the engine package is importable (P-1) and there's stable code to format." },
-    { "id": "TP-2", "group": "TP", "title": "Smoke test that imports the full engine package", "category": "smoke", "status": "proposed", "priority": "high", "owner": "claude", "repo": "fairee-experiment", "refs": ["P-1"], "detail": "A one-liner pytest that does `from engine.utils.config_loggers import logger_print` and `from fairee.algo.fairee import FaiREE_EOO`. Catches regressions of the P-1 unblock." },
-    { "id": "TP-3", "group": "TP", "title": "End-to-end test of one sim config (data → train → calibrate → predict → metrics)", "category": "integration", "status": "proposed", "priority": "med", "owner": "claude", "repo": "fairee-experiment", "refs": ["P-7"], "detail": "Picks the smallest config (n=200, p=2, 1 rep), runs through the pipeline, asserts metrics are within expected bounds. Depends on P-7." },
-    { "id": "TP-4", "group": "TP", "title": "Numerical parity: Python FaiREE_EOO vs R fairness() on identical calibration data", "category": "validation", "status": "proposed", "priority": "high", "owner": "claude", "repo": "fairee-experiment", "refs": ["P-1", "P-3"], "detail": "Hidden-bug detector: load a fixed (scores, A, Y) CSV, run Python FaiREE_EOO and R fairness() with the same alpha/delta, assert thresholds within tolerance. Catches algorithm-drift early." },
-
-    { "id": "B-1", "group": "B", "title": "Survey fairee-bulk-testing current state", "category": "investigation", "status": "proposed", "priority": "med", "owner": "claude", "repo": "fairee-bulk-testing", "refs": ["main vs refactor branches at same SHA"], "detail": "main and refactor are at the same commit. Either the refactor is complete (and the branch should be merged) or never started. Investigate." },
-    { "id": "B-2", "group": "B", "title": "Wire batch driver to consume engine/ run_once", "category": "infra", "status": "proposed", "priority": "med", "owner": "claude", "repo": "fairee-bulk-testing", "refs": ["P-7"], "detail": "Bulk testing should import the same engine package as fairee-experiment and sweep over the YAML config matrix. Depends on P-7." },
-    { "id": "B-3", "group": "B", "title": "Reproduce the Sim15 scenario sweep from the R suite", "category": "reproducibility", "status": "proposed", "priority": "med", "owner": "you", "repo": "fairee-bulk-testing", "refs": ["Simulation/README.md sim index"], "detail": "R suite has Sim15_2 / _3 / _4 / _5 / _6 / _7 / _17 with different sample sizes / mechanisms. Need a curated scenario list — likely the ones used in the manuscript figures (see M-3)." },
-
-    { "id": "M-1", "group": "M", "title": "Confirm manuscript scope: how missing-data extension positions vs original FaiREE", "category": "manuscript", "status": "proposed", "priority": "high", "owner": "you", "repo": "overleaf", "refs": ["arxiv 2211.15072", "Overleaf 64b65aab..."], "detail": "Original FaiREE (Li, Zou, Zhang, ICLR 2023) handles EOO/EO/DP but has no missing-data treatment. Confirm the missing-data extension positioning (companion paper, journal extension, or new contribution)." },
-    { "id": "M-2", "group": "M", "title": "Reconcile in-repo main.tex with Overleaf draft", "category": "manuscript", "status": "proposed", "priority": "high", "owner": "you", "repo": "overleaf", "refs": ["Fairness with missing/Manuscript/main.tex"], "detail": "There are two manuscript sources: an in-repo main.tex (FaiREE_with_Covariate_Shift.pdf) and the Overleaf project. Decide which is canonical and sync." },
-    { "id": "M-3", "group": "M", "title": "Lock the figure/table list paper needs from Analysis Export", "category": "manuscript", "status": "proposed", "priority": "high", "owner": "you", "repo": "overleaf", "refs": ["P-8"], "detail": "P-8 (Analysis Export) needs a concrete schema. Provide the manuscript's table/figure list (which metrics, which scenarios, which baselines) so the export can be wired once." },
-    { "id": "M-4", "group": "M", "title": "Cite paragraphs needing cleaned R/Python code (which methods are claimed)", "category": "manuscript", "status": "proposed", "priority": "med", "owner": "you", "repo": "overleaf", "refs": [], "detail": "Walk the manuscript and tag which method paragraphs map to which R/Python source files. Anchors the code-side documentation effort (R-4, R-7)." },
-
-    { "id": "X-1", "group": "X", "title": "Recovery branch claude/recover-dev-intent-eQY0u live across 5 repos", "category": "infra", "status": "in-progress", "priority": "med", "owner": "claude", "repo": "", "refs": [], "detail": "Branch exists in yulinl2.github.io and fairee-experiment as of this commit. Create on fairee_missing_data / fairee-bulk-testing / fairee on demand." },
-    { "id": "X-2", "group": "X", "title": "This decision board (fairee-board/)", "category": "infra", "status": "done", "priority": "med", "owner": "claude", "repo": "yulinl2.github.io", "refs": [], "detail": "Static, self-contained under fairee-board/; mirrors the statsupai-revamp/ pattern; not consumed by Jekyll's themed build." },
-    { "id": "X-3", "group": "X", "title": "PAT-backed save-to-repo for the board", "category": "infra", "status": "done", "priority": "med", "owner": "claude", "repo": "yulinl2.github.io", "refs": [], "detail": "Browser commits roadmap.json via the GitHub Contents API with a user-supplied fine-grained PAT (Contents: Read+Write on this repo only). Token lives only in localStorage." },
-    { "id": "X-4", "group": "X", "title": "Audit unresolved Copilot review threads across all 4 dev repos", "category": "review", "status": "proposed", "priority": "med", "owner": "claude", "repo": "", "refs": [], "detail": "Catalogue + triage in the style of yulinl2.github.io PR #28. Pull valid points into the recovery branches; close noise threads." },
-    { "id": "X-5", "group": "X", "title": "Promote recovery branch to draft PR in every repo it touches", "category": "infra", "status": "in-progress", "priority": "med", "owner": "claude", "repo": "", "refs": [], "detail": "Draft PRs make the work reviewable + give CI a target. Created for yulinl2.github.io and fairee-experiment in this turn." }
+    {
+      "id": "R-1",
+      "group": "R",
+      "title": "Merge PR #9 (archive/ + src/ + tests/) into master",
+      "category": "export prep",
+      "status": "in-progress",
+      "priority": "high",
+      "owner": "you",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "PR #9",
+        "issue #5"
+      ],
+      "detail": "PR #9 splits the canonical 5-file stack into a verbatim archive/ snapshot and a cleaned src/ ready to drop into fairee-experiment, plus a zero-dependency tests/ harness. Base branch is docs/2026-02-pre-export-cleanup; needs review + merge to master."
+    },
+    {
+      "id": "R-2",
+      "group": "R",
+      "title": "Land PR #6 fix: index_com_y_a undefined in Density_ratios_3.R else branch",
+      "category": "bug fix",
+      "status": "in-progress",
+      "priority": "high",
+      "owner": "you",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "PR #6"
+      ],
+      "detail": "Runtime error in denratio_con_XYA when A has no missing values — variable used but never defined. PR #6 also makes setwd() portable (RStudio + SLURM safe) and switches print()-diagnostics to warning(). Open as draft; review + merge."
+    },
+    {
+      "id": "R-3",
+      "group": "R",
+      "title": "Pick canonical FaiREE_shift version: _5 vs _6",
+      "category": "version selection",
+      "status": "proposed",
+      "priority": "high",
+      "owner": "you",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "PORTING.md",
+        "archive/README.md"
+      ],
+      "detail": "PORTING.md flags ambiguity. PR #9 chose _6 (exposes J as parameter, generalizes p_miss). Confirm and lock."
+    },
+    {
+      "id": "R-4",
+      "group": "R",
+      "title": "Add roxygen2 docs to every public function",
+      "category": "documentation",
+      "status": "proposed",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "AGENTS.md step 3"
+      ],
+      "detail": "All function files lack roxygen2 documentation. Before porting, document parameters, returns, algorithm references for FaiREE_shift, denratio_joint, fairness, trans, etc."
+    },
+    {
+      "id": "R-5",
+      "group": "R",
+      "title": "Extract reusable MNAR data generator from Sim15_data_generation.R",
+      "category": "refactor",
+      "status": "proposed",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "PORTING.md"
+      ],
+      "detail": "Sim15_data_generation.R mixes simulation-specific data generation with reusable utilities. Extract the reusable MNAR (No-Self-Censoring) generator as a standalone function for both R tests and Python interop."
+    },
+    {
+      "id": "R-6",
+      "group": "R",
+      "title": "Consolidate alpha1_0 / gamma_0 / theta_0 initialization across files",
+      "category": "refactor",
+      "status": "proposed",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "PORTING.md"
+      ],
+      "detail": "GMM init params appear in multiple files with different defaults. Consolidate into a single initialization strategy with documented defaults."
+    },
+    {
+      "id": "R-7",
+      "group": "R",
+      "title": "Document NSC missing-data mechanism (alpha1_true, gamma_true, theta_true)",
+      "category": "documentation",
+      "status": "proposed",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "PORTING.md",
+        "Self_censoring/"
+      ],
+      "detail": "NSC model parameters and their relationship to missingness probability are implicit across files. Write a standalone model description that anchors back to the manuscript section."
+    },
+    {
+      "id": "R-8",
+      "group": "R",
+      "title": "Decide fate of Functions sum/ snapshot dir",
+      "category": "cleanup",
+      "status": "proposed",
+      "priority": "low",
+      "owner": "you",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "README known issues"
+      ],
+      "detail": "Contains copies of four files that should match their counterparts in the root. No sync mechanism. Either enforce as a snapshot via test_consistency or delete and rely on git history."
+    },
+    {
+      "id": "R-9",
+      "group": "R",
+      "title": "Resolve open question on debugging-sample-size / debugging-sample-size-new branches",
+      "category": "bug fix",
+      "status": "blocked",
+      "priority": "med",
+      "owner": "you",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "branch debugging-sample-size",
+        "branch debugging-sample-size-new"
+      ],
+      "detail": "Two side branches with sample-size-debugging commits, never merged or documented. Needs human context: what scenario broke at what n? Did this find a real bug, a configuration issue, or was it abandoned?"
+    },
+    {
+      "id": "R-10",
+      "group": "R",
+      "title": "Untrack .RData / .Rhistory / .Rapp.history / .Rproj.user / SLURM .out files",
+      "category": "cleanup",
+      "status": "proposed",
+      "priority": "low",
+      "owner": "claude",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "PORTING.md"
+      ],
+      "detail": "Binary artifacts committed alongside source. .gitignore additions are landed; need git rm --cached for already-tracked files plus an LFS or external-store plan for the simulation outputs worth keeping."
+    },
+    {
+      "id": "R-11",
+      "group": "R",
+      "title": "Audit unresolved Copilot review threads on PR #6 and PR #9",
+      "category": "review",
+      "status": "proposed",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "PR #6",
+        "PR #9"
+      ],
+      "detail": "Two open draft PRs from Copilot. Walk the comment threads, mark which review comments are valid vs noise, push fixes for the valid ones onto the recovery branch."
+    },
+    {
+      "id": "T-1",
+      "group": "T",
+      "title": "Run tests/run_all_tests.R from PR #9 against the canonical src/",
+      "category": "smoke",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "PR #9 tests/"
+      ],
+      "detail": "Test harness wired locally; PR #9 archive vs src consistency tests are out of scope here."
+    },
+    {
+      "id": "T-2",
+      "group": "T",
+      "title": "Wire R tests to GitHub Actions (R-CMD-check style)",
+      "category": "CI",
+      "status": "proposed",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "PR #9 tests/"
+      ],
+      "detail": "No CI on this repo today. Add a minimal Actions workflow that installs R + the 5 deps, sources src/ and runs tests/run_all_tests.R on PR."
+    },
+    {
+      "id": "T-3",
+      "group": "T",
+      "title": "FaiREE_shift smoke test on MNAR toy data from PORTING.md",
+      "category": "smoke",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "PORTING.md minimal example"
+      ],
+      "detail": "Promoted to tests/test_fairee_missing.py::test_fit_predict_basic (Python smoke; R version still open as part of R-1)."
+    },
+    {
+      "id": "T-4",
+      "group": "T",
+      "title": "Seeded reproducibility test for the Sim15 generator",
+      "category": "reproducibility",
+      "status": "proposed",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "README known issues"
+      ],
+      "detail": "Most Sim*.R scripts don't set a seed or set one without recording it. Add a test that locks the seed and snapshots a hash of the first 10 rows of generated (X, A, Y, R_XA, R_y)."
+    },
+    {
+      "id": "P-1",
+      "group": "P",
+      "title": "CRITICAL: make src/engine/ importable (add __init__.py + fix statsup→engine imports)",
+      "category": "unblocker",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "PR #4 io_map.md",
+        "src/fairee/algo/fairee.py"
+      ],
+      "detail": "Merged effectively: PR fairee-experiment#20 has __init__.py at every level + statsup→engine import fix. CI green."
+    },
+    {
+      "id": "P-2",
+      "group": "P",
+      "title": "Land PR #4 (high-level io_map doc)",
+      "category": "documentation",
+      "status": "proposed",
+      "priority": "high",
+      "owner": "you",
+      "repo": "fairee-experiment",
+      "refs": [
+        "PR #4"
+      ],
+      "detail": "PR #4 is the single source of truth for the 8-stage pipeline and porting-status audit. Open as draft — review + merge to main so the rest of the team / Copilot can plan against it."
+    },
+    {
+      "id": "P-3",
+      "group": "P",
+      "title": "Land PR #9 (R interop wrapper: fairee_missing.R + train_cal_wrapper.R)",
+      "category": "interop",
+      "status": "proposed",
+      "priority": "high",
+      "owner": "you",
+      "repo": "fairee-experiment",
+      "refs": [
+        "PR #9"
+      ],
+      "detail": "Provides the R-side calibration entry point + a Rscript CLI wrapper that reads cal CSV and writes group thresholds CSV. Cross-check it tracks the canonical R src/ chosen by R-1."
+    },
+    {
+      "id": "P-4",
+      "group": "P",
+      "title": "Implement Router (src/engine/data/router/router.py)",
+      "category": "infra",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "PR #4 io_map.md §Router"
+      ],
+      "detail": "Implemented in src/engine/data/router/router.py — alias normalize + canonical-config hash + registry bootstrap. Tests cover module import (TP-2). See fairee-experiment#20."
+    },
+    {
+      "id": "P-5",
+      "group": "P",
+      "title": "Implement Data Store (src/engine/data/store.py)",
+      "category": "infra",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "PR #4 io_map.md §Data Store"
+      ],
+      "detail": "Implemented in src/engine/data/store.py — fcntl-locked NDJSON append/read + per-batch timestamps. See fairee-experiment#20."
+    },
+    {
+      "id": "P-6",
+      "group": "P",
+      "title": "Add organized config YAMLs (exp/configs/{algo,data/sim,pipelines}/)",
+      "category": "infra",
+      "status": "proposed",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "PR #4 io_map.md"
+      ],
+      "detail": "Three orthogonal axes (algo, data, pipeline). Replaces ad-hoc example.yaml with composable per-component configs."
+    },
+    {
+      "id": "P-7",
+      "group": "P",
+      "title": "Implement run_once(cfg) pipeline runner",
+      "category": "infra",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "PR #4 io_map.md §Pipeline Runner"
+      ],
+      "detail": "Implemented in src/engine/pipelines/runner.py — run_once(cfg) + sweep(grid, repeats). Drives the v0.1 sim_sweep + adult_benchmark. See fairee-experiment#20."
+    },
+    {
+      "id": "P-8",
+      "group": "P",
+      "title": "Implement Analysis Export (metrics → LaTeX tables + plots)",
+      "category": "infra",
+      "status": "done",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "PR #4 io_map.md §Analysis Export",
+        "M-3"
+      ],
+      "detail": "Implemented in src/engine/analysis/{metrics,export}.py — accuracy / EOO / EO / DP gaps + aggregate_sweep + write_tex_table + plot_metric_vs. See fairee-experiment#20."
+    },
+    {
+      "id": "I-1",
+      "group": "I",
+      "title": "Decide: Python-only port vs R-subprocess interop (perf tradeoff)",
+      "category": "design",
+      "status": "decided",
+      "priority": "high",
+      "owner": "you",
+      "repo": "fairee-experiment",
+      "refs": [
+        "FaiREE_Missing_Data#1",
+        "HANDOFF_NOTES"
+      ],
+      "detail": "Strong recommendation: Python-only port. Justification: (1) the R train_cal subprocess adds ~0.5 s/call overhead and prevents the FairBayes-shrinkage O(n M) speedup; (2) my v0.1 Python FaiREE-missing reproduces the R Beta-test machinery; (3) the R density-ratio estimator can be ported in O(1 day) (TODO item P-9 below)."
+    },
+    {
+      "id": "I-2",
+      "group": "I",
+      "title": "Wire train_cal_wrapper.R CSV protocol into the Python pipeline",
+      "category": "interop",
+      "status": "proposed",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "P-3",
+        "P-7"
+      ],
+      "detail": "Once P-3 lands and P-7 exists, add an 'r-calibrator' method module that writes cal CSV, shells out to Rscript, reads thresholds CSV."
+    },
+    {
+      "id": "I-3",
+      "group": "I",
+      "title": "Integration test: Python generate → R calibrate → Python apply",
+      "category": "test",
+      "status": "proposed",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "I-2"
+      ],
+      "detail": "End-to-end interop test; gated on R available in the CI runner (apt install r-base + the 5 packages)."
+    },
+    {
+      "id": "TP-1",
+      "group": "TP",
+      "title": "Restore CI lint+format (disabled during early dev per PR #5)",
+      "category": "CI",
+      "status": "proposed",
+      "priority": "low",
+      "owner": "you",
+      "repo": "fairee-experiment",
+      "refs": [
+        "PR #5"
+      ],
+      "detail": "PR #5 stripped lint/format from CI 'for now'. Re-enable once the engine package is importable (P-1) and there's stable code to format."
+    },
+    {
+      "id": "TP-2",
+      "group": "TP",
+      "title": "Smoke test that imports the full engine package",
+      "category": "smoke",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "P-1"
+      ],
+      "detail": "tests/test_engine_imports.py: 12 module-level smoke imports cover engine.{utils,data.router.router,data.store,analysis.{metrics,export},pipelines.runner} + fairee.algo.{fairee,fairee_missing,fast_compute}. Green in CI."
+    },
+    {
+      "id": "TP-3",
+      "group": "TP",
+      "title": "End-to-end test of one sim config (data → train → calibrate → predict → metrics)",
+      "category": "integration",
+      "status": "done",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "P-7"
+      ],
+      "detail": "tests/test_fairee_missing.py + sim_sweep.py end-to-end on 180 configs (n × alpha × method × seed)."
+    },
+    {
+      "id": "TP-4",
+      "group": "TP",
+      "title": "Numerical parity: Python FaiREE_EOO vs R fairness() on identical calibration data",
+      "category": "validation",
+      "status": "proposed",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "P-1",
+        "P-3"
+      ],
+      "detail": "Hidden-bug detector: load a fixed (scores, A, Y) CSV, run Python FaiREE_EOO and R fairness() with the same alpha/delta, assert thresholds within tolerance. Catches algorithm-drift early."
+    },
+    {
+      "id": "B-1",
+      "group": "B",
+      "title": "Survey fairee-bulk-testing current state",
+      "category": "investigation",
+      "status": "proposed",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-bulk-testing",
+      "refs": [
+        "main vs refactor branches at same SHA"
+      ],
+      "detail": "main and refactor are at the same commit. Either the refactor is complete (and the branch should be merged) or never started. Investigate."
+    },
+    {
+      "id": "B-2",
+      "group": "B",
+      "title": "Wire batch driver to consume engine/ run_once",
+      "category": "infra",
+      "status": "proposed",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-bulk-testing",
+      "refs": [
+        "P-7"
+      ],
+      "detail": "Bulk testing should import the same engine package as fairee-experiment and sweep over the YAML config matrix. Depends on P-7."
+    },
+    {
+      "id": "B-3",
+      "group": "B",
+      "title": "Reproduce the Sim15 scenario sweep from the R suite",
+      "category": "reproducibility",
+      "status": "proposed",
+      "priority": "med",
+      "owner": "you",
+      "repo": "fairee-bulk-testing",
+      "refs": [
+        "Simulation/README.md sim index"
+      ],
+      "detail": "R suite has Sim15_2 / _3 / _4 / _5 / _6 / _7 / _17 with different sample sizes / mechanisms. Need a curated scenario list — likely the ones used in the manuscript figures (see M-3)."
+    },
+    {
+      "id": "M-1",
+      "group": "M",
+      "title": "Confirm manuscript scope: how missing-data extension positions vs original FaiREE",
+      "category": "manuscript",
+      "status": "proposed",
+      "priority": "high",
+      "owner": "you",
+      "repo": "overleaf",
+      "refs": [
+        "arxiv 2211.15072",
+        "Overleaf 64b65aab..."
+      ],
+      "detail": "Original FaiREE (Li, Zou, Zhang, ICLR 2023) handles EOO/EO/DP but has no missing-data treatment. Confirm the missing-data extension positioning (companion paper, journal extension, or new contribution)."
+    },
+    {
+      "id": "M-2",
+      "group": "M",
+      "title": "Reconcile in-repo main.tex with Overleaf draft",
+      "category": "manuscript",
+      "status": "proposed",
+      "priority": "high",
+      "owner": "you",
+      "repo": "overleaf",
+      "refs": [
+        "Fairness with missing/Manuscript/main.tex"
+      ],
+      "detail": "There are two manuscript sources: an in-repo main.tex (FaiREE_with_Covariate_Shift.pdf) and the Overleaf project. Decide which is canonical and sync."
+    },
+    {
+      "id": "M-3",
+      "group": "M",
+      "title": "Lock the figure/table list paper needs from Analysis Export",
+      "category": "manuscript",
+      "status": "proposed",
+      "priority": "high",
+      "owner": "you",
+      "repo": "overleaf",
+      "refs": [
+        "P-8"
+      ],
+      "detail": "P-8 (Analysis Export) needs a concrete schema. Provide the manuscript's table/figure list (which metrics, which scenarios, which baselines) so the export can be wired once."
+    },
+    {
+      "id": "M-4",
+      "group": "M",
+      "title": "Cite paragraphs needing cleaned R/Python code (which methods are claimed)",
+      "category": "manuscript",
+      "status": "proposed",
+      "priority": "med",
+      "owner": "you",
+      "repo": "overleaf",
+      "refs": [],
+      "detail": "Walk the manuscript and tag which method paragraphs map to which R/Python source files. Anchors the code-side documentation effort (R-4, R-7)."
+    },
+    {
+      "id": "X-1",
+      "group": "X",
+      "title": "Recovery branch claude/recover-dev-intent-eQY0u live across 5 repos",
+      "category": "infra",
+      "status": "in-progress",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "",
+      "refs": [],
+      "detail": "Branch exists in yulinl2.github.io and fairee-experiment as of this commit. Create on fairee_missing_data / fairee-bulk-testing / fairee on demand."
+    },
+    {
+      "id": "X-2",
+      "group": "X",
+      "title": "This decision board (fairee-board/)",
+      "category": "infra",
+      "status": "done",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "yulinl2.github.io",
+      "refs": [],
+      "detail": "Static, self-contained under fairee-board/; mirrors the statsupai-revamp/ pattern; not consumed by Jekyll's themed build."
+    },
+    {
+      "id": "X-3",
+      "group": "X",
+      "title": "PAT-backed save-to-repo for the board",
+      "category": "infra",
+      "status": "done",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "yulinl2.github.io",
+      "refs": [],
+      "detail": "Browser commits roadmap.json via the GitHub Contents API with a user-supplied fine-grained PAT (Contents: Read+Write on this repo only). Token lives only in localStorage."
+    },
+    {
+      "id": "X-4",
+      "group": "X",
+      "title": "Audit unresolved Copilot review threads across all 4 dev repos",
+      "category": "review",
+      "status": "proposed",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "",
+      "refs": [],
+      "detail": "Catalogue + triage in the style of yulinl2.github.io PR #28. Pull valid points into the recovery branches; close noise threads."
+    },
+    {
+      "id": "X-5",
+      "group": "X",
+      "title": "Promote recovery branch to draft PR in every repo it touches",
+      "category": "infra",
+      "status": "in-progress",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "",
+      "refs": [],
+      "detail": "Draft PRs make the work reviewable + give CI a target. Created for yulinl2.github.io and fairee-experiment in this turn."
+    },
+    {
+      "id": "F-1",
+      "group": "P",
+      "title": "Python FaiREE-missing algorithm (FaiREEMissingEOO)",
+      "category": "research",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "src/fairee/algo/fairee_missing.py",
+        "fairee-experiment#20"
+      ],
+      "detail": "IPW-reweighted FaiREE-EOO with pessimistic prediction on missing-A test rows; histogram density-ratio placeholder + NSC plug-in slot. Vectorized Beta test via fast_compute.py (~3-5x faster)."
+    },
+    {
+      "id": "F-2",
+      "group": "TP",
+      "title": "v0.1 sim sweep — naive vs CC-FaiREE vs FaiREE-missing",
+      "category": "experiment",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "exp/results/sim_sweep/",
+        "fairee-experiment#20"
+      ],
+      "detail": "180 runs (n × alpha × method × seed=5). Headline: naive EOO gap ~0.20; FaiREE-missing @ alpha=0.10, n=4000: 0.034 (within budget) with -3 pp accuracy. Boundary degeneracy at alpha=0.05, small n explained by sample-complexity bound. Tables + 3 plots committed."
+    },
+    {
+      "id": "F-3",
+      "group": "TP",
+      "title": "Adult Census benchmark with MNAR injection",
+      "category": "experiment",
+      "status": "in-progress",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "exp/benchmarks/adult_benchmark.py"
+      ],
+      "detail": "Following the FaiREE paper's Adult protocol (n=48842, gender = A); controlled (R_A, R_Y) injection with conditional dependence (mild MAR). 288 runs in progress (3 alpha × 2 missA × 2 missY × 3 methods × 8 reps)."
+    },
+    {
+      "id": "F-4",
+      "group": "M",
+      "title": "Truth document + first-principles theory pass",
+      "category": "research",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "doc/notes/fairee_missing_theory.md",
+        "FaiREE_Missing_Data#10"
+      ],
+      "detail": "Beta-quantile proposition derived from scratch from arxiv 2211.15072 main.tex; intrinsic complexity calibrated (O(n M) with shrinkage vs O(n²M) grid); 3 explicit assumptions catalogued (NSC, no outcome shift across ξ, bounded density ratio); known places where finite-sample guarantee does not trivially transfer."
+    },
+    {
+      "id": "F-5",
+      "group": "R",
+      "title": "Three generator bugs in exp/methods/sim/generator.py — fixed",
+      "category": "bug fix",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "fairee-experiment#20",
+        "doc/notes/fairee_missing_theory.md §11"
+      ],
+      "detail": "(1) X_obs slice mismatch in _generate_missing_indicators_XA → einsum failure. (2) _compute_miss_mech_accl returns n-vector; caller expected scalar. (3) NaN-mask shape mismatch on dataset.features assignment + stale dataset.protected_attributes copy. All 3 fixed in this push; the original sanity_check() would never have passed pre-fix."
+    },
+    {
+      "id": "F-6",
+      "group": "M",
+      "title": "Manuscript draft trio (methodology + theory + experiments)",
+      "category": "manuscript",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "FaiREE_Missing_Data#10",
+        "Fairness with missing/Manuscript/_drafts/"
+      ],
+      "detail": "Cross-check stream against Overleaf. Surfaces 3 tensions: DP vs EOO scope; synthesis vs IPW for missing-data treatment; block vs NSC missingness model. Recommendation: EOO + IPW + NSC for v1."
+    },
+    {
+      "id": "P-9",
+      "group": "P",
+      "title": "Port denratio_joint (NSC GMM) from R Density_ratios_3.R to Python",
+      "category": "research",
+      "status": "proposed",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "fairee_missing_data Fairness with missing/Simulation/Density_ratios_3.R",
+        "F-1 caveat"
+      ],
+      "detail": "v0.1 uses a histogram balanced-class placeholder. Replacing with the NSC GMM plug-in will (i) make fairee_missing actually differ from CC-FaiREE in the sweep, (ii) unblock the headline experimental claim."
+    },
+    {
+      "id": "P-10",
+      "group": "P",
+      "title": "Port FairBayes shrinkage formula to fairee_missing.py",
+      "category": "performance",
+      "status": "proposed",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "fairee.py::_find_thresholds_EOO",
+        "doc/notes/fairee_missing_theory.md §4"
+      ],
+      "detail": "Drops candidate-set scan from O(n²M) to O(nM) via the analytical t¹¹_best formula. Required for tractable runs at n ≥ 8000. Skipped in v0.1 (grid-strided proxy used instead)."
+    },
+    {
+      "id": "DEC-1",
+      "group": "M",
+      "title": "DECISION: Scope = Demographic Parity vs Equalized Odds / Equal Opportunity?",
+      "category": "manuscript decision",
+      "status": "proposed",
+      "priority": "high",
+      "owner": "you",
+      "repo": "overleaf",
+      "refs": [
+        "F-6 tension #1",
+        "F-4"
+      ],
+      "detail": "Stub manuscript says f(x) ⊥ a (DP). Code + paper baseline = EOO/EO. Pick one; everything downstream (theorems, experiments, plots) depends on this."
+    },
+    {
+      "id": "DEC-2",
+      "group": "M",
+      "title": "DECISION: Missing-data treatment = synthesis vs IPW reweighting?",
+      "category": "manuscript decision",
+      "status": "proposed",
+      "priority": "high",
+      "owner": "you",
+      "repo": "overleaf",
+      "refs": [
+        "F-6 tension #2"
+      ],
+      "detail": "Stub proposes synthetic-data substitution for missing-sensitive rows. Code uses IPW/density-ratio under NSC. The methods are not equivalent and have different theory. Pick the canonical path; the other becomes a §A variant."
+    },
+    {
+      "id": "DEC-3",
+      "group": "M",
+      "title": "DECISION: Missingness model = block (K-pattern) vs NSC (arbitrary patterns)?",
+      "category": "manuscript decision",
+      "status": "proposed",
+      "priority": "med",
+      "owner": "you",
+      "repo": "overleaf",
+      "refs": [
+        "F-6 tension #3"
+      ],
+      "detail": "Stub partitions subjects into K disjoint blocks. NSC admits all 2^p_miss patterns. NSC strictly generalizes; block is a corollary. The code uses NSC."
+    },
+    {
+      "id": "W-1",
+      "group": "M",
+      "title": "WARNING: Assumption (M3) — Beta-quantile under IPW weights is not finite-sample-exact",
+      "category": "manuscript warning",
+      "status": "proposed",
+      "priority": "high",
+      "owner": "you",
+      "repo": "overleaf",
+      "refs": [
+        "doc/notes/fairee_missing_theory.md §6",
+        "theory.tex Assumption M3"
+      ],
+      "detail": "Rank exchangeability gives the original Beta marginal. Weights break exchangeability; integer-rounding k_eff is a working proxy but the resulting guarantee is asymptotic, not finite-sample. Either re-derive (weighted-bootstrap or proper conformal-w/-weights) OR weaken the theorem statement to asymptotic + finite-sample remainder."
+    },
+    {
+      "id": "W-2",
+      "group": "M",
+      "title": "WARNING: Assumption (M2/Assumption 2) — no outcome shift across ξ is restrictive",
+      "category": "manuscript warning",
+      "status": "proposed",
+      "priority": "med",
+      "owner": "you",
+      "repo": "overleaf",
+      "refs": [
+        "theory.tex Assumption 2"
+      ],
+      "detail": "P(Y|X,A) must NOT depend on the missing-group label. Violated, the IPW TPR estimator is biased. The data-generating code does NOT violate this, but real data (e.g., Adult with conditional MAR) might. We should report a doubly-robust diagnostic."
+    }
   ]
 }
