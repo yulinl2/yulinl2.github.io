@@ -854,9 +854,11 @@
       "owner": "you",
       "repo": "overleaf",
       "refs": [
-        "F-6 tension #3"
+        "F-6 tension #3",
+        "appendix_nsc.tex",
+        "correction_self_censoring.tex"
       ],
-      "detail": "Stub partitions subjects into K disjoint blocks. NSC admits all 2^p_miss patterns. NSC strictly generalizes; block is a corollary. The code uses NSC."
+      "detail": "RECOMMENDATION (drafted 2026-05-30): NSC strictly generalizes block (2^p_miss patterns vs K disjoint blocks); the code already uses NSC. The original 'block' framing in the manuscript stub is a corollary of NSC at K = 2 patterns, so it's not a separate methodology but a special case. The cleanest manuscript story: present NSC as the default, mention block as a degenerate case in §3.5 with one example. The Sadinle-vs-Li correction (correction_self_censoring.tex) already documents which NSC variant we use (Li 2023's self-censoring, more general than Sadinle's NSC). Open: nothing material — the code-level decision is closed; only the manuscript wording remains to settle."
     },
     {
       "id": "W-1",
