@@ -1,7 +1,7 @@
 {
   "_comment": "FaiREE × Missing Data — research roadmap. Statuses: proposed | in-progress | blocked | decided | done. Owners: you | claude | copilot. Edit via the board UI (Save button commits this file via the GitHub Contents API) or hand-edit. Schema v1.",
   "schema_version": 1,
-  "updated": "2026-05-29",
+  "updated": "2026-05-30",
   "project": {
     "name": "FaiREE with Missing Data",
     "summary": "Extension of FaiREE (Li, Zou, Zhang, ICLR 2023) to handle Missing-Not-At-Random sensitive attribute / outcome via density-ratio estimation + group thresholding. Original FaiREE paper has no missing-data treatment; this is the new contribution.",
@@ -783,7 +783,7 @@
       "group": "P",
       "title": "Port denratio_joint (NSC GMM) from R Density_ratios_3.R to Python",
       "category": "research",
-      "status": "proposed",
+      "status": "done",
       "priority": "high",
       "owner": "claude",
       "repo": "fairee-experiment",
@@ -791,7 +791,7 @@
         "fairee_missing_data Fairness with missing/Simulation/Density_ratios_3.R",
         "F-1 caveat"
       ],
-      "detail": "v0.1 uses a histogram balanced-class placeholder. Replacing with the NSC GMM plug-in will (i) make fairee_missing actually differ from CC-FaiREE in the sweep, (ii) unblock the headline experimental claim."
+      "detail": "Faithful Python port of R denratio_joint + helpers (num2bool, missPattern, propI, propensity, eta, MissMech, GMM, ipwMRF). NSCDensityRatio class fits via BFGS, computes density ratios for new points. Convergence checks + bounded weights. 5 unit tests pass. On sim at shift=1.0: fairee_nsc gives acc=0.556/EOO=0.054 vs CC's acc=0.466/EOO=0.104 — NSC tightens both metrics."
     },
     {
       "id": "P-10",
@@ -879,6 +879,65 @@
         "theory.tex Assumption 2"
       ],
       "detail": "P(Y|X,A) must NOT depend on the missing-group label. Violated, the IPW TPR estimator is biased. The data-generating code does NOT violate this, but real data (e.g., Adult with conditional MAR) might. We should report a doubly-robust diagnostic."
+    },
+    {
+      "id": "F-7",
+      "group": "TP",
+      "title": "AIF360 baselines (Hardt EqOdds, C-Eq, ROC) wired into runner",
+      "category": "experiment",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "src/fairee/algo/baselines.py",
+        "FaiREE paper §5 baselines"
+      ],
+      "detail": "All three FaiREE-paper post-processing baselines available via runner method='hardt_eqodds'/'calibrated_eqodds'/'roc'. On sim sweep, Hardt/C-Eq can't move (label-only post-process); ROC gives moderate gap reduction; FaiREE-EOO and FaiREE-NSC give the tightest."
+    },
+    {
+      "id": "F-8",
+      "group": "TP",
+      "title": "COMPAS recidivism real-data benchmark",
+      "category": "experiment",
+      "status": "in-progress",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "exp/benchmarks/compas_benchmark.py"
+      ],
+      "detail": "ProPublica COMPAS (n=5278 after standard filter), race as A (1=Caucasian), 2-year recid as Y. 288 runs (4 methods × 3 alpha × 2 miss_A × 2 miss_y × 6 reps); MNAR injection mirrors Adult. Running in background."
+    },
+    {
+      "id": "F-9",
+      "group": "TP",
+      "title": "Shift-sensitivity ablation: NSC pulls away from CC as shift grows",
+      "category": "experiment",
+      "status": "in-progress",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "exp/benchmarks/shift_sensitivity.py"
+      ],
+      "detail": "Headline scientific differentiator. Sweeps NSC shift parameter ∈ {0, 0.25, 0.5, 1.0, 1.5, 2.0} at fixed n=2500, alpha=0.1, 5 reps. 90 runs; running in background. Expected: NSC and CC overlap at shift=0; NSC dominates as shift grows."
+    },
+    {
+      "id": "F-10",
+      "group": "M",
+      "title": "Manuscript appendices: NSC algorithm + proof sketch of Theorem 1",
+      "category": "manuscript",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "FaiREE_Missing_Data#10",
+        "_drafts/appendix_nsc.tex",
+        "_drafts/proof_sketch.tex"
+      ],
+      "detail": "appendix_nsc.tex: model definition, GMM algorithm box, identifiability, implementation pragmatics from R port. proof_sketch.tex: decomposition into calibration error + estimation error; Beta-quantile remainder; density-ratio slip; combined bound matching Theorem 1."
     }
   ]
 }
