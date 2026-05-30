@@ -1327,6 +1327,21 @@
         "test_multigroup.py"
       ],
       "detail": "Bonferroni-adjusted Beta-test admission across (K choose 2) pairwise constraints. 3-group toy: thresholds (0.31, 0.30, 0.51), max pairwise TPR diff 0.058 ≤ α=0.15. 3 tests passing (40 total). IPW + bootstrap extensions remain for v0.4."
+    },
+    {
+      "id": "F-38",
+      "group": "P",
+      "title": "K-group COMPAS validation (3 races) + IPW support in multigroup",
+      "category": "experiment",
+      "status": "done",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "compas_multigroup.py",
+        "results_agg.csv"
+      ],
+      "detail": "COMPAS with 3 race groups (AA / Caucasian / Hispanic, n=5787). At α=0.10, 6 reps: max pairwise TPR diff = 0.052 ± 0.031 (within budget). FaiREEMultiGroupEOO also accepts weights= kwarg for IPW. 40 tests passing."
     }
   ]
 }
