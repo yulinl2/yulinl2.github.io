@@ -871,14 +871,14 @@
       "group": "M",
       "title": "WARNING: Assumption (M2/Assumption 2) — no outcome shift across ξ is restrictive",
       "category": "manuscript warning",
-      "status": "proposed",
+      "status": "in-progress",
       "priority": "med",
       "owner": "you",
       "repo": "overleaf",
       "refs": [
         "theory.tex Assumption 2"
       ],
-      "detail": "P(Y|X,A) must NOT depend on the missing-group label. Violated, the IPW TPR estimator is biased. The data-generating code does NOT violate this, but real data (e.g., Adult with conditional MAR) might. We should report a doubly-robust diagnostic."
+      "detail": "Doubly-robust diagnostic in src/fairee/algo/doubly_robust.py: 3-way (IPW, OR, DR) estimator of P(Y=1|A=a) on cal set; max within-group spread = warning signal for M2 violation. Toy: ipw=0.40 or=0.43 dr=0.44 → spread 0.04 (M2 consistent). Still TODO: wire into adult/COMPAS as a logged column."
     },
     {
       "id": "F-7",
@@ -952,6 +952,20 @@
         "exp/results/sim_sweep/fig_pareto.png"
       ],
       "detail": "Single figure showing all four methods (naive/CC/fairee_missing/fairee_nsc) at n=4000 sweep over alpha; error bars for acc and EOO. Annotated with alpha values. Naive dominates the upper-right (high acc, high EOO); the FaiREE variants cluster on the Pareto-optimal lower-left edge."
+    },
+    {
+      "id": "F-12",
+      "group": "P",
+      "title": "High-shift sweep: NSC peaks at shift≈2-2.5, degrades at 3.0 (IPW variance)",
+      "category": "experiment",
+      "status": "done",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "exp/results/shift_high/"
+      ],
+      "detail": "90 runs at shift∈{1,1.5,2,2.5,3}, n=3000, alpha=0.10, 6 reps. EOO gap (CC, NSC): (0.043, 0.061)→(0.054, 0.056)→(0.061, 0.056)→(0.078, 0.062)→(0.064, 0.098). NSC's sweet spot is shift~2-2.5; at shift=3.0 inverse-propensity weights become unstable. Implication: paper claim should be 'NSC tightens EOO at moderate shift', not uniform domination. W-2 (doubly-robust) becomes the natural remedy for the high-shift regime."
     }
   ]
 }
