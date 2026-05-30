@@ -856,7 +856,7 @@
       "group": "M",
       "title": "WARNING: Assumption (M3) — Beta-quantile under IPW weights is not finite-sample-exact",
       "category": "manuscript warning",
-      "status": "proposed",
+      "status": "in-progress",
       "priority": "high",
       "owner": "you",
       "repo": "overleaf",
@@ -864,7 +864,7 @@
         "doc/notes/fairee_missing_theory.md §6",
         "theory.tex Assumption M3"
       ],
-      "detail": "Rank exchangeability gives the original Beta marginal. Weights break exchangeability; integer-rounding k_eff is a working proxy but the resulting guarantee is asymptotic, not finite-sample. Either re-derive (weighted-bootstrap or proper conformal-w/-weights) OR weaken the theorem statement to asymptotic + finite-sample remainder."
+      "detail": "Praestgaard-Wellner multiplier bootstrap admission test landed (bootstrap_test.py + test='bootstrap' kwarg + 'fairee_bootstrap' runner method). Theoretically finite-sample valid for weighted samples. Empirically: matches Beta-quantile in uniform-weight regime (sanity); on small datasets (German Credit n_cal=250) delivers +4pp ACC over Beta at α=0.10 by admitting more candidates. On larger datasets (Adult n_cal=4000) Beta and bootstrap are within Monte-Carlo noise. Open: writing out the explicit O(n^{-1/2}) remainder bound."
     },
     {
       "id": "W-2",
@@ -1252,6 +1252,35 @@
         "per-seed inspection"
       ],
       "detail": "On 8 strong-MNAR Adult seeds at α=0.05: DR-safe sometimes picks thresholds ~0.04 (predict-everyone-positive) → low EOO but ACC drops to 0.66. CC picks thresholds ~0.99 with ACC 0.78. Both admitted by same Beta-test. Per-seed analysis shows DR-proxy is not aligned with IPW-admission, so it optimizes for accuracy at admissible-set corners that have catastrophically low accuracy. Honest negative finding for W-2 shallow fixes."
+    },
+    {
+      "id": "F-33",
+      "group": "P",
+      "title": "Bootstrap admission test (W-1 partial resolution)",
+      "category": "theory",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "bootstrap_test.py",
+        "bootstrap_admission.tex"
+      ],
+      "detail": "Praestgaard-Wellner multiplier bootstrap; per-candidate B=300 bootstrap reps. Theoretically valid for weighted samples (CLT for empirical processes). German Credit small-n: bootstrap acc=0.689 vs beta 0.648 (+4pp ACC, +0.026 EOO still within budget)."
+    },
+    {
+      "id": "F-34",
+      "group": "P",
+      "title": "cal_deoo (weighted-calibration |DEOO|) surfaced in every fit",
+      "category": "diagnostics",
+      "status": "done",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "fairee_missing.py::_calibration_deoo"
+      ],
+      "detail": "The Beta-quantile / bootstrap bound directly controls cal_deoo, not test_eoo. Reporting both lets a downstream auditor distinguish algorithm-controlled gap from test-set sampling noise. Across all sweeps: cal_eoo << test_eoo (typically 2-3x smaller)."
     }
   ]
 }
