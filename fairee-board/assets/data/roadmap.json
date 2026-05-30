@@ -878,7 +878,7 @@
       "refs": [
         "theory.tex Assumption 2"
       ],
-      "detail": "FaiREEDRSafeMissingEOO closed the candidate-set bound (Beta-test on IPW counts → admitted set is identical to CC-FaiREE). BUT the chosen candidate within the admitted set differs: CC's IPW-proxy picks tighter EOO; DR-safe's DR-proxy picks looser EOO (still admitted). At α=0.05 strong-MNAR Adult: CC EOO=0.011, DR-safe EOO=0.077. The Beta-quantile only certifies the SET; the proxy determines the realized EOO. Open: candidate selection criterion that's both accuracy-aware AND tight-EOO."
+      "detail": "Three attempted resolutions, all revealed deeper issues: (1) fairee_dr breaks Beta-quantile (cell counts no longer quantile-distributed); (2) fairee_dr_safe (DR proxy + IPW Beta-test) picks degenerate low-threshold candidates because DR-proxy and IPW-admission are misaligned; (3) reducing to CC = no DR gain. CONCLUSION: there's no shallow combination that delivers DR accuracy AND Beta-quantile finite-sample guarantee. The principled fix requires either a DR-aware Beta-quantile derivation or a fundamentally different candidate-set construction (weighted-bootstrap)."
     },
     {
       "id": "F-7",
@@ -1238,6 +1238,20 @@
         "method_choice.tex W-2 update"
       ],
       "detail": "The Beta-quantile bound is on admitted SET, not on specific chosen candidate. CC's IPW-proxy minimization happens to align with tight-EOO; DR-proxy picks more accurate but looser candidates (still within the bound in probability, but empirical realization can exceed α). At strict α=0.05: CC EOO=0.011 vs DR-safe EOO=0.077. Operational: use CC for tight empirical EOO, DR variants for accuracy."
+    },
+    {
+      "id": "F-32",
+      "group": "P",
+      "title": "Deep finding: DR-safe picks degenerate corners; no easy fix to W-2",
+      "category": "theory",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "per-seed inspection"
+      ],
+      "detail": "On 8 strong-MNAR Adult seeds at α=0.05: DR-safe sometimes picks thresholds ~0.04 (predict-everyone-positive) → low EOO but ACC drops to 0.66. CC picks thresholds ~0.99 with ACC 0.78. Both admitted by same Beta-test. Per-seed analysis shows DR-proxy is not aligned with IPW-admission, so it optimizes for accuracy at admissible-set corners that have catastrophically low accuracy. Honest negative finding for W-2 shallow fixes."
     }
   ]
 }
