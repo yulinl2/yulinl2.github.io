@@ -869,7 +869,7 @@
         "doc/notes/fairee_missing_theory.md §6",
         "theory.tex Assumption M3"
       ],
-      "detail": "Praestgaard-Wellner multiplier bootstrap admission test landed (bootstrap_test.py + test='bootstrap' kwarg + 'fairee_bootstrap' runner method). Theoretically finite-sample valid for weighted samples. Empirically: matches Beta-quantile in uniform-weight regime (sanity); on small datasets (German Credit n_cal=250) delivers +4pp ACC over Beta at α=0.10 by admitting more candidates. On larger datasets (Adult n_cal=4000) Beta and bootstrap are within Monte-Carlo noise. Open: writing out the explicit O(n^{-1/2}) remainder bound."
+      "detail": "Praestgaard-Wellner multiplier bootstrap admission test landed (bootstrap_test.py + test='bootstrap' kwarg + 'fairee_bootstrap' runner method, AND now 'fairee_dp_bootstrap' for the DP variant). Theoretically finite-sample valid for weighted samples. Empirically: matches Beta-quantile in uniform-weight regime (sanity); on small datasets (German Credit n_cal=250) delivers +4pp ACC over Beta at α=0.10 by admitting more candidates. On larger datasets (Adult n_cal=4000) Beta and bootstrap are within Monte-Carlo noise (confirmed for both EOO and DP in the dp_vs_eoo_tight3 sweep). Open: writing out the explicit O(n^{-1/2}) remainder bound with constants."
     },
     {
       "id": "W-2",
