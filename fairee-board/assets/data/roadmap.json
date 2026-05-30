@@ -1124,6 +1124,49 @@
         "method_choice.tex"
       ],
       "detail": "5-rep test showed DR +1.9pp ACC; 8-rep test showed DR EOO=0.119 (over α=0.10). The Beta-quantile guarantee relies on the empirical TPR rank being a sample quantile; DR-corrected cell counts break this. Open theoretical work: extend via Donsker or weighted-bootstrap."
+    },
+    {
+      "id": "F-24",
+      "group": "P",
+      "title": "engine.analysis.audit: per-run health report",
+      "category": "infra",
+      "status": "done",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "audit.py",
+        "test_audit.py"
+      ],
+      "detail": "Returns {status, warnings, n_min_required}. Five checks: EOO budget compliance, M2 (dr_spread), M3 (w_max), Sadinle-vs-Li (sc_strength), FaiREE Theorem-3.1 sample-size floor. 4 tests."
+    },
+    {
+      "id": "F-25",
+      "group": "TP",
+      "title": "COMPAS strong-MNAR: even CC-FaiREE struggles at α=0.10 (small n_test)",
+      "category": "experiment",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "compas_strong_mnar"
+      ],
+      "detail": "On COMPAS γ=1.5 strong-MNAR, all methods exceed α=0.10 on test-set EOO. Reason: n_test ≈ 1300 with strong test-set MNAR; test-set TPR sampling SEM ~0.05-0.10 dominates. The Beta-quantile theorem bounds POPULATION DEOO, not the test-set realization. Documented in budget_vs_empirical.tex."
+    },
+    {
+      "id": "F-26",
+      "group": "M",
+      "title": "Theory clarification: theorem bounds population DEOO, not test-set empirical",
+      "category": "manuscript",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "budget_vs_empirical.tex"
+      ],
+      "detail": "Empirical test-set DEOO carries sampling error O(1/sqrt(n_test_obs)) on top of the algorithm-controlled population gap. For small test sets the noise dominates the budget. Recommendation: also report calibration-set DEOO (which the theorem directly controls)."
     }
   ]
 }
