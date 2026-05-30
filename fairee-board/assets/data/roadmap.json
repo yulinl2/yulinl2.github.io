@@ -871,14 +871,14 @@
       "group": "M",
       "title": "WARNING: Assumption (M2/Assumption 2) — no outcome shift across ξ is restrictive",
       "category": "manuscript warning",
-      "status": "done",
+      "status": "in-progress",
       "priority": "med",
       "owner": "you",
       "repo": "overleaf",
       "refs": [
         "theory.tex Assumption 2"
       ],
-      "detail": "Full doubly-robust FaiREEDRMissingEOO landed (fairee_dr.py); wired into runner as method='fairee_dr'. Strong-MNAR Adult result: +1.9pp ACC over CC-FaiREE. Mild MNAR sim: DR underperforms (finite-sample OR variance). 3 tests added. Operational guidance: use DR for heavy MNAR + M2-violation; CC-FaiREE elsewhere."
+      "detail": "Full DR estimator (FaiREEDRMissingEOO) implemented + wired into runner. Honest 8-rep validation under strong MNAR: DR exceeds α=0.10 budget (mean EOO=0.119), so the finite-sample guarantee does NOT transfer to DR. Theoretical fix: extend Beta-quantile argument via empirical-process Donsker or weighted-bootstrap. DR remains useful when accuracy is the priority and the α bound is a soft audit, not a guarantee."
     },
     {
       "id": "F-7",
@@ -1109,6 +1109,21 @@
         "method_choice.tex"
       ],
       "detail": "sc_strength < 0.3 → CC-FaiREE; else if dr_spread > 0.05 → fairee_dr; else → fairee_nsc. Empirical heuristic from 1200+ runs across sim/Adult/COMPAS/German/shift-sensitivity."
+    },
+    {
+      "id": "F-23",
+      "group": "P",
+      "title": "Honest finding: fairee_dr exceeds α-budget under strong MNAR (Beta-quantile breakdown)",
+      "category": "theory",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "adult_strong_mnar_v2",
+        "method_choice.tex"
+      ],
+      "detail": "5-rep test showed DR +1.9pp ACC; 8-rep test showed DR EOO=0.119 (over α=0.10). The Beta-quantile guarantee relies on the empirical TPR rank being a sample quantile; DR-corrected cell counts break this. Open theoretical work: extend via Donsker or weighted-bootstrap."
     }
   ]
 }
