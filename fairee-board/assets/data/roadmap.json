@@ -1311,6 +1311,22 @@
         "nsc_misspecification.py"
       ],
       "detail": "NSC tightens EOO across 3 missingness mechanisms (correct NSC, outcome-dependent, X-A interaction). Misspecification doesn't catastrophically hurt — under outcome-dep MNAR, NSC still cuts EOO from 0.046 to 0.025 (-0.021) at cost of 3pp ACC. Robust to soft misspec; falls back to degenerate (no admit) under hard misspec (interaction)."
+    },
+    {
+      "id": "F-37",
+      "group": "P",
+      "title": "K-group A extension (FaiREEMultiGroupEOO)",
+      "category": "feature",
+      "status": "done",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "fairee_multigroup.py",
+        "multigroup_extension.tex",
+        "test_multigroup.py"
+      ],
+      "detail": "Bonferroni-adjusted Beta-test admission across (K choose 2) pairwise constraints. 3-group toy: thresholds (0.31, 0.30, 0.51), max pairwise TPR diff 0.058 ≤ α=0.15. 3 tests passing (40 total). IPW + bootstrap extensions remain for v0.4."
     }
   ]
 }
