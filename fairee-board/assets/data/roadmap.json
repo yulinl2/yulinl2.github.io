@@ -798,7 +798,7 @@
       "group": "P",
       "title": "Port FairBayes shrinkage formula to fairee_missing.py",
       "category": "performance",
-      "status": "proposed",
+      "status": "done",
       "priority": "med",
       "owner": "claude",
       "repo": "fairee-experiment",
@@ -806,7 +806,7 @@
         "fairee.py::_find_thresholds_EOO",
         "doc/notes/fairee_missing_theory.md §4"
       ],
-      "detail": "Drops candidate-set scan from O(n²M) to O(nM) via the analytical t¹¹_best formula. Required for tractable runs at n ≥ 8000. Skipped in v0.1 (grid-strided proxy used instead)."
+      "detail": "Implemented as use_shrinkage=True kwarg on FaiREEMissingEOO. Analytical t_11_best formula from arxiv 2211.15072 §A, ported to IPW-effective marginals. 35% faster than grid scan; same EOO; +0.5pp accuracy on sim. Default remains grid for backward compat; users opt in via kwarg."
     },
     {
       "id": "DEC-1",
@@ -1050,6 +1050,36 @@
         "findings_summary.tex"
       ],
       "detail": "Consolidated quantitative headline + assumption-violation flags + decision-board status. All dr_spread medians are 0.018-0.024 across 1200+ runs (M2 consistent)."
+    },
+    {
+      "id": "F-19",
+      "group": "TP",
+      "title": "German Credit benchmark (third real-data setting)",
+      "category": "experiment",
+      "status": "done",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "exp/benchmarks/german_benchmark.py",
+        "exp/results/german"
+      ],
+      "detail": "n=1000, gender as A, credit-worthiness as Y. 240 runs. Honest negative finding: naive baseline already within α=0.15 budget (EOO=0.036), so FaiREE's intervention is approximately the identity. Practical operational signal: run naive sanity check before invoking FaiREE."
+    },
+    {
+      "id": "F-20",
+      "group": "P",
+      "title": "FairBayes-shrinkage refactor done",
+      "category": "performance",
+      "status": "done",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "P-10",
+        "fairee_missing.py::_search_shrinkage"
+      ],
+      "detail": "35% faster + same EOO + slightly better accuracy. Opt-in via use_shrinkage=True; grid path retained as default."
     }
   ]
 }
