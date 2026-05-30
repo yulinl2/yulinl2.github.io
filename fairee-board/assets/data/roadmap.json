@@ -731,7 +731,7 @@
       "refs": [
         "exp/benchmarks/adult_benchmark.py"
       ],
-      "detail": "8 reps × 3 alpha × 2 miss_A × 2 miss_y × 3 methods = 288 runs (~7 min). Headline: FaiREE-EOO at no missingness matches arxiv 2211.15072 Table 3 (ACC=0.847, |DEOO|=0.043 at alpha=0.10). With 20% A+Y missing the gap stays at 0.054, accuracy unchanged at 0.848. Naive's gap grows from 0.081 to 0.107 under missingness; FaiREE-missing's pessimistic high-threshold rule on missing-A test rows keeps it controlled."
+      "detail": "Adult v4 (648 runs, 6 methods × 3α × 3 missA × 2 missY × 6 reps): FaiREE Pareto-dominates Hardt by +2pp ACC at similar EOO. Strong-MNAR variant shows CC-FaiREE remains the most robust under heavy MNAR (NSC IPW variance hurts here)."
     },
     {
       "id": "F-4",
@@ -878,7 +878,7 @@
       "refs": [
         "theory.tex Assumption 2"
       ],
-      "detail": "Doubly-robust diagnostic in src/fairee/algo/doubly_robust.py: 3-way (IPW, OR, DR) estimator of P(Y=1|A=a) on cal set; max within-group spread = warning signal for M2 violation. Toy: ipw=0.40 or=0.43 dr=0.44 → spread 0.04 (M2 consistent). Still TODO: wire into adult/COMPAS as a logged column."
+      "detail": "Doubly-robust diagnostic (src/fairee/algo/doubly_robust.py) computes IPW/OR/DR estimates of P(Y|A=a); within-group AIPW spread > 0.05 signals M2 violation. Wired into sim/Adult/COMPAS runners; median spread 0.018-0.024 across all runs (M2 OK). Full DR estimator (not just diagnostic) is the natural fix for the strong-MNAR regime."
     },
     {
       "id": "F-7",
@@ -893,7 +893,7 @@
         "src/fairee/algo/baselines.py",
         "FaiREE paper §5 baselines"
       ],
-      "detail": "All three FaiREE-paper post-processing baselines available via runner method='hardt_eqodds'/'calibrated_eqodds'/'roc'. On sim sweep, Hardt/C-Eq can't move (label-only post-process); ROC gives moderate gap reduction; FaiREE-EOO and FaiREE-NSC give the tightest."
+      "detail": "AIF360 baselines + Feng et al. 2023 impute-then-classify baselines (mean_impute, missing_indicator) wired and benchmarked on Adult + COMPAS."
     },
     {
       "id": "F-8",
@@ -966,6 +966,90 @@
         "exp/results/shift_high/"
       ],
       "detail": "90 runs at shift∈{1,1.5,2,2.5,3}, n=3000, alpha=0.10, 6 reps. EOO gap (CC, NSC): (0.043, 0.061)→(0.054, 0.056)→(0.061, 0.056)→(0.078, 0.062)→(0.064, 0.098). NSC's sweet spot is shift~2-2.5; at shift=3.0 inverse-propensity weights become unstable. Implication: paper claim should be 'NSC tightens EOO at moderate shift', not uniform domination. W-2 (doubly-robust) becomes the natural remedy for the high-shift regime."
+    },
+    {
+      "id": "F-13",
+      "group": "P",
+      "title": "w_clip ablation: tighter clipping (3-5) tightens EOO under strong MNAR",
+      "category": "experiment",
+      "status": "done",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "w_clip_ablation.tex"
+      ],
+      "detail": "At α=0.10 strong-MNAR Adult: w_clip=3 gives EOO=0.037 vs w_clip=25 EOO=0.071. Tighter is fairer but costs ~1pp accuracy. Default 10 is a middle ground; practitioners should sweep on held-out data."
+    },
+    {
+      "id": "F-14",
+      "group": "P",
+      "title": "Adult strong-MNAR (γ=1.5) honest negative finding: CC-FaiREE still best",
+      "category": "experiment",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "adult_strong_mnar.py"
+      ],
+      "detail": "Under genuinely heavy MNAR (P(R_A=0|X,A) tied to A directly), fairee_nsc loses 2pp accuracy compared to CC-FaiREE (0.806 vs 0.823) with no fairness gain. IPW variance dominates. Adds urgency to W-2 (doubly-robust estimator)."
+    },
+    {
+      "id": "F-15",
+      "group": "TP",
+      "title": "Unified comparison table + Pareto plots across 6 methods × 2 datasets",
+      "category": "experiment",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "exp/results/comparison/"
+      ],
+      "detail": "comparison_analysis.py aggregates Adult v4 + COMPAS v2; produces tab_comparison.tex + fig_pareto_{adult,compas}.png. Headline: FaiREE Pareto-dominates impute-then-classify (Hardt) by +2pp (Adult) to +4pp (COMPAS) ACC at comparable EOO."
+    },
+    {
+      "id": "F-16",
+      "group": "M",
+      "title": "Self-censoring vs NSC: code implements Li 2023 (more general), not Sadinle",
+      "category": "manuscript",
+      "status": "done",
+      "priority": "high",
+      "owner": "you",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "correction_self_censoring.tex"
+      ],
+      "detail": "Class name NSCDensityRatio is a misnomer; the propensity allows direct dependence on the variable's own value (gamma_j != 0 in general). Sadinle NSC is the gamma=0 special case. Manuscript M1 weakens to Li-self-censoring. Diagnostic: sc_strength = |gamma|/|alpha|."
+    },
+    {
+      "id": "F-17",
+      "group": "M",
+      "title": "Related work synthesis (10 papers): Jeong MIA, Feng adaptive, Zhang assessment, etc.",
+      "category": "manuscript",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "related_work.tex"
+      ],
+      "detail": "Comprehensive comparison with prior approaches; positioning matrix shows our unique cell (finite-sample + missing A + missing Y + MNAR). Implemented Feng's missing-indicator baseline as a head-to-head check; under our missingness setup (only A/Y missing) the indicator carries no signal — Feng's claim relies on missing X."
+    },
+    {
+      "id": "F-18",
+      "group": "M",
+      "title": "Findings summary (single page) ready to quote in intro",
+      "category": "manuscript",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "findings_summary.tex"
+      ],
+      "detail": "Consolidated quantitative headline + assumption-violation flags + decision-board status. All dr_spread medians are 0.018-0.024 across 1200+ runs (M2 consistent)."
     }
   ]
 }
