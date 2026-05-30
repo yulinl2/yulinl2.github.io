@@ -1167,6 +1167,48 @@
         "budget_vs_empirical.tex"
       ],
       "detail": "Empirical test-set DEOO carries sampling error O(1/sqrt(n_test_obs)) on top of the algorithm-controlled population gap. For small test sets the noise dominates the budget. Recommendation: also report calibration-set DEOO (which the theorem directly controls)."
+    },
+    {
+      "id": "F-27",
+      "group": "X",
+      "title": "exp/quickstart.py: 30-second end-to-end demo",
+      "category": "docs",
+      "status": "done",
+      "priority": "low",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "exp/quickstart.py"
+      ],
+      "detail": "Single-script demonstration: toy MNAR data → 4 methods (naive / CC / NSC / DR) → comparison table + health audit. Useful for newcomers."
+    },
+    {
+      "id": "F-28",
+      "group": "M",
+      "title": "Manuscript drafts integration guide (18-file map)",
+      "category": "manuscript",
+      "status": "done",
+      "priority": "high",
+      "owner": "you",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "_drafts/README.md"
+      ],
+      "detail": "Detailed ordering of all 18 .tex files for paper assembly, plus 3 open decisions (DEC-1/2/3) + 2 open warnings (W-1/2) + headline numbers ready to quote. Hand-off ready."
+    },
+    {
+      "id": "F-29",
+      "group": "TP",
+      "title": "Multi-dataset strong-MNAR Pareto plot",
+      "category": "experiment",
+      "status": "done",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "exp/results/strong_mnar_pareto.png"
+      ],
+      "detail": "2 (Adult, COMPAS) × 3 (α=0.05, 0.10, 0.15) grid with budget line. Visualizes the α-budget compliance story: only CC + NSC reliably satisfy at α=0.05."
     }
   ]
 }
