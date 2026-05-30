@@ -871,14 +871,14 @@
       "group": "M",
       "title": "WARNING: Assumption (M2/Assumption 2) — no outcome shift across ξ is restrictive",
       "category": "manuscript warning",
-      "status": "done",
+      "status": "in-progress",
       "priority": "med",
       "owner": "you",
       "repo": "overleaf",
       "refs": [
         "theory.tex Assumption 2"
       ],
-      "detail": "Resolved via FaiREEDRSafeMissingEOO: keep Beta-test on IPW counts (preserves finite-sample bound), use DR cell counts only for the misclass error proxy in candidate selection. Theoretically the safest DR variant. Wired as method='fairee_dr_safe' in the runner."
+      "detail": "FaiREEDRSafeMissingEOO closed the candidate-set bound (Beta-test on IPW counts → admitted set is identical to CC-FaiREE). BUT the chosen candidate within the admitted set differs: CC's IPW-proxy picks tighter EOO; DR-safe's DR-proxy picks looser EOO (still admitted). At α=0.05 strong-MNAR Adult: CC EOO=0.011, DR-safe EOO=0.077. The Beta-quantile only certifies the SET; the proxy determines the realized EOO. Open: candidate selection criterion that's both accuracy-aware AND tight-EOO."
     },
     {
       "id": "F-7",
@@ -1224,6 +1224,20 @@
         "method='fairee_dr_safe'"
       ],
       "detail": "Beta-test on IPW counts (preserves finite-sample bound); misclass error proxy on DR cell counts (DR-stabilized candidate selection). Theoretically safest DR variant: always within the same α-budget as CC-FaiREE, strictly at-least-as-good in expectation. Empirically on sim shift=1.5 seed=3: CC EOO=0.027 ✓; DR EOO=0.151 ❌; DR-safe EOO=0.027 ✓. Closes the loop on W-2: principled DR + budget guarantee."
+    },
+    {
+      "id": "F-31",
+      "group": "P",
+      "title": "Honest finding: DR-safe admitted-set is same as CC, but proxy picks looser candidate",
+      "category": "theory",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "method_choice.tex W-2 update"
+      ],
+      "detail": "The Beta-quantile bound is on admitted SET, not on specific chosen candidate. CC's IPW-proxy minimization happens to align with tight-EOO; DR-proxy picks more accurate but looser candidates (still within the bound in probability, but empirical realization can exceed α). At strict α=0.05: CC EOO=0.011 vs DR-safe EOO=0.077. Operational: use CC for tight empirical EOO, DR variants for accuracy."
     }
   ]
 }
