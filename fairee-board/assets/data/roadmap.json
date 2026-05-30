@@ -871,14 +871,14 @@
       "group": "M",
       "title": "WARNING: Assumption (M2/Assumption 2) — no outcome shift across ξ is restrictive",
       "category": "manuscript warning",
-      "status": "in-progress",
+      "status": "done",
       "priority": "med",
       "owner": "you",
       "repo": "overleaf",
       "refs": [
         "theory.tex Assumption 2"
       ],
-      "detail": "Doubly-robust diagnostic (src/fairee/algo/doubly_robust.py) computes IPW/OR/DR estimates of P(Y|A=a); within-group AIPW spread > 0.05 signals M2 violation. Wired into sim/Adult/COMPAS runners; median spread 0.018-0.024 across all runs (M2 OK). Full DR estimator (not just diagnostic) is the natural fix for the strong-MNAR regime."
+      "detail": "Full doubly-robust FaiREEDRMissingEOO landed (fairee_dr.py); wired into runner as method='fairee_dr'. Strong-MNAR Adult result: +1.9pp ACC over CC-FaiREE. Mild MNAR sim: DR underperforms (finite-sample OR variance). 3 tests added. Operational guidance: use DR for heavy MNAR + M2-violation; CC-FaiREE elsewhere."
     },
     {
       "id": "F-7",
@@ -1080,6 +1080,35 @@
         "fairee_missing.py::_search_shrinkage"
       ],
       "detail": "35% faster + same EOO + slightly better accuracy. Opt-in via use_shrinkage=True; grid path retained as default."
+    },
+    {
+      "id": "F-21",
+      "group": "P",
+      "title": "FaiREEDRMissingEOO full doubly-robust variant",
+      "category": "research",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "fairee_dr.py",
+        "W-2"
+      ],
+      "detail": "DR cell counts: n_DR[y,a] = sum_X m_{y,a}(X) + sum_i w_i R_i (1{Y_i=y,A_i=a} - m_{y,a}(X_i)). 4-class OR fit on complete cases. Plugs into FaiREE EOO threshold search. Real-data strong-MNAR Adult: acc=0.848±0.002 EOO=0.077±0.034 vs CC's 0.829/0.050 — DR gains +1.9pp ACC. On mild-MNAR sim, DR underperforms (variance). Regime-specific tool."
+    },
+    {
+      "id": "F-22",
+      "group": "M",
+      "title": "Method-choice decision tree (CC vs NSC vs DR)",
+      "category": "manuscript",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee_missing_data",
+      "refs": [
+        "method_choice.tex"
+      ],
+      "detail": "sc_strength < 0.3 → CC-FaiREE; else if dr_spread > 0.05 → fairee_dr; else → fairee_nsc. Empirical heuristic from 1200+ runs across sim/Adult/COMPAS/German/shift-sensitivity."
     }
   ]
 }
