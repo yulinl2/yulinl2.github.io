@@ -1281,6 +1281,36 @@
         "fairee_missing.py::_calibration_deoo"
       ],
       "detail": "The Beta-quantile / bootstrap bound directly controls cal_deoo, not test_eoo. Reporting both lets a downstream auditor distinguish algorithm-controlled gap from test-set sampling noise. Across all sweeps: cal_eoo << test_eoo (typically 2-3x smaller)."
+    },
+    {
+      "id": "F-35",
+      "group": "TP",
+      "title": "HEADLINE: 8-method × 3-α × strong-MNAR Adult sweep (192 runs)",
+      "category": "experiment",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "exp/results/headline_strong_mnar.csv",
+        "headline_table.tex",
+        "headline_pareto.png"
+      ],
+      "detail": "At STRICT α=0.05 + heavy MNAR: 5 FaiREE variants (CC/missing/NSC/DR-safe/bootstrap) ALL satisfy budget; 3 baselines (naive/Hardt/fairee_dr) ALL exceed budget. CC-FaiREE acc=0.775; fairee_dr acc=0.831 but EOO=0.096 > α. The cleanest motivation for finite-sample fair classification under MNAR."
+    },
+    {
+      "id": "F-36",
+      "group": "P",
+      "title": "NSC misspecification robustness study",
+      "category": "experiment",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "nsc_misspecification.py"
+      ],
+      "detail": "NSC tightens EOO across 3 missingness mechanisms (correct NSC, outcome-dependent, X-A interaction). Misspecification doesn't catastrophically hurt — under outcome-dep MNAR, NSC still cuts EOO from 0.046 to 0.025 (-0.021) at cost of 3pp ACC. Robust to soft misspec; falls back to degenerate (no admit) under hard misspec (interaction)."
     }
   ]
 }
