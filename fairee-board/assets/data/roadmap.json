@@ -813,15 +813,20 @@
       "group": "M",
       "title": "DECISION: Scope = Demographic Parity vs Equalized Odds / Equal Opportunity?",
       "category": "manuscript decision",
-      "status": "proposed",
+      "status": "closed",
       "priority": "high",
       "owner": "you",
       "repo": "overleaf",
       "refs": [
         "F-6 tension #1",
-        "F-4"
+        "F-4",
+        "fairee_dp.py::FaiREEDPMissing",
+        "fairee_multigroup_dp.py::FaiREEMultiGroupDP",
+        "dp_extension.tex",
+        "exp/results/dp_vs_eoo/",
+        "exp/results/adult_dp/"
       ],
-      "detail": "Stub manuscript says f(x) ⊥ a (DP). Code + paper baseline = EOO/EO. Pick one; everything downstream (theorems, experiments, plots) depends on this."
+      "detail": "CLOSED 2026-05-30: Resolved by support for BOTH notions. EOO remains the FaiREE-paper default (matches §A.7 derivation, larger empirical study); DP added as FaiREEDPMissing + FaiREEMultiGroupDP sharing the same Beta-quantile / IPW / NSC / Bonferroni machinery. Manuscript section dp_extension.tex documents when to choose which. Empirically: at strict alpha=0.05/n=1500, DP remains useful (acc 0.57) while EOO degenerates to the trivial predictor (Beta admit set empty below sample-size floor). Joint Equalized Odds is flagged as future work in limitations.tex."
     },
     {
       "id": "DEC-2",
