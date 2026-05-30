@@ -881,9 +881,11 @@
       "owner": "you",
       "repo": "overleaf",
       "refs": [
-        "theory.tex Assumption 2"
+        "theory.tex Assumption 2",
+        "dr_bootstrap_sketch.tex",
+        "bootstrap_test_dr.py"
       ],
-      "detail": "Three attempted resolutions, all revealed deeper issues: (1) fairee_dr breaks Beta-quantile (cell counts no longer quantile-distributed); (2) fairee_dr_safe (DR proxy + IPW Beta-test) picks degenerate low-threshold candidates because DR-proxy and IPW-admission are misaligned; (3) reducing to CC = no DR gain. CONCLUSION: there's no shallow combination that delivers DR accuracy AND Beta-quantile finite-sample guarantee. The principled fix requires either a DR-aware Beta-quantile derivation or a fundamentally different candidate-set construction (weighted-bootstrap)."
+      "detail": "PARTIAL CLOSURE (2026-05-30): Influence-function multiplier-bootstrap admission test sketched in Appendix dr_bootstrap_sketch and prototyped in bootstrap_test_dr.py (3 tests pass). The test uses the DR influence function psi_a(t) = R*1{A=a,Y=1}/pi_a * (1{f>=t} - mu_a) + mu_a, applies Praestgaard-Wellner Exp(1) multipliers to centered residuals, returns the (1-delta) quantile of |TPR_0_DR - TPR_1_DR|. STILL OPEN: (a) Donsker covering bound on {psi_a(t) : t in [0,1]} for the specific logistic-regression nuisance class; (b) uniform-in-t bootstrap-quantile consistency; (c) plug-in nuisance error budget (cross-fitting remainder). The original 3 failed attempts (fairee_dr / fairee_dr_safe / CC-reduce) remain non-paths."
     },
     {
       "id": "F-7",
