@@ -900,28 +900,28 @@
       "group": "TP",
       "title": "COMPAS recidivism real-data benchmark",
       "category": "experiment",
-      "status": "in-progress",
+      "status": "done",
       "priority": "med",
       "owner": "claude",
       "repo": "fairee-experiment",
       "refs": [
         "exp/benchmarks/compas_benchmark.py"
       ],
-      "detail": "ProPublica COMPAS (n=5278 after standard filter), race as A (1=Caucasian), 2-year recid as Y. 288 runs (4 methods × 3 alpha × 2 miss_A × 2 miss_y × 6 reps); MNAR injection mirrors Adult. Running in background."
+      "detail": "COMPAS (5278 rows after ProPublica filter, race as A=1=Caucasian, two_year_recid as Y). 288 runs done. At no missingness: CC-FaiREE acc=0.652 EOO=0.061; fairee_nsc acc=0.657 EOO=0.078. NSC has small accuracy edge but slightly looser EOO control here — COMPAS doesn't exhibit strong covariate shift across missingness patterns, so the NSC reweighting can't pull ahead. The shift_sensitivity sweep (F-9) shows NSC's advantage emerges at shift >= 1.5."
     },
     {
       "id": "F-9",
       "group": "TP",
       "title": "Shift-sensitivity ablation: NSC pulls away from CC as shift grows",
       "category": "experiment",
-      "status": "in-progress",
+      "status": "done",
       "priority": "high",
       "owner": "claude",
       "repo": "fairee-experiment",
       "refs": [
         "exp/benchmarks/shift_sensitivity.py"
       ],
-      "detail": "Headline scientific differentiator. Sweeps NSC shift parameter ∈ {0, 0.25, 0.5, 1.0, 1.5, 2.0} at fixed n=2500, alpha=0.1, 5 reps. 90 runs; running in background. Expected: NSC and CC overlap at shift=0; NSC dominates as shift grows."
+      "detail": "90 runs at shifts in {0, 0.25, 0.5, 1.0, 1.5, 2.0}, n=2500, alpha=0.10, 5 reps. Headline: NSC vs CC EOO gap differential grows from ~0 at shift 0-0.5 to 0.032 at shift=1.5 (CC=0.070 vs NSC=0.038) and 0.022 at shift=2.0. fig_shift_eoo.png + fig_shift_acc.png + tab_shift.tex committed."
     },
     {
       "id": "F-10",
@@ -938,6 +938,20 @@
         "_drafts/proof_sketch.tex"
       ],
       "detail": "appendix_nsc.tex: model definition, GMM algorithm box, identifiability, implementation pragmatics from R port. proof_sketch.tex: decomposition into calibration error + estimation error; Beta-quantile remainder; density-ratio slip; combined bound matching Theorem 1."
+    },
+    {
+      "id": "F-11",
+      "group": "TP",
+      "title": "Pareto frontier plot (fairness-accuracy tradeoff, 4 methods)",
+      "category": "experiment",
+      "status": "done",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "exp/results/sim_sweep/fig_pareto.png"
+      ],
+      "detail": "Single figure showing all four methods (naive/CC/fairee_missing/fairee_nsc) at n=4000 sweep over alpha; error bars for acc and EOO. Annotated with alpha values. Naive dominates the upper-right (high acc, high EOO); the FaiREE variants cluster on the Pareto-optimal lower-left edge."
     }
   ]
 }
