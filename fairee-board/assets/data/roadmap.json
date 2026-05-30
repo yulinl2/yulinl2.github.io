@@ -838,9 +838,11 @@
       "owner": "you",
       "repo": "overleaf",
       "refs": [
-        "F-6 tension #2"
+        "F-6 tension #2",
+        "methodology.tex",
+        "limitations.tex (synthesis paragraph)"
       ],
-      "detail": "Stub proposes synthetic-data substitution for missing-sensitive rows. Code uses IPW/density-ratio under NSC. The methods are not equivalent and have different theory. Pick the canonical path; the other becomes a §A variant."
+      "detail": "TRADE-OFFS (drafted 2026-05-30): IPW-path (current code): identifying assumption = bounded density ratio (M3) + ignorability/positivity. Finite-sample Beta-quantile guarantee holds; computational complexity O(n grid) per fit. Synthesis-path (stub manuscript's original): identifying assumption = correctly-specified outcome model + invertible density. Higher accuracy if model is correct, but no finite-sample guarantee — bias propagates from misspecification. IPW is the safer default for distribution-free fairness; synthesis is appropriate when the analyst trusts a parametric outcome model. RECOMMENDATION: ship IPW as canonical (matches FaiREE paper's spirit + closed-form theorem), include synthesis as §A.4 variant with empirical comparison if reviewer asks. Open: writing this up cleanly requires a user-level decision on which voice to use."
     },
     {
       "id": "DEC-3",
