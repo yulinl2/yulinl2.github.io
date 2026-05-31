@@ -31,12 +31,19 @@
   <h2>Phase 1 — Content gates</h2>
 
   <h3>Dangling references resolved</h3>
+  <p>
+    <span class="tag tag-ok">DONE</span>
+    <strong>Zero dangling <code>\ref{}</code> targets remaining</strong>
+    as of the final recovery commits (verified by the diff script in
+    <a href="02-compile-checklist.html">Guide 2</a>).
+  </p>
   <ul>
-    <li><span class="tag tag-warn">TODO</span> <code>prop:pessimistic</code> — write the Proposition stub in <code>proof_sketch.tex</code> (2 lines of monotonicity).</li>
-    <li><span class="tag tag-warn">TODO</span> <code>sec:discussion</code> — either pull from Overleaf or rewire to <code>limitations.tex</code>.</li>
-    <li><span class="tag tag-warn">TODO</span> <code>sec:dr-ablation</code> — alias <code>sec:w2_e2e</code> or write a brief subsection.</li>
-    <li><span class="tag tag-warn">TODO</span> <code>sec:shift-ablation</code> — alias <code>w_clip_ablation.tex</code> or write a brief shift-sensitivity subsection from <code>exp/results/shift_high/</code>.</li>
-    <li><span class="tag tag-ok">DONE</span> <code>eq:sc</code>, <code>tab:adult</code>, <code>tab:sim-headline</code>, <code>sec:audit-tool</code>, <code>sec:dr-diagnostic</code>, <code>sec:sensitivity</code>, <code>sec:data-gen</code>, <code>sec:doublyrobust</code> (all resolved during the recovery marathon — see <a href="../fairee-audits/01-bibliography-and-labels.html">audit 1</a>).</li>
+    <li><span class="tag tag-ok">DONE</span> <code>prop:pessimistic</code> — Proposition + 2 remarks added to <code>proof_sketch.tex sec:pessimistic</code> (pessimistic-prediction monotonicity with monotone-indicator proof; gap-behaviour remark; tightness condition).</li>
+    <li><span class="tag tag-ok">DONE</span> <code>sec:discussion</code> — aliased to <code>limitations.tex sec:limitations</code>.</li>
+    <li><span class="tag tag-ok">DONE</span> <code>sec:dr-ablation</code> — aliased to <code>dr_bootstrap_sketch.tex sec:w2_e2e</code> (the W-2 end-to-end validation table IS the DR ablation).</li>
+    <li><span class="tag tag-ok">DONE</span> <code>sec:shift-ablation</code> — new <code>shift_ablation.tex</code> draft with actual NSC-shift sensitivity numbers from <code>exp/results/shift_sensitivity/</code>; three-regime characterisation (near-MCAR / moderate / extreme).</li>
+    <li><span class="tag tag-ok">DONE</span> <code>sec:shrinkage_validation</code> — aliased to <code>shrinkage_validation.tex sec:shrinkage</code>.</li>
+    <li><span class="tag tag-ok">DONE</span> <code>eq:sc</code>, <code>tab:adult</code>, <code>tab:sim-headline</code>, <code>sec:audit-tool</code>, <code>sec:dr-diagnostic</code>, <code>sec:sensitivity</code>, <code>sec:data-gen</code>, <code>sec:doublyrobust</code> (resolved earlier in the marathon — see <a href="../fairee-audits/01-bibliography-and-labels.html">audit 1</a>).</li>
   </ul>
 
   <h3>DEC-2 / DEC-3 prose decisions</h3>
