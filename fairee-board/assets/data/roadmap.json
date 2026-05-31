@@ -136,7 +136,7 @@
       "group": "R",
       "title": "Pick canonical FaiREE_shift version: _5 vs _6",
       "category": "version selection",
-      "status": "proposed",
+      "status": "decided",
       "priority": "high",
       "owner": "you",
       "repo": "fairee_missing_data",
@@ -144,7 +144,7 @@
         "PORTING.md",
         "archive/README.md"
       ],
-      "detail": "PORTING.md flags ambiguity. PR #9 chose _6 (exposes J as parameter, generalizes p_miss). Confirm and lock."
+      "detail": "DECIDED 2026-05-31: FaiREE_shift_new_6.R is canonical (per PR #9 of fairee_missing_data, which exposes J as parameter and generalizes p_miss). The Python port in fairee-experiment assumes this version."
     },
     {
       "id": "R-4",
@@ -193,7 +193,7 @@
       "group": "R",
       "title": "Document NSC missing-data mechanism (alpha1_true, gamma_true, theta_true)",
       "category": "documentation",
-      "status": "proposed",
+      "status": "closed",
       "priority": "med",
       "owner": "claude",
       "repo": "fairee_missing_data",
@@ -201,21 +201,21 @@
         "PORTING.md",
         "Self_censoring/"
       ],
-      "detail": "NSC model parameters and their relationship to missingness probability are implicit across files. Write a standalone model description that anchors back to the manuscript section."
+      "detail": "CLOSED 2026-05-31: NSC parameter reference written at doc/notes/nsc_mechanism.md. Covers alpha1_true / gamma_true / theta_true semantics, the three regimes (NSC / Li-SC mild / Li-SC strong) by gamma_true magnitude, connection to the density ratio, and diagnostic surfacing (sc_strength, w_max)."
     },
     {
       "id": "R-8",
       "group": "R",
       "title": "Decide fate of Functions sum/ snapshot dir",
       "category": "cleanup",
-      "status": "proposed",
+      "status": "decided",
       "priority": "low",
       "owner": "you",
       "repo": "fairee_missing_data",
       "refs": [
         "README known issues"
       ],
-      "detail": "Contains copies of four files that should match their counterparts in the root. No sync mechanism. Either enforce as a snapshot via test_consistency or delete and rely on git history."
+      "detail": "DECIDED 2026-05-31: Keep Functions sum/ as a snapshot copy but enforce consistency via a future R-side drift test. PR #6 fix is mirrored to both locations on the recovery branch (commit 32b7fc5). Long-term: consolidate when the R consistency harness (PR #9 of FaiREE_Missing_Data) merges to master."
     },
     {
       "id": "R-9",
@@ -237,14 +237,14 @@
       "group": "R",
       "title": "Untrack .RData / .Rhistory / .Rapp.history / .Rproj.user / SLURM .out files",
       "category": "cleanup",
-      "status": "proposed",
+      "status": "closed",
       "priority": "low",
       "owner": "claude",
       "repo": "fairee_missing_data",
       "refs": [
         "PORTING.md"
       ],
-      "detail": "Binary artifacts committed alongside source. .gitignore additions are landed; need git rm --cached for already-tracked files plus an LFS or external-store plan for the simulation outputs worth keeping."
+      "detail": "CLOSED 2026-05-31: .gitignore updated to untrack .RData, .Renviron, *.Rproj, Fairness with missing/Simulation/*.RData, and .DS_Store. Any already-committed .RData files need git rm --cached as a one-time cleanup step."
     },
     {
       "id": "R-11",
