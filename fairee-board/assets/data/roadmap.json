@@ -165,14 +165,14 @@
       "group": "R",
       "title": "Extract reusable MNAR data generator from Sim15_data_generation.R",
       "category": "refactor",
-      "status": "proposed",
+      "status": "decided",
       "priority": "med",
       "owner": "claude",
       "repo": "fairee_missing_data",
       "refs": [
         "PORTING.md"
       ],
-      "detail": "Sim15_data_generation.R mixes simulation-specific data generation with reusable utilities. Extract the reusable MNAR (No-Self-Censoring) generator as a standalone function for both R tests and Python interop."
+      "detail": "DECIDED 2026-05-31: Python equivalent of the MNAR generator already lives at exp/methods/sim/generator.py in fairee-experiment (TruncatedMultivariateNormalWithMissing class). The R-side extraction can wait until/if the R pipeline is reactivated; current Python pipeline is the canonical default per I-1."
     },
     {
       "id": "R-6",
@@ -393,14 +393,14 @@
       "group": "P",
       "title": "Add organized config YAMLs (exp/configs/{algo,data/sim,pipelines}/)",
       "category": "infra",
-      "status": "proposed",
+      "status": "closed",
       "priority": "med",
       "owner": "claude",
       "repo": "fairee-experiment",
       "refs": [
         "PR #4 io_map.md"
       ],
-      "detail": "Three orthogonal axes (algo, data, pipeline). Replaces ad-hoc example.yaml with composable per-component configs."
+      "detail": "CLOSED 2026-05-31: Config YAMLs added under exp/configs/{algo,data,pipeline}/ on the recovery branch. Three algo configs (fairee_dp, fairee_dp_nsc, fairee_eoo_default), one data config (sim_default), one pipeline composition (headline)."
     },
     {
       "id": "P-7",
@@ -451,7 +451,7 @@
       "group": "I",
       "title": "Wire train_cal_wrapper.R CSV protocol into the Python pipeline",
       "category": "interop",
-      "status": "proposed",
+      "status": "decided",
       "priority": "med",
       "owner": "claude",
       "repo": "fairee-experiment",
@@ -459,21 +459,21 @@
         "P-3",
         "P-7"
       ],
-      "detail": "Once P-3 lands and P-7 exists, add an 'r-calibrator' method module that writes cal CSV, shells out to Rscript, reads thresholds CSV."
+      "detail": "DECIDED 2026-05-31: Out of scope for the FaiREE-paper recovery work. Python-only is canonical (per I-1). The R interop wrapper in PR #9 of fairee-experiment remains available as a reference if the interop story is reactivated."
     },
     {
       "id": "I-3",
       "group": "I",
       "title": "Integration test: Python generate \u2192 R calibrate \u2192 Python apply",
       "category": "test",
-      "status": "proposed",
+      "status": "decided",
       "priority": "med",
       "owner": "claude",
       "repo": "fairee-experiment",
       "refs": [
         "I-2"
       ],
-      "detail": "End-to-end interop test; gated on R available in the CI runner (apt install r-base + the 5 packages)."
+      "detail": "DECIDED 2026-05-31: Out of scope per I-1 / I-2. Python-only canonical pipeline has its own end-to-end test (tests/test_engine_imports.py::test_runner_dispatches_method)."
     },
     {
       "id": "TP-1",
