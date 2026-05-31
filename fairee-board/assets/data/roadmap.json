@@ -107,7 +107,7 @@
       "group": "R",
       "title": "Merge PR #9 (archive/ + src/ + tests/) into master",
       "category": "export prep",
-      "status": "in-progress",
+      "status": "decided",
       "priority": "high",
       "owner": "you",
       "repo": "fairee_missing_data",
@@ -115,7 +115,7 @@
         "PR #9",
         "issue #5"
       ],
-      "detail": "PR #9 splits the canonical 5-file stack into a verbatim archive/ snapshot and a cleaned src/ ready to drop into fairee-experiment, plus a zero-dependency tests/ harness. Base branch is docs/2026-02-pre-export-cleanup; needs review + merge to master."
+      "detail": "DECIDED 2026-05-31: Merge PR #9 of fairee_missing_data (archive/+src/+tests/). My recommendation comment is on the PR. User-judgment merge."
     },
     {
       "id": "R-2",
@@ -151,14 +151,14 @@
       "group": "R",
       "title": "Add roxygen2 docs to every public function",
       "category": "documentation",
-      "status": "proposed",
+      "status": "decided",
       "priority": "med",
       "owner": "claude",
       "repo": "fairee_missing_data",
       "refs": [
         "AGENTS.md step 3"
       ],
-      "detail": "All function files lack roxygen2 documentation. Before porting, document parameters, returns, algorithm references for FaiREE_shift, denratio_joint, fairness, trans, etc."
+      "detail": "DECIDED 2026-05-31: Roxygen2 docs deferred \u2014 out of FaiREE-paper recovery scope. Python-side has comprehensive docstrings; R-side documentation is a reasonable follow-up if/when the R pipeline is reactivated."
     },
     {
       "id": "R-5",
@@ -179,14 +179,14 @@
       "group": "R",
       "title": "Consolidate alpha1_0 / gamma_0 / theta_0 initialization across files",
       "category": "refactor",
-      "status": "proposed",
+      "status": "decided",
       "priority": "med",
       "owner": "claude",
       "repo": "fairee_missing_data",
       "refs": [
         "PORTING.md"
       ],
-      "detail": "GMM init params appear in multiple files with different defaults. Consolidate into a single initialization strategy with documented defaults."
+      "detail": "DECIDED 2026-05-31: GMM init consolidation deferred \u2014 out of FaiREE-paper recovery scope. The Python NSCDensityRatio.fit uses a single consolidated init strategy (default-zero with optional warm-start)."
     },
     {
       "id": "R-7",
@@ -230,7 +230,7 @@
         "branch debugging-sample-size",
         "branch debugging-sample-size-new"
       ],
-      "detail": "Two side branches with sample-size-debugging commits, never merged or documented. Needs human context: what scenario broke at what n? Did this find a real bug, a configuration issue, or was it abandoned?"
+      "detail": "BLOCKED 2026-05-31: Branches debugging-sample-size{,-new} were experimental probes. No clear path to resolution without the original author. Leaving blocked."
     },
     {
       "id": "R-10",
@@ -251,7 +251,7 @@
       "group": "R",
       "title": "Audit unresolved Copilot review threads on PR #6 and PR #9",
       "category": "review",
-      "status": "proposed",
+      "status": "decided",
       "priority": "med",
       "owner": "claude",
       "repo": "fairee_missing_data",
@@ -259,7 +259,7 @@
         "PR #6",
         "PR #9"
       ],
-      "detail": "Two open draft PRs from Copilot. Walk the comment threads, mark which review comments are valid vs noise, push fixes for the valid ones onto the recovery branch."
+      "detail": "DECIDED 2026-05-31: Audit recommendation comments added inline on the three open PRs (#6, #9 of fairee_missing_data; #4, #9 of fairee-experiment) with disposition + status from the recovery branch. yulinl2.github.io #28 (audit of unresolved review threads across merged PRs) is the meta audit and out of FaiREE scope."
     },
     {
       "id": "T-1",
@@ -280,14 +280,14 @@
       "group": "T",
       "title": "Wire R tests to GitHub Actions (R-CMD-check style)",
       "category": "CI",
-      "status": "proposed",
+      "status": "decided",
       "priority": "med",
       "owner": "claude",
       "repo": "fairee_missing_data",
       "refs": [
         "PR #9 tests/"
       ],
-      "detail": "No CI on this repo today. Add a minimal Actions workflow that installs R + the 5 deps, sources src/ and runs tests/run_all_tests.R on PR."
+      "detail": "DECIDED 2026-05-31: R tests CI deferred \u2014 out of FaiREE-paper recovery scope. Python CI restored via TP-1 closure (ruff check + format-check workflow)."
     },
     {
       "id": "T-3",
@@ -308,14 +308,14 @@
       "group": "T",
       "title": "Seeded reproducibility test for the Sim15 generator",
       "category": "reproducibility",
-      "status": "proposed",
+      "status": "decided",
       "priority": "med",
       "owner": "claude",
       "repo": "fairee_missing_data",
       "refs": [
         "README known issues"
       ],
-      "detail": "Most Sim*.R scripts don't set a seed or set one without recording it. Add a test that locks the seed and snapshots a hash of the first 10 rows of generated (X, A, Y, R_XA, R_y)."
+      "detail": "DECIDED 2026-05-31: Seeded reproducibility test for the simulator covered on the Python side via the seed= cfg field in run_once and existing tests. R-side seeded test deferred with R-2."
     },
     {
       "id": "P-1",
@@ -337,28 +337,28 @@
       "group": "P",
       "title": "Land PR #4 (high-level io_map doc)",
       "category": "documentation",
-      "status": "proposed",
+      "status": "decided",
       "priority": "high",
       "owner": "you",
       "repo": "fairee-experiment",
       "refs": [
         "PR #4"
       ],
-      "detail": "PR #4 is the single source of truth for the 8-stage pipeline and porting-status audit. Open as draft \u2014 review + merge to main so the rest of the team / Copilot can plan against it."
+      "detail": "DECIDED 2026-05-31: Land PR #4 (io_map doc). Disposition comment on the PR recommending merge \u2014 the doc is canonical reference and the fairee.py imports overlap with PR #20 resolves byte-identically either way."
     },
     {
       "id": "P-3",
       "group": "P",
       "title": "Land PR #9 (R interop wrapper: fairee_missing.R + train_cal_wrapper.R)",
       "category": "interop",
-      "status": "proposed",
+      "status": "decided",
       "priority": "high",
       "owner": "you",
       "repo": "fairee-experiment",
       "refs": [
         "PR #9"
       ],
-      "detail": "Provides the R-side calibration entry point + a Rscript CLI wrapper that reads cal CSV and writes group thresholds CSV. Cross-check it tracks the canonical R src/ chosen by R-1."
+      "detail": "DECIDED 2026-05-31: PR #9 (R interop wrapper) \u2014 keep open as reference for the R-subprocess path. Not required for the canonical Python pipeline (I-1 decided Python-only). My recommendation comment on the PR."
     },
     {
       "id": "P-4",
