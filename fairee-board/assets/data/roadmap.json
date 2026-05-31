@@ -1355,6 +1355,62 @@
         "results_agg.csv"
       ],
       "detail": "COMPAS with 3 race groups (AA / Caucasian / Hispanic, n=5787). At \u03b1=0.10, 6 reps: max pairwise TPR diff = 0.052 \u00b1 0.031 (within budget). FaiREEMultiGroupEOO also accepts weights= kwarg for IPW. 40 tests passing."
+    },
+    {
+      "id": "F-39",
+      "group": "M",
+      "title": "GLOSSARY.md \u2014 plain-language definitions of every acronym and code symbol",
+      "category": "documentation",
+      "status": "done",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "GLOSSARY.md"
+      ],
+      "detail": "~150 lines covering FaiREE, MNAR/MAR/MCAR, NSC, Li-self-censoring, IPW, DR/AIPW, EOO/DP/PE/EO, Beta-quantile, Praestgaard-Wellner, IF, Donsker, sample-size floor, alpha_eff, generalization_buffer, fairness_notion, admission_test, sc_strength, weight stats, dr_spread, 5-repo constellation, reading order for newcomers. Cross-linked from INDEX, TLDR, README, manuscript drafts README."
+    },
+    {
+      "id": "F-40",
+      "group": "M",
+      "title": "FIGURES.md \u2014 curated headline-plot gallery (claim \u00d7 path \u00d7 reproduce cmd)",
+      "category": "documentation",
+      "status": "done",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "FIGURES.md"
+      ],
+      "detail": "Surfaces the 8 most-important figures (fig_three_panel, fig_pareto Adult/COMPAS/German, fig_tradeoff buffer, fig_beta_vs_boot, fig_high_shift_eoo, fig_compare buffer-multimethod), each with the claim it supports and the one-line reproduction command. Includes chart-convention legends (Pareto axes, y=x dashed line on vs-alpha plots)."
+    },
+    {
+      "id": "F-41",
+      "group": "M",
+      "title": "PROOF_MAP.md \u2014 theorem \u00d7 assumption \u00d7 empirical-validation map",
+      "category": "documentation",
+      "status": "done",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "PROOF_MAP.md"
+      ],
+      "detail": "Six entries (T-1 EOO budget, T-1k multi-group, T-2 DP budget, T-3 DR/IF-bootstrap, L-1 sample-size floor, L-2 cal-vs-test gap). For each: boxed statement, assumption set with M-prefix \u2194 audit diagnostics, proof location (file+section anchor), empirical validation experiment (dir + headline number). Closes with a note on (M3) weight-cap and Bernstein-Var(w) tightening."
+    },
+    {
+      "id": "F-42",
+      "group": "M",
+      "title": "TLDR delta-vs-original-FaiREE table for ML/fairness reviewers",
+      "category": "documentation",
+      "status": "done",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "fairee-experiment",
+      "refs": [
+        "TLDR.md"
+      ],
+      "detail": "8-axis table mapping each contribution back to the original ICLR 2023 FaiREE paper (missingness, fairness criteria, identification, admission test, T1 slack, multi-group, cal-vs-test, operational). Surfaces what's strictly new vs what's carried over without modification."
     }
   ]
 }
