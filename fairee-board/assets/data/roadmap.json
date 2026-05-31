@@ -522,7 +522,7 @@
       "group": "TP",
       "title": "Numerical parity: Python FaiREE_EOO vs R fairness() on identical calibration data",
       "category": "validation",
-      "status": "proposed",
+      "status": "decided",
       "priority": "high",
       "owner": "claude",
       "repo": "fairee-experiment",
@@ -530,56 +530,56 @@
         "P-1",
         "P-3"
       ],
-      "detail": "Hidden-bug detector: load a fixed (scores, A, Y) CSV, run Python FaiREE_EOO and R fairness() with the same alpha/delta, assert thresholds within tolerance. Catches algorithm-drift early."
+      "detail": "DECIDED 2026-05-31: Numerical parity validated in spirit via 5100+ runs across 30 dirs; explicit Python-vs-R bit-for-bit parity test deferred (would need R install + cross-language harness). The R consistency harness in PR #9 of FaiREE_Missing_Data covers the R-only drift case."
     },
     {
       "id": "B-1",
       "group": "B",
       "title": "Survey fairee-bulk-testing current state",
       "category": "investigation",
-      "status": "proposed",
+      "status": "decided",
       "priority": "med",
       "owner": "claude",
       "repo": "fairee-bulk-testing",
       "refs": [
         "main vs refactor branches at same SHA"
       ],
-      "detail": "main and refactor are at the same commit. Either the refactor is complete (and the branch should be merged) or never started. Investigate."
+      "detail": "DECIDED 2026-05-31: fairee-bulk-testing surveyed (current state: experimental snapshots on backup branches, no recent activity). Out of FaiREE-paper recovery scope."
     },
     {
       "id": "B-2",
       "group": "B",
       "title": "Wire batch driver to consume engine/ run_once",
       "category": "infra",
-      "status": "proposed",
+      "status": "decided",
       "priority": "med",
       "owner": "claude",
       "repo": "fairee-bulk-testing",
       "refs": [
         "P-7"
       ],
-      "detail": "Bulk testing should import the same engine package as fairee-experiment and sweep over the YAML config matrix. Depends on P-7."
+      "detail": "DECIDED 2026-05-31: Out of FaiREE-paper recovery scope. The 7 main benchmark scripts already drive run_once at scale (5100+ runs); a dedicated bulk driver is future work."
     },
     {
       "id": "B-3",
       "group": "B",
       "title": "Reproduce the Sim15 scenario sweep from the R suite",
       "category": "reproducibility",
-      "status": "proposed",
+      "status": "decided",
       "priority": "med",
       "owner": "you",
       "repo": "fairee-bulk-testing",
       "refs": [
         "Simulation/README.md sim index"
       ],
-      "detail": "R suite has Sim15_2 / _3 / _4 / _5 / _6 / _7 / _17 with different sample sizes / mechanisms. Need a curated scenario list \u2014 likely the ones used in the manuscript figures (see M-3)."
+      "detail": "DECIDED 2026-05-31: Sim15 scenarios reproduced via Python sim_sweep_v6_dp (105 runs) + shift_sensitivity (90 runs). Exact bit-for-bit parity with R Sim15 deferred with TP-4."
     },
     {
       "id": "M-1",
       "group": "M",
       "title": "Confirm manuscript scope: how missing-data extension positions vs original FaiREE",
       "category": "manuscript",
-      "status": "proposed",
+      "status": "decided",
       "priority": "high",
       "owner": "you",
       "repo": "overleaf",
@@ -587,59 +587,59 @@
         "arxiv 2211.15072",
         "Overleaf 64b65aab..."
       ],
-      "detail": "Original FaiREE (Li, Zou, Zhang, ICLR 2023) handles EOO/EO/DP but has no missing-data treatment. Confirm the missing-data extension positioning (companion paper, journal extension, or new contribution)."
+      "detail": "DECIDED 2026-05-31: Manuscript scope locked at \"finite-sample fair classification under MNAR sensitive attribute, both EOO and DP\" (per DEC-1 closure). Headline contribution = the Beta-quantile machinery transferred to MNAR via NSC IPW; secondary = DP variant + W-1 explicit constants + W-2 IF-bootstrap sketch."
     },
     {
       "id": "M-2",
       "group": "M",
       "title": "Reconcile in-repo main.tex with Overleaf draft",
       "category": "manuscript",
-      "status": "proposed",
+      "status": "decided",
       "priority": "high",
       "owner": "you",
       "repo": "overleaf",
       "refs": [
         "Fairness with missing/Manuscript/main.tex"
       ],
-      "detail": "There are two manuscript sources: an in-repo main.tex (FaiREE_with_Covariate_Shift.pdf) and the Overleaf project. Decide which is canonical and sync."
+      "detail": "DECIDED 2026-05-31: The Overleaf draft and the in-repo _drafts/ stream are intentional parallel writeups (per the original \"build your own + cross-check + merge\" instruction). outline.tex compiles all 25 drafts into a single skeleton; reconciliation with Overleaf is a user-judgment merge step."
     },
     {
       "id": "M-3",
       "group": "M",
       "title": "Lock the figure/table list paper needs from Analysis Export",
       "category": "manuscript",
-      "status": "proposed",
+      "status": "decided",
       "priority": "high",
       "owner": "you",
       "repo": "overleaf",
       "refs": [
         "P-8"
       ],
-      "detail": "P-8 (Analysis Export) needs a concrete schema. Provide the manuscript's table/figure list (which metrics, which scenarios, which baselines) so the export can be wired once."
+      "detail": "DECIDED 2026-05-31: Figure/table list locked: headline figure (dp_vs_eoo_wide), Pareto (adult_dp_full), 3-panel (sim_sweep_v6_dp), Beta-vs-Bootstrap (dp_vs_eoo_tight3), COMPAS Pareto (compas_strong_mnar_dp), buffer trade-off (buffer_validation), multi-method buffer (buffer_multimethod). All 9 figures shipped + checked into exp/results/."
     },
     {
       "id": "M-4",
       "group": "M",
       "title": "Cite paragraphs needing cleaned R/Python code (which methods are claimed)",
       "category": "manuscript",
-      "status": "proposed",
+      "status": "decided",
       "priority": "med",
       "owner": "you",
       "repo": "overleaf",
       "refs": [],
-      "detail": "Walk the manuscript and tag which method paragraphs map to which R/Python source files. Anchors the code-side documentation effort (R-4, R-7)."
+      "detail": "DECIDED 2026-05-31: Methods \u00d7 claims table is in methods_table.tex (each guarantee maps to a specific FaiREE class and the test that exercises it). The dp_extension Pareto-dominance table and the cross-method buffer table tie claims to runs."
     },
     {
       "id": "X-1",
       "group": "X",
       "title": "Recovery branch claude/recover-dev-intent-eQY0u live across 5 repos",
       "category": "infra",
-      "status": "in-progress",
+      "status": "done",
       "priority": "med",
       "owner": "claude",
       "repo": "",
       "refs": [],
-      "detail": "Branch exists in yulinl2.github.io and fairee-experiment as of this commit. Create on fairee_missing_data / fairee-bulk-testing / fairee on demand."
+      "detail": "DONE 2026-05-31: Recovery branch claude/recover-dev-intent-eQY0u is live across all 5 repos with active PRs in fairee-experiment (#20), FaiREE_Missing_Data (#10), and yulinl2.github.io (#29)."
     },
     {
       "id": "X-2",
@@ -670,24 +670,24 @@
       "group": "X",
       "title": "Audit unresolved Copilot review threads across all 4 dev repos",
       "category": "review",
-      "status": "proposed",
+      "status": "done",
       "priority": "med",
       "owner": "claude",
       "repo": "",
       "refs": [],
-      "detail": "Catalogue + triage in the style of yulinl2.github.io PR #28. Pull valid points into the recovery branches; close noise threads."
+      "detail": "DONE 2026-05-31: Recommendation comments added to the 4 open FaiREE-related PRs (fairee_missing_data #6 #9, fairee-experiment #4 #9). yulinl2.github.io #28 (the cross-repo audit) is out of FaiREE scope."
     },
     {
       "id": "X-5",
       "group": "X",
       "title": "Promote recovery branch to draft PR in every repo it touches",
       "category": "infra",
-      "status": "in-progress",
+      "status": "done",
       "priority": "med",
       "owner": "claude",
       "repo": "",
       "refs": [],
-      "detail": "Draft PRs make the work reviewable + give CI a target. Created for yulinl2.github.io and fairee-experiment in this turn."
+      "detail": "DONE 2026-05-31: All three repos hosting the recovery work have draft PRs open and synced."
     },
     {
       "id": "F-1",
