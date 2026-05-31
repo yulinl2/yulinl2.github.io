@@ -480,14 +480,14 @@
       "group": "TP",
       "title": "Restore CI lint+format (disabled during early dev per PR #5)",
       "category": "CI",
-      "status": "proposed",
+      "status": "closed",
       "priority": "low",
       "owner": "you",
       "repo": "fairee-experiment",
       "refs": [
         "PR #5"
       ],
-      "detail": "PR #5 stripped lint/format from CI 'for now'. Re-enable once the engine package is importable (P-1) and there's stable code to format."
+      "detail": "CLOSED 2026-05-31: Restored CI lint workflow in .github/workflows/auto-format.yml using ruff (replaces flake8+black+isort). Non-blocking continue-on-error: true so it surfaces warnings without blocking PR merges; flip to false when codebase is fully clean."
     },
     {
       "id": "TP-2",
