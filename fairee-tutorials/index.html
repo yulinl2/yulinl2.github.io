@@ -27,9 +27,18 @@
 <main id="main"><div class="wrap">
   <h1>Tutorials</h1>
   <p class="lede">
-    Hands-on walkthroughs for the FaiREE-with-missing-data Python pipeline
-    (<a href="https://github.com/yulinl2/fairee-experiment">code repo</a>,
-    <a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/TLDR.md">TLDR.md</a>).
+    <strong>What FaiREE does:</strong> you give it a trained classifier's predicted scores
+    plus a sensitive attribute (e.g. race, gender) on a calibration sample; it returns
+    per-group score thresholds so the group-wise true-positive-rate gap (or admission-rate gap)
+    stays below your chosen budget α with high probability. The "missing data" extension
+    handles the case where the sensitive attribute is missing for some calibration rows in
+    a way that depends on the unobserved value (MNAR — Missing-Not-At-Random).
+  </p>
+  <p class="lede">
+    Hands-on walkthroughs for the
+    <a href="https://github.com/yulinl2/fairee-experiment">Python pipeline</a>
+    (<a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/TLDR.md">TLDR.md</a>
+    for the 90-second project summary).
     Each tutorial is reading-time ≈ 5 minutes; reproduce-time ≈ 2–5 minutes.
   </p>
   <p class="meta">

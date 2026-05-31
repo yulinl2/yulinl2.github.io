@@ -30,7 +30,15 @@
 <main id="main">
   <section class="intro wrap">
     <h1>Decision &amp; Roadmap Board</h1>
-    <p id="projectSummary" class="lede">—</p>
+    <p class="lede">
+      <strong>What this project does.</strong> FaiREE is a library that takes a trained classifier's scores
+      and a sensitive attribute (e.g. race, gender) and returns per-group thresholds so the group-wise
+      true-positive-rate gap stays below a user-chosen budget &alpha; with provable, finite-sample
+      certainty. This branch extends it to handle the case where the sensitive attribute or outcome is
+      <em>missing for some calibration rows</em> in a way that depends on the unobserved value
+      (Missing-Not-At-Random, MNAR). The board below tracks the work-items closing that extension.
+    </p>
+    <p id="projectSummary" class="lede" style="margin-top:0">—</p>
     <div class="meta">
       <span class="chip" id="chipUpdated">updated —</span>
       <span class="chip" id="chipClosure" title="Share of items in done/closed/decided status">closure —</span>
