@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Audit 1 — Bibliography &amp; label health</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#5b6cab">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="./">FaiREE<span class="brand-sub">· audits</span></a>
+    <div class="crumbs">
+      <a href="./">audits</a> · 1. bibliography &amp; labels
+    </div>
+  </nav>
+</header>
+
+<main id="main"><div class="wrap">
+  <h1>Audit 1 · Bibliography &amp; label health</h1>
+  <p class="lede">
+    Re-derived <code>\cite{}</code> ↔ <code>reflist_drafts.bib</code> consistency
+    and internal <code>\ref{}</code> ↔ <code>\label{}</code> consistency across
+    all 25 draft .tex files in <code>FaiREE_Missing_Data/Fairness with
+    missing/Manuscript/_drafts/</code>.
+  </p>
+  <p class="meta">
+    Audit method: shell sweep + diff. Results in repo as
+    <code>drafts/README.md</code> "Bibliography + label health" section.
+  </p>
+
+  <h2>Citation consistency — 100% clean</h2>
+  <p>
+    <span class="tag tag-ok">PASS</span>
+    Cite keys referenced from .tex but missing from .bib:
+    <strong>0</strong>.
+  </p>
+  <ul>
+    <li>28 unique <code>\cite{}</code> keys across the drafts.</li>
+    <li>31 entries in <code>reflist_drafts.bib</code>.</li>
+    <li>4 unused entries kept for future use:
+      <code>efron1981nonparametric</code>, <code>pierson2021algorithmic</code>,
+      <code>robins1997non</code>, <code>tsiatis2007</code>.</li>
+  </ul>
+
+  <h2>Internal-reference consistency — 7/12 resolved</h2>
+  <p>
+    <span class="tag tag-warn">PARTIAL</span>
+    Initial sweep found 12 <code>\ref{}</code>/<code>\eqref{}</code>/<code>\cref{}</code>
+    targets with no matching <code>\label{}</code> anywhere in the drafts.
+    7 were genuinely fixable (the target existed but lacked the label
+    key); 5 are forward-references that legitimately belong to sections
+    not yet pulled into the drafts.
+  </p>
+
+  <h3>Resolved (7 sites)</h3>
+  <table>
+    <thead><tr><th>Ref key</th><th>Cited from</th><th>Label added in</th></tr></thead>
+    <tbody>
+      <tr><td><code>eq:sc</code></td><td><code>correction_self_censoring.tex</code></td><td>self-censoring equation in same file</td></tr>
+      <tr><td><code>sec:audit-tool</code></td><td><code>budget_vs_empirical.tex</code></td><td>aliases audit-summary subsection in <code>assumptions_audit.tex</code></td></tr>
+      <tr><td><code>sec:dr-diagnostic</code></td><td>4 files</td><td>same audit-summary subsection (alias)</td></tr>
+      <tr><td><code>sec:sensitivity</code></td><td><code>assumptions_audit.tex</code></td><td>same audit-summary subsection (alias)</td></tr>
+      <tr><td><code>sec:data-gen</code></td><td><code>experiments.tex</code></td><td>aliases <code>sec:syn</code> in same file</td></tr>
+      <tr><td><code>sec:doublyrobust</code></td><td><code>proof_sketch.tex</code></td><td>aliases <code>app:dr_bootstrap</code> in <code>dr_bootstrap_sketch.tex</code></td></tr>
+      <tr><td><code>tab:adult</code>, <code>tab:sim-headline</code></td><td><code>experiments.tex</code></td><td>alias <code>tab:headline</code> in <code>headline_table.tex</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Residual dangling refs (5 sites)</h3>
+  <p>Forward-references to sections expected to be supplied by the Overleaf draft at merge time:</p>
+  <ul>
+    <li><code>prop:pessimistic</code> — referenced by <code>theory.tex</code>; the Proposition needs to be written into <code>proof_sketch.tex</code> Appendix <code>app:proofs</code>.</li>
+    <li><code>sec:discussion</code> — referenced by <code>methodology.tex</code>; lives in Overleaf §9.</li>
+    <li><code>sec:dr-ablation</code> — referenced by <code>experiments.tex</code>; could be inferred from <code>dr_bootstrap_sketch.tex sec:w2_e2e</code> or written into Overleaf §4.x.</li>
+    <li><code>sec:shift-ablation</code> — referenced by <code>findings_summary.tex</code>; relates to <code>w_clip_ablation.tex</code> or a shift-sensitivity writeup not yet drafted.</li>
+  </ul>
+
+  <h2>Reproduce</h2>
+  <pre><code>cd "FaiREE_Missing_Data/Fairness with missing/Manuscript"
+
+# Citation consistency
+grep -hoP '@\w+\{\K[a-zA-Z0-9_]+' reflist_drafts.bib | sort -u &gt; /tmp/bib_keys.txt
+cd _drafts
+grep -hoP '\\cite[tp]?\{\K[^}]+' *.tex | tr ',' '\n' | tr -d ' ' | sort -u &gt; /tmp/cite_keys.txt
+comm -23 /tmp/cite_keys.txt /tmp/bib_keys.txt    # cited-but-undefined (should be empty)
+comm -13 /tmp/cite_keys.txt /tmp/bib_keys.txt    # defined-but-uncited (4 entries)
+
+# Label consistency
+grep -hoP '\\label\{\K[^}]+' *.tex | sort -u &gt; /tmp/labels.txt
+grep -hoP '\\(ref|eqref|cref|autoref)\{\K[^}]+' *.tex | sort -u &gt; /tmp/refs.txt
+comm -23 /tmp/refs.txt /tmp/labels.txt           # 5 residual dangling refs
+</code></pre>
+
+  <h2>Commits</h2>
+  <ul>
+    <li><code>manuscript: resolve 7 of 12 dangling \ref{} targets by adding labels</code></li>
+    <li><code>docs(drafts/README): record bibliography + label health sweep results</code></li>
+  </ul>
+
+  <div class="footer">
+    <a href="./">← back to audits</a>
+  </div>
+</div></main>
+</body>
+</html>

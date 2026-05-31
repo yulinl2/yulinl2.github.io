@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FaiREE × Missing Data — Audits</title>
+  <meta name="description" content="Consistency audits run during the 2026-05 recovery marathon.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#5b6cab">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="./">FaiREE<span class="brand-sub">· audits</span></a>
+    <div class="crumbs">
+      <a href="../fairee-board/">board</a>
+      &nbsp;·&nbsp;
+      <a href="../fairee-tutorials/">tutorials</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main"><div class="wrap">
+  <h1>Audits</h1>
+  <p class="lede">
+    Consistency-audit reports run during the 2026-05 recovery marathon. Each one
+    re-derives a property of the codebase / manuscript / docs from primary
+    artifacts and reports what was found — including the corrections applied.
+  </p>
+  <p class="meta">
+    All findings are reproducible from the recovery branch
+    <code>claude/recover-dev-intent-eQY0u</code> on the five repos.
+  </p>
+
+  <div class="cards">
+    <a class="card" href="01-bibliography-and-labels.html">
+      <span class="card-num">Audit 1 · manuscript</span>
+      <div class="card-title">Bibliography &amp; label health</div>
+      <div class="card-desc">
+        Re-derived <code>\cite{}</code> ↔ <code>.bib</code> consistency
+        across all 25 draft .tex files. Result: <strong>0 broken citations</strong>.
+        Internal <code>\ref{}</code> targets: 7 / 12 dangling refs resolved,
+        5 residuals documented as expected-from-Overleaf merge.
+      </div>
+    </a>
+    <a class="card" href="02-recommender-runner-consistency.html">
+      <span class="card-num">Audit 2 · code</span>
+      <div class="card-title">Recommender ↔ runner consistency</div>
+      <div class="card-desc">
+        Audited the recommender's outputs across all (notion × miss_pattern
+        × n_cal) combinations. Found <strong>two real silent-downgrade bugs</strong>
+        where the runner ignored the recommender's <code>test='bootstrap'</code>
+        suggestion. Both fixed + locked in with regression tests.
+      </div>
+    </a>
+    <a class="card" href="03-headline-numbers-verified.html">
+      <span class="card-num">Audit 3 · empirics</span>
+      <div class="card-title">Headline numbers verified</div>
+      <div class="card-desc">
+        Every empirical claim in TLDR.md / FAQ.md / PROOF_MAP.md /
+        manuscript drafts cross-checked against the actual result-dir
+        CSVs. Caught one Adult-vs-COMPAS attribution mistake and one
+        loose "4-5× reduction" claim that needed grounding.
+      </div>
+    </a>
+  </div>
+
+  <h2>Marathon trajectory snapshot</h2>
+  <table>
+    <thead><tr><th>Metric</th><th>Start of recovery</th><th>End of marathon</th></tr></thead>
+    <tbody>
+      <tr><td>Tests passing</td><td>43</td><td>108</td></tr>
+      <tr><td>Algorithm classes</td><td>1 (FaiREE base)</td><td>7 (binary EOO + DP + multi-group + DR + IF-bootstrap)</td></tr>
+      <tr><td>Manuscript .tex files</td><td>0</td><td>25 (~3,600 lines)</td></tr>
+      <tr><td>Benchmark scripts</td><td>—</td><td>13 (10 with <code>--buffer</code>)</td></tr>
+      <tr><td>Result dirs (experimental runs)</td><td>—</td><td>32 dirs (~5,100 runs)</td></tr>
+      <tr><td>Decision-board items</td><td>—</td><td>91 (90 done/closed/decided; R-9 blocked)</td></tr>
+      <tr><td>Audit-module coverage</td><td>—</td><td>97%</td></tr>
+      <tr><td>Active recovery PRs</td><td>0</td><td>5 (across all 5 repos)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Theoretical closures landed during the marathon</h2>
+  <ul>
+    <li><strong>W-1</strong>: explicit constants for Theorem 1's slack:
+      <code>c_0 = 1.18/min(α, 1-α) + 2.04</code>, with a Bernstein-Var(w)
+      tightening paragraph for concentrated weight distributions.
+      (<code>proof_sketch.tex sec:w1_constants</code>)</li>
+    <li><strong>W-2 (Donsker)</strong>: covering bound on the IF class via
+      VC=1 indicator + Lipschitz composition + plug-in nuisance error.
+      (<code>dr_bootstrap_sketch.tex sec:w2_donsker</code>)</li>
+    <li><strong>W-2 (uniform-in-B)</strong>: explicit finite-sample B-dependence
+      via the half-normal density at the boundary:
+      <code>σ_ψ / (2·φ(z_{1-δ/2})) · √(log(8/δ)/(2B))</code>.
+      Empirically 80% → 0% test-set fail rate at strict α under strong MNAR.
+      (<code>dr_bootstrap_sketch.tex sec:w2_uniform_B</code>)</li>
+    <li><strong>DEC-1</strong>: DP variant of FaiREE shipped as
+      <code>FaiREEDPMissing</code> + <code>FaiREEMultiGroupDP</code>, sharing all
+      IPW / NSC / multi-group / bootstrap infrastructure.
+      (<code>dp_extension.tex</code>)</li>
+    <li><strong>DEC-2 + DEC-3</strong>: decided with manuscript framing
+      (IPW canonical, NSC default).</li>
+  </ul>
+
+  <div class="footer">
+    Companion sections: <a href="../fairee-board/">decision board</a> · <a href="../fairee-tutorials/">tutorials</a>.
+    Hosted on <code>yulinl2.github.io</code> (noindex; for the project team).
+  </div>
+</div></main>
+</body>
+</html>

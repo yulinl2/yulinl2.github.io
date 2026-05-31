@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FaiREE × Missing Data — Tutorials</title>
+  <meta name="description" content="Hands-on tutorials for the FaiREE-with-missing-data Python pipeline.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#5b6cab">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="./">FaiREE<span class="brand-sub">· tutorials</span></a>
+    <div class="crumbs">
+      <a href="../fairee-board/">board</a>
+      &nbsp;·&nbsp;
+      <a href="../fairee-audits/">audits</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main"><div class="wrap">
+  <h1>Tutorials</h1>
+  <p class="lede">
+    Hands-on walkthroughs for the FaiREE-with-missing-data Python pipeline
+    (<a href="https://github.com/yulinl2/fairee-experiment">code repo</a>,
+    <a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/TLDR.md">TLDR.md</a>).
+    Each tutorial is reading-time ≈ 5 minutes; reproduce-time ≈ 2–5 minutes.
+  </p>
+  <p class="meta">
+    Audience tier: mid (collaborator picking up the project, practitioner shipping a fair classifier).
+    See <a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/GLOSSARY.md">GLOSSARY.md</a>
+    for plain-language definitions of any acronym used below.
+  </p>
+
+  <div class="cards">
+    <a class="card" href="01-getting-started.html">
+      <span class="card-num">Tutorial 1 · 5 min</span>
+      <div class="card-title">Getting started — install &amp; quickstart</div>
+      <div class="card-desc">
+        Clone the repo, run <code>exp/quickstart.py</code>, and read its
+        5-method output. By the end you'll know what the EOO gap, DP gap, and
+        audit status mean for your data.
+      </div>
+    </a>
+    <a class="card" href="02-auto-recommender.html">
+      <span class="card-num">Tutorial 2 · 5 min</span>
+      <div class="card-title">Method selection with <code>method='auto'</code></div>
+      <div class="card-desc">
+        Let the recommender pick a FaiREE variant from your data shape +
+        fairness criterion + missingness pattern. Walk through each of the
+        6 routing branches and what the resulting <code>rationale</code> tells you.
+      </div>
+    </a>
+    <a class="card" href="03-reading-the-audit.html">
+      <span class="card-num">Tutorial 3 · 7 min</span>
+      <div class="card-title">Reading the audit</div>
+      <div class="card-desc">
+        Every <span class="tag tag-fail">FAIL</span> / <span class="tag tag-warn">WARN</span> /
+        <span class="tag tag-info">INFO</span> the audit can emit, what it
+        means about your run, and what to do about it.
+      </div>
+    </a>
+  </div>
+
+  <h2>How to use these</h2>
+  <p>Open the tutorial that matches your situation:</p>
+  <ul>
+    <li>If you've never run the pipeline before → start with <a href="01-getting-started.html">#1</a>.</li>
+    <li>If you have data and want the algorithm to choose for you → <a href="02-auto-recommender.html">#2</a>.</li>
+    <li>If you see <code>audit_status</code> in your results and aren't sure what it means → <a href="03-reading-the-audit.html">#3</a>.</li>
+  </ul>
+
+  <h2>Where the deep references live</h2>
+  <ul>
+    <li><a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/TLDR.md">TLDR.md</a> — 90-second project summary.</li>
+    <li><a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/INDEX.md">INDEX.md</a> — algorithm catalogue + benchmark catalogue + board state.</li>
+    <li><a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/GLOSSARY.md">GLOSSARY.md</a> — plain-language definitions.</li>
+    <li><a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/FIGURES.md">FIGURES.md</a> — curated headline-plot gallery.</li>
+    <li><a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/PROOF_MAP.md">PROOF_MAP.md</a> — every theorem with assumptions ↔ proof ↔ empirical-validation.</li>
+    <li><a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/FAQ.md">FAQ.md</a> — anticipated reviewer/maintainer questions.</li>
+  </ul>
+
+  <div class="footer">
+    Companion sections: <a href="../fairee-board/">decision board</a> · <a href="../fairee-audits/">audits</a>.
+    Hosted on <code>yulinl2.github.io</code> (noindex; for the project team).
+  </div>
+</div></main>
+</body>
+</html>
