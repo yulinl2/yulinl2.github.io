@@ -1411,6 +1411,42 @@
         "TLDR.md"
       ],
       "detail": "8-axis table mapping each contribution back to the original ICLR 2023 FaiREE paper (missingness, fairness criteria, identification, admission test, T1 slack, multi-group, cal-vs-test, operational). Surfaces what's strictly new vs what's carried over without modification."
+    },
+    {
+      "id": "F-43",
+      "group": "M",
+      "title": "fairee-writing/ — 4-page paper-writing guide on yulinl2.github.io",
+      "category": "documentation",
+      "status": "done",
+      "priority": "med",
+      "owner": "claude",
+      "repo": "yulinl2.github.io",
+      "refs": [
+        "fairee-writing/index.html",
+        "fairee-writing/01-section-map.html",
+        "fairee-writing/02-compile-checklist.html",
+        "fairee-writing/03-submission-checklist.html",
+        "fairee-writing/04-reproducibility-supplement.html"
+      ],
+      "detail": "Companion to fairee-tutorials/ (code-side) and fairee-audits/ (consistency reports). Targets the manuscript author: section map + integration order, compile checklist with pre-build sanity script, 5-phase submission readiness with per-venue notes (NeurIPS / ICML / TMLR / JMLR), reproducibility supplement packaging walkthrough."
+    },
+    {
+      "id": "F-44",
+      "group": "M",
+      "title": "All 5 residual dangling \\ref{} targets resolved",
+      "category": "manuscript",
+      "status": "done",
+      "priority": "high",
+      "owner": "claude",
+      "repo": "FaiREE_Missing_Data",
+      "refs": [
+        "proof_sketch.tex",
+        "shift_ablation.tex",
+        "limitations.tex",
+        "shrinkage_validation.tex",
+        "dr_bootstrap_sketch.tex"
+      ],
+      "detail": "Zero dangling \\ref{} targets remaining (verified by comm -23 refs.txt labels.txt). Resolutions: (a) prop:pessimistic Proposition + 2 remarks written into proof_sketch.tex sec:pessimistic; (b) sec:dr-ablation aliased to sec:w2_e2e; (c) sec:shift-ablation satisfied by new shift_ablation.tex draft with actual NSC-shift-sensitivity numbers from exp/results/shift_sensitivity/; (d) sec:discussion aliased to sec:limitations; (e) sec:shrinkage_validation aliased to sec:shrinkage. Bumps drafts inventory 25 -> 26 files (~3,800 lines)."
     }
   ]
 }
