@@ -68,6 +68,18 @@
     const ms = p.manuscript || {};
     $('#chipManuscript').textContent = 'manuscript: arxiv ' + (ms.arxiv_anchor || '—') + ' + Overleaf · ' + (ms.status || '');
     $('#chipBranch').textContent     = 'save target: ' + settings.owner + '/' + settings.repo + '@' + settings.branch;
+    // Closure-rate chip — surfaces "how much is done" at a glance
+    const items = state.items || [];
+    if (items.length){
+      const closed = items.filter(it => ['done', 'closed', 'decided'].includes(it.status)).length;
+      const pct = Math.round(100 * closed / items.length);
+      const el = $('#chipClosure');
+      if (el){
+        el.textContent = `closure: ${closed}/${items.length} (${pct}%)`;
+        el.classList.toggle('ok',   pct >= 95);
+        el.classList.toggle('warn', pct < 70);
+      }
+    }
   }
 
   function renderFilters(){
