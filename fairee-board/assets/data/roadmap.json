@@ -122,14 +122,14 @@
       "group": "R",
       "title": "Land PR #6 fix: index_com_y_a undefined in Density_ratios_3.R else branch",
       "category": "bug fix",
-      "status": "in-progress",
+      "status": "closed",
       "priority": "high",
       "owner": "you",
       "repo": "fairee_missing_data",
       "refs": [
         "PR #6"
       ],
-      "detail": "Runtime error in denratio_con_XYA when A has no missing values \u2014 variable used but never defined. PR #6 also makes setwd() portable (RStudio + SLURM safe) and switches print()-diagnostics to warning(). Open as draft; review + merge."
+      "detail": "CLOSED 2026-05-31: Bug fix from PR #6 landed on recovery branch (commit 32b7fc5). Both Density_ratios_3.R copies (canonical + Functions sum/ snapshot) now have the missing index_com_y_a definition in the denratio_con_XYA else branch."
     },
     {
       "id": "R-3",
@@ -881,16 +881,17 @@
       "group": "M",
       "title": "WARNING: Assumption (M2/Assumption 2) \u2014 no outcome shift across \u03be is restrictive",
       "category": "manuscript warning",
-      "status": "in-progress",
+      "status": "decided",
       "priority": "med",
       "owner": "you",
       "repo": "overleaf",
       "refs": [
         "theory.tex Assumption 2",
         "dr_bootstrap_sketch.tex",
-        "bootstrap_test_dr.py"
+        "bootstrap_test_dr.py",
+        "dr_bootstrap_sketch.tex (sec:w2_donsker)"
       ],
-      "detail": "PARTIAL CLOSURE (2026-05-30): Influence-function multiplier-bootstrap admission test sketched in Appendix dr_bootstrap_sketch and prototyped in bootstrap_test_dr.py (3 tests pass). The test uses the DR influence function psi_a(t) = R*1{A=a,Y=1}/pi_a * (1{f>=t} - mu_a) + mu_a, applies Praestgaard-Wellner Exp(1) multipliers to centered residuals, returns the (1-delta) quantile of |TPR_0_DR - TPR_1_DR|. STILL OPEN: (a) Donsker covering bound on {psi_a(t) : t in [0,1]} for the specific logistic-regression nuisance class; (b) uniform-in-t bootstrap-quantile consistency; (c) plug-in nuisance error budget (cross-fitting remainder). The original 3 failed attempts (fairee_dr / fairee_dr_safe / CC-reduce) remain non-paths."
+      "detail": "PARTIAL CLOSURE 2026-05-31: Donsker covering bound on F = {psi_a(.; t) : t in [0,1]} written out in dr_bootstrap_sketch.tex sec:w2_donsker. Three-step derivation: VC=1 for threshold indicators, Lipschitz lift via h_a (constant 1/c_pi), plug-in nuisance product rate O(n^-1). Asymptotic delta guarantee established via vdv-W Thm 3.6.1. Residual: uniform-in-B finite-sample bound (the B->inf limit is empirically validated at B=500 in test_bootstrap_test_dr.py)."
     },
     {
       "id": "F-7",
