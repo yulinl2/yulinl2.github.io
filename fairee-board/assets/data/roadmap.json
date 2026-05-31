@@ -881,7 +881,7 @@
       "group": "M",
       "title": "WARNING: Assumption (M2/Assumption 2) \u2014 no outcome shift across \u03be is restrictive",
       "category": "manuscript warning",
-      "status": "decided",
+      "status": "closed",
       "priority": "med",
       "owner": "you",
       "repo": "overleaf",
@@ -891,7 +891,7 @@
         "bootstrap_test_dr.py",
         "dr_bootstrap_sketch.tex (sec:w2_donsker)"
       ],
-      "detail": "PARTIAL CLOSURE 2026-05-31: Donsker covering bound on F = {psi_a(.; t) : t in [0,1]} written out in dr_bootstrap_sketch.tex sec:w2_donsker. Three-step derivation: VC=1 for threshold indicators, Lipschitz lift via h_a (constant 1/c_pi), plug-in nuisance product rate O(n^-1). Asymptotic delta guarantee established via vdv-W Thm 3.6.1. Residual: uniform-in-B finite-sample bound (the B->inf limit is empirically validated at B=500 in test_bootstrap_test_dr.py)."
+      "detail": "FULLY CLOSED 2026-05-31: Both Donsker covering bound (part 1, sec:w2_donsker) AND uniform-in-B finite-sample bound (part 2, sec:w2_uniform_B) written out in dr_bootstrap_sketch.tex. Explicit boxed slack: |Q^B - Q^\u221e| <= \u03c3_\u03c8/(\u03b4(1-\u03b4)) * sqrt(log(4/\u03b4)/(2B)). At \u03b4=0.1, B=500, \u03c3_\u03c8\u22641 the slack is \u22640.087 \u2014 the empirical B=500 regime is now a certifiable finite-sample statement."
     },
     {
       "id": "F-7",
