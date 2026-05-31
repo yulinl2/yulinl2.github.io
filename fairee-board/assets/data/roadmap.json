@@ -1,5 +1,5 @@
 {
-  "_comment": "FaiREE × Missing Data — research roadmap. Statuses: proposed | in-progress | blocked | decided | done. Owners: you | claude | copilot. Edit via the board UI (Save button commits this file via the GitHub Contents API) or hand-edit. Schema v1.",
+  "_comment": "FaiREE \u00d7 Missing Data \u2014 research roadmap. Statuses: proposed | in-progress | blocked | decided | done. Owners: you | claude | copilot. Edit via the board UI (Save button commits this file via the GitHub Contents API) or hand-edit. Schema v1.",
   "schema_version": 1,
   "updated": "2026-05-30",
   "project": {
@@ -72,7 +72,7 @@
     },
     {
       "id": "I",
-      "name": "R↔Python interop",
+      "name": "R\u2194Python interop",
       "repo": "fairee-experiment",
       "order": 4
     },
@@ -129,7 +129,7 @@
       "refs": [
         "PR #6"
       ],
-      "detail": "Runtime error in denratio_con_XYA when A has no missing values — variable used but never defined. PR #6 also makes setwd() portable (RStudio + SLURM safe) and switches print()-diagnostics to warning(). Open as draft; review + merge."
+      "detail": "Runtime error in denratio_con_XYA when A has no missing values \u2014 variable used but never defined. PR #6 also makes setwd() portable (RStudio + SLURM safe) and switches print()-diagnostics to warning(). Open as draft; review + merge."
     },
     {
       "id": "R-3",
@@ -320,7 +320,7 @@
     {
       "id": "P-1",
       "group": "P",
-      "title": "CRITICAL: make src/engine/ importable (add __init__.py + fix statsup→engine imports)",
+      "title": "CRITICAL: make src/engine/ importable (add __init__.py + fix statsup\u2192engine imports)",
       "category": "unblocker",
       "status": "done",
       "priority": "high",
@@ -330,7 +330,7 @@
         "PR #4 io_map.md",
         "src/fairee/algo/fairee.py"
       ],
-      "detail": "Merged effectively: PR fairee-experiment#20 has __init__.py at every level + statsup→engine import fix. CI green."
+      "detail": "Merged effectively: PR fairee-experiment#20 has __init__.py at every level + statsup\u2192engine import fix. CI green."
     },
     {
       "id": "P-2",
@@ -344,7 +344,7 @@
       "refs": [
         "PR #4"
       ],
-      "detail": "PR #4 is the single source of truth for the 8-stage pipeline and porting-status audit. Open as draft — review + merge to main so the rest of the team / Copilot can plan against it."
+      "detail": "PR #4 is the single source of truth for the 8-stage pipeline and porting-status audit. Open as draft \u2014 review + merge to main so the rest of the team / Copilot can plan against it."
     },
     {
       "id": "P-3",
@@ -370,9 +370,9 @@
       "owner": "claude",
       "repo": "fairee-experiment",
       "refs": [
-        "PR #4 io_map.md §Router"
+        "PR #4 io_map.md \u00a7Router"
       ],
-      "detail": "Implemented in src/engine/data/router/router.py — alias normalize + canonical-config hash + registry bootstrap. Tests cover module import (TP-2). See fairee-experiment#20."
+      "detail": "Implemented in src/engine/data/router/router.py \u2014 alias normalize + canonical-config hash + registry bootstrap. Tests cover module import (TP-2). See fairee-experiment#20."
     },
     {
       "id": "P-5",
@@ -384,9 +384,9 @@
       "owner": "claude",
       "repo": "fairee-experiment",
       "refs": [
-        "PR #4 io_map.md §Data Store"
+        "PR #4 io_map.md \u00a7Data Store"
       ],
-      "detail": "Implemented in src/engine/data/store.py — fcntl-locked NDJSON append/read + per-batch timestamps. See fairee-experiment#20."
+      "detail": "Implemented in src/engine/data/store.py \u2014 fcntl-locked NDJSON append/read + per-batch timestamps. See fairee-experiment#20."
     },
     {
       "id": "P-6",
@@ -412,24 +412,24 @@
       "owner": "claude",
       "repo": "fairee-experiment",
       "refs": [
-        "PR #4 io_map.md §Pipeline Runner"
+        "PR #4 io_map.md \u00a7Pipeline Runner"
       ],
-      "detail": "Implemented in src/engine/pipelines/runner.py — run_once(cfg) + sweep(grid, repeats). Drives the v0.1 sim_sweep + adult_benchmark. See fairee-experiment#20."
+      "detail": "Implemented in src/engine/pipelines/runner.py \u2014 run_once(cfg) + sweep(grid, repeats). Drives the v0.1 sim_sweep + adult_benchmark. See fairee-experiment#20."
     },
     {
       "id": "P-8",
       "group": "P",
-      "title": "Implement Analysis Export (metrics → LaTeX tables + plots)",
+      "title": "Implement Analysis Export (metrics \u2192 LaTeX tables + plots)",
       "category": "infra",
       "status": "done",
       "priority": "med",
       "owner": "claude",
       "repo": "fairee-experiment",
       "refs": [
-        "PR #4 io_map.md §Analysis Export",
+        "PR #4 io_map.md \u00a7Analysis Export",
         "M-3"
       ],
-      "detail": "Implemented in src/engine/analysis/{metrics,export}.py — accuracy / EOO / EO / DP gaps + aggregate_sweep + write_tex_table + plot_metric_vs. See fairee-experiment#20."
+      "detail": "Implemented in src/engine/analysis/{metrics,export}.py \u2014 accuracy / EOO / EO / DP gaps + aggregate_sweep + write_tex_table + plot_metric_vs. See fairee-experiment#20."
     },
     {
       "id": "I-1",
@@ -464,7 +464,7 @@
     {
       "id": "I-3",
       "group": "I",
-      "title": "Integration test: Python generate → R calibrate → Python apply",
+      "title": "Integration test: Python generate \u2192 R calibrate \u2192 Python apply",
       "category": "test",
       "status": "proposed",
       "priority": "med",
@@ -506,7 +506,7 @@
     {
       "id": "TP-3",
       "group": "TP",
-      "title": "End-to-end test of one sim config (data → train → calibrate → predict → metrics)",
+      "title": "End-to-end test of one sim config (data \u2192 train \u2192 calibrate \u2192 predict \u2192 metrics)",
       "category": "integration",
       "status": "done",
       "priority": "med",
@@ -515,7 +515,7 @@
       "refs": [
         "P-7"
       ],
-      "detail": "tests/test_fairee_missing.py + sim_sweep.py end-to-end on 180 configs (n × alpha × method × seed)."
+      "detail": "tests/test_fairee_missing.py + sim_sweep.py end-to-end on 180 configs (n \u00d7 alpha \u00d7 method \u00d7 seed)."
     },
     {
       "id": "TP-4",
@@ -572,7 +572,7 @@
       "refs": [
         "Simulation/README.md sim index"
       ],
-      "detail": "R suite has Sim15_2 / _3 / _4 / _5 / _6 / _7 / _17 with different sample sizes / mechanisms. Need a curated scenario list — likely the ones used in the manuscript figures (see M-3)."
+      "detail": "R suite has Sim15_2 / _3 / _4 / _5 / _6 / _7 / _17 with different sample sizes / mechanisms. Need a curated scenario list \u2014 likely the ones used in the manuscript figures (see M-3)."
     },
     {
       "id": "M-1",
@@ -707,7 +707,7 @@
     {
       "id": "F-2",
       "group": "TP",
-      "title": "v0.1 sim sweep — naive vs CC-FaiREE vs FaiREE-missing",
+      "title": "v0.1 sim sweep \u2014 naive vs CC-FaiREE vs FaiREE-missing",
       "category": "experiment",
       "status": "done",
       "priority": "high",
@@ -717,7 +717,7 @@
         "exp/results/sim_sweep/",
         "fairee-experiment#20"
       ],
-      "detail": "180 runs (n × alpha × method × seed=5). Headline: naive EOO gap ~0.20; FaiREE-missing @ alpha=0.10, n=4000: 0.034 (within budget) with -3 pp accuracy. Boundary degeneracy at alpha=0.05, small n explained by sample-complexity bound. Tables + 3 plots committed."
+      "detail": "180 runs (n \u00d7 alpha \u00d7 method \u00d7 seed=5). Headline: naive EOO gap ~0.20; FaiREE-missing @ alpha=0.10, n=4000: 0.034 (within budget) with -3 pp accuracy. Boundary degeneracy at alpha=0.05, small n explained by sample-complexity bound. Tables + 3 plots committed."
     },
     {
       "id": "F-3",
@@ -731,7 +731,7 @@
       "refs": [
         "exp/benchmarks/adult_benchmark.py"
       ],
-      "detail": "Adult v4 (648 runs, 6 methods × 3α × 3 missA × 2 missY × 6 reps): FaiREE Pareto-dominates Hardt by +2pp ACC at similar EOO. Strong-MNAR variant shows CC-FaiREE remains the most robust under heavy MNAR (NSC IPW variance hurts here)."
+      "detail": "Adult v4 (648 runs, 6 methods \u00d7 3\u03b1 \u00d7 3 missA \u00d7 2 missY \u00d7 6 reps): FaiREE Pareto-dominates Hardt by +2pp ACC at similar EOO. Strong-MNAR variant shows CC-FaiREE remains the most robust under heavy MNAR (NSC IPW variance hurts here)."
     },
     {
       "id": "F-4",
@@ -746,12 +746,12 @@
         "doc/notes/fairee_missing_theory.md",
         "FaiREE_Missing_Data#10"
       ],
-      "detail": "Beta-quantile proposition derived from scratch from arxiv 2211.15072 main.tex; intrinsic complexity calibrated (O(n M) with shrinkage vs O(n²M) grid); 3 explicit assumptions catalogued (NSC, no outcome shift across ξ, bounded density ratio); known places where finite-sample guarantee does not trivially transfer."
+      "detail": "Beta-quantile proposition derived from scratch from arxiv 2211.15072 main.tex; intrinsic complexity calibrated (O(n M) with shrinkage vs O(n\u00b2M) grid); 3 explicit assumptions catalogued (NSC, no outcome shift across \u03be, bounded density ratio); known places where finite-sample guarantee does not trivially transfer."
     },
     {
       "id": "F-5",
       "group": "R",
-      "title": "Three generator bugs in exp/methods/sim/generator.py — fixed",
+      "title": "Three generator bugs in exp/methods/sim/generator.py \u2014 fixed",
       "category": "bug fix",
       "status": "done",
       "priority": "high",
@@ -759,9 +759,9 @@
       "repo": "fairee-experiment",
       "refs": [
         "fairee-experiment#20",
-        "doc/notes/fairee_missing_theory.md §11"
+        "doc/notes/fairee_missing_theory.md \u00a711"
       ],
-      "detail": "(1) X_obs slice mismatch in _generate_missing_indicators_XA → einsum failure. (2) _compute_miss_mech_accl returns n-vector; caller expected scalar. (3) NaN-mask shape mismatch on dataset.features assignment + stale dataset.protected_attributes copy. All 3 fixed in this push; the original sanity_check() would never have passed pre-fix."
+      "detail": "(1) X_obs slice mismatch in _generate_missing_indicators_XA \u2192 einsum failure. (2) _compute_miss_mech_accl returns n-vector; caller expected scalar. (3) NaN-mask shape mismatch on dataset.features assignment + stale dataset.protected_attributes copy. All 3 fixed in this push; the original sanity_check() would never have passed pre-fix."
     },
     {
       "id": "F-6",
@@ -791,7 +791,7 @@
         "fairee_missing_data Fairness with missing/Simulation/Density_ratios_3.R",
         "F-1 caveat"
       ],
-      "detail": "Faithful Python port of R denratio_joint + helpers (num2bool, missPattern, propI, propensity, eta, MissMech, GMM, ipwMRF). NSCDensityRatio class fits via BFGS, computes density ratios for new points. Convergence checks + bounded weights. 5 unit tests pass. On sim at shift=1.0: fairee_nsc gives acc=0.556/EOO=0.054 vs CC's acc=0.466/EOO=0.104 — NSC tightens both metrics."
+      "detail": "Faithful Python port of R denratio_joint + helpers (num2bool, missPattern, propI, propensity, eta, MissMech, GMM, ipwMRF). NSCDensityRatio class fits via BFGS, computes density ratios for new points. Convergence checks + bounded weights. 5 unit tests pass. On sim at shift=1.0: fairee_nsc gives acc=0.556/EOO=0.054 vs CC's acc=0.466/EOO=0.104 \u2014 NSC tightens both metrics."
     },
     {
       "id": "P-10",
@@ -804,9 +804,9 @@
       "repo": "fairee-experiment",
       "refs": [
         "fairee.py::_find_thresholds_EOO",
-        "doc/notes/fairee_missing_theory.md §4"
+        "doc/notes/fairee_missing_theory.md \u00a74"
       ],
-      "detail": "Implemented as use_shrinkage=True kwarg on FaiREEMissingEOO. Analytical t_11_best formula from arxiv 2211.15072 §A, ported to IPW-effective marginals. 35% faster than grid scan; same EOO; +0.5pp accuracy on sim. Default remains grid for backward compat; users opt in via kwarg."
+      "detail": "Implemented as use_shrinkage=True kwarg on FaiREEMissingEOO. Analytical t_11_best formula from arxiv 2211.15072 \u00a7A, ported to IPW-effective marginals. 35% faster than grid scan; same EOO; +0.5pp accuracy on sim. Default remains grid for backward compat; users opt in via kwarg."
     },
     {
       "id": "DEC-1",
@@ -826,7 +826,7 @@
         "exp/results/dp_vs_eoo/",
         "exp/results/adult_dp/"
       ],
-      "detail": "CLOSED 2026-05-30: Resolved by support for BOTH notions. EOO remains the FaiREE-paper default (matches §A.7 derivation, larger empirical study); DP added as FaiREEDPMissing + FaiREEMultiGroupDP sharing the same Beta-quantile / IPW / NSC / Bonferroni machinery. Manuscript section dp_extension.tex documents when to choose which. Empirically: at strict alpha=0.05/n=1500, DP remains useful (acc 0.57) while EOO degenerates to the trivial predictor (Beta admit set empty below sample-size floor). Joint Equalized Odds is flagged as future work in limitations.tex."
+      "detail": "CLOSED 2026-05-30: Resolved by support for BOTH notions. EOO remains the FaiREE-paper default (matches \u00a7A.7 derivation, larger empirical study); DP added as FaiREEDPMissing + FaiREEMultiGroupDP sharing the same Beta-quantile / IPW / NSC / Bonferroni machinery. Manuscript section dp_extension.tex documents when to choose which. Empirically: at strict alpha=0.05/n=1500, DP remains useful (acc 0.57) while EOO degenerates to the trivial predictor (Beta admit set empty below sample-size floor). Joint Equalized Odds is flagged as future work in limitations.tex."
     },
     {
       "id": "DEC-2",
@@ -842,7 +842,7 @@
         "methodology.tex",
         "limitations.tex (synthesis paragraph)"
       ],
-      "detail": "TRADE-OFFS (drafted 2026-05-30): IPW-path (current code): identifying assumption = bounded density ratio (M3) + ignorability/positivity. Finite-sample Beta-quantile guarantee holds; computational complexity O(n grid) per fit. Synthesis-path (stub manuscript's original): identifying assumption = correctly-specified outcome model + invertible density. Higher accuracy if model is correct, but no finite-sample guarantee — bias propagates from misspecification. IPW is the safer default for distribution-free fairness; synthesis is appropriate when the analyst trusts a parametric outcome model. RECOMMENDATION: ship IPW as canonical (matches FaiREE paper's spirit + closed-form theorem), include synthesis as §A.4 variant with empirical comparison if reviewer asks. Open: writing this up cleanly requires a user-level decision on which voice to use."
+      "detail": "TRADE-OFFS (drafted 2026-05-30): IPW-path (current code): identifying assumption = bounded density ratio (M3) + ignorability/positivity. Finite-sample Beta-quantile guarantee holds; computational complexity O(n grid) per fit. Synthesis-path (stub manuscript's original): identifying assumption = correctly-specified outcome model + invertible density. Higher accuracy if model is correct, but no finite-sample guarantee \u2014 bias propagates from misspecification. IPW is the safer default for distribution-free fairness; synthesis is appropriate when the analyst trusts a parametric outcome model. RECOMMENDATION: ship IPW as canonical (matches FaiREE paper's spirit + closed-form theorem), include synthesis as \u00a7A.4 variant with empirical comparison if reviewer asks. Open: writing this up cleanly requires a user-level decision on which voice to use."
     },
     {
       "id": "DEC-3",
@@ -858,27 +858,28 @@
         "appendix_nsc.tex",
         "correction_self_censoring.tex"
       ],
-      "detail": "RECOMMENDATION (drafted 2026-05-30): NSC strictly generalizes block (2^p_miss patterns vs K disjoint blocks); the code already uses NSC. The original 'block' framing in the manuscript stub is a corollary of NSC at K = 2 patterns, so it's not a separate methodology but a special case. The cleanest manuscript story: present NSC as the default, mention block as a degenerate case in §3.5 with one example. The Sadinle-vs-Li correction (correction_self_censoring.tex) already documents which NSC variant we use (Li 2023's self-censoring, more general than Sadinle's NSC). Open: nothing material — the code-level decision is closed; only the manuscript wording remains to settle."
+      "detail": "RECOMMENDATION (drafted 2026-05-30): NSC strictly generalizes block (2^p_miss patterns vs K disjoint blocks); the code already uses NSC. The original 'block' framing in the manuscript stub is a corollary of NSC at K = 2 patterns, so it's not a separate methodology but a special case. The cleanest manuscript story: present NSC as the default, mention block as a degenerate case in \u00a73.5 with one example. The Sadinle-vs-Li correction (correction_self_censoring.tex) already documents which NSC variant we use (Li 2023's self-censoring, more general than Sadinle's NSC). Open: nothing material \u2014 the code-level decision is closed; only the manuscript wording remains to settle."
     },
     {
       "id": "W-1",
       "group": "M",
-      "title": "WARNING: Assumption (M3) — Beta-quantile under IPW weights is not finite-sample-exact",
+      "title": "WARNING: Assumption (M3) \u2014 Beta-quantile under IPW weights is not finite-sample-exact",
       "category": "manuscript warning",
-      "status": "in-progress",
+      "status": "closed",
       "priority": "high",
       "owner": "you",
       "repo": "overleaf",
       "refs": [
-        "doc/notes/fairee_missing_theory.md §6",
-        "theory.tex Assumption M3"
+        "doc/notes/fairee_missing_theory.md \u00a76",
+        "theory.tex Assumption M3",
+        "proof_sketch.tex (sec:w1_constants)"
       ],
-      "detail": "Praestgaard-Wellner multiplier bootstrap admission test landed (bootstrap_test.py + test='bootstrap' kwarg + 'fairee_bootstrap' runner method, AND now 'fairee_dp_bootstrap' for the DP variant). Theoretically finite-sample valid for weighted samples. Empirically: matches Beta-quantile in uniform-weight regime (sanity); on small datasets (German Credit n_cal=250) delivers +4pp ACC over Beta at α=0.10 by admitting more candidates. On larger datasets (Adult n_cal=4000) Beta and bootstrap are within Monte-Carlo noise (confirmed for both EOO and DP in the dp_vs_eoo_tight3 sweep). Open: writing out the explicit O(n^{-1/2}) remainder bound with constants."
+      "detail": "CLOSED 2026-05-31: Explicit constants written out in proof_sketch.tex \"Explicit Constants (closing W-1)\" subsection. Boxed bound: P(|DEOO| > alpha) <= delta + c_0 * W * sqrt(log(n/delta)/n_min^a) with c_0 = 1.18/min(alpha, 1-alpha) + 2.04. Bernstein+DKW derivation; uses Hoeffding-form W^2 in place of Var(w) \u2014 tightening that is a clean follow-up but not required for the bound to be informative."
     },
     {
       "id": "W-2",
       "group": "M",
-      "title": "WARNING: Assumption (M2/Assumption 2) — no outcome shift across ξ is restrictive",
+      "title": "WARNING: Assumption (M2/Assumption 2) \u2014 no outcome shift across \u03be is restrictive",
       "category": "manuscript warning",
       "status": "in-progress",
       "priority": "med",
@@ -902,7 +903,7 @@
       "repo": "fairee-experiment",
       "refs": [
         "src/fairee/algo/baselines.py",
-        "FaiREE paper §5 baselines"
+        "FaiREE paper \u00a75 baselines"
       ],
       "detail": "AIF360 baselines + Feng et al. 2023 impute-then-classify baselines (mean_impute, missing_indicator) wired and benchmarked on Adult + COMPAS."
     },
@@ -918,7 +919,7 @@
       "refs": [
         "exp/benchmarks/compas_benchmark.py"
       ],
-      "detail": "COMPAS (5278 rows after ProPublica filter, race as A=1=Caucasian, two_year_recid as Y). 288 runs done. At no missingness: CC-FaiREE acc=0.652 EOO=0.061; fairee_nsc acc=0.657 EOO=0.078. NSC has small accuracy edge but slightly looser EOO control here — COMPAS doesn't exhibit strong covariate shift across missingness patterns, so the NSC reweighting can't pull ahead. The shift_sensitivity sweep (F-9) shows NSC's advantage emerges at shift >= 1.5."
+      "detail": "COMPAS (5278 rows after ProPublica filter, race as A=1=Caucasian, two_year_recid as Y). 288 runs done. At no missingness: CC-FaiREE acc=0.652 EOO=0.061; fairee_nsc acc=0.657 EOO=0.078. NSC has small accuracy edge but slightly looser EOO control here \u2014 COMPAS doesn't exhibit strong covariate shift across missingness patterns, so the NSC reweighting can't pull ahead. The shift_sensitivity sweep (F-9) shows NSC's advantage emerges at shift >= 1.5."
     },
     {
       "id": "F-9",
@@ -967,7 +968,7 @@
     {
       "id": "F-12",
       "group": "P",
-      "title": "High-shift sweep: NSC peaks at shift≈2-2.5, degrades at 3.0 (IPW variance)",
+      "title": "High-shift sweep: NSC peaks at shift\u22482-2.5, degrades at 3.0 (IPW variance)",
       "category": "experiment",
       "status": "done",
       "priority": "med",
@@ -976,7 +977,7 @@
       "refs": [
         "exp/results/shift_high/"
       ],
-      "detail": "90 runs at shift∈{1,1.5,2,2.5,3}, n=3000, alpha=0.10, 6 reps. EOO gap (CC, NSC): (0.043, 0.061)→(0.054, 0.056)→(0.061, 0.056)→(0.078, 0.062)→(0.064, 0.098). NSC's sweet spot is shift~2-2.5; at shift=3.0 inverse-propensity weights become unstable. Implication: paper claim should be 'NSC tightens EOO at moderate shift', not uniform domination. W-2 (doubly-robust) becomes the natural remedy for the high-shift regime."
+      "detail": "90 runs at shift\u2208{1,1.5,2,2.5,3}, n=3000, alpha=0.10, 6 reps. EOO gap (CC, NSC): (0.043, 0.061)\u2192(0.054, 0.056)\u2192(0.061, 0.056)\u2192(0.078, 0.062)\u2192(0.064, 0.098). NSC's sweet spot is shift~2-2.5; at shift=3.0 inverse-propensity weights become unstable. Implication: paper claim should be 'NSC tightens EOO at moderate shift', not uniform domination. W-2 (doubly-robust) becomes the natural remedy for the high-shift regime."
     },
     {
       "id": "F-13",
@@ -990,12 +991,12 @@
       "refs": [
         "w_clip_ablation.tex"
       ],
-      "detail": "At α=0.10 strong-MNAR Adult: w_clip=3 gives EOO=0.037 vs w_clip=25 EOO=0.071. Tighter is fairer but costs ~1pp accuracy. Default 10 is a middle ground; practitioners should sweep on held-out data."
+      "detail": "At \u03b1=0.10 strong-MNAR Adult: w_clip=3 gives EOO=0.037 vs w_clip=25 EOO=0.071. Tighter is fairer but costs ~1pp accuracy. Default 10 is a middle ground; practitioners should sweep on held-out data."
     },
     {
       "id": "F-14",
       "group": "P",
-      "title": "Adult strong-MNAR (γ=1.5) honest negative finding: CC-FaiREE still best",
+      "title": "Adult strong-MNAR (\u03b3=1.5) honest negative finding: CC-FaiREE still best",
       "category": "experiment",
       "status": "done",
       "priority": "high",
@@ -1009,7 +1010,7 @@
     {
       "id": "F-15",
       "group": "TP",
-      "title": "Unified comparison table + Pareto plots across 6 methods × 2 datasets",
+      "title": "Unified comparison table + Pareto plots across 6 methods \u00d7 2 datasets",
       "category": "experiment",
       "status": "done",
       "priority": "high",
@@ -1046,7 +1047,7 @@
       "refs": [
         "related_work.tex"
       ],
-      "detail": "Comprehensive comparison with prior approaches; positioning matrix shows our unique cell (finite-sample + missing A + missing Y + MNAR). Implemented Feng's missing-indicator baseline as a head-to-head check; under our missingness setup (only A/Y missing) the indicator carries no signal — Feng's claim relies on missing X."
+      "detail": "Comprehensive comparison with prior approaches; positioning matrix shows our unique cell (finite-sample + missing A + missing Y + MNAR). Implemented Feng's missing-indicator baseline as a head-to-head check; under our missingness setup (only A/Y missing) the indicator carries no signal \u2014 Feng's claim relies on missing X."
     },
     {
       "id": "F-18",
@@ -1075,7 +1076,7 @@
         "exp/benchmarks/german_benchmark.py",
         "exp/results/german"
       ],
-      "detail": "n=1000, gender as A, credit-worthiness as Y. 240 runs. Honest negative finding: naive baseline already within α=0.15 budget (EOO=0.036), so FaiREE's intervention is approximately the identity. Practical operational signal: run naive sanity check before invoking FaiREE."
+      "detail": "n=1000, gender as A, credit-worthiness as Y. 240 runs. Honest negative finding: naive baseline already within \u03b1=0.15 budget (EOO=0.036), so FaiREE's intervention is approximately the identity. Practical operational signal: run naive sanity check before invoking FaiREE."
     },
     {
       "id": "F-20",
@@ -1105,7 +1106,7 @@
         "fairee_dr.py",
         "W-2"
       ],
-      "detail": "DR cell counts: n_DR[y,a] = sum_X m_{y,a}(X) + sum_i w_i R_i (1{Y_i=y,A_i=a} - m_{y,a}(X_i)). 4-class OR fit on complete cases. Plugs into FaiREE EOO threshold search. Real-data strong-MNAR Adult: acc=0.848±0.002 EOO=0.077±0.034 vs CC's 0.829/0.050 — DR gains +1.9pp ACC. On mild-MNAR sim, DR underperforms (variance). Regime-specific tool."
+      "detail": "DR cell counts: n_DR[y,a] = sum_X m_{y,a}(X) + sum_i w_i R_i (1{Y_i=y,A_i=a} - m_{y,a}(X_i)). 4-class OR fit on complete cases. Plugs into FaiREE EOO threshold search. Real-data strong-MNAR Adult: acc=0.848\u00b10.002 EOO=0.077\u00b10.034 vs CC's 0.829/0.050 \u2014 DR gains +1.9pp ACC. On mild-MNAR sim, DR underperforms (variance). Regime-specific tool."
     },
     {
       "id": "F-22",
@@ -1119,12 +1120,12 @@
       "refs": [
         "method_choice.tex"
       ],
-      "detail": "sc_strength < 0.3 → CC-FaiREE; else if dr_spread > 0.05 → fairee_dr; else → fairee_nsc. Empirical heuristic from 1200+ runs across sim/Adult/COMPAS/German/shift-sensitivity."
+      "detail": "sc_strength < 0.3 \u2192 CC-FaiREE; else if dr_spread > 0.05 \u2192 fairee_dr; else \u2192 fairee_nsc. Empirical heuristic from 1200+ runs across sim/Adult/COMPAS/German/shift-sensitivity."
     },
     {
       "id": "F-23",
       "group": "P",
-      "title": "Honest finding: fairee_dr exceeds α-budget under strong MNAR (Beta-quantile breakdown)",
+      "title": "Honest finding: fairee_dr exceeds \u03b1-budget under strong MNAR (Beta-quantile breakdown)",
       "category": "theory",
       "status": "done",
       "priority": "high",
@@ -1134,7 +1135,7 @@
         "adult_strong_mnar_v2",
         "method_choice.tex"
       ],
-      "detail": "5-rep test showed DR +1.9pp ACC; 8-rep test showed DR EOO=0.119 (over α=0.10). The Beta-quantile guarantee relies on the empirical TPR rank being a sample quantile; DR-corrected cell counts break this. Open theoretical work: extend via Donsker or weighted-bootstrap."
+      "detail": "5-rep test showed DR +1.9pp ACC; 8-rep test showed DR EOO=0.119 (over \u03b1=0.10). The Beta-quantile guarantee relies on the empirical TPR rank being a sample quantile; DR-corrected cell counts break this. Open theoretical work: extend via Donsker or weighted-bootstrap."
     },
     {
       "id": "F-24",
@@ -1154,7 +1155,7 @@
     {
       "id": "F-25",
       "group": "TP",
-      "title": "COMPAS strong-MNAR: even CC-FaiREE struggles at α=0.10 (small n_test)",
+      "title": "COMPAS strong-MNAR: even CC-FaiREE struggles at \u03b1=0.10 (small n_test)",
       "category": "experiment",
       "status": "done",
       "priority": "high",
@@ -1163,7 +1164,7 @@
       "refs": [
         "compas_strong_mnar"
       ],
-      "detail": "On COMPAS γ=1.5 strong-MNAR, all methods exceed α=0.10 on test-set EOO. Reason: n_test ≈ 1300 with strong test-set MNAR; test-set TPR sampling SEM ~0.05-0.10 dominates. The Beta-quantile theorem bounds POPULATION DEOO, not the test-set realization. Documented in budget_vs_empirical.tex."
+      "detail": "On COMPAS \u03b3=1.5 strong-MNAR, all methods exceed \u03b1=0.10 on test-set EOO. Reason: n_test \u2248 1300 with strong test-set MNAR; test-set TPR sampling SEM ~0.05-0.10 dominates. The Beta-quantile theorem bounds POPULATION DEOO, not the test-set realization. Documented in budget_vs_empirical.tex."
     },
     {
       "id": "F-26",
@@ -1191,7 +1192,7 @@
       "refs": [
         "exp/quickstart.py"
       ],
-      "detail": "Single-script demonstration: toy MNAR data → 4 methods (naive / CC / NSC / DR) → comparison table + health audit. Useful for newcomers."
+      "detail": "Single-script demonstration: toy MNAR data \u2192 4 methods (naive / CC / NSC / DR) \u2192 comparison table + health audit. Useful for newcomers."
     },
     {
       "id": "F-28",
@@ -1219,7 +1220,7 @@
       "refs": [
         "exp/results/strong_mnar_pareto.png"
       ],
-      "detail": "2 (Adult, COMPAS) × 3 (α=0.05, 0.10, 0.15) grid with budget line. Visualizes the α-budget compliance story: only CC + NSC reliably satisfy at α=0.05."
+      "detail": "2 (Adult, COMPAS) \u00d7 3 (\u03b1=0.05, 0.10, 0.15) grid with budget line. Visualizes the \u03b1-budget compliance story: only CC + NSC reliably satisfy at \u03b1=0.05."
     },
     {
       "id": "F-30",
@@ -1234,7 +1235,7 @@
         "fairee_dr.py::FaiREEDRSafeMissingEOO",
         "method='fairee_dr_safe'"
       ],
-      "detail": "Beta-test on IPW counts (preserves finite-sample bound); misclass error proxy on DR cell counts (DR-stabilized candidate selection). Theoretically safest DR variant: always within the same α-budget as CC-FaiREE, strictly at-least-as-good in expectation. Empirically on sim shift=1.5 seed=3: CC EOO=0.027 ✓; DR EOO=0.151 ❌; DR-safe EOO=0.027 ✓. Closes the loop on W-2: principled DR + budget guarantee."
+      "detail": "Beta-test on IPW counts (preserves finite-sample bound); misclass error proxy on DR cell counts (DR-stabilized candidate selection). Theoretically safest DR variant: always within the same \u03b1-budget as CC-FaiREE, strictly at-least-as-good in expectation. Empirically on sim shift=1.5 seed=3: CC EOO=0.027 \u2713; DR EOO=0.151 \u274c; DR-safe EOO=0.027 \u2713. Closes the loop on W-2: principled DR + budget guarantee."
     },
     {
       "id": "F-31",
@@ -1248,7 +1249,7 @@
       "refs": [
         "method_choice.tex W-2 update"
       ],
-      "detail": "The Beta-quantile bound is on admitted SET, not on specific chosen candidate. CC's IPW-proxy minimization happens to align with tight-EOO; DR-proxy picks more accurate but looser candidates (still within the bound in probability, but empirical realization can exceed α). At strict α=0.05: CC EOO=0.011 vs DR-safe EOO=0.077. Operational: use CC for tight empirical EOO, DR variants for accuracy."
+      "detail": "The Beta-quantile bound is on admitted SET, not on specific chosen candidate. CC's IPW-proxy minimization happens to align with tight-EOO; DR-proxy picks more accurate but looser candidates (still within the bound in probability, but empirical realization can exceed \u03b1). At strict \u03b1=0.05: CC EOO=0.011 vs DR-safe EOO=0.077. Operational: use CC for tight empirical EOO, DR variants for accuracy."
     },
     {
       "id": "F-32",
@@ -1262,7 +1263,7 @@
       "refs": [
         "per-seed inspection"
       ],
-      "detail": "On 8 strong-MNAR Adult seeds at α=0.05: DR-safe sometimes picks thresholds ~0.04 (predict-everyone-positive) → low EOO but ACC drops to 0.66. CC picks thresholds ~0.99 with ACC 0.78. Both admitted by same Beta-test. Per-seed analysis shows DR-proxy is not aligned with IPW-admission, so it optimizes for accuracy at admissible-set corners that have catastrophically low accuracy. Honest negative finding for W-2 shallow fixes."
+      "detail": "On 8 strong-MNAR Adult seeds at \u03b1=0.05: DR-safe sometimes picks thresholds ~0.04 (predict-everyone-positive) \u2192 low EOO but ACC drops to 0.66. CC picks thresholds ~0.99 with ACC 0.78. Both admitted by same Beta-test. Per-seed analysis shows DR-proxy is not aligned with IPW-admission, so it optimizes for accuracy at admissible-set corners that have catastrophically low accuracy. Honest negative finding for W-2 shallow fixes."
     },
     {
       "id": "F-33",
@@ -1296,7 +1297,7 @@
     {
       "id": "F-35",
       "group": "TP",
-      "title": "HEADLINE: 8-method × 3-α × strong-MNAR Adult sweep (192 runs)",
+      "title": "HEADLINE: 8-method \u00d7 3-\u03b1 \u00d7 strong-MNAR Adult sweep (192 runs)",
       "category": "experiment",
       "status": "done",
       "priority": "high",
@@ -1307,7 +1308,7 @@
         "headline_table.tex",
         "headline_pareto.png"
       ],
-      "detail": "At STRICT α=0.05 + heavy MNAR: 5 FaiREE variants (CC/missing/NSC/DR-safe/bootstrap) ALL satisfy budget; 3 baselines (naive/Hardt/fairee_dr) ALL exceed budget. CC-FaiREE acc=0.775; fairee_dr acc=0.831 but EOO=0.096 > α. The cleanest motivation for finite-sample fair classification under MNAR."
+      "detail": "At STRICT \u03b1=0.05 + heavy MNAR: 5 FaiREE variants (CC/missing/NSC/DR-safe/bootstrap) ALL satisfy budget; 3 baselines (naive/Hardt/fairee_dr) ALL exceed budget. CC-FaiREE acc=0.775; fairee_dr acc=0.831 but EOO=0.096 > \u03b1. The cleanest motivation for finite-sample fair classification under MNAR."
     },
     {
       "id": "F-36",
@@ -1321,7 +1322,7 @@
       "refs": [
         "nsc_misspecification.py"
       ],
-      "detail": "NSC tightens EOO across 3 missingness mechanisms (correct NSC, outcome-dependent, X-A interaction). Misspecification doesn't catastrophically hurt — under outcome-dep MNAR, NSC still cuts EOO from 0.046 to 0.025 (-0.021) at cost of 3pp ACC. Robust to soft misspec; falls back to degenerate (no admit) under hard misspec (interaction)."
+      "detail": "NSC tightens EOO across 3 missingness mechanisms (correct NSC, outcome-dependent, X-A interaction). Misspecification doesn't catastrophically hurt \u2014 under outcome-dep MNAR, NSC still cuts EOO from 0.046 to 0.025 (-0.021) at cost of 3pp ACC. Robust to soft misspec; falls back to degenerate (no admit) under hard misspec (interaction)."
     },
     {
       "id": "F-37",
@@ -1337,7 +1338,7 @@
         "multigroup_extension.tex",
         "test_multigroup.py"
       ],
-      "detail": "Bonferroni-adjusted Beta-test admission across (K choose 2) pairwise constraints. 3-group toy: thresholds (0.31, 0.30, 0.51), max pairwise TPR diff 0.058 ≤ α=0.15. 3 tests passing (40 total). IPW + bootstrap extensions remain for v0.4."
+      "detail": "Bonferroni-adjusted Beta-test admission across (K choose 2) pairwise constraints. 3-group toy: thresholds (0.31, 0.30, 0.51), max pairwise TPR diff 0.058 \u2264 \u03b1=0.15. 3 tests passing (40 total). IPW + bootstrap extensions remain for v0.4."
     },
     {
       "id": "F-38",
@@ -1352,7 +1353,7 @@
         "compas_multigroup.py",
         "results_agg.csv"
       ],
-      "detail": "COMPAS with 3 race groups (AA / Caucasian / Hispanic, n=5787). At α=0.10, 6 reps: max pairwise TPR diff = 0.052 ± 0.031 (within budget). FaiREEMultiGroupEOO also accepts weights= kwarg for IPW. 40 tests passing."
+      "detail": "COMPAS with 3 race groups (AA / Caucasian / Hispanic, n=5787). At \u03b1=0.10, 6 reps: max pairwise TPR diff = 0.052 \u00b1 0.031 (within budget). FaiREEMultiGroupEOO also accepts weights= kwarg for IPW. 40 tests passing."
     }
   ]
 }
