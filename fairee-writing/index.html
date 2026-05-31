@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FaiREE × Missing Data — Paper-Writing Guide</title>
+  <meta name="description" content="Walk-throughs for finishing the FaiREE-with-missing-data manuscript and submitting it.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#5b6cab">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="./">FaiREE<span class="brand-sub">· writing guide</span></a>
+    <div class="crumbs">
+      <a href="../fairee-board/">board</a>
+      &nbsp;·&nbsp;
+      <a href="../fairee-tutorials/">tutorials</a>
+      &nbsp;·&nbsp;
+      <a href="../fairee-audits/">audits</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main"><div class="wrap">
+  <h1>Paper-writing guide</h1>
+  <p class="lede">
+    Walk-throughs for the manuscript author finishing the
+    FaiREE-with-missing-data paper and getting it to submission.
+    Sister sections (<a href="../fairee-tutorials/">tutorials</a>,
+    <a href="../fairee-audits/">audits</a>) cover the code side;
+    this one covers the prose side.
+  </p>
+  <p class="meta">
+    Audience tier: far (paper author + reviewer-anticipation). Assumes
+    the recovery branch artifacts (25 .tex drafts + 32 result dirs +
+    closed W-1/W-2 + 91 board items) and walks them to a single PDF.
+  </p>
+
+  <div class="cards">
+    <a class="card" href="01-section-map.html">
+      <span class="card-num">Guide 1 · 7 min</span>
+      <div class="card-title">Section map &amp; integration order</div>
+      <div class="card-desc">
+        What each <code>.tex</code> in <code>_drafts/</code> contains,
+        what goes where in the final paper, and how to resolve the 5
+        residual forward-references (<code>prop:pessimistic</code>,
+        <code>sec:discussion</code>, <code>sec:dr-ablation</code>,
+        <code>sec:shift-ablation</code>).
+      </div>
+    </a>
+    <a class="card" href="02-compile-checklist.html">
+      <span class="card-num">Guide 2 · 5 min</span>
+      <div class="card-title">Compile checklist</div>
+      <div class="card-desc">
+        <code>outline.tex</code> → single PDF: required packages,
+        common LaTeX errors and fixes, how to swap the in-repo
+        <code>main.tex</code> stub, the short-vs-long flag pattern.
+      </div>
+    </a>
+    <a class="card" href="03-submission-checklist.html">
+      <span class="card-num">Guide 3 · 10 min</span>
+      <div class="card-title">Submission readiness checklist</div>
+      <div class="card-desc">
+        Pre-submission gates: dangling-refs resolved, figures finalized,
+        supplement packaged, DEC-2/DEC-3 prose decisions, citation
+        hygiene, anonymization. Plus a venue-by-venue prep notes
+        (NeurIPS / ICML / TMLR / JMLR).
+      </div>
+    </a>
+    <a class="card" href="04-reproducibility-supplement.html">
+      <span class="card-num">Guide 4 · 8 min</span>
+      <div class="card-title">Reproducibility supplement</div>
+      <div class="card-desc">
+        What to package for the camera-ready supplement: code freeze,
+        result-dir snapshot, requirements pin, headline-figure
+        regeneration scripts, README for reviewers.
+      </div>
+    </a>
+  </div>
+
+  <h2>Status snapshot (as of recovery branch)</h2>
+  <table>
+    <thead><tr><th>Asset</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Manuscript drafts (25 .tex, ~3,600 lines)</td><td><span class="tag tag-ok">complete</span> all sections covered; 5 forward-refs residual</td></tr>
+      <tr><td>Bibliography</td><td><span class="tag tag-ok">clean</span> 0 broken <code>\cite{}</code>, 31 entries</td></tr>
+      <tr><td>Theorem 1 (W-1)</td><td><span class="tag tag-ok">closed</span> explicit <code>c_0</code> constants in <code>proof_sketch.tex sec:w1_constants</code></td></tr>
+      <tr><td>DR admission (W-2)</td><td><span class="tag tag-ok">closed</span> Donsker + uniform-in-B bounds in <code>dr_bootstrap_sketch.tex</code></td></tr>
+      <tr><td>DEC-1 (DP scope)</td><td><span class="tag tag-ok">closed</span> <code>dp_extension.tex</code></td></tr>
+      <tr><td>DEC-2 (synthesis vs IPW), DEC-3 (block vs NSC)</td><td><span class="tag tag-warn">decided</span> need human author's prose framing for §1 and §6</td></tr>
+      <tr><td>Empirical claims</td><td><span class="tag tag-ok">verified</span> all FAQ headline numbers re-derived from result CSVs</td></tr>
+      <tr><td>Headline figure (<code>fig_three_panel.png</code>)</td><td><span class="tag tag-ok">shipped</span></td></tr>
+      <tr><td>Headline table (<code>tab:headline</code>)</td><td><span class="tag tag-ok">shipped</span></td></tr>
+      <tr><td>Submission target</td><td><span class="tag tag-warn">undecided</span> see Guide 3</td></tr>
+      <tr><td>Camera-ready supplement</td><td><span class="tag tag-warn">unpackaged</span> see Guide 4</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Companion pointers</h2>
+  <ul>
+    <li><a href="https://github.com/yulinl2/FaiREE_Missing_Data/tree/claude/recover-dev-intent-eQY0u/Fairness%20with%20missing/Manuscript/_drafts">Drafts directory on GitHub</a> (25 .tex files + bib + integration README).</li>
+    <li><a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/PROOF_MAP.md">PROOF_MAP.md</a> — theorem ↔ assumption ↔ empirical-validation map. Every section in the paper has a row here.</li>
+    <li><a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/FIGURES.md">FIGURES.md</a> — curated plot gallery with reproduction commands. Pull figures from here.</li>
+  </ul>
+
+  <div class="footer">
+    Companion sections: <a href="../fairee-board/">decision board</a> · <a href="../fairee-tutorials/">tutorials</a> · <a href="../fairee-audits/">audits</a>.
+  </div>
+</div></main>
+</body>
+</html>

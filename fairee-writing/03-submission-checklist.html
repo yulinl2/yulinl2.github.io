@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guide 3 — Submission readiness checklist</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#5b6cab">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="./">FaiREE<span class="brand-sub">· writing guide</span></a>
+    <div class="crumbs">
+      <a href="./">writing</a> · 3. submission checklist
+    </div>
+  </nav>
+</header>
+
+<main id="main"><div class="wrap">
+  <h1>3 · Submission readiness checklist</h1>
+  <p class="lede">
+    Pre-submission gates and venue-by-venue prep notes. Walk through
+    these once the manuscript compiles cleanly (see
+    <a href="02-compile-checklist.html">Guide 2</a>).
+  </p>
+  <p class="meta">Reading time ≈ 10 min · Action time depends on venue choice.</p>
+
+  <h2>Phase 1 — Content gates</h2>
+
+  <h3>Dangling references resolved</h3>
+  <ul>
+    <li><span class="tag tag-warn">TODO</span> <code>prop:pessimistic</code> — write the Proposition stub in <code>proof_sketch.tex</code> (2 lines of monotonicity).</li>
+    <li><span class="tag tag-warn">TODO</span> <code>sec:discussion</code> — either pull from Overleaf or rewire to <code>limitations.tex</code>.</li>
+    <li><span class="tag tag-warn">TODO</span> <code>sec:dr-ablation</code> — alias <code>sec:w2_e2e</code> or write a brief subsection.</li>
+    <li><span class="tag tag-warn">TODO</span> <code>sec:shift-ablation</code> — alias <code>w_clip_ablation.tex</code> or write a brief shift-sensitivity subsection from <code>exp/results/shift_high/</code>.</li>
+    <li><span class="tag tag-ok">DONE</span> <code>eq:sc</code>, <code>tab:adult</code>, <code>tab:sim-headline</code>, <code>sec:audit-tool</code>, <code>sec:dr-diagnostic</code>, <code>sec:sensitivity</code>, <code>sec:data-gen</code>, <code>sec:doublyrobust</code> (all resolved during the recovery marathon — see <a href="../fairee-audits/01-bibliography-and-labels.html">audit 1</a>).</li>
+  </ul>
+
+  <h3>DEC-2 / DEC-3 prose decisions</h3>
+  <ul>
+    <li><span class="tag tag-warn">TODO</span> DEC-2 (synthesis vs IPW): the board says "IPW canonical, synthesis as appendix variant". §1 intro and §6 theory should reflect this. The current drafts assume IPW throughout; check that the motivation prose doesn't promise synthesis somewhere.</li>
+    <li><span class="tag tag-warn">TODO</span> DEC-3 (block vs NSC missingness): board says "NSC default; block is a corollary at K=2 patterns". §1 + §6 should match.</li>
+  </ul>
+
+  <h3>Headline numbers cross-checked</h3>
+  <p>
+    All <a href="../fairee-audits/03-headline-numbers-verified.html">verified against actual CSVs</a> during the marathon. Re-run the audit script before submission:
+  </p>
+  <pre><code># From the fairee-experiment repo:
+PYTHONPATH=src:exp/methods python -c "
+import json, glob
+for f in sorted(glob.glob('exp/results/*/results.ndjson')):
+    n = sum(1 for _ in open(f)); print(f'{n:6d} runs  {f}')
+"
+</code></pre>
+
+  <h3>Figures finalized</h3>
+  <ul>
+    <li><span class="tag tag-ok">DONE</span> Headline figure: <code>exp/results/sim_sweep_v6_dp/fig_three_panel.png</code>.</li>
+    <li><span class="tag tag-ok">DONE</span> Pareto plots: <code>exp/results/comparison/{adult, compas, german}</code>.</li>
+    <li><span class="tag tag-ok">DONE</span> Buffer trade-off: <code>exp/results/buffer_validation/fig_tradeoff.png</code>.</li>
+    <li><span class="tag tag-warn">CHECK</span> Resolution (≥ 300 dpi for camera-ready), color-blind safety, captions self-contained.</li>
+    <li><span class="tag tag-warn">CHECK</span> Bitmap → vector (eps/pdf) for the headline figure to avoid pixelation.</li>
+  </ul>
+
+  <h3>Tables ready to lift</h3>
+  <p>The drafts ship the tables as <code>tabular</code> environments inside the .tex files; no separate .tex-table files to track.</p>
+  <ul>
+    <li><code>headline_table.tex</code> — 8 methods × 3 α (the headline).</li>
+    <li><code>methods_table.tex</code> — methods × guarantees × empirical summary.</li>
+    <li><code>final_comparison_table.tex</code> — 5-method × 3-α compliance.</li>
+    <li><code>dp_extension.tex</code> — <code>tab:dp_vs_eoo_ci</code> (DEC-1 headline).</li>
+  </ul>
+
+  <h2>Phase 2 — Anonymization (for double-blind venues)</h2>
+  <ul>
+    <li><span class="tag tag-warn">CHECK</span> Strip author / affiliation from the title page.</li>
+    <li><span class="tag tag-warn">CHECK</span> Acknowledgments section commented out.</li>
+    <li><span class="tag tag-warn">CHECK</span> Code repo URL replaced with anonymous mirror (e.g., anonymous.4open.science).</li>
+    <li><span class="tag tag-warn">CHECK</span> Recovery-branch citations in drafts ("<code>claude/recover-dev-intent-eQY0u</code>") removed or anonymized.</li>
+    <li><span class="tag tag-warn">CHECK</span> No identifying metadata in PDF (use <code>pdftk … remove_metadata</code>).</li>
+  </ul>
+
+  <h2>Phase 3 — Citation hygiene</h2>
+  <ul>
+    <li><span class="tag tag-ok">DONE</span> 0 broken <code>\cite{}</code> (audit verified).</li>
+    <li>4 unused <code>.bib</code> entries kept for future use — decide if you want to drop them (<code>efron1981nonparametric</code>, <code>pierson2021algorithmic</code>, <code>robins1997non</code>, <code>tsiatis2007</code>). Dropping is recommended for a clean .bbl.</li>
+    <li><span class="tag tag-warn">CHECK</span> Self-citations not over-weighted (typically ≤ 20% of total).</li>
+    <li><span class="tag tag-warn">CHECK</span> Recent (≤ 2y old) literature: spot-check 2024–2026 fairness-with-missing-data papers; add anything missing.</li>
+  </ul>
+
+  <h2>Phase 4 — Supplementary material</h2>
+  <p>See <a href="04-reproducibility-supplement.html">Guide 4</a> for the full packaging walkthrough. Headline gates:</p>
+  <ul>
+    <li><span class="tag tag-warn">TODO</span> Code freeze: tag the recovery branch as <code>v0.1.0-paper-submission</code>.</li>
+    <li><span class="tag tag-warn">TODO</span> Result-dir snapshot: <code>tar -czf supplement.tgz exp/results/ FIGURES.md PROOF_MAP.md</code>.</li>
+    <li><span class="tag tag-warn">TODO</span> Requirements pin: <code>pip freeze &gt; requirements/locked.txt</code>.</li>
+    <li><span class="tag tag-warn">TODO</span> README for reviewers: how to reproduce each table from scratch.</li>
+  </ul>
+
+  <h2>Venue prep notes</h2>
+
+  <h3>NeurIPS</h3>
+  <ul>
+    <li>Page limit: 9 pages main + unlimited appendix (8 pages camera-ready). Short-vs-long flag pattern (<a href="02-compile-checklist.html">Guide 2</a>) handles this.</li>
+    <li>Required: paper-checklist appendix (~2 pages). Items relevant to this work: reproducibility (∇), broader impacts, code/data availability (✓ recovery branch is public, MIT-licensed).</li>
+    <li>Anonymous code repo required for submission; <code>anonymous.4open.science</code> handles it.</li>
+    <li>OpenReview format: <code>neurips_2026.sty</code> + author block stripped.</li>
+  </ul>
+
+  <h3>ICML</h3>
+  <ul>
+    <li>Page limit: 8 pages main + unlimited appendix.</li>
+    <li>Single-blind for the most part (author info visible). Less anonymization needed.</li>
+    <li>Required: <code>\icmltitlerunning{}</code>.</li>
+  </ul>
+
+  <h3>TMLR (Transactions on Machine Learning Research)</h3>
+  <ul>
+    <li>Open-ended length; rolling submission. Good fit if you want feedback before committing to a venue deadline.</li>
+    <li>Reproducibility criteria are strict; the supplement (Guide 4) is non-negotiable.</li>
+    <li>No anonymization required (it's a journal model).</li>
+  </ul>
+
+  <h3>JMLR</h3>
+  <ul>
+    <li>Long-form. Up to 50+ pages welcome.</li>
+    <li>Standard <code>jmlr2e.sty</code>.</li>
+    <li>Theorem-heavy presentation works well here — both W-1 and W-2 closures get full proof.</li>
+  </ul>
+
+  <h2>Phase 5 — Final pre-flight</h2>
+  <ul>
+    <li><span class="tag tag-warn">CHECK</span> Compile cleanly (no warnings) with the target venue's <code>.sty</code>.</li>
+    <li><span class="tag tag-warn">CHECK</span> All figure references <code>~\ref{fig:...}</code> have non-breaking spaces.</li>
+    <li><span class="tag tag-warn">CHECK</span> Headline number consistency: TLDR / FAQ / abstract / table all say the same numbers (re-run <a href="../fairee-audits/03-headline-numbers-verified.html">audit 3</a>).</li>
+    <li><span class="tag tag-warn">CHECK</span> PDF text is selectable / searchable (not all rasterized).</li>
+    <li><span class="tag tag-warn">CHECK</span> Spell-check pass: <code>aspell -t check main.tex</code>.</li>
+    <li><span class="tag tag-warn">CHECK</span> Read it cold from page 1 to end — at least once, ideally a day after the last edit.</li>
+  </ul>
+
+  <div class="footer">
+    ← <a href="02-compile-checklist.html">2. compile checklist</a> · <a href="./">back to writing guide</a> · next: <a href="04-reproducibility-supplement.html">4. reproducibility supplement →</a>
+  </div>
+</div></main>
+</body>
+</html>
