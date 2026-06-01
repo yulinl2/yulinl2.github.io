@@ -334,6 +334,47 @@ ul.timeline .ts { color:var(--fg-dim); font-variant-numeric:tabular-nums; margin
 ul.timeline .sha { color:var(--fg-muted); font-family:"SF Mono",Consolas,monospace;
                   font-size:.84em; margin-right:8px; }
 
+/* ── time machine (client-side version stepper) ────────────────── */
+.time-machine { display:flex; align-items:center; justify-content:center; gap:14px;
+                background:var(--bg-card); border:1px solid var(--border);
+                border-radius:12px; padding:10px 16px; margin:0 0 18px;
+                position:sticky; top:56px; z-index:40;
+                backdrop-filter:saturate(160%) blur(8px); }
+.tm-btn { background:var(--bg-soft); color:var(--fg); border:1px solid var(--border);
+          border-radius:8px; min-width:40px; min-height:40px; font-size:1.05em;
+          cursor:pointer; line-height:1; display:flex; align-items:center;
+          justify-content:center; transition:border-color .12s, color .12s, background .12s; }
+.tm-btn:hover:not(:disabled) { border-color:var(--primary); color:var(--primary); }
+.tm-btn:focus-visible { outline:2px solid var(--primary); outline-offset:2px; }
+.tm-btn:disabled { opacity:.35; cursor:not-allowed; }
+.tm-readout { display:flex; flex-direction:column; align-items:center; gap:2px;
+              min-width:220px; text-align:center; }
+.tm-asof { font-size:.98em; }
+.tm-asof .tm-date { font-variant-numeric:tabular-nums; color:var(--primary); }
+.tm-counter { font-variant-numeric:tabular-nums; }
+@media (max-width:480px) { .tm-readout { min-width:160px; } .tm-asof { font-size:.9em; } }
+
+/* placeholder shown when a problem has no version at/before the selected date */
+.p-notyet { color:var(--fg-dim); font-style:italic; padding-left:11px;
+            border-left:3px solid var(--bg-accent); margin:12px 0; }
+section.problem.tm-empty { opacity:.7; border-left-color:var(--bg-accent) !important;
+                           background:var(--bg-card) !important; }
+
+/* diff cue: subtle highlight when a card's version changed vs the previous
+   timeline step. Not colour-alone — a left accent bar + a small "changed"
+   chip carry the signal too. Fades after a moment. */
+section.problem.tm-changed { animation:tmChanged 1.6s ease-out; }
+@keyframes tmChanged {
+  0%   { box-shadow:0 0 0 2px var(--primary) inset, 0 0 18px rgba(96,165,250,.35); }
+  100% { box-shadow:0 0 0 0 transparent inset, 0 0 0 transparent; }
+}
+.tm-changed-chip { display:inline-flex; align-items:center; gap:4px; padding:2px 9px;
+                   border-radius:5px; font-size:.78em; font-weight:600;
+                   background:#1e3a8a; color:#bfdbfe; margin-left:2px; }
+@media (prefers-reduced-motion:reduce) {
+  section.problem.tm-changed { animation:none; outline:2px solid var(--primary); outline-offset:-2px; }
+}
+
 /* ── footers ───────────────────────────────────────────────────── */
 .p-foot { display:flex; justify-content:space-between; margin-top:14px; padding-top:10px;
           border-top:1px solid var(--border); flex-wrap:wrap; gap:8px; }
