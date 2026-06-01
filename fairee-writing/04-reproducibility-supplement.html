@@ -35,7 +35,7 @@
       <tr><td>Code freeze (tagged release)</td><td>fairee-experiment recovery branch tagged <code>v0.1.0-paper-submission</code></td><td>Reviewer can <code>pip install git+...@tag</code> to get exact code.</td></tr>
       <tr><td>Result-dir snapshot</td><td><code>exp/results/</code> (32 dirs, ~5,100 runs)</td><td>So reviewers can re-derive headline numbers from the CSVs without re-running the benchmarks (which take ~hours).</td></tr>
       <tr><td>Locked requirements</td><td><code>pip freeze &gt; requirements/locked.txt</code></td><td>Reproducibility across pip/numpy versions.</td></tr>
-      <tr><td>Headline-regeneration scripts</td><td>Subset of <code>exp/benchmarks/</code> producing the figures + tables in the paper</td><td>Reviewer runs <code>make reproduce</code> and gets the paper's figures regenerated.</td></tr>
+      <tr><td>Headline-regeneration scripts</td><td>Subset of <code>exp/benchmarks/</code> producing the figures + tables in the paper</td><td>Reviewer runs <code>make reproduce-paper</code> and gets the paper's figures regenerated.</td></tr>
       <tr><td>Reviewer README</td><td>New file at supplement root</td><td>Step-by-step "to reproduce table N, run script X".</td></tr>
     </tbody>
   </table>
@@ -145,7 +145,7 @@ reproduce-paper:
 cd code/
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements-locked.txt
-PYTHONPATH=src:exp/methods python -m pytest tests/  # should report 108 passing
+PYTHONPATH=src:exp/methods python -m pytest tests/  # should report 120 passing
 ```
 
 ## Full headline reproduction
@@ -210,7 +210,7 @@ ls -lh fairee-missing-supplement.tgz
 snapshots, and a one-shot headline-regeneration script are in the
 supplementary material (`fairee-missing-supplement.tgz`). The code
 is also available at github.com/yulinl2/fairee-experiment, tag
-v0.1.0-paper-submission. 108 unit tests pass; audit module is at
+v0.1.0-paper-submission. 120 unit tests pass; audit module is at
 97% line coverage; total headline-reproduction wall time is
 ~30 minutes on a single CPU core.</code></pre>
 
