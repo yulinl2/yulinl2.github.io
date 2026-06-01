@@ -41,6 +41,10 @@ body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
             padding:6px 11px; border-radius:6px; text-decoration:none;
             font-size:.86em; border:1px solid var(--border); white-space:nowrap; }
 .nav-back:hover { border-color:var(--primary); color:var(--primary); }
+.nav-complaint { flex:0 0 auto; background:var(--bg-card); color:var(--fg-dim);
+            padding:6px 11px; border-radius:6px; text-decoration:none;
+            font-size:.86em; border:1px solid var(--border); white-space:nowrap; }
+.nav-complaint:hover { border-color:var(--primary); color:var(--primary); }
 
 /* On mobile (<720px): wrap the inner so chips drop to row 2 full-width.
    HTML order is brand → chips → chat → back. We bump chat+back ahead of
@@ -50,8 +54,9 @@ body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
   .nav-inner { flex-wrap:wrap; }
   .nav-brand { order:1; }
   .nav-chat  { order:2; margin-left:auto; }
-  .nav-back  { order:3; }
-  .nav-chips { order:4; flex-basis:100%; margin-top:4px; padding-bottom:2px; }
+  .nav-complaint { order:3; }
+  .nav-back  { order:4; }
+  .nav-chips { order:5; flex-basis:100%; margin-top:4px; padding-bottom:2px; }
 }
 @media (max-width:480px) {
   /* narrow: hide the "auto-review" subtitle so name + email + chat fit row 1. */
@@ -540,6 +545,11 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
     </div>
     <div class="nav-chips"><a class="chip chip-rework" href="#problem-1"><span class="ch-num">#01</span> <span class="ch-kw">Marginal Profit</span> <span class="dim">✗</span></a><a class="chip chip-ready" href="#problem-2"><span class="ch-num">#02</span> <span class="ch-kw">Smallest Terminating</span> <span class="dim">✓</span></a><a class="chip chip-revision" href="#problem-3"><span class="ch-num">#03</span> <span class="ch-kw">Relative Speed</span> <span class="dim">△</span></a><a class="chip chip-rework" href="#problem-4"><span class="ch-num">#04</span> <span class="ch-kw">Dog Shelter</span> <span class="dim">✗</span></a><a class="chip chip-revision" href="#problem-5"><span class="ch-num">#05</span> <span class="ch-kw">Weekly Bike</span> <span class="dim">△</span></a><a class="chip chip-revision" href="#problem-6"><span class="ch-num">#06</span> <span class="ch-kw">Total Cost</span> <span class="dim">△</span></a><a class="chip chip-progress" href="#problem-7"><span class="ch-num">#07</span> <span class="ch-kw">Performative Retraining</span> <span class="dim">✎</span></a><a class="chip chip-rework" href="#problem-8"><span class="ch-num">#08</span> <span class="ch-kw">Travel Budget</span> <span class="dim">✗</span></a><a class="chip chip-revision" href="#problem-9"><span class="ch-num">#09</span> <span class="ch-kw">Parallel Task</span> <span class="dim">△</span></a><a class="chip chip-revision" href="#problem-10"><span class="ch-num">#10</span> <span class="ch-kw">Daily Cold</span> <span class="dim">△</span></a></div>
     <button class="nav-chat" onclick="document.querySelector('.chat-fab').click();">💬 chat</button>
+    <!-- 📣 complaint link: plain mailto → relayed by the agent to issue #79.
+         TODO(complaints-channel): a future direct complaints-proxy can replace this —
+         a configurable COMPLAINTS_PROXY_URL POSTing the complaint straight to issue
+         #79 (same pattern as the dedup-proxy). Not built yet. -->
+    <a class="nav-complaint" href="mailto:yulinli@bu.edu?subject=%5BAI4SM%20Complaint%20%C2%B7%20review%20%C2%B7%20contributor_01%5D&amp;body=Which%20audience%20are%20you%3F%20%28co-PI%20%2F%20contributor%20%2F%20external%29%0AWhich%20page%2Fsection%3A%0AWhat%27s%20wrong%20%2F%20what%20would%20you%20change%3A%0A" title="File a complaint — e.g. disputing a verdict; relayed to issue #79">📣 complaint</a>
     <a class="nav-back" href="../">← hub</a>
   </div>
 </nav>
