@@ -3428,18 +3428,49 @@ Concrete actions:
   document.querySelectorAll('.rail-section').forEach(function(s){
     railSections[s.getAttribute('data-target')] = s;
   });
+  // Co-PI Linjun desktop scroll bug (#63, "鼠标不能把界面移到下面去"): the
+  // scroll-spy below used `el.scrollIntoView()` to keep the active nav-chip /
+  // rail-section visible. But `scrollIntoView` walks the WHOLE ancestor scroll
+  // chain — including the document scroller — so with `html{scroll-behavior:
+  // smooth}` every section-intersection smooth-scrolled the WINDOW back toward
+  // the section it deemed "in view", continuously canceling the user's small
+  // wheel/trackpad deltas and pinning the page near the top (it could never be
+  // moved to the bottom). Fix: only ever scroll the chip/rail's OWN inner
+  // scroll-container (`.nav-chips` horizontally, `.rail-tl-inner` vertically)
+  // by writing scrollLeft/scrollTop directly — this can never move the window.
+  function keepVisibleWithin(el, container, axis){
+    if (!el || !container) return;
+    try {
+      var cb = container.getBoundingClientRect();
+      var eb = el.getBoundingClientRect();
+      if (axis === 'x') {
+        var target = container.scrollLeft + (eb.left - cb.left)
+                     - (container.clientWidth - eb.width) / 2;
+        var maxX = container.scrollWidth - container.clientWidth;
+        container.scrollLeft = Math.max(0, Math.min(target, maxX));
+      } else {
+        var below = eb.bottom > cb.bottom;
+        var above = eb.top < cb.top;
+        if (below) container.scrollTop += (eb.bottom - cb.bottom);
+        else if (above) container.scrollTop += (eb.top - cb.top);
+      }
+    } catch(e){}
+  }
+  var navChips = document.querySelector('.nav-chips');
+  var railInner = document.querySelector('.rail-tl-inner');
   var io = new IntersectionObserver(function(entries){
     entries.forEach(function(en){
       var id = en.target.id;
       if (en.isIntersecting && chips[id]) {
         Object.values(chips).forEach(function(c){ c.classList.remove('active'); });
         chips[id].classList.add('active');
-        try { chips[id].scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'}); } catch(e){}
+        // scroll ONLY the chip strip, never the window (see #63 above)
+        keepVisibleWithin(chips[id], navChips, 'x');
         Object.values(railSections).forEach(function(s){ s.classList.remove('active'); });
         if (railSections[id]) {
           railSections[id].classList.add('active');
-          // also scroll the rail itself so the active section is visible
-          try { railSections[id].scrollIntoView({behavior:'smooth', block:'nearest'}); } catch(e){}
+          // scroll ONLY the rail's inner container, never the window
+          keepVisibleWithin(railSections[id], railInner, 'y');
         }
       }
     });
