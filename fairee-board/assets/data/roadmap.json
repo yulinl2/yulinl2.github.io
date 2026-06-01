@@ -1,7 +1,7 @@
 {
   "_comment": "FaiREE \u00d7 Missing Data \u2014 research roadmap. Statuses: proposed | in-progress | blocked | decided | done. Owners: you | claude | copilot. Edit via the board UI (Save button commits this file via the GitHub Contents API) or hand-edit. Schema v1.",
   "schema_version": 1,
-  "updated": "2026-05-30",
+  "updated": "2026-06-01",
   "project": {
     "name": "FaiREE with Missing Data",
     "summary": "Extension of FaiREE (Li, Zou, Zhang, ICLR 2023) to handle Missing-Not-At-Random sensitive attribute / outcome via density-ratio estimation + group thresholding. Original FaiREE paper has no missing-data treatment; this is the new contribution.",
