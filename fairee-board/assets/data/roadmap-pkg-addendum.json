@@ -1,0 +1,101 @@
+{
+  "_comment": "Addendum to roadmap.json — 1 new group + 5 items for the Packaging (Phase 3) workstream. Generated 2026-06-01 by the packaging-plan-2026 task loop. NOT auto-loaded by the board UI; the loop hit roadmap.json's 67KB size in a single update_file call. To merge into roadmap.json: either (a) open /fairee-board/, click Settings → Import, paste the items below into the appropriate location of the existing roadmap.json structure, then Save→GitHub; or (b) hand-edit roadmap.json locally by inserting the `_new_group` into roadmap.json's `groups` array and the `_new_items` into the `items` array, then commit.",
+  "_instructions_for_merging": [
+    "Step 1: Open fairee-board/assets/data/roadmap.json on this branch.",
+    "Step 2: Locate the `groups` array (search for `\"groups\": [`).",
+    "Step 3: Append the object in `_new_group` below to that array.",
+    "Step 4: Locate the `items` array (search for `\"items\": [` — should be the last top-level key).",
+    "Step 5: Append the 5 objects in `_new_items` below to that array.",
+    "Step 6: Update the top-level `updated` field to today's date.",
+    "Step 7: Validate JSON parses: `python -m json.tool < roadmap.json > /dev/null`.",
+    "Step 8: Commit + push (or use the board UI's Save→GitHub button)."
+  ],
+  "_new_group": {
+    "id": "PKG",
+    "name": "Packaging (Phase 3 PyPI release)",
+    "repo": "fairee-experiment",
+    "order": 9
+  },
+  "_new_items": [
+    {
+      "id": "PKG-1",
+      "group": "PKG",
+      "title": "selfcens-densityratio — standalone PyPI package",
+      "category": "packaging",
+      "status": "in-progress",
+      "priority": "high",
+      "owner": "you",
+      "repo": "fairee-experiment",
+      "refs": [
+        "packages/selfcens-densityratio/",
+        "src/fairee/algo/density_ratio_nsc.py",
+        "doc/roadmaps/packaging_plan_2026.md"
+      ],
+      "detail": "Scaffolded 2026-06-01: pyproject.toml (v0.1.0, full PEP 621), README, LICENSE (Apache-2.0), _core.py (verbatim port of density_ratio_nsc.py), 10 smoke tests. Pure numpy+scipy; zero internal coupling. 90% PyPI-ready. Audience: causal-inference / MNAR / biostats — NOT fairness-specific. Next: actual pip upload (requires user PyPI credentials)."
+    },
+    {
+      "id": "PKG-2",
+      "group": "PKG",
+      "title": "fairness-run-audit — standalone PyPI package",
+      "category": "packaging",
+      "status": "in-progress",
+      "priority": "high",
+      "owner": "you",
+      "repo": "fairee-experiment",
+      "refs": [
+        "packages/fairness-run-audit/",
+        "src/engine/analysis/audit.py",
+        "doc/roadmaps/packaging_plan_2026.md"
+      ],
+      "detail": "Scaffolded 2026-06-01: pyproject.toml (zero runtime deps; pure stdlib `math`), README documenting 9-check input-dict schema, LICENSE (Apache-2.0), 18 smoke tests covering all 9 checks. Library-agnostic — works with any post-processing fair classifier. 85% PyPI-ready. Audience: fair-ML practitioners across libraries (fairlearn, aif360, in-house)."
+    },
+    {
+      "id": "PKG-3",
+      "group": "PKG",
+      "title": "fairee — root package refinement",
+      "category": "packaging",
+      "status": "in-progress",
+      "priority": "high",
+      "owner": "you",
+      "repo": "fairee-experiment",
+      "refs": [
+        "pyproject.toml",
+        "src/fairee/algo/__init__.py",
+        "src/fairee/algo/fairee.py"
+      ],
+      "detail": "2026-06-01: pyproject.toml migrated from minimal to full PEP 621 — 8 runtime deps, 4 optional extras (baselines/exp/dev/all), 14 classifiers, 7 project URLs. ~75% PyPI-ready. Remaining: move legacy src/fairee/algo/fairee.py to fairee.legacy (only file with hard engine.* imports; not re-exported anyway). The 10-name public API in __init__.py is the clean v0.x surface."
+    },
+    {
+      "id": "PKG-4",
+      "group": "PKG",
+      "title": "simforge — reusable simulation-experiment infrastructure",
+      "category": "packaging",
+      "status": "proposed",
+      "priority": "med",
+      "owner": "you",
+      "repo": "fairee-experiment",
+      "refs": [
+        "packages/simforge/",
+        "src/engine/",
+        "doc/roadmaps/packaging_plan_2026.md"
+      ],
+      "detail": "Scaffolded 2026-06-01 with v0.1.0.dev0 status. Public API declared via NotImplementedError stubs (Router, NDJSONStore, run_once, register_method, summarize). Canonical source still at src/engine/. Renamed from `statsup` (per original blueprint) to avoid SEO collision with the StatsUpAI community site. Refactor tasks ~2-3 weeks: registry pattern for runner's 16-branch dispatch, sys.path removal, fcntl gate for Windows, config_loggers decoupling, runner decoupling from fairee.*."
+    },
+    {
+      "id": "PKG-5",
+      "group": "PKG",
+      "title": "fair-ml-bench — fair-ML benchmark suite",
+      "category": "packaging",
+      "status": "proposed",
+      "priority": "med",
+      "owner": "you",
+      "repo": "fairee-experiment",
+      "refs": [
+        "packages/fair-ml-bench/",
+        "exp/benchmarks/",
+        "doc/roadmaps/packaging_plan_2026.md"
+      ],
+      "detail": "Scaffolded 2026-06-01 with v0.1.0.dev0 status. Public API stubs: compare() + run_sweep(). Depends on fairee + simforge + fairness-run-audit + selfcens-densityratio reaching v1.0 first. 12 benchmark scripts at exp/benchmarks/ + 32 result dirs + 4 datasets (Adult/COMPAS/German/synthetic) need to be refactored from PYTHONPATH-dependent scripts into importable modules. Longest runway of the 5 packages (~1+ month)."
+    }
+  ]
+}
