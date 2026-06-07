@@ -328,6 +328,15 @@ table.checks td code { background:var(--bg); padding:1px 4px; border-radius:3px;
 .bench-framing.bf-bad  { background:rgba(251,191,36,0.12); border-left:3px solid var(--c-revision); color:#fde68a; }
 .bench-framing.bf-good { background:rgba(52,211,153,0.12); border-left:3px solid var(--c-ready); color:#a7f3d0; }
 .bench-framing.bf-uncertain { background:rgba(156,163,175,0.10); border-left:3px solid var(--c-stub); color:#cbd5e1; }
+.traj-list { margin:6px 0; padding-left:1.1em; font-size:.92em; line-height:1.55; }
+.traj-list li { margin:.35em 0; }
+.traj-tag { font-weight:600; padding:1px 7px; border-radius:10px; font-size:.85em; background:rgba(156,163,175,0.14); }
+.traj-tag.bf-good { background:rgba(52,211,153,0.16); color:#a7f3d0; }
+.traj-tag.bf-uncertain { background:rgba(251,191,36,0.16); color:#fde68a; }
+.traj-forks { display:flex; gap:10px; flex-wrap:wrap; margin:4px 0 2px; }
+.traj-fork { flex:1 1 280px; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:8px 11px; }
+.traj-fork-h { font-size:.9em; margin-bottom:5px; }
+.traj-quote { margin:0; font-size:.84em; color:var(--fg-muted); line-height:1.5; border-left:2px solid var(--border); padding-left:9px; }
 .model-response { background:var(--bg); padding:12px 14px; border-radius:6px; font-size:.86em;
                   white-space:pre-wrap; max-height:340px; overflow-y:auto;
                   border:1px solid var(--border); line-height:1.5; }
