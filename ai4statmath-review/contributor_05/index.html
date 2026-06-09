@@ -342,6 +342,35 @@ table.checks td code { background:var(--bg); padding:1px 4px; border-radius:3px;
 .bench-framing.bf-bad  { background:rgba(251,191,36,0.12); border-left:3px solid var(--c-revision); color:#fde68a; }
 .bench-framing.bf-good { background:rgba(52,211,153,0.12); border-left:3px solid var(--c-ready); color:#a7f3d0; }
 .bench-framing.bf-uncertain { background:rgba(156,163,175,0.10); border-left:3px solid var(--c-stub); color:#cbd5e1; }
+/* ── results matrix (model rows × thinking-setup columns → answers vs oracle) ── */
+.rm-chiprow { margin:8px 0 4px; }
+.rm-chip { font-weight:600; padding:2px 10px; border-radius:10px; font-size:.88em;
+           background:rgba(156,163,175,0.14); color:var(--fg-muted); cursor:help; }
+.rm-chip.bf-good { background:rgba(52,211,153,0.16); color:#a7f3d0; }
+.rm-chip.bf-bad { background:rgba(251,191,36,0.16); color:#fde68a; }
+.rm-chip.bf-uncertain { background:rgba(156,163,175,0.14); color:#cbd5e1; }
+.rm-table { width:100%; border-collapse:collapse; font-size:.86em; }
+.rm-table th { background:var(--bg-accent); font-weight:600; font-size:.82em;
+               color:var(--fg-muted); padding:6px 10px; text-align:left;
+               border-bottom:1px solid var(--border); white-space:nowrap; }
+.rm-table th.rm-model { background:var(--bg-accent); }
+.rm-table td.rm-cell { padding:6px 10px; border-bottom:1px solid var(--border);
+                       font-variant-numeric:tabular-nums; white-space:nowrap; }
+.rm-cell .rm-cell-link { text-decoration:none; color:inherit; display:block; cursor:help; }
+.rm-cell a.rm-cell-link { cursor:pointer; }
+.rm-cell a.rm-cell-link:hover code { text-decoration:underline; }
+.rm-cell.rm-match   { background:rgba(251,191,36,0.10); }   /* model reproduced the oracle — counts against must-fail */
+.rm-cell.rm-differ  { background:rgba(52,211,153,0.10); }   /* model never landed the oracle as majority — stumped-ward */
+.rm-cell.rm-neutral { background:rgba(156,163,175,0.08); }
+.rm-cell.rm-noans   { background:rgba(156,163,175,0.08); color:var(--fg-dim); }
+.rm-cell.rm-na      { color:var(--fg-dim); text-align:center; }
+.rm-glyph { font-weight:700; margin-right:2px; }
+.rm-match .rm-glyph  { color:#fde68a; }
+.rm-differ .rm-glyph { color:#a7f3d0; }
+.rm-x { color:var(--fg-muted); font-size:.85em; margin-left:1px; }
+.rm-hit code { font-weight:700; text-decoration:underline; }
+.rm-legend { margin:5px 0 2px; }
+
 .traj-list { margin:6px 0; padding-left:1.1em; font-size:.92em; line-height:1.55; }
 .traj-list li { margin:.35em 0; }
 .traj-tag { font-weight:600; padding:1px 7px; border-radius:10px; font-size:.85em; background:rgba(156,163,175,0.14); }
@@ -578,7 +607,7 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
       <summary>How to read this page — goal &amp; status glyphs</summary>
       <table class="purpose-table">
         <tr><td class="pl">🎯 The goal</td><td class="pr">Problems that current frontier models <strong>cannot solve</strong>. A model <em>solving</em> a problem (⚠) is a weakness; a model being <em>stumped</em> (✓) is the win — that inverts the usual intuition.</td></tr>
-        <tr><td class="pl">🔤 What each problem shows</td><td class="pr">Objective information, <em>not</em> accept/reject verdicts: the <strong>snapshot</strong> → reviewer gap-fill info (verifier triage · proposed tags) → <strong>your own pasted notes</strong> → dedup. <strong>No benchmark sweep has run for this set yet</strong> — the model-evidence sections (pass matrix · answer distribution · trajectory analysis) appear here once it does.</td></tr>
+        <tr><td class="pl">🔤 What each problem shows</td><td class="pr">Objective information, <em>not</em> accept/reject verdicts: the <strong>snapshot</strong> → reviewer gap-fill info (verifier triage · proposed tags) → <strong>your own pasted notes</strong> → dedup. <strong>No benchmark sweep has run for this set yet</strong> — the model-evidence sections (results matrix · trajectory analysis) appear here once it does.</td></tr>
       </table>
     </details>
     <div class="timestamp">⏱ Last reviewed <strong>2026-06-07 00:36 UTC</strong> · total LLM cost: <strong>$0.00</strong> · <span id="first-visit-note"></span></div>
@@ -1352,6 +1381,28 @@ Verifier: mode=not_auto_verifiable validated=True (oracle False, rejected 0/0)
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape') hide();
   });
+})();
+
+// ── anchor-into-<details>: opening a link whose target sits inside a closed
+// disclosure (e.g. a results-matrix cell → its trace group in the collapsed
+// "All model runs" drawer) auto-expands every ancestor <details> first.
+(function(){
+  function reveal(id){
+    if (!id) return;
+    var el = document.getElementById(id);
+    if (!el || !el.closest) return;
+    var d = el.closest('details');
+    while (d) {
+      d.open = true;
+      d = d.parentElement ? d.parentElement.closest('details') : null;
+    }
+  }
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (a) reveal(a.getAttribute('href').slice(1));
+  });
+  window.addEventListener('hashchange', function(){ reveal(location.hash.slice(1)); });
+  if (location.hash) reveal(location.hash.slice(1));
 })();
 
 (function(){
