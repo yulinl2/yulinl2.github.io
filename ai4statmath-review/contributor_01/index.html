@@ -613,7 +613,7 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
   <div class="dashboard">
     <div>
       <h2>📊 How this submission set stands — objective status (not verdicts)</h2>
-      <p class="dim small">A benchmark of stat/math problems that must <strong>fail</strong> frontier models (GPT-5.5 + Opus 4.7) <em>and</em> carry a valid oracle + deterministic rubric; co-authorship at 10 accepted · deadline 2026-06-07. Below is what the models and checks show — for human researchers to adjudicate; the page does not issue accept/reject verdicts.</p>
+      <p class="dim small">A benchmark of stat/math problems that must <strong>fail</strong> frontier models (GPT-5.5 + Opus 4.7) <em>and</em> carry a valid oracle + deterministic rubric; co-authorship at 10 accepted · deadline ≈ 2026-06-14. Below is what the models and checks show — for human researchers to adjudicate; the page does not issue accept/reject verdicts.</p>
       <div class="dash-tiles">
         <div class="tile"><div class="num">10</div><div class="lbl">problems</div></div>
         <div class="tile t-ready"><div class="num">0</div><div class="lbl"><abbr class="term" data-tip="Models failed all k samples convincingly (Wilson 95% CI upper bound below 0.5). HIGHER is better — the benchmark wants problems models cannot solve.">models stumped ✓</abbr></div></div>
@@ -621,7 +621,7 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
         <div class="tile t-stub"><div class="num">5</div><div class="lbl"><abbr class="term" data-tip="Mixed at this k — Wilson CI straddles 0.5; needs more samples.">uncertain ?</abbr></div></div>
         <div class="tile t-revision"><div class="num">8</div><div class="lbl"><abbr class="term" data-tip="Problems where the frontier-model consensus answer differs from the author oracle — needs oracle adjudication or rewording; see the per-problem 🔍 Resolved card.">oracle-disputed ⚖</abbr></div></div>
         <div class="tile t-rework"><div class="num">2</div><div class="lbl"><abbr class="term" data-tip="Under-specified: the author oracle is unreachable by any model/setup (e.g. missing a quantity) — not gradable as written.">under-specified ⚠</abbr></div></div>
-        <div class="tile t-verif"><div class="num">9/10</div><div class="lbl"><abbr class="term" data-tip="A verifier is validated when (a) it grades the answer key as pass AND (b) it rejects every plausibly-wrong response the LLM was asked to generate.">verifiers ✓</abbr></div></div>
+        <div class="tile t-verif"><div class="num">9/10</div><div class="lbl"><abbr class="term" data-tip="Counts only verifiers that genuinely validated against an author oracle: graded the answer key as pass AND rejected every plausibly-wrong response. Drafts in not_auto_verifiable mode await the author&#x27;s oracle — the agent never fabricates one.">oracle-validated verifiers ✓</abbr></div></div>
       </div>
     </div>
   </div>

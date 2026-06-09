@@ -578,7 +578,7 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
       <summary>How to read this page — goal &amp; status glyphs</summary>
       <table class="purpose-table">
         <tr><td class="pl">🎯 The goal</td><td class="pr">Problems that current frontier models <strong>cannot solve</strong>. A model <em>solving</em> a problem (⚠) is a weakness; a model being <em>stumped</em> (✓) is the win — that inverts the usual intuition.</td></tr>
-        <tr><td class="pl">🔤 What each problem shows</td><td class="pr">Objective information, <em>not</em> accept/reject verdicts: the <strong>snapshot</strong> → <strong>how the frontier models do</strong> (pass matrix · answer distribution · oracle-vs-consensus) → <strong>failure/success-mode synthesis</strong> → <strong>trajectory analysis</strong> → <strong>your own pasted notes</strong> → dedup. Signals: <span class="pill v-ready">✓ models stumped</span> <span class="pill v-rework">⚠ models solve</span> <span class="pill v-revision">⚖ oracle-disputed</span></td></tr>
+        <tr><td class="pl">🔤 What each problem shows</td><td class="pr">Objective information, <em>not</em> accept/reject verdicts: the <strong>snapshot</strong> → reviewer gap-fill info (verifier triage · proposed tags) → <strong>your own pasted notes</strong> → dedup. <strong>No benchmark sweep has run for this set yet</strong> — the model-evidence sections (pass matrix · answer distribution · trajectory analysis) appear here once it does.</td></tr>
       </table>
     </details>
     <div class="timestamp">⏱ Last reviewed <strong>2026-06-01 04:55 UTC</strong> · total LLM cost: <strong>$0.00</strong> · <span id="first-visit-note"></span></div>
@@ -604,7 +604,7 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
   <div class="dashboard">
     <div>
       <h2>📊 How this submission set stands — objective status (not verdicts)</h2>
-      <p class="dim small">A benchmark of stat/math problems that must <strong>fail</strong> frontier models (GPT-5.5 + Opus 4.7) <em>and</em> carry a valid oracle + deterministic rubric; co-authorship at 10 accepted · deadline 2026-06-07. Below is what the models and checks show — for human researchers to adjudicate; the page does not issue accept/reject verdicts.</p>
+      <p class="dim small">A benchmark of stat/math problems that must <strong>fail</strong> frontier models (GPT-5.5 + Opus 4.7) <em>and</em> carry a valid oracle + deterministic rubric; co-authorship at 10 accepted · deadline ≈ 2026-06-14. Below is what the models and checks show — for human researchers to adjudicate; the page does not issue accept/reject verdicts.</p>
       <div class="dash-tiles">
         <div class="tile"><div class="num">2</div><div class="lbl">problems</div></div>
         
@@ -612,7 +612,7 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
         
         
         
-        <div class="tile t-verif"><div class="num">0/0</div><div class="lbl"><abbr class="term" data-tip="A verifier is validated when (a) it grades the answer key as pass AND (b) it rejects every plausibly-wrong response the LLM was asked to generate.">verifiers ✓</abbr></div></div>
+        
       </div>
     </div>
   </div>
