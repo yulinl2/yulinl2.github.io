@@ -166,6 +166,41 @@ section.problem[data-verdict="in-progress"] {
 .pill.v-stub     { background:#374151; color:#d1d5db; }
 .pill.v-progress { background:#1e3a8a; color:#bfdbfe; }
 
+/* ── per-problem SIGNAL STRIP (radar successor — 5 objective gauges) ── */
+.sigstrip-row { margin:4px 0 12px; }
+.sigstrip { display:inline-flex; flex-wrap:wrap; gap:6px; align-items:center; }
+.sig-seg { display:inline-flex; align-items:baseline; gap:5px; padding:3px 8px;
+           border-radius:6px; border:1px solid var(--border); background:var(--bg-soft);
+           font-size:.78em; cursor:help; white-space:nowrap; }
+.sig-lab { color:var(--fg-dim); font-weight:600; }
+.sig-val { font-variant-numeric:tabular-nums; font-weight:700; }
+.sig-meter { font-family:"SF Mono",Consolas,monospace; letter-spacing:1px; line-height:1; }
+.sig-good  .sig-meter, .sig-good  .sig-val { color:var(--c-ready); }
+.sig-warn  .sig-meter, .sig-warn  .sig-val { color:var(--c-revision); }
+.sig-bad   .sig-meter, .sig-bad   .sig-val { color:var(--c-rework); }
+.sig-none  .sig-meter, .sig-none  .sig-val { color:var(--c-stub); }
+.sig-cap { font-size:.72em; color:var(--fg-dim); border-bottom:1px dotted var(--fg-dim);
+           text-decoration:none; cursor:help; }
+.sigstrip-mini { gap:0; margin-left:6px; }
+.sigstrip-mini .sig-seg { padding:0 1px; border:0; background:transparent;
+                          font-size:.92em; line-height:1; cursor:help; }
+.sigstrip-mini .sig-good { color:var(--c-ready); }
+.sigstrip-mini .sig-warn { color:var(--c-revision); }
+.sigstrip-mini .sig-bad  { color:var(--c-rework); }
+.sigstrip-mini .sig-none { color:var(--c-stub); }
+
+/* ── info legend (the verdict legend's successor) ── */
+.info-legend { background:var(--bg-card); border:1px solid var(--border);
+               border-radius:10px; padding:8px 14px; margin:12px 0; }
+.info-legend summary { cursor:pointer; font-size:.9em; font-weight:600; }
+.legend-table { width:100%; border-collapse:collapse; font-size:.85em; }
+.legend-table td { padding:4px 10px 4px 0; border-bottom:1px solid var(--bg-accent);
+                   vertical-align:top; }
+.legend-table .lg-term { white-space:nowrap; font-weight:700; }
+.legend-table .lg-term abbr { text-decoration:none; border-bottom:1px dotted var(--fg-dim);
+                              cursor:help; }
+.legend-table .lg-mean { color:var(--fg-muted); }
+
 .p-cols { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:20px;
           align-items:center; margin:14px 0 8px; }
 @media(max-width:720px){ .p-cols { grid-template-columns:1fr; } .p-radar { justify-self:center; } }
@@ -639,6 +674,7 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
     <tr><td class="il">Status</td><td class="ir"><strong>Draft-quality first pass.</strong> Lead does canonical review; this is the structured warm-up.</td></tr>
     <tr><td class="il">Every contributor</td><td class="ir">Each contributor with a submission gets a live review page by default, kept in sync with their latest (even tentative) progress — it grows over time. <code>review-publish-opt-in.json</code> only marks whose link has been surfaced into their Overleaf (🔗): currently <strong>1</strong>.</td></tr>
   </table>
+  <details class="info-legend" id="page-legend"><summary>📖 Legend — every glyph &amp; abbreviation this hub uses (9)</summary><p class="dim small">Auto-built from what this hub actually renders — nothing listed that it does not use. Hover any chip/glyph in place for the same explanation.</p><div class="table-wrap"><table class="legend-table"><tbody><tr><td class="lg-term"><abbr class="term" title="✓ — goal-aligned marker — e.g. models stumped, or a check that holds. On this bank a model being STUMPED is the win." data-tip="goal-aligned marker — e.g. models stumped, or a check that holds. On this bank a model being STUMPED is the win.">✓</abbr></td><td class="lg-mean">goal-aligned marker — e.g. models stumped, or a check that holds. On this bank a model being STUMPED is the win.</td></tr><tr><td class="lg-term"><abbr class="term" title="△ — draft-status info from the auto-reviewer: likely needs a revision pass (information for the author, never a ruling)." data-tip="draft-status info from the auto-reviewer: likely needs a revision pass (information for the author, never a ruling).">△</abbr></td><td class="lg-mean">draft-status info from the auto-reviewer: likely needs a revision pass (information for the author, never a ruling).</td></tr><tr><td class="lg-term"><abbr class="term" title="✗ — draft-status info from the auto-reviewer: likely needs substantial rework, or a duplicate-level dedup match (information, never a ruling)." data-tip="draft-status info from the auto-reviewer: likely needs substantial rework, or a duplicate-level dedup match (information, never a ruling).">✗</abbr></td><td class="lg-mean">draft-status info from the auto-reviewer: likely needs substantial rework, or a duplicate-level dedup match (information, never a ruling).</td></tr><tr><td class="lg-term"><abbr class="term" title="✎ — in progress — the contributor is still drafting this problem." data-tip="in progress — the contributor is still drafting this problem.">✎</abbr></td><td class="lg-mean">in progress — the contributor is still drafting this problem.</td></tr><tr><td class="lg-term"><abbr class="term" title="🔗 — link surfaced — this contributor&#x27;s review-page link has been shared into their Overleaf." data-tip="link surfaced — this contributor&#x27;s review-page link has been shared into their Overleaf.">🔗</abbr></td><td class="lg-mean">link surfaced — this contributor&#x27;s review-page link has been shared into their Overleaf.</td></tr><tr><td class="lg-term"><abbr class="term" title="green / amber / red / gray — green = goal-aligned signal; amber = needs human attention; red = weakness/overlap signal; gray = no data yet. Color always doubles a text marker — nothing is color-only." data-tip="green = goal-aligned signal; amber = needs human attention; red = weakness/overlap signal; gray = no data yet. Color always doubles a text marker — nothing is color-only.">green / amber / red / gray</abbr></td><td class="lg-mean">green = goal-aligned signal; amber = needs human attention; red = weakness/overlap signal; gray = no data yet. Color always doubles a text marker — nothing is color-only.</td></tr><tr><td class="lg-term"><abbr class="term" title="LLM — large language model — the AI systems (GPT/Claude families) this bank&#x27;s problems must stump." data-tip="large language model — the AI systems (GPT/Claude families) this bank&#x27;s problems must stump.">LLM</abbr></td><td class="lg-mean">large language model — the AI systems (GPT/Claude families) this bank&#x27;s problems must stump.</td></tr><tr><td class="lg-term"><abbr class="term" title="BGE — BAAI General Embedding — the open-source text-embedding model the dedup pipeline uses to recall similar problem stems." data-tip="BAAI General Embedding — the open-source text-embedding model the dedup pipeline uses to recall similar problem stems.">BGE</abbr></td><td class="lg-mean">BAAI General Embedding — the open-source text-embedding model the dedup pipeline uses to recall similar problem stems.</td></tr><tr><td class="lg-term"><abbr class="term" title="UMAP — Uniform Manifold Approximation and Projection — the 2-D layout used to map problem embeddings." data-tip="Uniform Manifold Approximation and Projection — the 2-D layout used to map problem embeddings.">UMAP</abbr></td><td class="lg-mean">Uniform Manifold Approximation and Projection — the 2-D layout used to map problem embeddings.</td></tr></tbody></table></div></details>
 </header>
 
 <section id="aggregate">
@@ -652,7 +688,7 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
     <div class="hub-tile t-progress" title="The auto-reviewer&#x27;s draft revision-status info for the author — how much polishing each draft likely needs. Information, never an accept/reject verdict; the human researchers adjudicate."><div class="num">3</div><div class="lbl">draft: in progress ✎</div></div>
     <div class="hub-tile t-info" title="Counts only verifiers that genuinely validated against an author oracle: graded the answer key as pass AND rejected every plausibly-wrong response. Drafts in not_auto_verifiable mode await the author&#x27;s oracle — the agent never fabricates one."><div class="num">9/15</div><div class="lbl">oracle-validated verifiers ✓</div></div>
     <div class="hub-tile t-ready"><div class="num">5/5</div><div class="lbl" title="Problems that stumped the test model. HIGHER is better — the goal is problems models cannot solve. 0 were solved (= too easy).">stumped a model ✓</div></div>
-    <div class="hub-tile t-info"><div class="num">15</div><div class="lbl" title="Agent-proposed structured tags (capability·domain·subtopic·difficulty) surfaced on the problem cards for the author to confirm.">tags proposed 🏷</div></div>
+    <div class="hub-tile t-info"><div class="num">17</div><div class="lbl" title="Agent-proposed structured tags (capability·domain·subtopic·difficulty) surfaced on the problem cards for the author to confirm.">tags proposed 🏷</div></div>
   </div>
 </section>
 
