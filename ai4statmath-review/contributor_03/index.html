@@ -1,0 +1,1369 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Zihan Dong — auto-review</title>
+<script>window.MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+:root {
+  color-scheme: dark;
+  --fg:#e5e7eb; --fg-dim:#94a3b8; --fg-muted:#cbd5e1;
+  --bg:#0f172a; --bg-card:#1e293b; --bg-soft:#162033; --bg-accent:#334155;
+  --border:#334155; --primary:#60a5fa;
+  --c-ready:#34d399; --c-revision:#fbbf24; --c-rework:#f87171; --c-stub:#9ca3af;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; scroll-padding-top:72px; }
+body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+       background:var(--bg); color:var(--fg); line-height:1.55; font-size:15px; }
+
+/* ── sticky navbar ─────────────────────────────────────────────── */
+.navbar { position:sticky; top:0; z-index:50; background:rgba(15,23,42,0.92);
+          backdrop-filter:saturate(160%) blur(10px); border-bottom:1px solid var(--border); }
+.nav-inner { max-width:980px; margin:0 auto; padding:10px 18px; display:flex;
+             align-items:center; gap:14px; flex-wrap:nowrap; }
+.nav-brand { font-weight:700; font-size:.95em; white-space:nowrap;
+             display:flex; align-items:baseline; gap:8px; min-width:0; flex-shrink:1;
+             overflow:hidden; text-overflow:ellipsis; }
+.nav-brand .name { font-weight:700; }
+.nav-brand .contact { font-weight:400; font-size:.84em; }
+.nav-brand .contact a { color:var(--fg-dim); text-decoration:none; }
+.nav-brand .contact a:hover { color:var(--primary); }
+.nav-brand .sub { color:var(--fg-dim); font-weight:400; font-size:.86em; }
+.nav-chips { flex:1 1 0; min-width:0; display:flex; gap:6px; overflow-x:auto;
+             padding:2px 0; scrollbar-width:thin; scrollbar-color:var(--bg-accent) transparent; }
+.nav-chips::-webkit-scrollbar { height:6px; }
+.nav-chips::-webkit-scrollbar-thumb { background:var(--bg-accent); border-radius:3px; }
+.nav-chat { flex:0 0 auto; }
+.nav-back { flex:0 0 auto; background:var(--bg-card); color:var(--fg);
+            padding:6px 11px; border-radius:6px; text-decoration:none;
+            font-size:.86em; border:1px solid var(--border); white-space:nowrap; }
+.nav-back:hover { border-color:var(--primary); color:var(--primary); }
+.nav-complaint { flex:0 0 auto; background:var(--bg-card); color:var(--fg-dim);
+            padding:6px 11px; border-radius:6px; text-decoration:none;
+            font-size:.86em; border:1px solid var(--border); white-space:nowrap; }
+.nav-complaint:hover { border-color:var(--primary); color:var(--primary); }
+
+/* On mobile (<720px): wrap the inner so chips drop to row 2 full-width.
+   HTML order is brand → chips → chat → back. We bump chat+back ahead of
+   chips with `order` so row 1 stays `[brand … chat back]` and chips fall
+   to row 2. */
+@media (max-width:720px) {
+  .nav-inner { flex-wrap:wrap; }
+  .nav-brand { order:1; }
+  .nav-chat  { order:2; margin-left:auto; }
+  .nav-complaint { order:3; }
+  .nav-back  { order:4; }
+  .nav-chips { order:5; flex-basis:100%; margin-top:4px; padding-bottom:2px; }
+}
+@media (max-width:480px) {
+  /* narrow: hide the "auto-review" subtitle so name + email + chat fit row 1. */
+  .nav-brand .sub { display:none; }
+  .nav-brand .contact { font-size:.78em; }
+}
+@media (max-width:360px) {
+  /* ultra-narrow: drop contact too, keep just name */
+  .nav-brand .contact { display:none; }
+}
+.chip { display:inline-flex; align-items:center; gap:4px; padding:5px 11px;
+        border-radius:6px; font-size:.84em; text-decoration:none; color:var(--fg);
+        background:var(--bg-card); border:1px solid var(--border); white-space:nowrap;
+        transition:transform .12s, border-color .12s; }
+.chip:hover { transform:translateY(-1px); border-color:var(--primary); }
+.chip.active { border-color:var(--primary); box-shadow:0 0 0 1px var(--primary) inset; }
+.chip .ch-num { font-variant-numeric:tabular-nums; color:var(--fg-dim); font-size:.92em; }
+.chip .ch-kw { font-weight:500; }
+.chip-ready    { border-left:3px solid var(--c-ready); }
+.chip-revision { border-left:3px solid var(--c-revision); }
+.chip-rework   { border-left:3px solid var(--c-rework); }
+.chip-stub     { border-left:3px solid var(--c-stub); }
+.nav-chat { flex:0 0 auto; background:var(--primary); color:#0f172a;
+            padding:6px 12px; min-height:32px; border-radius:6px; border:none;
+            font-weight:600; font-size:.88em; cursor:pointer; white-space:nowrap; }
+.nav-chat:hover { filter:brightness(1.1); }
+
+/* ── container ─────────────────────────────────────────────────── */
+.container { max-width:980px; margin:0 auto; padding:24px 18px 80px; }
+/* reserve the right gutter for the mobile icon-rail so content never sits under it */
+@media (max-width:720px) { .container { padding-right:58px; } }
+
+/* ── hero ──────────────────────────────────────────────────────── */
+.hero { background:linear-gradient(135deg, var(--bg-card), var(--bg-soft));
+        border:1px solid var(--border); border-radius:14px; padding:22px 26px; margin-bottom:18px; }
+.hero h1 { margin:0 0 .25rem; font-size:1.7rem; }
+.hero .hero-sub { color:var(--fg-muted); font-size:.95em; }
+.hero .timestamp { color:var(--fg-muted); font-size:.86em; margin-top:8px; }
+.hero-more { margin:10px 0 4px; }
+.hero-more > summary { cursor:pointer; color:var(--fg-muted); font-size:.88em;
+                       padding:4px 0; list-style:none; }
+.hero-more > summary::before { content:"›"; margin-right:7px; color:var(--fg-dim);
+                               display:inline-block; transition:transform .15s; }
+.hero-more[open] > summary::before { transform:rotate(90deg); }
+.purpose-table { width:100%; border-collapse:collapse; margin:6px 0 4px; }
+.purpose-table tr { border-bottom:1px solid var(--border); }
+.purpose-table tr:last-child { border-bottom:none; }
+.purpose-table td { padding:7px 10px; vertical-align:top; font-size:.9em; }
+.purpose-table td.pl { color:var(--fg-muted); white-space:nowrap; width:1%; font-weight:600; min-width:0; }
+@media (max-width:560px) { .purpose-table td.pl { white-space:normal; width:auto; } }
+.purpose-table td.pr { color:var(--fg); }
+.purpose-table td.pr .pill { margin-right:4px; }
+@media (max-width:560px) { .purpose-table td { display:block; } .purpose-table td.pl { padding-bottom:0; } }
+.uc-banner { background:#78350f; border-left:3px solid #f59e0b; color:#fed7aa;
+             padding:9px 14px; border-radius:8px; margin:14px 0 4px; font-size:.86em; }
+
+/* ── dashboard ─────────────────────────────────────────────────── */
+.dashboard { background:var(--bg-card); border:1px solid var(--border); border-radius:14px;
+             padding:20px 22px; margin:14px 0 22px; display:grid;
+             grid-template-columns:1fr auto; gap:24px; align-items:center; }
+@media(max-width:720px){ .dashboard { grid-template-columns:1fr; } .dashboard .dash-radar{ justify-self:center; } }
+.dashboard h2 { margin:0 0 12px; font-size:1.05em; color:var(--fg-muted); font-weight:600; }
+.dash-tiles { display:grid; grid-template-columns:repeat(auto-fit, minmax(110px, 1fr)); gap:12px; }
+.tile { background:var(--bg-soft); border-radius:8px; padding:10px 14px; }
+.tile .num { font-size:1.8em; font-weight:700; line-height:1; }   /* panel R1 visual P2: tile numbers given more weight so they win the squint test over the dash radar */
+.dashboard .dash-radar svg polygon[fill="#60a5fa"] { fill-opacity:0.18; }  /* mute aggregate radar fill */
+.tile .lbl { font-size:.78em; color:var(--fg-dim); margin-top:3px; }
+.tile.t-ready    .num { color:var(--c-ready); }
+.tile.t-revision .num { color:var(--c-revision); }
+.tile.t-rework   .num { color:var(--c-rework); }
+.tile.t-verif    .num { color:var(--primary); }
+.tile.t-progress .num { color:#60a5fa; }
+
+/* ── problem cards ─────────────────────────────────────────────── */
+section.problem { background:var(--bg-card); border:1px solid var(--border);
+                  border-radius:14px; padding:22px 26px; margin:18px 0;
+                  scroll-margin-top:120px; min-width:0;
+                  border-left:4px solid var(--bg-accent); }
+/* Status tint — subtle left border + faded top gradient.
+   Subtle enough not to compete with content; bold enough to register at glance. */
+section.problem[data-verdict="ready"] {
+  border-left-color:var(--c-ready);
+  background:linear-gradient(180deg, rgba(52,211,153,0.05) 0%, var(--bg-card) 80px); }
+section.problem[data-verdict="needs-revision"] {
+  border-left-color:var(--c-revision);
+  background:linear-gradient(180deg, rgba(251,191,36,0.05) 0%, var(--bg-card) 80px); }
+section.problem[data-verdict="needs-major-rework"] {
+  border-left-color:var(--c-rework);
+  background:linear-gradient(180deg, rgba(248,113,113,0.05) 0%, var(--bg-card) 80px); }
+section.problem[data-verdict="template-stub"] {
+  border-left-color:var(--c-stub); }
+section.problem[data-verdict="in-progress"] {
+  border-left-color:#60a5fa;
+  background:linear-gradient(180deg, rgba(96,165,250,0.05) 0%, var(--bg-card) 80px); }
+.p-head { display:flex; justify-content:space-between; gap:14px; align-items:flex-start;
+          flex-wrap:wrap; }
+.p-title { display:flex; align-items:baseline; gap:10px; }
+.p-num { color:var(--fg-dim); font-family:"SF Mono",Consolas,monospace; font-size:.95em;
+         font-variant-numeric:tabular-nums; }
+.p-title h2 { margin:0; font-size:1.18em; }
+.p-pills { display:flex; gap:6px; flex-wrap:wrap; }
+.p-tldr { color:var(--fg-muted); margin:10px 0 16px; font-size:1.02em;
+          padding-left:11px; border-left:3px solid var(--primary); }
+
+.pill { display:inline-flex; align-items:center; gap:3px; padding:2px 9px;
+        border-radius:5px; font-size:.78em; font-weight:600; }
+.pill.v-ready    { background:#064e3b; color:#a7f3d0; }
+.pill.v-revision { background:#78350f; color:#fde68a; }
+.pill.v-rework   { background:#7f1d1d; color:#fecaca; }
+.pill.v-stub     { background:#374151; color:#d1d5db; }
+.pill.v-progress { background:#1e3a8a; color:#bfdbfe; }
+
+.p-cols { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:20px;
+          align-items:center; margin:14px 0 8px; }
+@media(max-width:720px){ .p-cols { grid-template-columns:1fr; } .p-radar { justify-self:center; } }
+.p-actions { min-width:0; }
+.p-actions h3 { margin:0 0 8px; font-size:.92em; color:var(--fg-muted); }
+.qa-list { margin:0; padding-left:20px; }
+.qa-item { margin:7px 0; min-width:0; }
+.qa-where { display:inline-flex; align-items:center; gap:4px; background:var(--bg-accent);
+            color:var(--fg); padding:2px 7px 2px 4px; border-radius:4px;
+            font-family:"SF Mono",Consolas,monospace; font-size:.78em; margin-right:6px;
+            vertical-align:baseline; }
+.qa-glyph { font-family:-apple-system,sans-serif; font-size:1em; line-height:1; }
+.qa-what { font-size:.96em; }
+.qa-example { margin-top:4px; }
+.qa-example summary { font-size:.78em; color:var(--fg-dim); cursor:pointer; padding:6px 0; }
+.qa-example pre { background:var(--bg); padding:8px 10px; border-radius:4px;
+                  font-size:.84em; overflow-x:auto; margin:4px 0 0; line-height:1.4;
+                  white-space:pre-wrap; overflow-wrap:anywhere; max-width:100%; }
+
+.d-block { background:var(--bg-soft); border-radius:8px; padding:8px 14px; margin:10px 0; }
+.d-block > summary { cursor:pointer; padding:4px 0; font-weight:500;
+                     color:var(--fg-muted); font-size:.94em; list-style:none;
+                     display:flex; justify-content:space-between; align-items:center; }
+.d-block > summary::before { content:"›"; margin-right:8px; color:var(--fg-dim);
+                              transition:transform .15s; display:inline-block; }
+.d-block[open] > summary::before { transform:rotate(90deg); }
+.d-block ul.bullets { margin:8px 0 4px; padding-left:22px; font-size:.94em; }
+.d-block ul.bullets li { margin:5px 0; }
+.dim { color:var(--fg-dim); }
+.small { font-size:.84em; }
+
+/* ── keyword decoration ("skim-resolution" layer) ───────────────── */
+/* Three orthogonal channels (Grammarly / Word convention):
+   1. **Bold** weight  → action verb (the eye finds "what to DO")
+   2. ~Red wavy~       → warning / typo / bug (the eye finds "what's wrong")
+   3. Mono pill        → "structured thing" (template field / code / math /
+                          quoted literal — a different KIND of token from prose)
+   We do NOT use font color for verbs or warnings — color was noise. */
+
+.kw-subject { font-weight:700; color:inherit; }
+.kw-warn { text-decoration:underline wavy #ef4444; text-decoration-skip-ink:none;
+           text-underline-offset:3px; color:inherit; }
+
+/* Structured things: monospace, muted, distinguishable from prose
+   but not screaming. */
+.kw-section { font-family:"SF Mono",Consolas,monospace; background:#1f2937;
+              color:var(--fg-muted); padding:1px 6px; border-radius:3px;
+              font-size:.88em; }
+.kw-math    { font-family:"SF Mono",Consolas,monospace; background:#1f2937;
+              color:var(--fg-muted); padding:1px 5px; border-radius:3px;
+              font-size:.88em; }
+.kw-code    { font-family:"SF Mono",Consolas,monospace; background:#1f2937;
+              color:var(--fg-muted); padding:1px 5px; border-radius:3px;
+              font-size:.88em; }
+.kw-qstr    { font-family:"SF Mono",Consolas,monospace; background:#0b1220;
+              color:var(--fg); padding:1px 6px; border-radius:3px;
+              font-size:.88em; border:1px solid var(--bg-accent); }
+.kw-num     { font-family:"SF Mono",Consolas,monospace; color:var(--fg);
+              font-weight:600; font-size:.94em; }
+
+/* Difficulty levels: neutral chip on a single violet ramp (panel R1 visual P2:
+   the previous green/amber/red reused the status palette and made the eye
+   parse a level mention as a verdict). Now uses a non-status hue so it
+   cannot be confused with ready/revision/rework. */
+.kw-level   { font-weight:600; padding:1px 6px; border-radius:3px;
+              font-size:.88em; background:var(--bg-accent); color:var(--fg); }
+/* R-2 regression fix (pseudo-recursive round 2): the round-1 violet ramp
+   (0.10→0.38) was indistinguishable at a glance. Widened spread + a left
+   border weight that grows with level, so Basic→Research reads at a glance
+   while staying off the status palette. The level word still carries the
+   primary signal; the chip is secondary emphasis. */
+.kw-level.lv-basic        { background:rgba(167,139,250,.12); box-shadow:inset 2px 0 0 rgba(167,139,250,.35); }
+.kw-level.lv-intermediate { background:rgba(167,139,250,.22); box-shadow:inset 2px 0 0 rgba(167,139,250,.55); }
+.kw-level.lv-advanced     { background:rgba(167,139,250,.34); box-shadow:inset 3px 0 0 rgba(167,139,250,.75); }
+.kw-level.lv-research     { background:rgba(167,139,250,.50); box-shadow:inset 3px 0 0 rgba(167,139,250,1); }
+
+/* dimension score color coding (used in radar labels) */
+.s-1 { fill:#f87171; }
+.s-2 { fill:#fbbf24; }
+.s-3 { fill:#fde68a; }
+.s-4 { fill:#86efac; }
+.s-5 { fill:#34d399; }
+
+/* ── tabs (snapshot / annotated) ───────────────────────────────── */
+.tabs { display:flex; gap:2px; margin:10px 0 0; border-bottom:1px solid var(--border); }
+.tab { background:none; border:none; color:var(--fg-muted); padding:7px 13px; cursor:pointer;
+       font-family:inherit; font-size:.88em; border-bottom:2px solid transparent; }
+.tab.active { color:var(--primary); border-bottom-color:var(--primary); }
+.pane { display:none; padding:12px 0 4px; }
+.pane.active { display:block; }
+.statement { font-family:"Georgia","Cambria",serif; font-size:1.02em; line-height:1.65;
+             background:var(--bg); padding:14px 18px; border-radius:6px;
+             white-space:pre-wrap; word-break:break-word;
+             max-width:72ch;  /* panel R1 visual P3: comfortable reading measure for math-heavy serif text (was running ~110ch at full column width) */ }
+
+.annot { background:rgba(96,165,250,0.14); border-radius:3px; cursor:help;
+         position:relative; padding:0 2px; }
+.annot:hover, .annot:focus-visible { background:rgba(96,165,250,0.28); outline:none; }
+.annot-strong, .annot-praise   { background:rgba(52,211,153,0.20); }
+.annot-strong:hover, .annot-praise:hover { background:rgba(52,211,153,0.35); }
+.annot-nit { background:rgba(156,163,175,0.20); }
+.annot-suggestion { background:rgba(96,165,250,0.20); }
+.annot-ambiguity { background:rgba(251,191,36,0.20); }
+.annot-missing { background:rgba(248,113,113,0.20); }
+.annot-bubble { display:none; position:absolute; left:0; bottom:calc(100% + 4px);
+                background:var(--bg-card); border:1px solid var(--primary); border-radius:6px;
+                padding:8px 12px; font-size:.85em; font-family:-apple-system,sans-serif;
+                line-height:1.4; box-shadow:0 4px 14px rgba(0,0,0,.4); z-index:10;
+                width:280px; max-width:90vw; white-space:normal; }
+.annot:hover .annot-bubble, .annot:focus-visible .annot-bubble { display:block; }
+
+/* ── verifier card ─────────────────────────────────────────────── */
+.verifier-card { padding:8px 0; }
+.verifier-card.empty p { color:var(--fg-dim); font-size:.92em; margin:6px 0; }
+.vc-head { display:flex; gap:12px; align-items:center; flex-wrap:wrap;
+           padding:4px 0 10px; }
+.vc-mode code { font-size:.86em; }
+.vc-meta { font-size:.85em; }
+.vc-rationale { margin:6px 0; font-size:.92em; color:var(--fg-muted); }
+.vc-blocker { background:#7f1d1d; color:#fecaca; padding:6px 12px; border-radius:4px;
+              font-size:.86em; margin:8px 0; }
+.vc-details { margin:6px 0; }
+.vc-details summary { cursor:pointer; color:var(--fg-dim); font-size:.86em; padding:6px 0; min-height:28px; display:flex; align-items:center; }
+pre.code { background:#0b1220; padding:12px 14px; border-radius:6px; overflow-x:auto;
+           font-size:.78em; line-height:1.45; max-height:380px; overflow-y:auto;
+           border:1px solid var(--border); max-width:100%; }
+.bench-block .model-response,
+pre.code, pre.tex-source { max-width:100%; }
+/* `overflow:clip` not `:hidden` — see co-PI scroll-bug fix 2026-05-29.
+   `overflow:hidden` makes a scroll container that absorbs wheel events on
+   contributor review pages (where many <details> sit in problem sections);
+   `overflow:clip` provides the same visual clipping with no phantom scroll
+   container, so wheel events chain to the document. */
+section.problem details { min-width:0; max-width:100%; overflow:clip; }
+section.problem details[open] > div, section.problem details[open] > p,
+section.problem details[open] > pre { max-width:100%; }
+pre.code code { white-space:pre; }
+table.checks { width:100%; border-collapse:collapse; font-size:.84em; margin-top:6px; }
+table.checks th, table.checks td { text-align:left; padding:5px 8px;
+                                    border-bottom:1px solid var(--border); vertical-align:top; }
+table.checks th { color:var(--fg-dim); font-weight:500; font-size:.82em; }
+table.checks td.t-r { color:var(--c-ready); white-space:nowrap; font-size:.82em; }
+table.checks td code { background:var(--bg); padding:1px 4px; border-radius:3px; font-size:.92em; }
+
+/* ── benchmark drawer ──────────────────────────────────────────── */
+.bench-block { background:var(--bg-soft); border-radius:8px; padding:8px 14px; margin:10px 0; }
+.bench-block summary { cursor:pointer; color:var(--fg-muted); font-weight:500; font-size:.94em; padding:4px 0; min-height:28px; display:flex; align-items:center; }
+/* ── proposed tags (agent-proposed, info-styled; #111) ─────────── */
+.proposed-tags-block { background:var(--bg-soft); border-left:3px solid var(--accent, #60a5fa);
+                        border-radius:8px; padding:8px 14px; margin:10px 0; }
+.proposed-tags-block summary { cursor:pointer; color:var(--fg-muted); font-weight:500;
+                        font-size:.94em; padding:4px 0; min-height:28px; display:flex; align-items:center; }
+.pt-table { width:100%; border-collapse:collapse; font-size:.9em; margin:4px 0; }
+.pt-table td { padding:5px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+.pt-table td.pt-dim { white-space:nowrap; font-weight:600; color:var(--fg-muted);
+                      width:1%; font-size:.85em; }
+.pt-table tr:last-child td { border-bottom:none; }
+
+.dedup-block .dedup-headline { padding:8px 0 6px; }
+.dedup-table { width:100%; border-collapse:collapse; font-size:.86em; }
+.dedup-table th { background:var(--bg-accent); font-weight:600; font-size:.82em;
+                   color:var(--fg-muted); padding:6px 10px; text-align:left;
+                   border-bottom:1px solid var(--border); white-space:nowrap; }
+.dedup-table td { padding:7px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+.dedup-table td.n { text-align:right; font-variant-numeric:tabular-nums; }
+.dedup-table td.stem { font-family:"SF Mono",Consolas,monospace; font-size:.84em;
+                        color:var(--fg-muted); line-height:1.45; max-width:280px; }
+.dedup-table .cos-cell strong { background:rgba(248,113,113,0.16); padding:1px 6px;
+                                 border-radius:4px; color:var(--fg); }
+.bench-framing { padding:8px 12px; border-radius:6px; margin:8px 0 4px; font-size:.92em; }
+.bench-framing.bf-bad  { background:rgba(251,191,36,0.12); border-left:3px solid var(--c-revision); color:#fde68a; }
+.bench-framing.bf-good { background:rgba(52,211,153,0.12); border-left:3px solid var(--c-ready); color:#a7f3d0; }
+.bench-framing.bf-uncertain { background:rgba(156,163,175,0.10); border-left:3px solid var(--c-stub); color:#cbd5e1; }
+.traj-list { margin:6px 0; padding-left:1.1em; font-size:.92em; line-height:1.55; }
+.traj-list li { margin:.35em 0; }
+.traj-tag { font-weight:600; padding:1px 7px; border-radius:10px; font-size:.85em; background:rgba(156,163,175,0.14); }
+.traj-tag.bf-good { background:rgba(52,211,153,0.16); color:#a7f3d0; }
+.traj-tag.bf-uncertain { background:rgba(251,191,36,0.16); color:#fde68a; }
+.traj-forks { display:flex; gap:10px; flex-wrap:wrap; margin:4px 0 2px; }
+.traj-fork { flex:1 1 280px; background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:8px 11px; }
+.traj-fork-h { font-size:.9em; margin-bottom:5px; }
+.traj-quote { margin:0; font-size:.84em; color:var(--fg-muted); line-height:1.5; border-left:2px solid var(--border); padding-left:9px; }
+.model-response { background:var(--bg); padding:12px 14px; border-radius:6px; font-size:.86em;
+                  white-space:pre-wrap; max-height:340px; overflow-y:auto;
+                  border:1px solid var(--border); line-height:1.5; }
+
+/* ── timeline ──────────────────────────────────────────────────── */
+ul.timeline { margin:6px 0 8px; padding-left:20px; font-size:.86em; }
+ul.timeline li { margin:4px 0; }
+ul.timeline .ts { color:var(--fg-dim); font-variant-numeric:tabular-nums; margin-right:8px; }
+ul.timeline .sha { color:var(--fg-muted); font-family:"SF Mono",Consolas,monospace;
+                  font-size:.84em; margin-right:8px; }
+
+/* ── time machine (client-side version stepper) ────────────────── */
+.time-machine { display:flex; align-items:center; justify-content:center; gap:14px;
+                background:var(--bg-card); border:1px solid var(--border);
+                border-radius:12px; padding:10px 16px; margin:0 0 18px;
+                position:sticky; top:56px; z-index:40;
+                backdrop-filter:saturate(160%) blur(8px); }
+.tm-btn { background:var(--bg-soft); color:var(--fg); border:1px solid var(--border);
+          border-radius:8px; min-width:40px; min-height:40px; font-size:1.05em;
+          cursor:pointer; line-height:1; display:flex; align-items:center;
+          justify-content:center; transition:border-color .12s, color .12s, background .12s; }
+.tm-btn:hover:not(:disabled) { border-color:var(--primary); color:var(--primary); }
+.tm-btn:focus-visible { outline:2px solid var(--primary); outline-offset:2px; }
+.tm-btn:disabled { opacity:.35; cursor:not-allowed; }
+.tm-readout { display:flex; flex-direction:column; align-items:center; gap:2px;
+              min-width:220px; text-align:center; }
+.tm-asof { font-size:.98em; }
+.tm-asof .tm-date { font-variant-numeric:tabular-nums; color:var(--primary); }
+.tm-counter { font-variant-numeric:tabular-nums; }
+@media (max-width:480px) { .tm-readout { min-width:160px; } .tm-asof { font-size:.9em; } }
+
+/* placeholder shown when a problem has no version at/before the selected date */
+.p-notyet { color:var(--fg-dim); font-style:italic; padding-left:11px;
+            border-left:3px solid var(--bg-accent); margin:12px 0; }
+section.problem.tm-empty { opacity:.7; border-left-color:var(--bg-accent) !important;
+                           background:var(--bg-card) !important; }
+
+/* diff cue: subtle highlight when a card's version changed vs the previous
+   timeline step. Not colour-alone — a left accent bar + a small "changed"
+   chip carry the signal too. Fades after a moment. */
+section.problem.tm-changed { animation:tmChanged 1.6s ease-out; }
+@keyframes tmChanged {
+  0%   { box-shadow:0 0 0 2px var(--primary) inset, 0 0 18px rgba(96,165,250,.35); }
+  100% { box-shadow:0 0 0 0 transparent inset, 0 0 0 transparent; }
+}
+.tm-changed-chip { display:inline-flex; align-items:center; gap:4px; padding:2px 9px;
+                   border-radius:5px; font-size:.78em; font-weight:600;
+                   background:#1e3a8a; color:#bfdbfe; margin-left:2px; }
+@media (prefers-reduced-motion:reduce) {
+  section.problem.tm-changed { animation:none; outline:2px solid var(--primary); outline-offset:-2px; }
+}
+
+/* ── footers ───────────────────────────────────────────────────── */
+.p-foot { display:flex; justify-content:space-between; margin-top:14px; padding-top:10px;
+          border-top:1px solid var(--border); flex-wrap:wrap; gap:8px; }
+.p-foot a { color:var(--primary); text-decoration:none; font-size:.86em; }
+.p-foot a:hover { text-decoration:underline; }
+
+footer.page-foot { margin-top:40px; padding-top:22px; border-top:1px solid var(--border);
+                   color:var(--fg-dim); font-size:.85em; text-align:center; }
+footer.page-foot a { color:var(--primary); text-decoration:none; }
+
+/* ── tooltip convention (port from lit-review) ─────────────────── */
+abbr.term { text-decoration:none; border-bottom:1px dotted var(--fg-dim);
+            cursor:help; }
+abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
+#tt { position:absolute; display:none; max-width:320px;
+      background:var(--bg-card); color:var(--fg); border:1px solid var(--primary);
+      border-radius:8px; padding:10px 12px; font-size:.86em; line-height:1.45;
+      box-shadow:0 8px 24px rgba(0,0,0,.32); z-index:200; pointer-events:auto; }
+#tt.on { display:block; }
+.tile t-progress { /* defined below in tiles section */ }
+
+/* ── timeline rail: floats above text, dynamic + hierarchical ───── */
+/* Vertical rail on the right side. Always-visible. Backgroundless;
+   only the items carry slight backdrop blur. The section currently in
+   view expands to reveal its sub-anchors (TL;DR / fixes / promising /
+   considerations / next steps / problem text / verifier / benchmark).
+   Off-view problems collapse to a single bullet+number+glyph row.
+
+   Mobile: rail is touch-friendly. The whole rail is fixed-position so
+   it stays at the thumb without page scroll. Tap any row to jump. */
+/* Panel round 1 (visual designer + engineer P1): the rail overlapped the
+   980px content column at every common laptop width and covered the
+   dashboard tiles on mobile. Fix: HIDE by default; only show where it has
+   genuine room — wide desktop (right margin) or a reserved mobile gutter.
+   In the awkward middle (721–1459px) the sticky navbar chips carry nav. */
+.rail-tl { display:none; }
+/* Wide desktop: container is 980px centered; show the rail only when the
+   right margin can host its ~240px without overlapping content. */
+@media (min-width:1460px) {
+  .rail-tl { display:flex; position:fixed; right:max(8px, calc((100vw - 980px)/2 - 248px));
+             top:64px; bottom:0; z-index:60; width:228px; padding:8px 10px 14px;
+             flex-direction:column; background:transparent; pointer-events:none;
+             font-size:.78em; overflow:hidden; }
+}
+.rail-tl-inner { pointer-events:auto; display:flex; flex-direction:column;
+                 gap:2px; overflow-y:auto; flex:1;
+                 scrollbar-width:none; padding-right:4px;
+                 mask-image:linear-gradient(180deg, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
+                 -webkit-mask-image:linear-gradient(180deg, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%); }
+.rail-tl-inner::-webkit-scrollbar { display:none; }
+.rail-section { display:flex; flex-direction:column; }
+.rail-bullet { display:flex; align-items:center; gap:6px;
+               padding:5px 10px; border-radius:10px;
+               background:rgba(15,23,42,0.55);
+               color:var(--fg-muted); text-decoration:none;
+               border:1px solid rgba(255,255,255,0.04);
+               backdrop-filter:blur(6px);
+               font-variant-numeric:tabular-nums;
+               transition:background .14s, color .14s, padding .15s; }
+.rail-bullet:hover { background:rgba(30,41,59,0.88); color:var(--fg); }
+.rail-bullet .rl-num { font-family:"SF Mono",Consolas,monospace; font-size:.94em;
+                       color:var(--fg-dim); flex:none; min-width:22px; }
+.rail-bullet .rl-glyph { flex:none; font-size:.95em; }
+.rail-bullet .rl-title { flex:1; overflow:hidden; text-overflow:ellipsis;
+                         white-space:nowrap; font-weight:500; }
+.rail-section.active .rail-bullet { background:rgba(30,41,59,0.95);
+                                    color:var(--fg);
+                                    border-color:var(--primary);
+                                    padding-top:7px; padding-bottom:7px; }
+.rail-section.rl-ready    .rl-glyph { color:var(--c-ready); }
+.rail-section.rl-revision .rl-glyph { color:var(--c-revision); }
+.rail-section.rl-rework   .rl-glyph { color:var(--c-rework); }
+.rail-section.rl-stub     .rl-glyph { color:var(--c-stub); }
+.rail-section.rl-progress .rl-glyph { color:#60a5fa; }
+
+/* Sub-anchors — only visible for the section in view. */
+.rail-sub { display:none; margin:2px 0 4px 22px; flex-direction:column; gap:2px; }
+.rail-section.active .rail-sub { display:flex; animation:railFadeIn .2s ease-out; }
+@keyframes railFadeIn { from { opacity:0; transform:translateX(4px); } to { opacity:1; transform:translateX(0); } }
+.rail-sub a { display:block; padding:2px 8px; font-size:.86em;
+              color:var(--fg-muted); text-decoration:none;
+              border-left:2px solid rgba(255,255,255,0.06);
+              padding-left:8px; }
+.rail-sub a:hover { color:var(--fg); border-left-color:var(--primary); }
+
+/* Mobile: a NARROW icon rail (num + glyph only) in a reserved right gutter,
+   so it never overlaps content. Tap to jump. 44px targets for touch.
+   The page reserves the gutter via .container padding-right (set below). */
+@media (max-width:720px) {
+  .rail-tl { display:flex; position:fixed; right:0; top:auto; bottom:0;
+             height:auto; max-height:72vh; width:52px; padding:0 4px 10px 0;
+             flex-direction:column; background:transparent; pointer-events:none;
+             z-index:60; overflow:hidden; }
+  /* Co-PI report 2026-05-29: page wouldn't scroll when wheel/touch landed on
+     rail area. Cause: rail-tl-inner had `overflow-y:auto` (a scroll container)
+     plus `pointer-events:auto` (caught dead-space). When rail content fits,
+     Chrome/Safari still absorbed wheel into the empty scroll container.
+     Fix: drop the scroll container entirely on mobile (rail-tl already clips
+     via overflow:hidden); pointer-events on the inner go to `none` so dead
+     space between bullets passes wheel/touch through to the page; bullets
+     re-enable pointer-events:auto so taps still work. */
+  .rail-tl-inner { pointer-events:none; overflow:visible; gap:3px; padding-right:2px; }
+  .rail-tl-inner .rail-bullet { pointer-events:auto; }
+  .rail-bullet { padding:0 6px; min-height:44px; justify-content:center;
+                 gap:3px; border-radius:9px; }
+  .rail-bullet .rl-title { display:none; }   /* titles would overlap content */
+  .rail-bullet .rl-num { min-width:0; font-size:.86em; }
+  .rail-sub { display:none !important; }      /* sub-anchors expand leftward → overlap; off on mobile */
+  .rail-section.active .rail-bullet { padding:0 6px; }
+}
+
+/* ── chatbot drawer (kept in DOM but hidden until proxy ready) ─── */
+.chat-fab { display:none; }   /* re-enable by setting display:flex when proxy is configured */
+.chat-drawer { position:fixed; right:-440px; top:0; bottom:0; width:420px; max-width:100vw;
+               background:var(--bg-card); border-left:1px solid var(--border);
+               display:flex; flex-direction:column; transition:right .25s; z-index:65; }
+.chat-drawer.open { right:0; }
+@media(max-width:520px){ .chat-drawer { width:100vw; right:-100vw; } }
+.chat-head { padding:14px 18px; border-bottom:1px solid var(--border);
+             display:flex; justify-content:space-between; align-items:center; }
+.chat-head h3 { margin:0; font-size:1em; }
+.chat-close, .chat-settings { background:none; border:none; color:var(--fg-muted);
+                              cursor:pointer; font-size:1.15em; padding:4px 8px; }
+.chat-close:hover, .chat-settings:hover { color:var(--fg); }
+.chat-body { flex:1; overflow-y:auto; padding:14px 18px; display:flex;
+             flex-direction:column; gap:10px; font-size:.92em; }
+.msg { padding:8px 12px; border-radius:8px; max-width:90%; line-height:1.45; }
+.msg.user { background:var(--primary); color:#0f172a; align-self:flex-end; }
+.msg.assistant { background:var(--bg-soft); color:var(--fg); align-self:flex-start; }
+.msg.system { background:transparent; color:var(--fg-dim); font-size:.84em;
+              align-self:center; text-align:center; }
+.msg.error { background:#7f1d1d; color:#fecaca; align-self:flex-start; }
+.msg pre { background:var(--bg); padding:6px 10px; border-radius:4px; overflow-x:auto;
+           font-size:.86em; margin:6px 0; white-space:pre-wrap; }
+.chat-input { display:flex; gap:8px; padding:12px 14px; border-top:1px solid var(--border); }
+.chat-input textarea { flex:1; background:var(--bg-soft); border:1px solid var(--border);
+                       border-radius:6px; padding:8px 10px; color:var(--fg); font-family:inherit;
+                       font-size:.92em; resize:none; min-height:38px; max-height:120px; }
+.chat-input button { background:var(--primary); color:#0f172a; border:none; border-radius:6px;
+                     padding:0 18px; font-weight:600; cursor:pointer; }
+.chat-input button:disabled { opacity:.5; cursor:not-allowed; }
+.chat-settings-panel { display:none; padding:14px 18px; border-bottom:1px solid var(--border);
+                       background:var(--bg-soft); }
+.chat-settings-panel.open { display:block; }
+.chat-settings-panel label { display:block; font-size:.84em; color:var(--fg-muted); margin:6px 0 4px; }
+.chat-settings-panel input, .chat-settings-panel select {
+  width:100%; background:var(--bg); border:1px solid var(--border); border-radius:5px;
+  color:var(--fg); padding:6px 10px; font-family:inherit; font-size:.9em;
+}
+.chat-settings-panel .hint { font-size:.78em; color:var(--fg-dim); margin-top:6px; }
+</style>
+</head><body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <span class="name">Zihan Dong</span>
+      <span class="contact">·&nbsp;zd182&#64;stat&#46;rutgers&#46;edu</span>
+      <span class="sub">· auto-review</span>
+    </div>
+    <div class="nav-chips"><a class="chip chip-stub" href="#problem-1"><span class="ch-num">#01</span> <span class="ch-kw">Laughable Performance</span></a><a class="chip chip-stub" href="#problem-2"><span class="ch-num">#02</span> <span class="ch-kw">Tenuous Function</span></a></div>
+    <button class="nav-chat" onclick="document.querySelector('.chat-fab').click();">💬 chat</button>
+    <a class="nav-back" href="../">← hub</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <div class="hero">
+    <h1>📊 Zihan Dong's problem reviews</h1>
+    <div class="hero-sub">Auto-drafted review of Zihan Dong's submissions to the <strong>AI4Stat/Math benchmark</strong> — math/stats problems built to <strong>stump frontier AI models</strong>, so a model <em>solving</em> one (⚠) is a weakness and being <em>stumped</em> (✓) is the win. Auto-drafted by reviewer model <code>in-session review agent</code> (the AI4Stat/Math review agent); the human reviewer's edits are final.</div>
+    <details class="hero-more" id="hero-more">
+      <summary>How to read this page — goal &amp; status glyphs</summary>
+      <table class="purpose-table">
+        <tr><td class="pl">🎯 The goal</td><td class="pr">Problems that current frontier models <strong>cannot solve</strong>. A model <em>solving</em> a problem (⚠) is a weakness; a model being <em>stumped</em> (✓) is the win — that inverts the usual intuition.</td></tr>
+        <tr><td class="pl">🔤 What each problem shows</td><td class="pr">Objective information, <em>not</em> accept/reject verdicts: the <strong>snapshot</strong> → <strong>how the frontier models do</strong> (pass matrix · answer distribution · oracle-vs-consensus) → <strong>failure/success-mode synthesis</strong> → <strong>trajectory analysis</strong> → <strong>your own pasted notes</strong> → dedup. Signals: <span class="pill v-ready">✓ models stumped</span> <span class="pill v-rework">⚠ models solve</span> <span class="pill v-revision">⚖ oracle-disputed</span></td></tr>
+      </table>
+    </details>
+    <div class="timestamp">⏱ Last reviewed <strong>2026-06-01 04:55 UTC</strong> · total LLM cost: <strong>$0.00</strong> · <span id="first-visit-note"></span></div>
+    <div class="uc-banner">🚧 <strong>Auto-generated draft.</strong> AI-written; the lead reviewer confirms or overrides.</div>
+  </div>
+  <script>
+    // R-1 regression fix (pseudo-recursive round 2): the goal-frame I added in
+    // round 1 turned the hero into a ~1.85-screen wall on mobile. Keep the
+    // one-line purpose always visible; the detailed goal+legend is a disclosure
+    // OPEN on first visit (learner P0 audience) and collapsed on return.
+    (function(){
+      try {
+        var seen = localStorage.getItem('ai4sm-hero-more-seen');
+        var d = document.getElementById('hero-more');
+        if (d && !seen) { d.open = true; }
+        if (d) d.addEventListener('toggle', function(){ if (!d.open) localStorage.setItem('ai4sm-hero-more-seen','1'); });
+      } catch(e) { var d2=document.getElementById('hero-more'); if(d2) d2.open=true; }
+    })();
+  </script>
+
+  
+
+  <div class="dashboard">
+    <div>
+      <h2>📊 How this submission set stands — objective status (not verdicts)</h2>
+      <p class="dim small">A benchmark of stat/math problems that must <strong>fail</strong> frontier models (GPT-5.5 + Opus 4.7) <em>and</em> carry a valid oracle + deterministic rubric; co-authorship at 10 accepted · deadline 2026-06-07. Below is what the models and checks show — for human researchers to adjudicate; the page does not issue accept/reject verdicts.</p>
+      <div class="dash-tiles">
+        <div class="tile"><div class="num">2</div><div class="lbl">problems</div></div>
+        
+        
+        
+        
+        
+        <div class="tile t-verif"><div class="num">0/0</div><div class="lbl"><abbr class="term" data-tip="A verifier is validated when (a) it grades the answer key as pass AND (b) it rejects every plausibly-wrong response the LLM was asked to generate.">verifiers ✓</abbr></div></div>
+      </div>
+    </div>
+  </div>
+
+  
+<section class="problem" id="problem-1" data-sha="1469105b6fe58851" data-verdict="in-progress" data-problem-num="1">
+  <div class="p-version-body">
+  <header class="p-head">
+    <div class="p-title">
+      <span class="p-num">#01</span>
+      <h2>Laughable Performance in Math Competition</h2>
+    </div>
+    <div class="p-pills">
+      
+    </div>
+  </header>
+
+  <p class="p-tldr">Strong Ramsey-flavored stem with a clean integer answer slot — still a draft: no sample responses yet, and the solution&#x27;s jump to <span class="kw-num">253</span> isn&#x27;t justified.</p>
+
+  <details class="d-block" open id="problem-1-text">
+    <summary>📄 Problem snapshot — statement withheld on the public build</summary>
+    <p class="dim small">The raw problem statement, full <code>.tex</code> source, and oracle/answer key are <strong>not shown on the public review page</strong> — the bank is private and unreleased, and contributors review their own source on Overleaf. This page surfaces <strong>information about</strong> each problem (model results, trajectory analysis, dedup, reviewer suggestions, tags), not the problem text itself.</p>
+  </details>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <details class="bench-block" id="problem-1-sidecar"><summary>🗒️ Contributor’s own notes / pasted responses — <span class="dim small">not yet provided</span></summary><p class="dim small">This is the slot for <strong>your own</strong> review sidecar (<code>problem_01_review.md</code> in Overleaf): the raw model responses you collected plus your own failure-mode summary. It’s currently the untouched template, so there’s nothing to show here yet — the model evidence below is the sweep’s, not yours. Pasting a few raw responses + a short failure-mode note here is what lets a human confirm the hardness claim quickly.</p></details>
+
+  
+
+  
+
+  
+
+  <p class="p-tldr">Strong Ramsey-flavored stem with a clean integer answer slot — still a draft: no sample responses yet, and the solution&#x27;s jump to <span class="kw-num">253</span> isn&#x27;t justified.</p>
+
+  <div class="p-cols" id="problem-1-brainstorming">
+    <div class="p-actions">
+      <h3>🧠 Brainstorming directions</h3>
+      <ol class="qa-list"><li class="qa-item"><span class="qa-where"><span class="qa-glyph">📝</span>problemstatement</span> <span class="qa-what">Pin the laughable condition precisely — &#x27;both correct or both incorrect&#x27; (agreement) vs the literal &#x27;all correct, or none-answered-both-correct&#x27; reading change the count. State it in set/indicator form.</span><details class="qa-example"><summary>show example</summary><pre>...there exist 57 students who all agree on that pair (each either got both right or both wrong).</pre></details></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">🔑</span>answerkey</span> <span class="qa-what">Reconcile the answer with the proof: the shown averaging argument yields n=<span class="kw-num">127</span>, not <span class="kw-num">253</span>. Either fix the <span class="kw-subject">oracle</span> or supply the tighter argument that actually forces <span class="kw-num">253</span>.</span></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">📓</span>editornotes</span> <span class="qa-what">Collect 3 independent frontier-model responses and paste them (model/provider/harness labeled) so we can verify consistent failure and capture the <span class="kw-subject">failure mode</span>.</span></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">🏷</span>problemtags</span> <span class="qa-what">Fill the observed-<span class="kw-subject">failure-mode</span> slot in <abbr class="kw-section term" data-tip="The `\problemtags{verb}{capability}{grading}{failure_mode}` macro — the four-axis classification.">problemtags</abbr> once the sample runs are in.</span><details class="qa-example"><summary>show example</summary><pre>{compute}{Combinatorial Reasoning}{exact match}{drops the discrete-rounding / worst-case step}</pre></details></li></ol>
+    </div>
+    
+  </div>
+
+  <details class="d-block" id="problem-1-promising">
+    <summary>💭 What's promising</summary>
+    <ul class="bullets"><li>Lovely benchmark target: a double-counting + pigeonhole argument that frontier models routinely fumble on the discrete-rounding step.</li><li>Single-integer <span class="kw-subject">deliverable</span> maps perfectly onto an <span class="kw-subject">exact-match</span> <span class="kw-subject">verifier</span> — no grading <span class="kw-subject">ambiguity</span> once the <span class="kw-subject">oracle</span> is pinned down.</li><li>The per-student lower bound (each student forces ≥ 20 matched pairs via the <span class="kw-math">$c_i=5$</span> minimum) is set up correctly and cleanly.</li></ul>
+  </details>
+
+  <details class="d-block" id="problem-1-considerations">
+    <summary>❓ Open questions to think through</summary>
+    <ul class="bullets"><li>The sidecar is still the untouched template — no sample model responses, so we can&#x27;t yet confirm this stumps frontier models in 3/3 runs.</li><li>The stated derivation supports n = <span class="kw-num">127</span>, not <span class="kw-num">253</span>: <span class="kw-math">$\lceil 4n/9\rceil \ge 57$</span> gives <span class="kw-math">$4n/9 &gt; 56 \Rightarrow n &gt; 126$</span>. The leap to <span class="kw-num">253</span> is hand-waved (&#x27;looking closer at the exact distribution... robustly force&#x27;) and isn&#x27;t a real argument.</li><li><span class="kw-num">253</span> may well be the correct answer to the intended (harder) problem, but the averaging bound as written is too weak to prove it — the <span class="kw-subject">oracle</span> and its proof are currently inconsistent.</li></ul>
+  </details>
+
+  <details class="d-block" id="problem-1-next">
+    <summary>🌱 Directions to explore</summary>
+    <ul class="bullets"><li>Decide which problem you actually mean, then make the proof match the answer: if <span class="kw-num">253</span> is the target, the simple 4n/9 average won&#x27;t get there — you need the tighter per-pair argument (each pair sees students whose two answers agree, optimized over the full answer matrix).</li><li>Run 3 independent frontier samples (Opus/Sonnet + a second provider) and paste them into the sidecar so we can see the real <span class="kw-subject">failure mode</span> and confirm consistent failure.</li><li>Once the <span class="kw-subject">oracle</span> is locked, fill the observed-<span class="kw-subject">failure-mode</span> tag and the <span class="kw-subject">editor notes</span> so a <span class="kw-subject">verifier</span>-writer can pick it up.</li></ul>
+  </details>
+
+  
+
+  
+
+  <footer class="p-foot">
+    <span class="dim small">Reviewed by <code>in-session review agent</code> · 2026-06-01 04:55 UTC · content sha <code>1469105b</code></span>
+    <span class="dim small">.tex snapshot embedded above</span>
+  </footer>
+</div>
+  <script type="application/json" class="p-versions">{"problem_num": 1, "title": "Laughable Performance in Math Competition", "versions": [{"reviewed_at": "2026-06-01T04:55:59+00:00", "sha": "1469105b6fe58851", "verdict": "in-progress", "model": "in-session review agent", "html": "\n  \u003cheader class=\"p-head\">\n    \u003cdiv class=\"p-title\">\n      \u003cspan class=\"p-num\">#01\u003c/span>\n      \u003ch2>Laughable Performance in Math Competition\u003c/h2>\n    \u003c/div>\n    \u003cdiv class=\"p-pills\">\n      \n    \u003c/div>\n  \u003c/header>\n\n  \u003cp class=\"p-tldr\">Strong Ramsey-flavored stem with a clean integer answer slot \u2014 still a draft: no sample responses yet, and the solution&#x27;s jump to \u003cspan class=\"kw-num\">253\u003c/span> isn&#x27;t justified.\u003c/p>\n\n  \u003cdetails class=\"d-block\" open id=\"problem-1-text\">\n    \u003csummary>\ud83d\udcc4 Problem snapshot \u2014 statement withheld on the public build\u003c/summary>\n    \u003cp class=\"dim small\">The raw problem statement, full \u003ccode>.tex\u003c/code> source, and oracle/answer key are \u003cstrong>not shown on the public review page\u003c/strong> \u2014 the bank is private and unreleased, and contributors review their own source on Overleaf. This page surfaces \u003cstrong>information about\u003c/strong> each problem (model results, trajectory analysis, dedup, reviewer suggestions, tags), not the problem text itself.\u003c/p>\n  \u003c/details>\n\n  \n\n  \n\n  \n\n  \n\n  \n\n  \u003cdetails class=\"bench-block\" id=\"problem-1-sidecar\">\u003csummary>\ud83d\uddd2\ufe0f Contributor\u2019s own notes / pasted responses \u2014 \u003cspan class=\"dim small\">not yet provided\u003c/span>\u003c/summary>\u003cp class=\"dim small\">This is the slot for \u003cstrong>your own\u003c/strong> review sidecar (\u003ccode>problem_01_review.md\u003c/code> in Overleaf): the raw model responses you collected plus your own failure-mode summary. It\u2019s currently the untouched template, so there\u2019s nothing to show here yet \u2014 the model evidence below is the sweep\u2019s, not yours. Pasting a few raw responses + a short failure-mode note here is what lets a human confirm the hardness claim quickly.\u003c/p>\u003c/details>\n\n  \n\n  \n\n  \n\n  \u003cp class=\"p-tldr\">Strong Ramsey-flavored stem with a clean integer answer slot \u2014 still a draft: no sample responses yet, and the solution&#x27;s jump to \u003cspan class=\"kw-num\">253\u003c/span> isn&#x27;t justified.\u003c/p>\n\n  \u003cdiv class=\"p-cols\" id=\"problem-1-brainstorming\">\n    \u003cdiv class=\"p-actions\">\n      \u003ch3>\ud83e\udde0 Brainstorming directions\u003c/h3>\n      \u003col class=\"qa-list\">\u003cli class=\"qa-item\">\u003cspan class=\"qa-where\">\u003cspan class=\"qa-glyph\">\ud83d\udcdd\u003c/span>problemstatement\u003c/span> \u003cspan class=\"qa-what\">Pin the laughable condition precisely \u2014 &#x27;both correct or both incorrect&#x27; (agreement) vs the literal &#x27;all correct, or none-answered-both-correct&#x27; reading change the count. State it in set/indicator form.\u003c/span>\u003cdetails class=\"qa-example\">\u003csummary>show example\u003c/summary>\u003cpre>...there exist 57 students who all agree on that pair (each either got both right or both wrong).\u003c/pre>\u003c/details>\u003c/li>\u003cli class=\"qa-item\">\u003cspan class=\"qa-where\">\u003cspan class=\"qa-glyph\">\ud83d\udd11\u003c/span>answerkey\u003c/span> \u003cspan class=\"qa-what\">Reconcile the answer with the proof: the shown averaging argument yields n=\u003cspan class=\"kw-num\">127\u003c/span>, not \u003cspan class=\"kw-num\">253\u003c/span>. Either fix the \u003cspan class=\"kw-subject\">oracle\u003c/span> or supply the tighter argument that actually forces \u003cspan class=\"kw-num\">253\u003c/span>.\u003c/span>\u003c/li>\u003cli class=\"qa-item\">\u003cspan class=\"qa-where\">\u003cspan class=\"qa-glyph\">\ud83d\udcd3\u003c/span>editornotes\u003c/span> \u003cspan class=\"qa-what\">Collect 3 independent frontier-model responses and paste them (model/provider/harness labeled) so we can verify consistent failure and capture the \u003cspan class=\"kw-subject\">failure mode\u003c/span>.\u003c/span>\u003c/li>\u003cli class=\"qa-item\">\u003cspan class=\"qa-where\">\u003cspan class=\"qa-glyph\">\ud83c\udff7\u003c/span>problemtags\u003c/span> \u003cspan class=\"qa-what\">Fill the observed-\u003cspan class=\"kw-subject\">failure-mode\u003c/span> slot in \u003cabbr class=\"kw-section term\" data-tip=\"The `\\problemtags{verb}{capability}{grading}{failure_mode}` macro \u2014 the four-axis classification.\">problemtags\u003c/abbr> once the sample runs are in.\u003c/span>\u003cdetails class=\"qa-example\">\u003csummary>show example\u003c/summary>\u003cpre>{compute}{Combinatorial Reasoning}{exact match}{drops the discrete-rounding / worst-case step}\u003c/pre>\u003c/details>\u003c/li>\u003c/ol>\n    \u003c/div>\n    \n  \u003c/div>\n\n  \u003cdetails class=\"d-block\" id=\"problem-1-promising\">\n    \u003csummary>\ud83d\udcad What's promising\u003c/summary>\n    \u003cul class=\"bullets\">\u003cli>Lovely benchmark target: a double-counting + pigeonhole argument that frontier models routinely fumble on the discrete-rounding step.\u003c/li>\u003cli>Single-integer \u003cspan class=\"kw-subject\">deliverable\u003c/span> maps perfectly onto an \u003cspan class=\"kw-subject\">exact-match\u003c/span> \u003cspan class=\"kw-subject\">verifier\u003c/span> \u2014 no grading \u003cspan class=\"kw-subject\">ambiguity\u003c/span> once the \u003cspan class=\"kw-subject\">oracle\u003c/span> is pinned down.\u003c/li>\u003cli>The per-student lower bound (each student forces \u2265 20 matched pairs via the \u003cspan class=\"kw-math\">$c_i=5$\u003c/span> minimum) is set up correctly and cleanly.\u003c/li>\u003c/ul>\n  \u003c/details>\n\n  \u003cdetails class=\"d-block\" id=\"problem-1-considerations\">\n    \u003csummary>\u2753 Open questions to think through\u003c/summary>\n    \u003cul class=\"bullets\">\u003cli>The sidecar is still the untouched template \u2014 no sample model responses, so we can&#x27;t yet confirm this stumps frontier models in 3/3 runs.\u003c/li>\u003cli>The stated derivation supports n = \u003cspan class=\"kw-num\">127\u003c/span>, not \u003cspan class=\"kw-num\">253\u003c/span>: \u003cspan class=\"kw-math\">$\\lceil 4n/9\\rceil \\ge 57$\u003c/span> gives \u003cspan class=\"kw-math\">$4n/9 &gt; 56 \\Rightarrow n &gt; 126$\u003c/span>. The leap to \u003cspan class=\"kw-num\">253\u003c/span> is hand-waved (&#x27;looking closer at the exact distribution... robustly force&#x27;) and isn&#x27;t a real argument.\u003c/li>\u003cli>\u003cspan class=\"kw-num\">253\u003c/span> may well be the correct answer to the intended (harder) problem, but the averaging bound as written is too weak to prove it \u2014 the \u003cspan class=\"kw-subject\">oracle\u003c/span> and its proof are currently inconsistent.\u003c/li>\u003c/ul>\n  \u003c/details>\n\n  \u003cdetails class=\"d-block\" id=\"problem-1-next\">\n    \u003csummary>\ud83c\udf31 Directions to explore\u003c/summary>\n    \u003cul class=\"bullets\">\u003cli>Decide which problem you actually mean, then make the proof match the answer: if \u003cspan class=\"kw-num\">253\u003c/span> is the target, the simple 4n/9 average won&#x27;t get there \u2014 you need the tighter per-pair argument (each pair sees students whose two answers agree, optimized over the full answer matrix).\u003c/li>\u003cli>Run 3 independent frontier samples (Opus/Sonnet + a second provider) and paste them into the sidecar so we can see the real \u003cspan class=\"kw-subject\">failure mode\u003c/span> and confirm consistent failure.\u003c/li>\u003cli>Once the \u003cspan class=\"kw-subject\">oracle\u003c/span> is locked, fill the observed-\u003cspan class=\"kw-subject\">failure-mode\u003c/span> tag and the \u003cspan class=\"kw-subject\">editor notes\u003c/span> so a \u003cspan class=\"kw-subject\">verifier\u003c/span>-writer can pick it up.\u003c/li>\u003c/ul>\n  \u003c/details>\n\n  \n\n  \n\n  \u003cfooter class=\"p-foot\">\n    \u003cspan class=\"dim small\">Reviewed by \u003ccode>in-session review agent\u003c/code> \u00b7 2026-06-01 04:55 UTC \u00b7 content sha \u003ccode>1469105b\u003c/code>\u003c/span>\n    \u003cspan class=\"dim small\">.tex snapshot embedded above\u003c/span>\n  \u003c/footer>\n"}]}</script>
+</section>
+
+<section class="problem" id="problem-2" data-sha="3df7936a27a8c2f6" data-verdict="in-progress" data-problem-num="2">
+  <div class="p-version-body">
+  <header class="p-head">
+    <div class="p-title">
+      <span class="p-num">#02</span>
+      <h2>Tenuous Function Minimal Value</h2>
+    </div>
+    <div class="p-pills">
+      
+    </div>
+  </header>
+
+  <p class="p-tldr">Polished optimization problem with a correct-looking <span class="kw-subject">oracle</span> (<span class="kw-num">136</span>) — but it&#x27;s a verbatim HMMT competition problem, so contamination is the headline risk.</p>
+
+  <details class="d-block" open id="problem-2-text">
+    <summary>📄 Problem snapshot — statement withheld on the public build</summary>
+    <p class="dim small">The raw problem statement, full <code>.tex</code> source, and oracle/answer key are <strong>not shown on the public review page</strong> — the bank is private and unreleased, and contributors review their own source on Overleaf. This page surfaces <strong>information about</strong> each problem (model results, trajectory analysis, dedup, reviewer suggestions, tags), not the problem text itself.</p>
+  </details>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  <details class="bench-block" id="problem-2-sidecar"><summary>🗒️ Contributor’s own notes / pasted responses — <span class="dim small">not yet provided</span></summary><p class="dim small">This is the slot for <strong>your own</strong> review sidecar (<code>problem_02_review.md</code> in Overleaf): the raw model responses you collected plus your own failure-mode summary. It’s currently the untouched template, so there’s nothing to show here yet — the model evidence below is the sweep’s, not yours. Pasting a few raw responses + a short failure-mode note here is what lets a human confirm the hardness claim quickly.</p></details>
+
+  
+
+  
+
+  
+
+  <p class="p-tldr">Polished optimization problem with a correct-looking <span class="kw-subject">oracle</span> (<span class="kw-num">136</span>) — but it&#x27;s a verbatim HMMT competition problem, so contamination is the headline risk.</p>
+
+  <div class="p-cols" id="problem-2-brainstorming">
+    <div class="p-actions">
+      <h3>🧠 Brainstorming directions</h3>
+      <ol class="qa-list"><li class="qa-item"><span class="qa-where"><span class="qa-glyph">📝</span>problemstatement</span> <span class="qa-what">Treat contamination as the primary blocker: this is HMMT Feb <span class="kw-num">2010</span> nearly verbatim. Reskin the constants (threshold, sum range, queried index) so it&#x27;s not recognizable, then re-derive.</span><details class="qa-example"><summary>show example</summary><pre>Replace &#x27;tenuous&#x27;/$x^2$/sum 1..20/g(14) with a renamed property, a $2x^2+3$ bound, sum 1..25, query g(18).</pre></details></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">📓</span>editornotes</span> <span class="qa-what">Collect 3 independent frontier-model responses (two providers) and paste them in the sidecar; verbatim-correct <span class="kw-num">136</span> across runs would confirm the recall concern.</span></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">🔑</span>answerkey</span> <span class="qa-what">After reskinning, update the <span class="kw-subject">oracle</span>: the optimal-m plateau bounds and the &#x27;<span class="kw-num">197</span> - m&#x27; formula both shift with the new constants.</span></li><li class="qa-item"><span class="qa-where"><span class="qa-glyph">🏷</span>problemtags</span> <span class="qa-what">Fill the observed-<span class="kw-subject">failure-mode</span> slot in <abbr class="kw-section term" data-tip="The `\problemtags{verb}{capability}{grading}{failure_mode}` macro — the four-axis classification.">problemtags</abbr> once samples are in.</span><details class="qa-example"><summary>show example</summary><pre>{compute}{Algebraic Manipulation / Optimization}{exact match}{TODO -&gt; e.g. picks wrong m on the optimal plateau}</pre></details></li></ol>
+    </div>
+    
+  </div>
+
+  <details class="d-block" id="problem-2-promising">
+    <summary>💭 What's promising</summary>
+    <ul class="bullets"><li>The reference solution is clean and (modulo the contamination concern) correct: the <span class="kw-math">$g(x)\ge\max(m, x^2+1-m)$</span> envelope and the discrete optimization over m are handled carefully.</li><li>Single-integer <span class="kw-subject">deliverable</span> (<span class="kw-num">136</span>) is a perfect <span class="kw-subject">exact-match</span> <span class="kw-subject">verifier</span> target.</li><li>Nice touch catching the boundary case at m=61 where S(61)=S(60)=<span class="kw-num">2495</span> — shows the optimum is a plateau, which is the part solvers most often get <span class="kw-warn">wrong</span>.</li></ul>
+  </details>
+
+  <details class="d-block" id="problem-2-considerations">
+    <summary>❓ Open questions to think through</summary>
+    <ul class="bullets"><li>This is HMMT February <span class="kw-num">2010</span> (Team Round) almost verbatim — the term &#x27;tenuous&#x27;, the 1..20 sum, and the g(14) ask are the original wording. Frontier models very likely have this memorized, so a pass would measure recall, not reasoning.</li><li>The sidecar is still the untouched template — no sample responses, so we can&#x27;t yet confirm the problem stumps frontier models, and if it&#x27;s contaminated we&#x27;d expect it NOT to.</li><li>Minor statement nit: &#x27;for all positive integers x and y&#x27; with the bound depending only on x means the y-quantifier just forces <span class="kw-math">$g(y)\ge$</span> the global-min term — fine, but a solver may pause on the asymmetry. The solution relies on this exact reading.</li></ul>
+  </details>
+
+  <details class="d-block" id="problem-2-next">
+    <summary>🌱 Directions to explore</summary>
+    <ul class="bullets"><li>Strongly consider re-skinning to defeat memorization: change the threshold (<span class="kw-math">$x^2 \to x^2+c$</span> or a non-square), the sum range (1..20), and the query index (g(14)) together, then re-derive the answer. A fresh numeric target is what makes this benchmark-useful.</li><li>Run 3 independent frontier samples and paste them in the sidecar — if they all nail <span class="kw-num">136</span> verbatim, that&#x27;s direct evidence of contamination and a signal to reskin.</li><li>After reskinning, recompute the <span class="kw-subject">oracle</span> (the optimal-m plateau and the <span class="kw-num">197</span>-m formula shift with your new constants) and fill the <span class="kw-subject">failure-mode</span> tag + <span class="kw-subject">editor notes</span>.</li></ul>
+  </details>
+
+  
+
+  
+
+  <footer class="p-foot">
+    <span class="dim small">Reviewed by <code>in-session review agent</code> · 2026-06-01 04:55 UTC · content sha <code>3df7936a</code></span>
+    <span class="dim small">.tex snapshot embedded above</span>
+  </footer>
+</div>
+  <script type="application/json" class="p-versions">{"problem_num": 2, "title": "Tenuous Function Minimal Value", "versions": [{"reviewed_at": "2026-06-01T04:55:59+00:00", "sha": "3df7936a27a8c2f6", "verdict": "in-progress", "model": "in-session review agent", "html": "\n  \u003cheader class=\"p-head\">\n    \u003cdiv class=\"p-title\">\n      \u003cspan class=\"p-num\">#02\u003c/span>\n      \u003ch2>Tenuous Function Minimal Value\u003c/h2>\n    \u003c/div>\n    \u003cdiv class=\"p-pills\">\n      \n    \u003c/div>\n  \u003c/header>\n\n  \u003cp class=\"p-tldr\">Polished optimization problem with a correct-looking \u003cspan class=\"kw-subject\">oracle\u003c/span> (\u003cspan class=\"kw-num\">136\u003c/span>) \u2014 but it&#x27;s a verbatim HMMT competition problem, so contamination is the headline risk.\u003c/p>\n\n  \u003cdetails class=\"d-block\" open id=\"problem-2-text\">\n    \u003csummary>\ud83d\udcc4 Problem snapshot \u2014 statement withheld on the public build\u003c/summary>\n    \u003cp class=\"dim small\">The raw problem statement, full \u003ccode>.tex\u003c/code> source, and oracle/answer key are \u003cstrong>not shown on the public review page\u003c/strong> \u2014 the bank is private and unreleased, and contributors review their own source on Overleaf. This page surfaces \u003cstrong>information about\u003c/strong> each problem (model results, trajectory analysis, dedup, reviewer suggestions, tags), not the problem text itself.\u003c/p>\n  \u003c/details>\n\n  \n\n  \n\n  \n\n  \n\n  \n\n  \u003cdetails class=\"bench-block\" id=\"problem-2-sidecar\">\u003csummary>\ud83d\uddd2\ufe0f Contributor\u2019s own notes / pasted responses \u2014 \u003cspan class=\"dim small\">not yet provided\u003c/span>\u003c/summary>\u003cp class=\"dim small\">This is the slot for \u003cstrong>your own\u003c/strong> review sidecar (\u003ccode>problem_02_review.md\u003c/code> in Overleaf): the raw model responses you collected plus your own failure-mode summary. It\u2019s currently the untouched template, so there\u2019s nothing to show here yet \u2014 the model evidence below is the sweep\u2019s, not yours. Pasting a few raw responses + a short failure-mode note here is what lets a human confirm the hardness claim quickly.\u003c/p>\u003c/details>\n\n  \n\n  \n\n  \n\n  \u003cp class=\"p-tldr\">Polished optimization problem with a correct-looking \u003cspan class=\"kw-subject\">oracle\u003c/span> (\u003cspan class=\"kw-num\">136\u003c/span>) \u2014 but it&#x27;s a verbatim HMMT competition problem, so contamination is the headline risk.\u003c/p>\n\n  \u003cdiv class=\"p-cols\" id=\"problem-2-brainstorming\">\n    \u003cdiv class=\"p-actions\">\n      \u003ch3>\ud83e\udde0 Brainstorming directions\u003c/h3>\n      \u003col class=\"qa-list\">\u003cli class=\"qa-item\">\u003cspan class=\"qa-where\">\u003cspan class=\"qa-glyph\">\ud83d\udcdd\u003c/span>problemstatement\u003c/span> \u003cspan class=\"qa-what\">Treat contamination as the primary blocker: this is HMMT Feb \u003cspan class=\"kw-num\">2010\u003c/span> nearly verbatim. Reskin the constants (threshold, sum range, queried index) so it&#x27;s not recognizable, then re-derive.\u003c/span>\u003cdetails class=\"qa-example\">\u003csummary>show example\u003c/summary>\u003cpre>Replace &#x27;tenuous&#x27;/$x^2$/sum 1..20/g(14) with a renamed property, a $2x^2+3$ bound, sum 1..25, query g(18).\u003c/pre>\u003c/details>\u003c/li>\u003cli class=\"qa-item\">\u003cspan class=\"qa-where\">\u003cspan class=\"qa-glyph\">\ud83d\udcd3\u003c/span>editornotes\u003c/span> \u003cspan class=\"qa-what\">Collect 3 independent frontier-model responses (two providers) and paste them in the sidecar; verbatim-correct \u003cspan class=\"kw-num\">136\u003c/span> across runs would confirm the recall concern.\u003c/span>\u003c/li>\u003cli class=\"qa-item\">\u003cspan class=\"qa-where\">\u003cspan class=\"qa-glyph\">\ud83d\udd11\u003c/span>answerkey\u003c/span> \u003cspan class=\"qa-what\">After reskinning, update the \u003cspan class=\"kw-subject\">oracle\u003c/span>: the optimal-m plateau bounds and the &#x27;\u003cspan class=\"kw-num\">197\u003c/span> - m&#x27; formula both shift with the new constants.\u003c/span>\u003c/li>\u003cli class=\"qa-item\">\u003cspan class=\"qa-where\">\u003cspan class=\"qa-glyph\">\ud83c\udff7\u003c/span>problemtags\u003c/span> \u003cspan class=\"qa-what\">Fill the observed-\u003cspan class=\"kw-subject\">failure-mode\u003c/span> slot in \u003cabbr class=\"kw-section term\" data-tip=\"The `\\problemtags{verb}{capability}{grading}{failure_mode}` macro \u2014 the four-axis classification.\">problemtags\u003c/abbr> once samples are in.\u003c/span>\u003cdetails class=\"qa-example\">\u003csummary>show example\u003c/summary>\u003cpre>{compute}{Algebraic Manipulation / Optimization}{exact match}{TODO -&gt; e.g. picks wrong m on the optimal plateau}\u003c/pre>\u003c/details>\u003c/li>\u003c/ol>\n    \u003c/div>\n    \n  \u003c/div>\n\n  \u003cdetails class=\"d-block\" id=\"problem-2-promising\">\n    \u003csummary>\ud83d\udcad What's promising\u003c/summary>\n    \u003cul class=\"bullets\">\u003cli>The reference solution is clean and (modulo the contamination concern) correct: the \u003cspan class=\"kw-math\">$g(x)\\ge\\max(m, x^2+1-m)$\u003c/span> envelope and the discrete optimization over m are handled carefully.\u003c/li>\u003cli>Single-integer \u003cspan class=\"kw-subject\">deliverable\u003c/span> (\u003cspan class=\"kw-num\">136\u003c/span>) is a perfect \u003cspan class=\"kw-subject\">exact-match\u003c/span> \u003cspan class=\"kw-subject\">verifier\u003c/span> target.\u003c/li>\u003cli>Nice touch catching the boundary case at m=61 where S(61)=S(60)=\u003cspan class=\"kw-num\">2495\u003c/span> \u2014 shows the optimum is a plateau, which is the part solvers most often get \u003cspan class=\"kw-warn\">wrong\u003c/span>.\u003c/li>\u003c/ul>\n  \u003c/details>\n\n  \u003cdetails class=\"d-block\" id=\"problem-2-considerations\">\n    \u003csummary>\u2753 Open questions to think through\u003c/summary>\n    \u003cul class=\"bullets\">\u003cli>This is HMMT February \u003cspan class=\"kw-num\">2010\u003c/span> (Team Round) almost verbatim \u2014 the term &#x27;tenuous&#x27;, the 1..20 sum, and the g(14) ask are the original wording. Frontier models very likely have this memorized, so a pass would measure recall, not reasoning.\u003c/li>\u003cli>The sidecar is still the untouched template \u2014 no sample responses, so we can&#x27;t yet confirm the problem stumps frontier models, and if it&#x27;s contaminated we&#x27;d expect it NOT to.\u003c/li>\u003cli>Minor statement nit: &#x27;for all positive integers x and y&#x27; with the bound depending only on x means the y-quantifier just forces \u003cspan class=\"kw-math\">$g(y)\\ge$\u003c/span> the global-min term \u2014 fine, but a solver may pause on the asymmetry. The solution relies on this exact reading.\u003c/li>\u003c/ul>\n  \u003c/details>\n\n  \u003cdetails class=\"d-block\" id=\"problem-2-next\">\n    \u003csummary>\ud83c\udf31 Directions to explore\u003c/summary>\n    \u003cul class=\"bullets\">\u003cli>Strongly consider re-skinning to defeat memorization: change the threshold (\u003cspan class=\"kw-math\">$x^2 \\to x^2+c$\u003c/span> or a non-square), the sum range (1..20), and the query index (g(14)) together, then re-derive the answer. A fresh numeric target is what makes this benchmark-useful.\u003c/li>\u003cli>Run 3 independent frontier samples and paste them in the sidecar \u2014 if they all nail \u003cspan class=\"kw-num\">136\u003c/span> verbatim, that&#x27;s direct evidence of contamination and a signal to reskin.\u003c/li>\u003cli>After reskinning, recompute the \u003cspan class=\"kw-subject\">oracle\u003c/span> (the optimal-m plateau and the \u003cspan class=\"kw-num\">197\u003c/span>-m formula shift with your new constants) and fill the \u003cspan class=\"kw-subject\">failure-mode\u003c/span> tag + \u003cspan class=\"kw-subject\">editor notes\u003c/span>.\u003c/li>\u003c/ul>\n  \u003c/details>\n\n  \n\n  \n\n  \u003cfooter class=\"p-foot\">\n    \u003cspan class=\"dim small\">Reviewed by \u003ccode>in-session review agent\u003c/code> \u00b7 2026-06-01 04:55 UTC \u00b7 content sha \u003ccode>3df7936a\u003c/code>\u003c/span>\n    \u003cspan class=\"dim small\">.tex snapshot embedded above\u003c/span>\n  \u003c/footer>\n"}]}</script>
+</section>
+
+
+  <footer class="page-foot">
+    <p>Generated by the AI4Stat/Math auto-reviewer · reviews drafted by <code>in-session review agent</code>, verifiers by <code>claude-sonnet-4-6</code>.
+    <a href="../">← back to the review hub</a>.</p>
+  </footer>
+
+</div>
+
+<!-- ── timeline rail: hierarchical, dynamic, mobile thumb-friendly ─ -->
+<nav class="rail-tl" aria-label="problem timeline">
+  <div class="rail-tl-inner"><div class="rail-section rl-stub" data-target="problem-1">  <a href="#problem-1" class="rail-bullet">    <span class="rl-num">01</span>    <span class="rl-title">Laughable Performance in Mat</span>  </a>  <div class="rail-sub"><a href="#problem-1-brainstorming">Brainstorming</a><a href="#problem-1-promising">What&#x27;s promising</a><a href="#problem-1-considerations">Open questions</a><a href="#problem-1-next">Directions</a><a href="#problem-1-text">Problem text</a></div></div><div class="rail-section rl-stub" data-target="problem-2">  <a href="#problem-2" class="rail-bullet">    <span class="rl-num">02</span>    <span class="rl-title">Tenuous Function Minimal Val</span>  </a>  <div class="rail-sub"><a href="#problem-2-brainstorming">Brainstorming</a><a href="#problem-2-promising">What&#x27;s promising</a><a href="#problem-2-considerations">Open questions</a><a href="#problem-2-next">Directions</a><a href="#problem-2-text">Problem text</a></div></div></div>
+</nav>
+
+<!-- ── chatbot (hidden until proxy live) ────────────────────── -->
+<button class="chat-fab" aria-label="open chat">💬 ask Claude about these reviews</button>
+<aside class="chat-drawer" aria-hidden="true">
+  <header class="chat-head">
+    <h3>Chat about your reviews</h3>
+    <div>
+      <button class="chat-settings" title="settings">⚙</button>
+      <button class="chat-close" title="close">✕</button>
+    </div>
+  </header>
+  <div class="chat-settings-panel">
+    <div id="chat-api-key-row">
+      <label for="chat-api-key">Anthropic API key (stored locally, never sent to github)</label>
+      <input id="chat-api-key" type="password" autocomplete="off" placeholder="sk-ant-…">
+    </div>
+    <label for="chat-model">Model (lower-cost models recommended)</label>
+    <select id="chat-model">
+      <option value="claude-haiku-4-5-20251001">Haiku 4.5 (~$0.005/turn — recommended)</option>
+      <option value="claude-sonnet-4-6">Sonnet 4.6 (~$0.025/turn)</option>
+      <option value="claude-opus-4-7">Opus 4.7 (~$0.075/turn)</option>
+    </select>
+    <p class="hint" id="chat-key-hint">Your key never leaves your browser. Each chat turn costs ~$0.005-0.08 depending on model. Get a key at <a href="https://console.anthropic.com" target="_blank" rel="noopener" style="color:var(--primary)">console.anthropic.com</a>.</p>
+  </div>
+  <div class="chat-body"></div>
+  <div class="chat-input">
+    <textarea placeholder="Ask about your reviews… (Enter to send · Shift+Enter for newline)" rows="1"></textarea>
+    <button>Send</button>
+  </div>
+  <script id="chat-system-context" type="text/plain">You are the auto-review assistant for Zihan Dong (folder: contributor_03).
+Your job: help them understand and act on the auto-review of their AI4Stat/Math problem submissions.
+Be specific, kind, and brief. When asked about specific .tex edits, give the exact LaTeX line to copy.
+Use ADHD-friendly formatting: bullets, sections, tables. Preserve full depth and rigor.
+
+## Context: 2 reviewed problems
+
+### Problem 1: Laughable Performance in Math Competition  (in-progress)
+
+Headline: Strong Ramsey-flavored stem with a clean integer answer slot — still a draft: no sample responses yet, and the solution&#x27;s jump to 253 isn&#x27;t justified.
+Statement:
+Somewhere in the universe, $n$ students are taking a 10-question math competition. Their collective performance is called laughable if, for some pair of questions, there exist 57 students such that either all of them answered both questions correctly or none of them answered both questions correctly. Compute the smallest $n$ such that the performance is necessarily laughable.
+Strengths: Lovely benchmark target: a double-counting + pigeonhole argument that frontier models routinely fumble on the discrete-rounding step. | Single-integer deliverable maps perfectly onto an exact-match verifier — no grading ambiguity once the oracle is pinned down. | The per-student lower bound (each student forces ≥ 20 matched pairs via the $c_i=5$ minimum) is set up correctly and cleanly.
+Considerations: The sidecar is still the untouched template — no sample model responses, so we can&#x27;t yet confirm this stumps frontier models in 3/3 runs. | The stated derivation supports n = 127, not 253: $\lceil 4n/9\rceil \ge 57$ gives $4n/9 &gt; 56 \Rightarrow n &gt; 126$. The leap to 253 is hand-waved (&#x27;looking closer at the exact distribution... robustly force&#x27;) and isn&#x27;t a real argument. | 253 may well be the correct answer to the intended (harder) problem, but the averaging bound as written is too weak to prove it — the oracle and its proof are currently inconsistent.
+Next steps: Decide which problem you actually mean, then make the proof match the answer: if 253 is the target, the simple 4n/9 average won&#x27;t get there — you need the tighter per-pair argument (each pair sees students whose two answers agree, optimized over the full answer matrix). | Run 3 independent frontier samples (Opus/Sonnet + a second provider) and paste them into the sidecar so we can see the real failure mode and confirm consistent failure. | Once the oracle is locked, fill the observed-failure-mode tag and the editor notes so a verifier-writer can pick it up.
+Concrete actions:
+  - [problemstatement] Pin the laughable condition precisely — &#x27;both correct or both incorrect&#x27; (agreement) vs the literal &#x27;all correct, or none-answered-both-correct&#x27; reading change the count. State it in set/indicator form.
+  - [answerkey] Reconcile the answer with the proof: the shown averaging argument yields n=127, not 253. Either fix the oracle or supply the tighter argument that actually forces 253.
+  - [editornotes] Collect 3 independent frontier-model responses and paste them (model/provider/harness labeled) so we can verify consistent failure and capture the failure mode.
+  - [problemtags] Fill the observed-failure-mode slot in problemtags once the sample runs are in.
+
+### Problem 2: Tenuous Function Minimal Value  (in-progress)
+
+Headline: Polished optimization problem with a correct-looking oracle (136) — but it&#x27;s a verbatim HMMT competition problem, so contamination is the headline risk.
+Statement:
+An integer-valued function $f$ is called tenuous if $f(x)+f(y)&gt;x^{2}$ for all positive integers $x$ and $y$. Let $g$ be a tenuous function such that $g(1)+g(2)+\cdots+g(20)$ is as small as possible. Compute the minimum possible value for $g(14)$.
+Strengths: The reference solution is clean and (modulo the contamination concern) correct: the $g(x)\ge\max(m, x^2+1-m)$ envelope and the discrete optimization over m are handled carefully. | Single-integer deliverable (136) is a perfect exact-match verifier target. | Nice touch catching the boundary case at m=61 where S(61)=S(60)=2495 — shows the optimum is a plateau, which is the part solvers most often get wrong.
+Considerations: This is HMMT February 2010 (Team Round) almost verbatim — the term &#x27;tenuous&#x27;, the 1..20 sum, and the g(14) ask are the original wording. Frontier models very likely have this memorized, so a pass would measure recall, not reasoning. | The sidecar is still the untouched template — no sample responses, so we can&#x27;t yet confirm the problem stumps frontier models, and if it&#x27;s contaminated we&#x27;d expect it NOT to. | Minor statement nit: &#x27;for all positive integers x and y&#x27; with the bound depending only on x means the y-quantifier just forces $g(y)\ge$ the global-min term — fine, but a solver may pause on the asymmetry. The solution relies on this exact reading.
+Next steps: Strongly consider re-skinning to defeat memorization: change the threshold ($x^2 \to x^2+c$ or a non-square), the sum range (1..20), and the query index (g(14)) together, then re-derive the answer. A fresh numeric target is what makes this benchmark-useful. | Run 3 independent frontier samples and paste them in the sidecar — if they all nail 136 verbatim, that&#x27;s direct evidence of contamination and a signal to reskin. | After reskinning, recompute the oracle (the optimal-m plateau and the 197-m formula shift with your new constants) and fill the failure-mode tag + editor notes.
+Concrete actions:
+  - [problemstatement] Treat contamination as the primary blocker: this is HMMT Feb 2010 nearly verbatim. Reskin the constants (threshold, sum range, queried index) so it&#x27;s not recognizable, then re-derive.
+  - [editornotes] Collect 3 independent frontier-model responses (two providers) and paste them in the sidecar; verbatim-correct 136 across runs would confirm the recall concern.
+  - [answerkey] After reskinning, update the oracle: the optimal-m plateau bounds and the &#x27;197 - m&#x27; formula both shift with the new constants.
+  - [problemtags] Fill the observed-failure-mode slot in problemtags once samples are in.
+</script>
+</aside>
+
+<script>
+// ── tooltip controller: hover (desktop) + tap-toggle (touch) ────
+(function(){
+  var tt = document.createElement('div'); tt.id = 'tt';
+  document.body.appendChild(tt);
+  function show(el){
+    var txt = el.getAttribute('data-tip') || '';
+    if (!txt) return;
+    tt.innerHTML = '';
+    var p = document.createElement('p'); p.style.margin = '0';
+    p.textContent = txt;
+    tt.appendChild(p);
+    tt.classList.add('on');
+    var r = el.getBoundingClientRect();
+    var ttR = tt.getBoundingClientRect();
+    var x = r.left + window.scrollX + (r.width - ttR.width) / 2;
+    var y = r.bottom + window.scrollY + 6;
+    x = Math.max(8, Math.min(x, window.innerWidth - ttR.width - 8));
+    if (y + ttR.height > window.scrollY + window.innerHeight - 8) {
+      y = r.top + window.scrollY - ttR.height - 6;
+    }
+    tt.style.left = x + 'px';
+    tt.style.top  = y + 'px';
+  }
+  function hide(){ tt.classList.remove('on'); }
+  document.addEventListener('mouseover', function(e){
+    var el = e.target.closest && e.target.closest('abbr.term');
+    if (el) show(el);
+  });
+  document.addEventListener('mouseout', function(e){
+    var el = e.target.closest && e.target.closest('abbr.term');
+    if (el && (!e.relatedTarget || !el.contains(e.relatedTarget))) hide();
+  });
+  document.addEventListener('click', function(e){
+    var el = e.target.closest && e.target.closest('abbr.term');
+    if (el) { show(el); return; }
+    if (tt.classList.contains('on') && !tt.contains(e.target)) hide();
+  });
+  // Panel round 1 (engineer P1): keyboard + screen-reader access. Make every
+  // glossary term focusable and show its tooltip on focus, dismiss on blur.
+  document.querySelectorAll('abbr.term').forEach(function(el){
+    if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+    if (!el.hasAttribute('role')) el.setAttribute('role', 'button');
+    el.setAttribute('aria-label', (el.textContent || '') + ': ' + (el.getAttribute('data-tip') || ''));
+  });
+  document.addEventListener('focusin', function(e){
+    var el = e.target.closest && e.target.closest('abbr.term');
+    if (el) show(el);
+  });
+  document.addEventListener('focusout', function(e){
+    var el = e.target.closest && e.target.closest('abbr.term');
+    if (el) hide();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') hide();
+  });
+})();
+
+(function(){
+  // ── tabs ──────────────────────────────────────────────
+  document.addEventListener('click', function(e){
+    var t = e.target;
+    if (!t.classList || !t.classList.contains('tab')) return;
+    var section = t.closest('section.problem');
+    if (!section) return;
+    section.querySelectorAll('.tab').forEach(function(b){ b.classList.remove('active'); });
+    section.querySelectorAll('.pane').forEach(function(p){ p.classList.remove('active'); });
+    t.classList.add('active');
+    var pane = document.getElementById(t.getAttribute('data-target'));
+    if (pane) pane.classList.add('active');
+  });
+
+  // ── nav-chip + rail-section active-on-scroll ─────────
+  var sections = Array.from(document.querySelectorAll('section.problem'));
+  var chips = {};
+  var railSections = {};
+  document.querySelectorAll('.chip').forEach(function(c){
+    chips[c.getAttribute('href').replace('#','')] = c;
+  });
+  document.querySelectorAll('.rail-section').forEach(function(s){
+    railSections[s.getAttribute('data-target')] = s;
+  });
+  // Co-PI Linjun desktop scroll bug (#63, "鼠标不能把界面移到下面去"): the
+  // scroll-spy below used `el.scrollIntoView()` to keep the active nav-chip /
+  // rail-section visible. But `scrollIntoView` walks the WHOLE ancestor scroll
+  // chain — including the document scroller — so with `html{scroll-behavior:
+  // smooth}` every section-intersection smooth-scrolled the WINDOW back toward
+  // the section it deemed "in view", continuously canceling the user's small
+  // wheel/trackpad deltas and pinning the page near the top (it could never be
+  // moved to the bottom). Fix: only ever scroll the chip/rail's OWN inner
+  // scroll-container (`.nav-chips` horizontally, `.rail-tl-inner` vertically)
+  // by writing scrollLeft/scrollTop directly — this can never move the window.
+  function keepVisibleWithin(el, container, axis){
+    if (!el || !container) return;
+    try {
+      var cb = container.getBoundingClientRect();
+      var eb = el.getBoundingClientRect();
+      if (axis === 'x') {
+        var target = container.scrollLeft + (eb.left - cb.left)
+                     - (container.clientWidth - eb.width) / 2;
+        var maxX = container.scrollWidth - container.clientWidth;
+        container.scrollLeft = Math.max(0, Math.min(target, maxX));
+      } else {
+        var below = eb.bottom > cb.bottom;
+        var above = eb.top < cb.top;
+        if (below) container.scrollTop += (eb.bottom - cb.bottom);
+        else if (above) container.scrollTop += (eb.top - cb.top);
+      }
+    } catch(e){}
+  }
+  var navChips = document.querySelector('.nav-chips');
+  var railInner = document.querySelector('.rail-tl-inner');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      var id = en.target.id;
+      if (en.isIntersecting && chips[id]) {
+        Object.values(chips).forEach(function(c){ c.classList.remove('active'); });
+        chips[id].classList.add('active');
+        // scroll ONLY the chip strip, never the window (see #63 above)
+        keepVisibleWithin(chips[id], navChips, 'x');
+        Object.values(railSections).forEach(function(s){ s.classList.remove('active'); });
+        if (railSections[id]) {
+          railSections[id].classList.add('active');
+          // scroll ONLY the rail's inner container, never the window
+          keepVisibleWithin(railSections[id], railInner, 'y');
+        }
+      }
+    });
+  }, {rootMargin:'-30% 0px -55% 0px'});
+  sections.forEach(function(s){ io.observe(s); });
+
+  // (Panel round 1, engineer P1: the old "thumb-scrub" handler was dead —
+  // it early-returned on its own anchor children, so it only fired in the
+  // 1px gaps between bullets while still advertising itself. Removed. The
+  // narrow mobile icon-rail now just does tap-to-jump, which works.)
+
+  // ── auto-open <details> when navigated to via anchor ──
+  // If the URL hash points at a collapsible (e.g. #problem-2-next), open it.
+  function openTargetedDetails(){
+    var h = location.hash.replace('#','');
+    if (!h) return;
+    var el = document.getElementById(h);
+    if (!el) return;
+    // open any <details> ancestors so the target is actually visible
+    var node = el;
+    while (node && node !== document.body) {
+      if (node.tagName === 'DETAILS') { node.open = true; }
+      node = node.parentElement;
+    }
+    // also: if el itself is a <details>, open it
+    if (el.tagName === 'DETAILS') { el.open = true; }
+    // smooth-scroll into view after a tick (let layout settle)
+    setTimeout(function(){
+      try { el.scrollIntoView({behavior:'smooth', block:'start'}); } catch(e){}
+    }, 50);
+  }
+  window.addEventListener('hashchange', openTargetedDetails);
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (a && a.getAttribute('href').length > 1) setTimeout(openTargetedDetails, 10);
+  });
+  // first paint: honour the hash that was in the URL
+  if (location.hash) setTimeout(openTargetedDetails, 100);
+
+  // ── visit tracking ───────────────────────────────────
+  var STORAGE = 'ai4sm-review-visits';
+  var visits = {};
+  try { visits = JSON.parse(localStorage.getItem(STORAGE) || '{}'); } catch(e){}
+  document.querySelectorAll('section.problem').forEach(function(section){
+    var sha = section.getAttribute('data-sha') || '';
+    var key = location.pathname + '#' + section.id + ':' + sha;
+    var wasSeen = !!visits[key];
+    if (!wasSeen) {
+      var h = section.querySelector('.p-pills');
+      if (h) h.insertAdjacentHTML('beforeend',
+        ' <span class="pill v-revision">NEW since last visit</span>');
+    }
+    var timer = null;
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting) {
+          timer = setTimeout(function(){
+            visits[key] = Date.now();
+            try { localStorage.setItem(STORAGE, JSON.stringify(visits)); } catch(e){}
+            obs.unobserve(section);
+          }, 1500);
+        } else if (timer) { clearTimeout(timer); timer = null; }
+      });
+    }, {threshold: 0.35});
+    obs.observe(section);
+  });
+  var pageKey = '_page_' + location.pathname;
+  var last = visits[pageKey];
+  var ftEl = document.getElementById('first-visit-note');
+  if (ftEl) {
+    ftEl.textContent = last
+      ? 'Welcome back. Last viewed ' + new Date(last).toLocaleString() + '.'
+      : 'First visit — page tracks which problems you have read.';
+  }
+  visits[pageKey] = Date.now();
+  try { localStorage.setItem(STORAGE, JSON.stringify(visits)); } catch(e){}
+})();
+
+// ── chatbot ─────────────────────────────────────────────
+(function(){
+  var STORAGE_KEY = 'ai4sm-review-chat-settings';
+  var HISTORY_KEY = 'ai4sm-review-chat-history-' + location.pathname;
+  var fab = document.querySelector('.chat-fab');
+  var drawer = document.querySelector('.chat-drawer');
+  var closeBtn = document.querySelector('.chat-close');
+  var settingsBtn = document.querySelector('.chat-settings');
+  var settingsPanel = document.querySelector('.chat-settings-panel');
+  var body = document.querySelector('.chat-body');
+  var textarea = document.querySelector('.chat-input textarea');
+  var sendBtn = document.querySelector('.chat-input button');
+  var keyInput = document.querySelector('#chat-api-key');
+  var modelSelect = document.querySelector('#chat-model');
+  var sysCtx = document.querySelector('#chat-system-context').textContent;
+  if (!fab) return;
+
+  var PROXY = window.AI4SM_CHAT_PROXY || null;
+  var SITE_TOKEN = window.AI4SM_CHAT_SITE_TOKEN || null;
+  // In proxy mode the key input is hidden — no per-user key needed.
+  if (PROXY) {
+    var keyRow = document.querySelector('#chat-api-key-row');
+    if (keyRow) keyRow.style.display = 'none';
+    var hint = document.querySelector('#chat-key-hint');
+    if (hint) hint.innerHTML = 'Powered by the AI4Stat/Math chat proxy — no setup required. Per-IP daily limit applies; cost is on the project bill.';
+  }
+
+  function settings(){
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch(e){ return {}; }
+  }
+  function saveSettings(s){ localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); }
+  function history(){
+    try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch(e){ return []; }
+  }
+  function saveHistory(h){ localStorage.setItem(HISTORY_KEY, JSON.stringify(h.slice(-30))); }
+
+  function loadSettings(){
+    var s = settings();
+    if (s.apiKey) keyInput.value = s.apiKey;
+    if (s.model) modelSelect.value = s.model;
+  }
+  loadSettings();
+
+  function render(){
+    body.innerHTML = '';
+    var h = history();
+    if (h.length === 0) {
+      addMsg('system', 'Ask me about your reviews. Examples: "What should I fix first?" · "Show me a clean rewrite of problem 4." · "What did Haiku get wrong on problem 3?"');
+      if (!settings().apiKey) {
+        addMsg('system', '⚙ Click the gear icon to add your Anthropic API key (stored only in your browser).');
+      }
+    } else {
+      h.forEach(function(m){ addMsg(m.role, m.content, /*persist*/false); });
+    }
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function addMsg(role, content, persist){
+    var d = document.createElement('div');
+    d.className = 'msg ' + role;
+    d.textContent = content;
+    body.appendChild(d);
+    body.scrollTop = body.scrollHeight;
+    if (persist && (role === 'user' || role === 'assistant')) {
+      var h = history();
+      h.push({role: role, content: content});
+      saveHistory(h);
+    }
+    return d;
+  }
+
+  // panel R1 engineer P2: when closed, remove from tab order via `inert`
+  // (was: drawer permanently aria-hidden but inputs still tabbable from the
+  // off-screen position). Set inert initially in case .open is never called.
+  if (drawer.hasAttribute) drawer.setAttribute('inert', '');
+  function open(){ drawer.classList.add('open'); drawer.removeAttribute('inert'); drawer.setAttribute('aria-hidden', 'false'); render(); textarea.focus(); }
+  function close(){ drawer.classList.remove('open'); drawer.setAttribute('inert', ''); drawer.setAttribute('aria-hidden', 'true'); }
+
+  fab.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+  settingsBtn.addEventListener('click', function(){
+    settingsPanel.classList.toggle('open');
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && drawer.classList.contains('open')) close();
+  });
+
+  keyInput.addEventListener('change', function(){
+    var s = settings(); s.apiKey = keyInput.value.trim(); saveSettings(s);
+  });
+  modelSelect.addEventListener('change', function(){
+    var s = settings(); s.model = modelSelect.value; saveSettings(s);
+  });
+
+  textarea.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+  });
+  sendBtn.addEventListener('click', send);
+
+  async function send(){
+    var msg = textarea.value.trim();
+    if (!msg) return;
+    var s = settings();
+    if (!PROXY && !s.apiKey) {
+      settingsPanel.classList.add('open');
+      addMsg('error', 'No API key set. Add one in the settings panel ⚙ first — or ask the project lead to enable the chat proxy.');
+      return;
+    }
+    textarea.value = '';
+    addMsg('user', msg, true);
+    sendBtn.disabled = true;
+    var thinking = addMsg('assistant', '…');
+    var hist = history().filter(function(m){ return m.role === 'user' || m.role === 'assistant'; });
+    var messages = hist.map(function(m){ return {role: m.role, content: m.content}; });
+    try {
+      var url, headers;
+      if (PROXY) {
+        url = PROXY;
+        headers = { 'content-type': 'application/json' };
+        if (SITE_TOKEN) headers['x-ai4sm-site-token'] = SITE_TOKEN;
+      } else {
+        url = 'https://api.anthropic.com/v1/messages';
+        headers = {
+          'x-api-key': s.apiKey,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true',
+          'content-type': 'application/json',
+        };
+      }
+      var resp = await fetch(url, {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({
+          model: s.model || 'claude-haiku-4-5-20251001',
+          max_tokens: 1500,
+          system: sysCtx,
+          messages: messages,
+        }),
+      });
+      var data = await resp.json();
+      if (!resp.ok) {
+        thinking.classList.remove('assistant'); thinking.classList.add('error');
+        thinking.textContent = 'Error: ' + (data.error && data.error.message ? data.error.message : resp.statusText);
+      } else {
+        var text = (data.content && data.content[0] && data.content[0].text) || '(empty response)';
+        thinking.textContent = text;
+        var h = history(); h.push({role: 'assistant', content: text}); saveHistory(h);
+      }
+    } catch (e) {
+      thinking.classList.remove('assistant'); thinking.classList.add('error');
+      thinking.textContent = 'Network error: ' + e.message;
+    } finally {
+      sendBtn.disabled = false;
+      body.scrollTop = body.scrollHeight;
+    }
+  }
+})();
+
+// ── time machine: step LEFT/RIGHT between timestamped versions ──────
+// Pure client-side, no network. Each problem card embeds ALL its review
+// versions (oldest-first) in a <script class="p-versions"> JSON blob. The
+// global control steps between distinct review DATES; on each step every card
+// shows the latest version whose review date is <= the selected date, or a
+// muted "Not yet reviewed" placeholder if it has none yet.
+(function(){
+  var ctrl = document.getElementById('time-machine');
+  var datesEl = document.getElementById('tm-dates');
+  if (!ctrl || !datesEl) return;            // single timeline point → no control
+  var dates;
+  try { dates = JSON.parse(datesEl.textContent || '[]'); } catch(e){ return; }
+  if (!dates.length) return;
+
+  var prevBtn = ctrl.querySelector('.tm-prev');
+  var nextBtn = ctrl.querySelector('.tm-next');
+  var dateOut = ctrl.querySelector('.tm-date');
+  var idxOut  = ctrl.querySelector('.tm-idx');
+  var totalOut = ctrl.querySelector('.tm-total');
+  if (totalOut) totalOut.textContent = String(dates.length);
+
+  // Gather cards + their embedded version data.
+  var cards = [];
+  document.querySelectorAll('section.problem').forEach(function(section){
+    var blob = section.querySelector('script.p-versions');
+    if (!blob) return;
+    var data;
+    try { data = JSON.parse(blob.textContent || '{}'); } catch(e){ return; }
+    var versions = (data.versions || []).slice().sort(function(a,b){
+      return (a.reviewed_at || '') < (b.reviewed_at || '') ? -1
+           : (a.reviewed_at || '') > (b.reviewed_at || '') ? 1 : 0;
+    });
+    cards.push({
+      section: section,
+      body: section.querySelector('.p-version-body'),
+      versions: versions,
+      num: data.problem_num,
+      title: data.title || ('Problem ' + data.problem_num),
+      shownSha: section.getAttribute('data-sha') || null  // initial = latest
+    });
+  });
+
+  function pad2(n){ return (n < 10 ? '0' : '') + n; }
+
+  function placeholderHTML(card){
+    return '<header class="p-head"><div class="p-title">'
+         + '<span class="p-num">#' + pad2(card.num) + '</span>'
+         + '<h2>' + escapeHtml(card.title) + '</h2></div>'
+         + '<div class="p-pills"></div></header>'
+         + '<p class="p-notyet dim">Not yet reviewed as of '
+         + escapeHtml(dates[idx]) + '.</p>';
+  }
+  function escapeHtml(s){
+    return String(s == null ? '' : s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+
+  // latest version whose review DATE <= selected date (dates lexicographically
+  // comparable as ISO YYYY-MM-DD). versions are oldest-first.
+  function pickVersion(card, date){
+    var chosen = null;
+    for (var i = 0; i < card.versions.length; i++){
+      var d = (card.versions[i].reviewed_at || '').slice(0,10);
+      if (d && d <= date) chosen = card.versions[i];
+    }
+    return chosen;
+  }
+
+  // re-apply the abbr.term keyboard/aria enhancement to freshly-inserted nodes
+  function enhanceAbbrs(root){
+    root.querySelectorAll('abbr.term').forEach(function(el){
+      if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+      if (!el.hasAttribute('role')) el.setAttribute('role', 'button');
+      el.setAttribute('aria-label', (el.textContent || '') + ': ' + (el.getAttribute('data-tip') || ''));
+    });
+  }
+
+  var idx = dates.length - 1;             // default = most recent
+  var firstRender = true;
+
+  function render(){
+    var date = dates[idx];
+    if (dateOut) dateOut.textContent = date;
+    if (idxOut)  idxOut.textContent = String(idx + 1);
+    if (prevBtn) prevBtn.disabled = (idx === 0);
+    if (nextBtn) nextBtn.disabled = (idx === dates.length - 1);
+
+    var mathNodes = [];
+    cards.forEach(function(card){
+      var chosen = pickVersion(card, date);
+      var newSha = chosen ? (chosen.sha || '') : null;
+      var changed = (!firstRender) && (newSha !== card.shownSha);
+
+      // First render: the server already painted the latest version (= the
+      // default most-recent point) AND MathJax already typeset it. Don't
+      // rewrite innerHTML — that would wipe the typeset math. Just record sha.
+      if (firstRender){
+        card.shownSha = newSha;
+        return;
+      }
+
+      if (chosen){
+        card.body.innerHTML = chosen.html;
+        card.section.setAttribute('data-verdict', chosen.verdict || '?');
+        card.section.setAttribute('data-sha', chosen.sha || '');
+        card.section.classList.remove('tm-empty');
+      } else {
+        card.body.innerHTML = placeholderHTML(card);
+        card.section.setAttribute('data-verdict', 'template-stub');
+        card.section.classList.add('tm-empty');
+      }
+
+      if (changed){
+        // subtle, tasteful evolution cue — not colour-alone: a "changed" chip
+        // is injected next to the verdict pill in addition to the flash.
+        card.section.classList.remove('tm-changed');
+        void card.section.offsetWidth;          // restart the animation
+        card.section.classList.add('tm-changed');
+        var pills = card.body.querySelector('.p-pills');
+        if (pills){
+          var chip = document.createElement('span');
+          chip.className = 'tm-changed-chip';
+          chip.textContent = '↻ changed';
+          chip.setAttribute('title', 'This problem changed at this timeline step.');
+          pills.appendChild(chip);
+        }
+      }
+      card.shownSha = newSha;
+      if (chosen) mathNodes.push(card.body);
+      enhanceAbbrs(card.body);
+    });
+
+    // Re-typeset math in swapped content (best-effort; offline-safe no-op if
+    // MathJax didn't load).
+    if (!firstRender && window.MathJax && window.MathJax.typesetPromise && mathNodes.length){
+      try { window.MathJax.typesetPromise(mathNodes); } catch(e){}
+    }
+    firstRender = false;
+  }
+
+  function step(delta){
+    var n = Math.max(0, Math.min(dates.length - 1, idx + delta));
+    if (n === idx) return;
+    idx = n;
+    render();
+  }
+
+  prevBtn && prevBtn.addEventListener('click', function(){ step(-1); });
+  nextBtn && nextBtn.addEventListener('click', function(){ step(1); });
+  document.addEventListener('keydown', function(e){
+    // don't hijack arrows while typing in the chat box / inputs
+    var t = e.target;
+    if (t && (t.tagName === 'TEXTAREA' || t.tagName === 'INPUT' || t.isContentEditable)) return;
+    if (e.key === 'ArrowLeft')  { step(-1); }
+    else if (e.key === 'ArrowRight') { step(1); }
+  });
+
+  render();   // establish the default (most recent) view + button states
+})();
+</script>
+</body></html>
