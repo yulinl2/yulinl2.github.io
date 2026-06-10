@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parametric Memory — Research Dashboard</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root{
+    /* low-key engineering palette: muted slate, steel accent, no neon */
+    --bg:#0e1014;
+    --panel:#161922;
+    --panel-2:#12151c;
+    --line:#252a35;
+    --line-bright:#343b49;
+    --ink:#d4d8e0;
+    --ink-dim:#8b93a3;
+    --ink-faint:#5d6675;
+    --acc:#6f8fb0;          /* muted steel blue */
+    --acc-deep:#43586e;
+    --good:#7fa389;         /* muted sage */
+    --good-bg:rgba(127,163,137,.12);
+    --warn:#bfa368;         /* muted amber, not rust */
+    --warn-bg:rgba(191,163,104,.12);
+    --bad:#b58080;          /* muted slate-red, not clay */
+    --bad-bg:rgba(181,128,128,.12);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:1140px;margin:0 auto;padding:0 28px}
+
+  /* ---------- header ---------- */
+  header{padding:46px 0 26px;border-bottom:1px solid var(--line)}
+  .kicker{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--acc);margin-bottom:18px;display:flex;gap:12px;align-items:center;
+  }
+  .kicker::before{content:"";width:26px;height:1px;background:var(--acc)}
+  h1{
+    font-family:'IBM Plex Sans',sans-serif;
+    font-weight:600;
+    font-size:clamp(1.9rem,4vw,2.9rem);
+    line-height:1.1;
+    letter-spacing:-.02em;
+    max-width:24ch;
+  }
+  h1 b{color:var(--acc);font-weight:600}
+  .sub{margin-top:18px;color:var(--ink-dim);font-size:1rem;max-width:66ch}
+  .meta{
+    margin-top:22px;display:flex;flex-wrap:wrap;gap:8px;
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+  }
+  .meta span{
+    border:1px solid var(--line-bright);padding:5px 11px;border-radius:3px;
+    color:var(--ink-dim);
+  }
+  .meta span b{color:var(--ink);font-weight:500}
+
+  /* ---------- nav ---------- */
+  nav{
+    position:sticky;top:0;z-index:20;
+    background:rgba(14,16,20,.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:1140px;margin:0 auto;padding:0 28px;
+    display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;
+  }
+  .nav-inner::-webkit-scrollbar{display:none}
+  .nav-btn{
+    background:none;border:none;cursor:pointer;
+    font-family:'JetBrains Mono',monospace;font-size:12px;
+    color:var(--ink-faint);padding:16px 14px;white-space:nowrap;
+    border-bottom:2px solid transparent;transition:.18s;letter-spacing:.02em;
+  }
+  .nav-btn:hover{color:var(--ink)}
+  .nav-btn.active{color:var(--acc);border-bottom-color:var(--acc)}
+  .nav-btn b{color:var(--ink-faint);margin-right:8px;font-weight:500}
+  .nav-btn.active b{color:var(--acc)}
+
+  /* ---------- panels ---------- */
+  .panel{display:none;animation:fade .35s ease both;padding:42px 0 88px}
+  .panel.show{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--acc)}
+  h2{
+    font-family:'IBM Plex Sans',sans-serif;font-weight:600;
+    font-size:clamp(1.5rem,3vw,2.1rem);letter-spacing:-.015em;line-height:1.12;
+  }
+  .sec-sub{color:var(--ink-dim);margin:12px 0 34px;max-width:70ch;font-size:.98rem}
+
+  p.body{color:var(--ink-dim);font-size:.96rem;margin-bottom:16px;max-width:74ch}
+  p.body b{color:var(--ink);font-weight:600}
+  .cite{
+    font-family:'JetBrains Mono',monospace;font-size:.8em;color:var(--acc);
+    background:rgba(111,143,176,.09);padding:1px 6px;border-radius:3px;white-space:nowrap;
+  }
+
+  /* ---------- stat cards ---------- */
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-bottom:34px}
+  .stat{
+    background:var(--panel);border:1px solid var(--line);border-radius:5px;
+    padding:22px;position:relative;
+  }
+  .stat::before{content:"";position:absolute;left:0;top:14px;bottom:14px;width:2px;background:var(--acc);border-radius:2px}
+  .stat .v{font-family:'JetBrains Mono',monospace;font-size:1.7rem;color:var(--ink);font-weight:600;letter-spacing:-.01em}
+  .stat .k{font-size:.84rem;color:var(--ink-dim);margin-top:8px;line-height:1.4}
+
+  /* ---------- tldr cards ---------- */
+  .cards3{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+  .tcard{
+    background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:24px;
+  }
+  .tcard .tag{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--acc);margin-bottom:13px;display:block;
+  }
+  .tcard h3{font-weight:600;font-size:1.1rem;margin-bottom:9px;line-height:1.25;color:var(--ink)}
+  .tcard p{color:var(--ink-dim);font-size:.92rem}
+
+  /* ---------- three-sense columns ---------- */
+  .senses{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+  .sense{background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:24px}
+  .sense .idx{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-faint);margin-bottom:12px}
+  .sense h3{font-weight:600;font-size:1.05rem;margin-bottom:8px;color:var(--ink)}
+  .sense p{color:var(--ink-dim);font-size:.9rem;margin-bottom:14px}
+  .sense .lvl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:5px 9px;border-radius:3px;display:inline-block}
+
+  /* ---------- collapsibles ---------- */
+  .acc{border:1px solid var(--line);border-radius:5px;margin-bottom:12px;background:var(--panel);overflow:hidden}
+  .acc-head{display:flex;align-items:center;gap:16px;padding:20px 24px;cursor:pointer;transition:background .18s}
+  .acc-head:hover{background:var(--panel-2)}
+  .acc-id{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-faint);border:1px solid var(--line-bright);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .acc-title{flex:1;font-weight:600;font-size:1rem}
+  .verdict{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border-radius:3px;flex-shrink:0;border:1px solid}
+  .v-ok{background:var(--good-bg);color:var(--good);border-color:rgba(127,163,137,.3)}
+  .v-mid{background:var(--warn-bg);color:var(--warn);border-color:rgba(191,163,104,.3)}
+  .v-bad{background:var(--bad-bg);color:var(--bad);border-color:rgba(181,128,128,.3)}
+  .chev{color:var(--ink-faint);transition:transform .22s;flex-shrink:0;font-size:12px}
+  .acc.open .chev{transform:rotate(90deg)}
+  .acc-body{max-height:0;overflow:hidden;transition:max-height .35s ease}
+  .acc.open .acc-body{max-height:420px}
+  .acc-body-inner{padding:2px 24px 24px 70px;color:var(--ink-dim);font-size:.93rem}
+  .acc-body-inner b{color:var(--ink)}
+
+  /* ---------- bars ---------- */
+  .bar-row{margin-bottom:20px}
+  .bar-label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .bar-name{font-weight:600;font-size:.95rem}
+  .bar-name small{color:var(--ink-faint);font-weight:400;font-family:'JetBrains Mono',monospace;font-size:11px;margin-left:9px}
+  .bar-val{font-family:'JetBrains Mono',monospace;font-size:.95rem;color:var(--acc)}
+  .bar-track{height:11px;background:var(--panel-2);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .bar-fill{height:100%;width:0;border-radius:2px;transition:width 1s cubic-bezier(.16,1,.3,1);background:var(--acc)}
+  .bar-fill.good{background:var(--good)}
+  .bar-fill.warn{background:var(--warn)}
+  .bar-fill.bad{background:var(--bad)}
+  .note{margin-top:6px;font-size:.85rem;color:var(--ink-faint);border-left:2px solid var(--line-bright);padding-left:13px;max-width:72ch}
+
+  /* ---------- ladder (orders of magnitude) ---------- */
+  .ladder{background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:28px 26px;margin-bottom:22px}
+  .ladder-track{position:relative;height:2px;background:var(--line-bright);margin:42px 10px 30px}
+  .tick{position:absolute;top:-5px;width:2px;height:12px;background:var(--ink-faint);transform:translateX(-1px)}
+  .tick .tl{position:absolute;top:-30px;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-dim);white-space:nowrap}
+  .tick .tb{position:absolute;top:18px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--ink-faint);white-space:nowrap;text-align:center;width:120px}
+  .tick.hot{background:var(--acc)}
+  .tick.hot .tl{color:var(--acc);font-weight:600}
+
+  /* ---------- two-col ---------- */
+  .cases2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .case{background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:26px}
+  .case .num{font-family:'JetBrains Mono',monospace;font-size:1.6rem;color:var(--acc);font-weight:600;line-height:1;margin-bottom:12px}
+  .case h3{font-weight:600;font-size:1.12rem;margin-bottom:6px}
+  .case .ol{color:var(--ink-dim);font-size:.9rem;margin-bottom:18px;font-style:italic}
+  .case ul{list-style:none}
+  .case li{padding:10px 0 10px 20px;border-top:1px solid var(--line);font-size:.9rem;color:var(--ink-dim);position:relative}
+  .case li::before{content:"";position:absolute;left:0;top:18px;width:7px;height:1px;background:var(--acc)}
+  .case li b{color:var(--ink)}
+
+  /* ---------- table ---------- */
+  .tbl-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:5px}
+  table{width:100%;border-collapse:collapse;min-width:600px;font-size:.89rem}
+  th{background:var(--panel-2);text-align:left;padding:15px 17px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-dim);border-bottom:1px solid var(--line-bright)}
+  td{padding:14px 17px;border-bottom:1px solid var(--line);color:var(--ink-dim)}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:var(--panel-2)}
+  td:first-child{color:var(--ink);font-weight:500}
+  .pill{font-family:'JetBrains Mono',monospace;font-size:10px;padding:3px 8px;border-radius:3px;display:inline-block}
+  .p-yes{background:var(--good-bg);color:var(--good)}
+  .p-no{background:var(--bad-bg);color:var(--bad)}
+  .p-mod{background:var(--warn-bg);color:var(--warn)}
+  .dir{font-family:'JetBrains Mono',monospace;font-weight:600}
+  .dir.down{color:var(--good)}
+  .dir.up{color:var(--bad)}
+
+  /* ---------- stages ---------- */
+  .stage{display:grid;grid-template-columns:120px 1fr;gap:26px;padding:26px 0;border-top:1px solid var(--line)}
+  .stage:first-of-type{border-top:none}
+  .stage-tag .s-id{font-family:'JetBrains Mono',monospace;font-size:1.4rem;color:var(--acc);font-weight:600}
+  .stage-tag .s-cost{display:block;margin-top:7px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-faint);border:1px solid var(--line-bright);padding:4px 8px;border-radius:3px;text-align:center}
+  .stage-body h3{font-weight:600;font-size:1.08rem;margin-bottom:9px}
+  .stage-body p{color:var(--ink-dim);font-size:.92rem;margin-bottom:11px}
+  .crit{background:var(--panel-2);border:1px solid var(--line);border-left:2px solid var(--acc);padding:13px 16px;border-radius:3px;font-size:.87rem}
+  .crit b{color:var(--acc);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.09em;text-transform:uppercase;display:block;margin-bottom:5px}
+
+  /* ---------- split ---------- */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+  .col-box{background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:26px}
+  .col-box h3{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.13em;text-transform:uppercase;margin-bottom:18px;padding-bottom:13px;border-bottom:1px solid var(--line)}
+  .col-box.green h3{color:var(--good)}
+  .col-box.red h3{color:var(--bad)}
+  .col-box ul{list-style:none}
+  .col-box li{padding:11px 0 11px 22px;font-size:.9rem;color:var(--ink-dim);position:relative}
+  .col-box li+li{border-top:1px solid var(--line)}
+  .col-box.green li::before{content:"+";position:absolute;left:0;color:var(--good);font-weight:700}
+  .col-box.red li::before{content:"\2212";position:absolute;left:0;color:var(--bad);font-weight:700}
+  .col-box li b{color:var(--ink)}
+
+  /* ---------- callout ---------- */
+  .callout{background:var(--panel);border:1px solid var(--line-bright);border-left:3px solid var(--acc);border-radius:5px;padding:22px 26px;margin-bottom:14px}
+  .callout .cl{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--acc);margin-bottom:10px}
+  .callout p{font-size:.96rem;color:var(--ink)}
+
+  /* ---------- reading list ---------- */
+  .read{counter-reset:r}
+  .read-item{display:flex;gap:20px;align-items:center;padding:16px 20px;border:1px solid var(--line);border-radius:5px;margin-bottom:9px;background:var(--panel);transition:.18s}
+  .read-item:hover{border-color:var(--line-bright)}
+  .read-item::before{counter-increment:r;content:counter(r,decimal-leading-zero);font-family:'JetBrains Mono',monospace;color:var(--acc);font-size:1rem;flex-shrink:0}
+  .read-item .ri-t{flex:1}
+  .read-item .ri-t b{display:block;font-size:.96rem;color:var(--ink);font-weight:600}
+  .read-item .ri-t span{font-size:.84rem;color:var(--ink-faint)}
+  .read-item .ri-id{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--acc);background:rgba(111,143,176,.09);padding:4px 9px;border-radius:3px;white-space:nowrap}
+
+  footer{border-top:1px solid var(--line);padding:30px 0;color:var(--ink-faint);font-size:.82rem;font-family:'JetBrains Mono',monospace}
+  .ft-inner{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+  @media(max-width:760px){
+    .cases2,.split{grid-template-columns:1fr}
+    .stage{grid-template-columns:1fr;gap:12px}
+    .acc-body-inner{padding-left:24px}
+    .wrap,.nav-inner,.ft-inner{padding-left:18px;padding-right:18px}
+    .tick .tb{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="kicker">Parametric Memory · Research Dashboard · v0.6</div>
+    <h1>How fast does a model <b>memorize</b> — and is that secretly the best memory an agent could have?</h1>
+    <p class="sub">Current agent memory is text summaries: lossy, primitive, re-derived every turn. The bet is that weights, not text, are the better substrate — turning overparametrized rote memorization from a privacy bug into the mechanism. This dashboard collects what the literature actually says, and what we'd test.</p>
+    <div class="meta">
+      <span>updated <b>2026-05-30</b></span>
+      <span><b>8</b> sections</span>
+      <span>budget <b>$0–$1k</b></span>
+      <span>base <b>open-weight 8B</b></span>
+      <span>read-out <b>latent, not text</b></span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="nav-inner" id="nav"></div></nav>
+
+<div class="wrap">
+
+  <!-- 00 OVERVIEW -->
+  <section class="panel show" id="p-overview">
+    <div class="sec-head"><span class="sec-num">00</span><h2>The bet, and the numbers behind it</h2></div>
+    <p class="sec-sub">Four figures frame the whole project. Everything in the other tabs is an elaboration of these.</p>
+    <div class="stat-grid">
+      <div class="stat"><div class="v">2 – 3.6</div><div class="k">bits of knowledge stored per parameter (Allen-Zhu ≈2; Morris ≈3.6). Capacity scales linearly with model size.</div></div>
+      <div class="stat"><div class="v">≤ 5</div><div class="k">gradient steps to write a full context into dedicated memory params (GradMem), vs ~1000 exposures for max pretraining density.</div></div>
+      <div class="stat"><div class="v">10³ → 10⁶</div><div class="k">steps to <i>memorize</i> vs steps to <i>generalize</i> in canonical grokking. Three orders of magnitude separate fitting from understanding.</div></div>
+      <div class="stat"><div class="v">$0 – $1k</div><div class="k">cost to get a real signal on open 8B models with LoRA. No GPU cluster, no architecture surgery required.</div></div>
+    </div>
+
+    <div class="cards3">
+      <div class="tcard">
+        <span class="tag">The thesis, in 3 sentences</span>
+        <h3>Fast to memorize, slow to understand</h3>
+        <p>Surface memorization is fast — tens of steps, sometimes five. The conceptual internalization we actually want is slow, lagging by orders of magnitude and only appearing under the right regularizer. The number is set less by "the content" than by how much of the optimization we point at it.</p>
+      </div>
+      <div class="tcard">
+        <span class="tag">Why now</span>
+        <h3>The pieces just landed</h3>
+        <p>Open 8B weights + LoRA make a trainable memory cheap. <span class="cite">MemGen</span> (latent memory, up to +38% over text memory) and <span class="cite">GradMem</span> (≤5-step context writes) are existence proofs from the last few months. The mechanism works — nobody has framed it as agent memory yet.</p>
+      </div>
+      <div class="tcard">
+        <span class="tag">The honest catch</span>
+        <h3>Two regimes, opposite sides</h3>
+        <p>Faithful retention of specific content and internalization of a concept sit on opposite sides of the capacity threshold. We can't maximize both in one adapter at one scale — so the two scenarios are two differently-sized experiments, decided up front.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 SENSES -->
+  <section class="panel" id="p-senses">
+    <div class="sec-head"><span class="sec-num">01</span><h2>"Memorized" is three different events</h2></div>
+    <p class="sec-sub">No step-count means anything until the word is pinned down. The literature measures at least three things under one label — and they differ by orders of magnitude in how many steps they take to appear.</p>
+    <div class="senses">
+      <div class="sense">
+        <div class="idx">SENSE 01 · slowest</div>
+        <h3>Verbatim regurgitation</h3>
+        <p>The model emits an exact training sequence from a prefix. The strict privacy notion — "extractable with k tokens of context."</p>
+        <span class="lvl v-bad">most demanding</span>
+      </div>
+      <div class="sense">
+        <div class="idx">SENSE 02 · the target</div>
+        <h3>Fact / concept recall</h3>
+        <p>The model answers a question or completes an association without reproducing wording. This is what 2-bits-per-param measures, and what a memory system actually wants.</p>
+        <span class="lvl v-mid">our goal</span>
+      </div>
+      <div class="sense">
+        <div class="idx">SENSE 03 · fastest</div>
+        <h3>Influence on behavior</h3>
+        <p>A single example shifts outputs on related inputs, with no recognizable "storage." Captured by influence/counterfactual work. Can happen in one step.</p>
+        <span class="lvl v-ok">one step</span>
+      </div>
+    </div>
+    <p class="body" style="margin-top:24px">Why this is load-bearing, not pedantic: our economy condition (b) — "the small model fully retains the key information" — is implicitly asking for <b>Sense 02</b>. But the cheapest experiments default to measuring Sense 01 or Sense 03, because training loss and extraction probes reflect those most directly. <b>A collapsed training loss demonstrates Sense-01 fitting and tells you almost nothing about Sense 02.</b> The ROME work even locates these in different places: generalized "knowing" at the early-middle MLP site, rote "saying" at the late attention site. <span class="cite">arXiv:2202.05262</span></p>
+  </section>
+
+  <!-- 02 STEP COUNTS -->
+  <section class="panel" id="p-steps">
+    <div class="sec-head"><span class="sec-num">02</span><h2>The step-count, and the knobs that move it</h2></div>
+    <p class="sec-sub">Tirumala et al. defined the exact quantity — T_update(N, τ), the number of updates to reach memorization fraction τ. The headline cuts against using a small model: larger models memorize faster, monotonically. <span class="cite">arXiv:2205.10770</span></p>
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr><th>Variable</th><th>Effect on steps-to-memorize</th><th>Why it matters here</th></tr></thead>
+        <tbody>
+          <tr><td>Model size (N)</td><td><span class="dir down">↓ fewer</span> &nbsp;larger = faster, strongly</td><td>A 1B will be slower than an 8B; your small-scale step-count is an upper bound</td></tr>
+          <tr><td>Duplication / frequency</td><td><span class="dir down">↓↓ far fewer</span> &nbsp;log-linear</td><td>Your single biggest lever, and it's free — duplicate the memory corpus deliberately</td></tr>
+          <tr><td>Learning rate</td><td><span class="dir down">↓ fewer</span></td><td>Trades against stability of any generalization you want</td></tr>
+          <tr><td>Content type</td><td><span class="dir down">↓ fewer</span> &nbsp;for structured</td><td>Nouns & numbers memorize first; facts write faster than prose</td></tr>
+          <tr><td>Threshold τ</td><td><span class="dir up">↑ many more</span> &nbsp;near completeness</td><td>No single number — a step-count per target fidelity; the curve steepens toward 100%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="body" style="margin-top:24px">One genuinely encouraging finding for the premise — Tirumala's <b>forgetting baseline</b>: a model retains at least ~40% of data seen <i>only once</i>, even after training on other data for many epochs. Single-exposure content is not ephemeral. The three forces governing verbatim memorization, from Carlini, are clean: <b>model size, duplication, and context length</b> all increase extractability, each log-linearly. <span class="cite">arXiv:2202.07646</span></p>
+  </section>
+
+  <!-- 03 REGIMES -->
+  <section class="panel" id="p-regimes">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Two regimes: five steps vs a thousand exposures</h2></div>
+    <p class="sec-sub">"≤5 steps" and "~1000 exposures" are both true, and the gap between them is the design insight: the step-count is a property of how much optimization you point at the content, not of the content itself.</p>
+
+    <div class="ladder">
+      <div class="ladder-track">
+        <div class="tick hot" style="left:2%"><span class="tl">1 step</span><span class="tb">single-step influence</span></div>
+        <div class="tick hot" style="left:16%"><span class="tl">≤5 steps</span><span class="tb">GradMem context write</span></div>
+        <div class="tick" style="left:40%"><span class="tl">~10²</span><span class="tb">≈1 bit/param</span></div>
+        <div class="tick" style="left:62%"><span class="tl">~10³ exp.</span><span class="tb">≈2 bits/param (max density)</span></div>
+        <div class="tick" style="left:96%"><span class="tl">~10⁶ steps</span><span class="tb">grokking / generalization</span></div>
+      </div>
+      <p class="note">Log-ish scale, illustrative. Left = concentrate all optimization on a small dedicated target (your architecture). Right = max density across a whole corpus during pretraining, or the delayed generalization transition.</p>
+    </div>
+
+    <p class="body"><b>The single-step regime is where your design lives.</b> You're not pretraining on a corpus — you're writing a context into weights. GradMem does exactly this: <span class="cite">arXiv:2603.13875</span> shows ≤5 gradient steps reliably write a context into a frozen model's memory params, and — decisively — a single <i>gradient</i> write stores more than a single <i>forward</i> pass, with forward-only repetition giving much weaker gains. That is concrete evidence the gradient route beats the in-context status quo. This sits inside the test-time-training / fast-weights family (Titans, TTT layers): a few gradient steps on a small dedicated target against a reconstruction objective.</p>
+
+    <p class="body"><b>Capacity sets the ceiling.</b> Transformers store ~2 bits/param <span class="cite">arXiv:2404.05405</span>, or ~3.6 bits/param by a cleaner estimate <span class="cite">arXiv:2505.24832</span>; both find storage scales linearly with parameters. The crucial Morris finding is the bug-to-feature transition made mechanical: a model memorizes until capacity fills, <b>at which point grokking begins</b> and the model substitutes generalization for rote storage. Generalization is what memorization turns into when it runs out of room.</p>
+
+    <div class="callout">
+      <div class="cl">⚠ The structural tension to decide up front</div>
+      <p>Your Case 1 (retain noisy content faithfully) wants the model <b>below</b> capacity, where individual memorization works. Your Case 2 (internalize a concept) wants it pushed <b>past</b> capacity, where individual memorization fails and structure is forced. You cannot maximize both in the same adapter at the same scale — so they are two differently-sized experiments, not one.</p>
+    </div>
+  </section>
+
+  <!-- 04 GROKKING -->
+  <section class="panel" id="p-grok">
+    <div class="sec-head"><span class="sec-num">04</span><h2>The slow event: memorize fast, generalize much later</h2></div>
+    <p class="sec-sub">This is the single most important body of work for calibrating expectations, because it describes the gap between the fast fitting you'll see and the conceptual internalization you actually want.</p>
+
+    <p class="body">Power et al. on modular arithmetic: training accuracy is near-perfect in <b>under 10³ steps</b>, but validation accuracy takes close to <b>10⁶ steps</b>, with little generalization visible before ~10⁵. <span class="cite">arXiv:2201.02177</span> Read the exponents — three orders of magnitude separate fitting the data from learning the rule that generated it. A model can sit at 100% train accuracy and 0% generalization for hundreds of thousands of steps before the rule clicks.</p>
+
+    <div class="cards3" style="margin:8px 0 24px">
+      <div class="tcard"><span class="tag">Mechanism</span><h3>Norm minimization</h3><p>The model memorizes by growing weight norm, then weight decay grinds norm down along the zero-loss manifold until the lowest-norm fit <i>is</i> the generalizing circuit. <span class="cite">arXiv:2603.13331</span></p></div>
+      <div class="tcard"><span class="tag">Hard requirement</span><h3>AdamW, not SGD</h3><p>Grokking needs an optimizer that decouples memorization from contraction — SGD fails entirely at the same hyperparameters where AdamW reliably groks. Use an Adam-family optimizer with weight decay.</p></div>
+      <div class="tcard"><span class="tag">Facts version</span><h3>3-phase plateau</h3><p>Models learn facts in three phases with a plateau before acquisition; the plateau is when attention circuits form. Integrating new knowledge corrupts existing memories. <span class="cite">arXiv:2503.21676</span></p></div>
+    </div>
+
+    <p class="body">That last clause — new knowledge corrupting old — is an independent confirmation, from a different lab and setup, of the interference problem flagged elsewhere via Pletenev. It being robust across papers is exactly why <b>we re-check retention on every write</b>, not occasionally.</p>
+  </section>
+
+  <!-- 05 STORAGE -->
+  <section class="panel" id="p-storage">
+    <div class="sec-head"><span class="sec-num">05</span><h2>Where memory lives — and why read-out is hard</h2></div>
+    <p class="sec-sub">The dynamics connect back to condition (c), getting information cleanly back out, and the answer is constraining in a way that validates your own intuition.</p>
+
+    <p class="body">The dominant picture: <b>MLP layers act as key–value memories</b> — a key encodes a subject, a value encodes knowledge, and a fact is localizable to MLP params at middle layers during the subject's last token. <span class="cite">ROME / arXiv:2202.05262</span> This sounds like it should make read-out easy. Two findings break that hope, and they are the technical core of why condition (c) is hard:</p>
+
+    <div class="acc">
+      <div class="acc-head"><div class="acc-id">a</div><div class="acc-title">Localization does not predict editability</div><span class="verdict v-bad">disconnect</span><span class="chev">▶</span></div>
+      <div class="acc-body"><div class="acc-body-inner">The layers a fact is causally localized to are statistically <b>uncorrelated</b> with where you must edit to change it. The place information "is" and the place you can manipulate it from are not the same — so knowing where a memory lives does not hand you a clean way to read it back out as text.</div></div>
+    </div>
+    <div class="acc">
+      <div class="acc-head"><div class="acc-id">b</div><div class="acc-title">Superposition — no readable table</div><span class="verdict v-bad">distributed</span><span class="chev">▶</span></div>
+      <div class="acc-body"><div class="acc-body-inner">Facts are stored as <b>overlapping linear combinations</b>, not one-per-neuron. Recent mechanistic work: subject embeddings encode superpositions of attribute vectors, decoded on demand by a relation-conditioned selector. <span class="cite">arXiv:2605.12426</span> You cannot enumerate what's stored by reading rows off a matrix — there are no rows, only directions in a vector space.</div></div>
+    </div>
+
+    <div class="callout" style="margin-top:18px">
+      <div class="cl">→ Consequence for the project</div>
+      <p>Your intuition — that concepts live inside the model and likely can't be explicitly reconstructed — is correct, and now you know <i>why</i>: the information is real and causally effective but stored in distributed, superposed, selector-decoded form. This is the precise reason to relax condition (c) from <b>text-readable</b> to <b>latent-vector</b> read-out: latent read-out (gist tokens, MemGen, GradMem) works <i>with</i> this format; text read-out fights it.</p>
+    </div>
+  </section>
+
+  <!-- 06 CASES -->
+  <section class="panel" id="p-cases">
+    <div class="sec-head"><span class="sec-num">06</span><h2>The two scenarios & what's actually feasible</h2></div>
+    <p class="sec-sub">Case numbering confirmed from the source thread: Case 1 = noise, Case 2 = concept. And the "big problem" — merge-back — likely dissolves rather than needs solving.</p>
+    <div class="cases2">
+      <div class="case">
+        <div class="num">01</div>
+        <h3>Noise filter</h3>
+        <p class="ol">Lots of irrelevant noise, inconvenient to separate by hand.</p>
+        <ul>
+          <li>Maps to <b>LongMemEval</b> — signal buried in ~115k tokens</li>
+          <li>Wants the model <b>below</b> capacity</li>
+          <li>Test: tiny adapter vs text summary vs raw long-context</li>
+        </ul>
+      </div>
+      <div class="case">
+        <div class="num">02</div>
+        <h3>Concept internalization</h3>
+        <p class="ol">All content matters, but the useful thing is an internalized concept, not raw input.</p>
+        <ul>
+          <li>Maps onto <b>grokking</b> — does it get the rule?</li>
+          <li>Wants the model pushed <b>past</b> capacity</li>
+          <li>Test: 50–200 raw examples → held-out instances, with weight decay</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="body" style="margin:24px 0 16px"><b>The merge-back question may be the wrong question.</b> The one system that works end-to-end, MemGen, never merges back — it keeps a frozen base plus a detachable adapter routing latent memory. If your architecture is frozen-base-plus-adapter, the hardest problem on the original list simply ceases to exist. Here's what needs architecture surgery vs. just extra infra:</p>
+
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr><th>Path</th><th>Architecture change?</th><th>Consumer-budget?</th></tr></thead>
+        <tbody>
+          <tr><td>Text-summary memory (Mem0, Letta)</td><td><span class="pill p-mod">No</span></td><td><span class="pill p-yes">Yes</span></td></tr>
+          <tr><td>LoRA-as-memory, merged</td><td><span class="pill p-mod">No (PEFT)</span></td><td><span class="pill p-yes">Yes, open models</span></td></tr>
+          <tr><td>MemGen latent memory</td><td><span class="pill p-mod">Minor (hidden hook)</span></td><td><span class="pill p-yes">Yes, open models</span></td></tr>
+          <tr><td>GradMem test-time write</td><td><span class="pill p-mod">Minor (memory tokens)</span></td><td><span class="pill p-yes">Yes, open models</span></td></tr>
+          <tr><td>Full test-time training of base</td><td><span class="pill p-no">Yes</span></td><td><span class="pill p-no">No — serious GPU</span></td></tr>
+          <tr><td>Frontier-API parametric (Claude/GPT)</td><td><span class="pill p-no">Yes (vendor)</span></td><td><span class="pill p-no">Not possible today</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 07 RUN IT -->
+  <section class="panel" id="p-run">
+    <div class="sec-head"><span class="sec-num">07</span><h2>Scale validity & how to run it</h2></div>
+    <p class="sec-sub">Which findings survive the trip from a small model to a real one, and the instrumentation that keeps the experiment honest.</p>
+
+    <div class="split">
+      <div class="col-box green">
+        <h3>Transfers small → large</h3>
+        <ul>
+          <li><b>Bits-per-param capacity</b> — smooth from &lt;1M to billions</li>
+          <li><b>Duplication / context laws</b> — log-linear, stable</li>
+          <li><b>Larger = faster memorization</b> ordering</li>
+          <li><b>Grokking phenomenology</b> — tiny MLP to B-scale</li>
+        </ul>
+      </div>
+      <div class="col-box red">
+        <h3>Transfers poorly</h3>
+        <ul>
+          <li><b>Quality of internalized concepts</b> — there's a floor below which the concept never forms</li>
+          <li><b>Exact quantities</b> — "5 steps", "500 facts" are config-specific</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="body">Honest line: capacity, retention, forgetting, and the bare existence of a memorize→generalize transition are <b>high-validity even at 1B</b>. Anything concluding "this internalizes a frontier-useful concept" is <b>low-validity below ~8B</b> — treat a small win as "the machinery runs", never as "the hypothesis is true."</p>
+
+    <h3 style="font-weight:600;font-size:1.15rem;margin:30px 0 14px">Stage plan — each with a hard go/no-go</h3>
+    <div id="stages"></div>
+
+    <h3 style="font-weight:600;font-size:1.15rem;margin:30px 0 14px">Log these four traces together (where most replications go wrong)</h3>
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr><th>Trace</th><th>What it shows</th></tr></thead>
+        <tbody>
+          <tr><td>Training loss</td><td>The fast memorization — collapses early, tells you little about the hypothesis</td></tr>
+          <tr><td>Held-out / paraphrase accuracy</td><td>The slow generalization — the actual object of study</td></tr>
+          <tr><td>Total weight norm</td><td>Leading indicator: rises during memorization, <b>falls</b> as a grok approaches. Not falling ⇒ no grok coming ⇒ raise weight decay</td></tr>
+          <tr><td>Extraction probe (canary)</td><td>Separates verbatim storage from conceptual recall</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note" style="margin-top:14px">Use an Adam-family optimizer with weight decay, duplicate the target corpus, dedicate params per-concept, and probe old content after every write. The weight-norm trace lets you kill a doomed run early instead of burning the compute.</p>
+  </section>
+
+  <!-- 08 SOURCES -->
+  <section class="panel" id="p-sources">
+    <div class="sec-head"><span class="sec-num">08</span><h2>Reading map</h2></div>
+    <p class="sec-sub">Ordered. The first one is the closest existing thing to the proposal and the place to start.</p>
+    <div class="read" id="reading"></div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap ft-inner">
+    <span>PARAMETRIC-MEMORY / DASHBOARD / v0.6</span>
+    <span>recommendation: latent-vector read-out · frozen base + adapter · open-weight 8B</span>
+  </div>
+</footer>
+
+<script>
+  const sections=[
+    ['overview','Overview'],['senses','3 Senses'],['steps','Step-counts'],
+    ['regimes','Two Regimes'],['grok','Grokking'],['storage','Where It Lives'],
+    ['cases','Cases'],['run','Run It'],['sources','Sources']
+  ];
+  const nav=document.getElementById('nav');
+  sections.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.className='nav-btn'+(i===0?' active':'');
+    b.innerHTML='<b>'+String(i).padStart(2,'0')+'</b>'+s[1];
+    b.onclick=()=>show(s[0],b);
+    nav.appendChild(b);
+  });
+  function show(id,btn){
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('show'));
+    document.querySelectorAll('.nav-btn').forEach(n=>n.classList.remove('active'));
+    document.getElementById('p-'+id).classList.add('show');
+    btn.classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  // collapsibles
+  document.querySelectorAll('.acc-head').forEach(h=>{
+    h.onclick=()=>h.parentElement.classList.toggle('open');
+  });
+
+  // stages
+  const stages=[
+    ['0','~$0–50','Reproduce the failure you want to fix','LongMemEval_S, 500 Qs. Three text baselines: full-context, Mem0, a hand-coded summariser. Confirm the gap.','If the gap is under 10% on your real downstream task, just use text memory — the project isn\'t worth it.'],
+    ['1','~$0–200','Clean grokking-style concept test','Qwen2.5-1.5B or Llama-3.2-1B. A synthetic concept, 50–200 examples, rank-8 LoRA, AdamW + weight decay. Test held-out instances with examples removed.','LoRA generalizes >70% on held-out instances → Case 2 is real. If it only memorizes, raise weight decay and retry.'],
+    ['2','~$200–1k','Minimal MemGen-style latent memory','Qwen3-8B, single A100. A "weaver" producing 8–32 latent vectors prepended to a frozen reasoner. Train on task data.','Beat Mem0 by ≥5 points on LongMemEval_S at comparable per-query latency.'],
+    ['3','conditional','Only if Stages 1 & 2 succeed','Tackle merge-back (or confirm you don\'t need it). Task Arithmetic via mergekit, with Pletenev-style side-effect checks.','≤2 pt drop on TruthfulQA-MC1 and ≤5 pt on MMLU after merge.']
+  ];
+  const sc=document.getElementById('stages');
+  stages.forEach(s=>{
+    const d=document.createElement('div');d.className='stage';
+    d.innerHTML='<div class="stage-tag"><span class="s-id">S'+s[0]+'</span><span class="s-cost">'+s[1]+'</span></div>'+
+      '<div class="stage-body"><h3>'+s[2]+'</h3><p>'+s[3]+'</p><div class="crit"><b>Go / no-go</b>'+s[4]+'</div></div>';
+    sc.appendChild(d);
+  });
+
+  // reading
+  const read=[
+    ['GradMem: Writing Context into Memory with Test-Time Gradient Descent','Closest existing thing to the proposal — the ≤5-step write, gradient beats forward','arXiv:2603.13875'],
+    ['How Much Do Language Models Memorize?','Morris et al. — the 3.6 bits/param figure, capacity-fills-then-grokking','arXiv:2505.24832'],
+    ['Memorization Without Overfitting','Tirumala et al. — T_update, the definitive answer to "how many steps"','arXiv:2205.10770'],
+    ['Grokking','Power et al. — the original 10³-vs-10⁶ delayed-generalization result','arXiv:2201.02177'],
+    ['How Do Language Models Learn Facts?','Zucchet et al. — three-phase plateau, the interference warning','arXiv:2503.21676'],
+    ['Knowledge Capacity Scaling Laws','Allen-Zhu & Li — the 2-bits/param figure and exposure dependence','arXiv:2404.05405'],
+    ['MemGen','Zhang, Fu & Yan — latent-vector agent memory, the architecture to copy','arXiv:2509.24704'],
+    ['Locating and Editing Factual Associations (ROME)','Meng et al. — MLP key-value, the saying-vs-knowing split','arXiv:2202.05262']
+  ];
+  const rc=document.getElementById('reading');
+  read.forEach(r=>{
+    const d=document.createElement('div');d.className='read-item';
+    d.innerHTML='<div class="ri-t"><b>'+r[0]+'</b><span>'+r[1]+'</span></div><div class="ri-id">'+r[2]+'</div>';
+    rc.appendChild(d);
+  });
+
+  // animate bars when present (kept generic for future use)
+  function animateBars(scope){
+    (scope||document).querySelectorAll('.bar-fill[data-w]').forEach(f=>{
+      setTimeout(()=>f.style.width=f.getAttribute('data-w')+'%',60);
+    });
+  }
+  animateBars();
+</script>
+</body>
+</html>
