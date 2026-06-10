@@ -221,6 +221,10 @@ section.method img { display:block; max-width:100%; border-radius:6px;
 
 <header class="hero" id="top">
   <h1>Dedup experiments — embedding shootout</h1>
+  <p class="section-lede" style="margin:8px 0 0">Each model section below (m-tfidf / m-bge / m-openai)
+  lists its top cos-ranked stem pairs scored by an LLM judge — the top 8 pairs are visible on load,
+  and the verdict filter chips (SAME / PARAPHRASE / ADJACENT / TEMPLATE / UNRELATED) reveal or hide
+  the rest of the scored stem pairs for each embedding model.</p>
   <table class="interp-table" style="margin:8px 0 0">
     <tr><td class="il">Question</td><td class="ir">Which embedding should the dedup pipeline use — TF-IDF, BGE-small, or OpenAI?</td></tr>
     <tr><td class="il">Setup</td><td class="ir">3 methods × top-60 cross-benchmark NN pairs each on a 2,208-stem public <abbr class="term" data-tip="The nine precedent benchmarks judged most likely to collide with AI4Stat/Math&#x27;s scope. This experiment uses only the five publicly-downloadable ones.">Tier-A</abbr> sample</td></tr>

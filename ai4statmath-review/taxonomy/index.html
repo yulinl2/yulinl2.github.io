@@ -155,6 +155,7 @@ ul.bullets li { margin:5px 0; }
     <div class="nav-links">
       <a href="#tldr">TL;DR</a>
       <a href="#canonical">Canonical</a>
+      <a href="#proposed">Proposed</a>
       <a href="#proposals">Proposals</a>
       <a href="#sibling">Sibling</a>
     </div>
@@ -168,7 +169,7 @@ ul.bullets li { margin:5px 0; }
   <h1>🌲 Taxonomy</h1>
   <table class="interp-table" style="margin:8px 0 0">
     <tr><td class="il">Current canonical</td><td class="ir">v<strong>0.1.0</strong> · last updated 2026-05-28T00:00:00Z · <code>data/taxonomy/canonical.yaml</code> <span class="dim">(private repo)</span></td></tr>
-    <tr><td class="il">Pending proposals</td><td class="ir">1 (LLM-drafted, pending lead review)</td></tr>
+    <tr><td class="il">Pending proposals</td><td class="ir">1 proposal run · 5 tag-level items <a href="#proposed">awaiting curation ↓</a></td></tr>
     <tr><td class="il">How proposals are made</td><td class="ir"><code>python3 -m agents.taxonomy_curator.run</code> — calls Opus/Sonnet/Haiku on the current canonical + contributor tag inventory, emits a strict-JSON diff</td></tr>
     <tr><td class="il">How proposals are accepted</td><td class="ir">Manual edit to <code>data/taxonomy/canonical.yaml</code> + version bump. No auto-merge — every accepted delta gets lead sign-off.</td></tr>
   </table>
@@ -202,6 +203,12 @@ ul.bullets li { margin:5px 0; }
   </table></div>
 </section>
 
+<section id="proposed">
+  <h2>🏷️ Proposed (awaiting curation)</h2>
+  <p class="section-lede">Agent-proposed tags and taxonomy deltas not yet folded into canonical. Each row carries its source (curator proposal JSON or the curator's seed file). These are <strong>not</strong> canon until Yulin curates them into <code>data/taxonomy/canonical.yaml</code>.</p>
+  <div class="table-wrap"><table><thead><tr><th>kind</th><th>domain</th><th>proposed tag</th><th>rationale</th><th>source</th></tr></thead><tbody><tr><td><code>subtopic</code></td><td><code>Mathematics</code></td><td><strong>Arithmetic</strong> <span class="pill v-revision">proposed</span></td><td class="dim small">2 submissions tagged &#x27;Arithmetic&#x27;; distinct from Number Theory (more elementary, computational focus).</td><td class="dim small"><code>data/taxonomy/proposals/2026-05-28T0637-proposal.json</code> <span class="dim">(private repo)</span></td></tr><tr><td><code>rename</code></td><td><code>Statistics</code></td><td><strong>Asymptotic / perturbation methods → Asymptotic analysis / perturbation methods</strong> <span class="pill v-revision">proposed</span></td><td class="dim small">HARDMath precedent uses &#x27;asymptotic&#x27; as primary term; clarifies scope (boundary layers, multi-scale, WKB).</td><td class="dim small"><code>data/taxonomy/proposals/2026-05-28T0637-proposal.json</code> <span class="dim">(private repo)</span></td></tr><tr><td><code>merge</code></td><td><code>Mathematics</code></td><td><strong>Algebra, Algebra / Functions → Algebra</strong> <span class="pill v-revision">proposed</span></td><td class="dim small">Submission tag &#x27;Algebra / Functions&#x27; is a variant of canonical &#x27;Algebra&#x27;; no separate subtopic needed.</td><td class="dim small"><code>data/taxonomy/proposals/2026-05-28T0637-proposal.json</code> <span class="dim">(private repo)</span></td></tr><tr><td><code>capability tag</code></td><td><span class=dim>—</span></td><td><strong>combinatorial reasoning</strong> <span class="pill v-revision">proposed</span></td><td class="dim small">Submission inventory shows &#x27;Combinatorial Reasoning&#x27; (1 use); canonical only has &#x27;combinatorial counting&#x27;. Broader term aligns with Combinatorics / Ramsey Theory submission.</td><td class="dim small"><code>data/taxonomy/proposals/2026-05-28T0637-proposal.json</code> <span class="dim">(private repo)</span></td></tr><tr><td><code>capability tag</code></td><td><span class=dim>—</span></td><td><strong>algebraic manipulation</strong> <span class="pill v-revision">proposed</span></td><td class="dim small">Submission inventory shows &#x27;Algebraic Manipulation / Optimization&#x27; (1 use); currently split across &#x27;symbolic manipulation&#x27; and &#x27;optimization&#x27; capabilities.</td><td class="dim small"><code>data/taxonomy/proposals/2026-05-28T0637-proposal.json</code> <span class="dim">(private repo)</span></td></tr></tbody></table></div>
+</section>
+
 <section id="proposals">
   <h2>📨 Pending proposals</h2>
   <p class="section-lede">Each card = one LLM proposal run. Click any section heading to expand.</p>
@@ -210,7 +217,7 @@ ul.bullets li { margin:5px 0; }
   <header class="prop-head">
     <div>
       <h3>Proposal · 2026-05-28 06:37 UTC</h3>
-      <div class="prop-meta">vs canonical <code>0.1.0</code> · by <code>claude-haiku-4-5-20251001</code> · cost $0.0089 · status: <span class="pill v-revision">pending review</span></div>
+      <div class="prop-meta">vs canonical <code>0.1.0</code> · agent-drafted · cost $0.0089 · status: <span class="pill v-revision">pending review</span></div>
     </div>
     <div class="prop-actions">
       <code class="prop-link">data/taxonomy/proposals/2026-05-28T0637-proposal.json</code> <span class="dim">(private repo)</span>
@@ -238,7 +245,7 @@ ul.bullets li { margin:5px 0; }
 </section>
 
 <footer class="page-foot">
-  <p>Generated by <code>agents/_audit/build_taxonomy_viewer.py</code> · 2026-06-10 01:05 UTC</p>
+  <p>Generated by <code>agents/_audit/build_taxonomy_viewer.py</code> · 2026-06-10 21:59 UTC</p>
 </footer>
 
 </div>
