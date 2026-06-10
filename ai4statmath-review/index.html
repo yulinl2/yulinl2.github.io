@@ -543,7 +543,13 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
 }
 
 /* ── chatbot drawer (kept in DOM but hidden until proxy ready) ─── */
-.chat-fab { display:none; }   /* re-enable by setting display:flex when proxy is configured */
+.chat-fab { display:none; }   /* re-enabled by JS (display:flex) ONLY when window.AI4SM_CHAT_PROXY is set */
+/* round-3 fix: the navbar 💬 button is gated the SAME way as the fab — hidden
+   until the proxy is configured. Without a proxy the drawer asks for a
+   personal Anthropic API key on a static page (phishing-pattern surface).
+   `button.nav-chat` (not bare .nav-chat) so the hub's <a class="nav-chat">
+   back-link is untouched. */
+button.nav-chat { display:none; }
 .chat-drawer { position:fixed; right:-440px; top:0; bottom:0; width:420px; max-width:100vw;
                background:var(--bg-card); border-left:1px solid var(--border);
                display:flex; flex-direction:column; transition:right .25s; z-index:65; }
