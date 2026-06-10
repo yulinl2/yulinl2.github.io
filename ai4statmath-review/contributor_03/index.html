@@ -57,7 +57,14 @@ body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
   .nav-complaint { order:3; }
   .nav-back  { order:4; }
   .nav-chips { order:5; flex-basis:100%; margin-top:4px; padding-bottom:2px; }
+  /* The wrapped navbar is ~2 rows tall; a second sticky band pinned at a
+     desktop-tuned 56px overlaps it and eats ~25% of a phone viewport.
+     Un-stick the time machine on phones — it stays in flow. */
+  .time-machine { position:static; }
 }
+/* Tables are the page's primary artifact (results matrix); without a
+   scroll container they force whole-page horizontal scroll on phones. */
+.table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; max-width:100%; }
 @media (max-width:480px) {
   /* narrow: hide the "auto-review" subtitle so name + email + chat fit row 1. */
   .nav-brand .sub { display:none; }
@@ -453,7 +460,8 @@ abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
       border-radius:8px; padding:10px 12px; font-size:.86em; line-height:1.45;
       box-shadow:0 8px 24px rgba(0,0,0,.32); z-index:200; pointer-events:auto; }
 #tt.on { display:block; }
-.tile t-progress { /* defined below in tiles section */ }
+/* (round-3b fix 6b: removed the dead `.tile t-progress` selector — a typo for
+   `.tile.t-progress`, whose real rule lives in the tiles section above.) */
 
 /* ── timeline rail: floats above text, dynamic + hierarchical ───── */
 /* Vertical rail on the right side. Always-visible. Backgroundless;
@@ -609,7 +617,7 @@ button.nav-chat { display:none; }
 
   <div class="hero">
     <h1>📊 Zihan Dong's problem reviews</h1>
-    <div class="hero-sub">Auto-drafted review of Zihan Dong's submissions to the <strong>AI4Stat/Math benchmark</strong> — math/stats problems built to <strong>stump frontier AI models</strong>, so a model <em>solving</em> one (⚠) is a weakness and being <em>stumped</em> (✓) is the win. Auto-drafted by reviewer model <code>in-session review agent</code> (the AI4Stat/Math review agent); the human reviewer's edits are final.</div>
+    <div class="hero-sub">Auto-drafted review of Zihan Dong's submissions to the <strong>AI4Stat/Math benchmark</strong> — math/stats problems built to <strong>stump frontier AI models</strong>, so a model <em>solving</em> one (⚠) is a weakness and being <em>stumped</em> (✓) is the win. Auto-drafted by the AI4Stat/Math review agent (in-session); the human reviewer's edits are final.</div>
     <details class="hero-more" id="hero-more">
       <summary>How to read this page — goal &amp; status glyphs</summary>
       <table class="purpose-table">
@@ -1002,7 +1010,7 @@ Suggested checks:
 
 <!-- ── timeline rail: hierarchical, dynamic, mobile thumb-friendly ─ -->
 <nav class="rail-tl" aria-label="problem timeline">
-  <div class="rail-tl-inner"><div class="rail-section rl-stub" data-target="problem-1">  <a href="#problem-1" class="rail-bullet">    <span class="rl-num">01</span>    <span class="rl-title">Laughable Performance in Mat</span>  </a>  <div class="rail-sub"><a href="#problem-1-brainstorming">Brainstorming</a><a href="#problem-1-promising">What&#x27;s promising</a><a href="#problem-1-considerations">Open questions</a><a href="#problem-1-next">Directions</a><a href="#problem-1-text">Problem text</a></div></div><div class="rail-section rl-stub" data-target="problem-2">  <a href="#problem-2" class="rail-bullet">    <span class="rl-num">02</span>    <span class="rl-title">Tenuous Function Minimal Val</span>  </a>  <div class="rail-sub"><a href="#problem-2-brainstorming">Brainstorming</a><a href="#problem-2-promising">What&#x27;s promising</a><a href="#problem-2-considerations">Open questions</a><a href="#problem-2-next">Directions</a><a href="#problem-2-text">Problem text</a></div></div></div>
+  <div class="rail-tl-inner"><div class="rail-section rl-stub" data-target="problem-1">  <a href="#problem-1" class="rail-bullet">    <span class="rl-num">01</span>    <span class="rl-title">Laughable Performance in Mat</span>  </a>  <div class="rail-sub"><a href="#problem-1-text">Problem text</a><a href="#problem-1-sweep">Models</a><a href="#problem-1-failmode">Failure modes</a><a href="#problem-1-trajectory">Trajectory</a><a href="#problem-1-brainstorming">Brainstorming</a><a href="#problem-1-promising">What&#x27;s promising</a><a href="#problem-1-considerations">Open questions</a><a href="#problem-1-next">Directions</a></div></div><div class="rail-section rl-stub" data-target="problem-2">  <a href="#problem-2" class="rail-bullet">    <span class="rl-num">02</span>    <span class="rl-title">Tenuous Function Minimal Val</span>  </a>  <div class="rail-sub"><a href="#problem-2-text">Problem text</a><a href="#problem-2-sweep">Models</a><a href="#problem-2-failmode">Failure modes</a><a href="#problem-2-trajectory">Trajectory</a><a href="#problem-2-brainstorming">Brainstorming</a><a href="#problem-2-promising">What&#x27;s promising</a><a href="#problem-2-considerations">Open questions</a><a href="#problem-2-next">Directions</a></div></div></div>
 </nav>
 
 <!-- ── chatbot (hidden until proxy live) ────────────────────── -->
