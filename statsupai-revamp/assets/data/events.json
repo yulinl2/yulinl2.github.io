@@ -1,0 +1,129 @@
+{
+  "_comment": "SINGLE SOURCE OF TRUTH for webinars. Schema per talk: date (YYYY-MM-DD), time_et, duration_min, speaker, speaker_full, affiliation, personal_website, title, series (Health|GenAI), abstract, bio, registration_link, recording_link, recording_platform. Empty string = unknown (do not fabricate). Provenance in _reference/talks.md & sources.md.",
+  "series": {
+    "Health": { "label": "Health Data Science Series", "full": "Statistical and AI Methods for Health Data Science", "tagline": "Statistical & AI methods across neuroimaging, genomics, EHR, microbiome and clinical data." },
+    "GenAI": { "label": "GenAI × Statistics Series", "full": "Generative AI and Statistics", "tagline": "Bridging the gap between generative AI and statistical methodology." }
+  },
+  "talks": [
+    {
+      "date": "2025-04-09", "time_et": "12:00 PM", "duration_min": 60,
+      "speaker": "Martin Lindquist", "speaker_full": "Dr. Martin Lindquist",
+      "affiliation": "Johns Hopkins University",
+      "personal_website": "https://sites.google.com/view/martinlindquist/home",
+      "title": "Elements of Functional Neuroimaging",
+      "series": "Health",
+      "abstract": "The field of neuroimaging, particularly functional magnetic resonance imaging (fMRI), is rapidly growing, with over 1,000 new publications annually and widespread use across diverse academic disciplines. As fMRI becomes a core tool for psychologists, neuroscientists, physicians, economists, lawyers, and engineers, understanding its intricacies has never been more critical. However, the interdisciplinary nature of neuroimaging presents challenges due to its combination of necessary biological, computational, statistical, and psychological expertise. This talk seeks to provide an accessible overview of how fMRI works, focusing on its underlying principles, and explain the variety of techniques used to analyze fMRI data. We will focus on essential conceptual tools to critically evaluate fMRI studies, avoid common pitfalls, and deepen the understanding of this powerful imaging technique.",
+      "bio": "Martin Lindquist is a Professor of Biostatistics at Johns Hopkins University. His research focuses on mathematical and statistical problems relating to functional Magnetic Resonance Imaging (fMRI). He has published over 100 articles and serves on the editorial boards of several scientific journals in statistics and neuroimaging. He is a fellow of the American Statistical Association. In 2018 he received the Organization for Human Brain Mapping's 'Education in Neuroimaging Award' for online classes that have taught fMRI methods to more than 100,000 students worldwide.",
+      "registration_link": "https://upenn.zoom.us/j/94227327976",
+      "recording_link": "", "recording_platform": ""
+    },
+    {
+      "date": "2025-05-08", "time_et": "3:00 PM", "duration_min": 60,
+      "speaker": "Ying Guo", "speaker_full": "Dr. Ying Guo",
+      "affiliation": "Emory University",
+      "personal_website": "https://www.yingguo.us/",
+      "title": "Exploring Brain Function and Connectivity with fMRI: From Data Characteristics to Statistical and AI Methods",
+      "series": "Health",
+      "abstract": "Neuroimaging technology has played a central role in advancing scientific understanding of normal brain function in humans, as well as in investigating the neural basis of psychiatric and neurological disorders. Among the various neuroimaging techniques, functional magnetic resonance imaging (fMRI) is one of the most commonly used tools in current neuroscience studies. This talk introduces analytical techniques and statistical methods for investigating brain function and connectivity using fMRI, beginning with the background and key characteristics of fMRI data relevant to statistical modeling, followed by an overview of fMRI analysis with a focus on brain network and connectome analysis using statistical and AI-based approaches.",
+      "bio": "Dr. Ying Guo is Professor in the Department of Biostatistics and Bioinformatics at Emory University, an appointed Graduate Faculty of the Emory Neuroscience Program, and Associate Faculty in Emory's Department of Computer Science. She is a founding member and current Director of the Center for Biomedical Imaging Statistics (CBIS) at Emory. Her research focuses on analytical methods for neuroimaging and mental-health studies including blind source separation, brain network and connectome methods, and multimodal imaging. She is a Fellow of the ASA and served as the 2023 Chair of the ASA Statistics in Imaging Section.",
+      "registration_link": "https://upenn.zoom.us/j/99182616852",
+      "recording_link": "", "recording_platform": ""
+    },
+    {
+      "date": "2025-06-06", "time_et": "11:00 AM", "duration_min": 60,
+      "speaker": "Hernando Ombao", "speaker_full": "Dr. Hernando Ombao",
+      "affiliation": "King Abdullah University of Science and Technology (KAUST)",
+      "personal_website": "https://www.kaust.edu.sa/en/study/faculty/hernando-ombao",
+      "title": "Overview of Methods for Characterizing Brain Functional Connectivity",
+      "series": "Health",
+      "abstract": "",
+      "bio": "Hernando Ombao is a Professor in the Statistics Program and principal investigator of the Biostatistics Group at KAUST. His research develops time-series models and data-science methods for analyzing high-dimensional complex biological processes, with emphasis on spectral and time-series analysis, functional data analysis, state-space models, and signal processing for brain signals and images.",
+      "registration_link": "https://upenn.zoom.us/j/91348715596",
+      "recording_link": "", "recording_platform": ""
+    },
+    {
+      "date": "2025-07-16", "time_et": "12:00 PM", "duration_min": 60,
+      "speaker": "Dana Tudorascu", "speaker_full": "Dr. Dana Tudorascu",
+      "affiliation": "University of Pittsburgh",
+      "personal_website": "https://www.psychiatry.pitt.edu/about-us/our-people/faculty/dana-l-tudorascu-phd",
+      "title": "Statistical and AI Methods for Health Data Science Seminar — PET imaging",
+      "series": "Health",
+      "abstract": "",
+      "bio": "Dana Tudorascu is an Associate Professor of Psychiatry and Biostatistics at the University of Pittsburgh. Her research interests include neuroimaging studies of age-related pathology, statistical methods for multimodal imaging studies, and Alzheimer's disease.",
+      "registration_link": "https://upenn.zoom.us/meeting/register/ucStTTtNTTWxFCamXtt9Fw",
+      "recording_link": "", "recording_platform": ""
+    },
+    {
+      "date": "2025-12-02", "time_et": "1:00 PM", "duration_min": 60,
+      "speaker": "Ani Eloyan", "speaker_full": "Dr. Ani Eloyan",
+      "affiliation": "Brown University",
+      "personal_website": "http://www.anieloyan.com/",
+      "title": "Manifold Learning for Modeling Shapes in Alzheimer's Disease",
+      "series": "Health",
+      "abstract": "",
+      "bio": "Ani Eloyan is Associate Professor and Vice Chair in the Department of Biostatistics, School of Public Health at Brown University. Her research interests are statistical analysis of brain images, multivariate analysis of high-dimensional data, and Bayesian analysis of large data.",
+      "registration_link": "https://upenn.zoom.us/meeting/register/SL8s_eubT-6qoVoMJRsK6w",
+      "recording_link": "", "recording_platform": ""
+    },
+    {
+      "date": "2026-01-09", "time_et": "12:00 PM", "duration_min": 60,
+      "speaker": "Andrew Saykin", "speaker_full": "Dr. Andrew J. Saykin",
+      "affiliation": "Indiana University School of Medicine",
+      "personal_website": "https://medicine.iu.edu/faculty/6962/saykin-andrew",
+      "title": "Deconstructing Alzheimer's Disease and Related Dementias to Enable Precision Medicine: Challenges, Models, and Resources for Data Science",
+      "series": "Health",
+      "abstract": "Alzheimer's disease (AD) and related dementia (ADRD) research has become increasingly big data-driven, relying on large, heterogeneous, and longitudinal datasets spanning imaging, biomarkers, genetics, and clinical phenotyping. Although plaques and tangles have been known for over a century, the underlying causes of most forms of AD/ADRD remain unknown. This lecture discusses foundational questions and challenges in ADRD research, how data science/AI can advance precision diagnostic and therapeutic strategies, and introduces the growing ensemble of accessible data resources (e.g., NACC, ADNI and affiliated neuroimaging, genetics, and multi-omics repositories) along with data-harmonization efforts and the increasing use of large-scale electronic health records.",
+      "bio": "Dr. Andrew J. Saykin, Psy.D., is the Raymond C. Beeler Professor of Radiology and Imaging Sciences and Professor of Medical and Molecular Genetics at the Indiana University School of Medicine. He directs the Indiana Alzheimer's Disease Research Center and the IU Center for Neuroimaging, leads the ADNI Genetics Core, and is an MPI of several NIA-sponsored consortia (CLEAR-AD, KBASE, AI4AD). He is the founding editor-in-chief of Brain Imaging and Behavior and a highly cited author with over 700 publications.",
+      "registration_link": "https://upenn.zoom.us/meeting/register/uA1Jh_J8T3Wez4q0rbpTLQ",
+      "recording_link": "", "recording_platform": ""
+    },
+    {
+      "date": "2026-01-16", "time_et": "12:00 PM", "duration_min": 60,
+      "speaker": "Mine Çetinkaya-Rundel", "speaker_full": "Dr. Mine Çetinkaya-Rundel",
+      "affiliation": "Duke University",
+      "personal_website": "https://mine-cr.com/",
+      "title": "Leveraging LLMs for student feedback in introductory data science courses",
+      "series": "GenAI",
+      "abstract": "A considerable recent challenge for learners and teachers of data science courses is the increasing use of LLM-based tools in generating answers. In this talk I introduce an R package that leverages LLMs to produce immediate feedback on student work to motivate them to attempt it themselves first. I discuss the technical details of augmenting models with course materials, backend and user-interface decisions, challenges around evaluations the LLM does not perform correctly, and student feedback from the first set of users — and address ethical considerations for a formal assessment structure that relies on LLMs.",
+      "bio": "Mine Çetinkaya-Rundel is a Professor of the Practice and Director of Undergraduate Studies in the Department of Statistical Science at Duke University, and Director of the First-Year Experience in Trinity College of Arts & Sciences. Her work focuses on innovation in statistics and data science pedagogy, with emphasis on computing, reproducible research, student-centered learning, and open-source education. She is a contributor to the OpenIntro Statistics textbook and develops R packages and resources for data science education.",
+      "registration_link": "https://upenn.zoom.us/meeting/register/7iwjCrS6Qia0EbrBodLyQw#/registration",
+      "recording_link": "https://www.youtube.com/watch?v=uwCr5xlRBs4", "recording_platform": "youtube"
+    },
+    {
+      "date": "2026-02-11", "time_et": "1:00 PM", "duration_min": 60,
+      "speaker": "James Zou", "speaker_full": "Dr. James Zou",
+      "affiliation": "Stanford University",
+      "personal_website": "https://www.james-zou.com",
+      "title": "AI agents to accelerate scientific discoveries",
+      "series": "GenAI",
+      "abstract": "AI agents — large language models equipped with tools and reasoning capabilities — are emerging as powerful research enablers. This talk explores how agentic AI can accelerate scientific discoveries. I first introduce the Virtual Lab, a collaborative team of AI scientist agents conducting in-silico research meetings to tackle open-ended research projects; as an example, the Virtual Lab designed new nanobody binders to recent Covid variants that we experimentally validated. I then introduce Paper2Agent, a framework to automatically convert passive research papers into interactive AI agents, and finally discuss learnings from Agents4Science, the first conference where the authors and reviewers are primarily AI systems.",
+      "bio": "James Zou is an Associate Professor of Biomedical Data Science and, by courtesy, Computer Science and Electrical Engineering at Stanford University, and leads the Stanford AI for Science Lab. His research focuses on making AI more reliable and human-compatible, with particular interest in applications for human disease and health. He is a two-time Chan-Zuckerberg Investigator and has received the Overton Prize, NSF CAREER Award, and Sloan Fellowship.",
+      "registration_link": "https://sfu.zoom.us/meeting/register/3MLcnkc9TJCYfHNrdVSbeQ#/registration",
+      "recording_link": "https://www.youtube.com/watch?v=pl_ek2PvFb0", "recording_platform": "youtube"
+    },
+    {
+      "date": "2026-05-08", "time_et": "2:00 PM", "duration_min": 60,
+      "speaker": "Curtis Huttenhower", "speaker_full": "Dr. Curtis Huttenhower",
+      "affiliation": "Harvard T.H. Chan School of Public Health",
+      "personal_website": "https://huttenhower.sph.harvard.edu/home/",
+      "title": "Quantitative methods for microbial communities and the human microbiome",
+      "series": "Health",
+      "abstract": "Statistical methods for microbial community research have evolved to address most of the tasks necessary for end-to-end environmental or human population study design and execution — power calculations, data handling and denoising, simulation and evaluation, and biostatistics for phenotypic and covariate analysis — all accounting for the well-established properties of microbial ecology data (compositionality, sparsity, nonindependence). This talk reviews the state of the art and discusses solutions for linear modeling, mediation analysis, and omnibus testing, providing a flexible toolkit for the most commonly needed quantitative analyses in microbial community science.",
+      "bio": "Curtis Huttenhower is a Professor of Computational Biology and Bioinformatics in the Department of Biostatistics at the Harvard T.H. Chan School of Public Health. His research focuses on computational biology at the intersection of microbial community function and human health, including the biomolecular functions of the human microbiome and the metabolic and functional roles of microbial communities enabled by high-throughput sequencing.",
+      "registration_link": "https://us02web.zoom.us/meeting/register/6V5L7h7YQ0-qs6JqnElBfg",
+      "recording_link": "", "recording_platform": ""
+    },
+    {
+      "date": "2026-05-26", "time_et": "2:00 PM", "duration_min": 60,
+      "speaker": "Naim Rashid", "speaker_full": "Dr. Naim Rashid",
+      "affiliation": "University of North Carolina–Chapel Hill",
+      "personal_website": "https://naimurashid.github.io/",
+      "title": "Staying in the Driver's Seat: Calibrating AI Use in Statistical Research, Training, and Practice",
+      "series": "GenAI",
+      "abstract": "Generative AI tools have become part of daily statistical research and training. They can accelerate everyday tasks, help us work in unfamiliar coding frameworks, and reduce the friction of writing first drafts — but as we use AI for more substantive parts of our work, how do we stay actively engaged with the choices and reasoning embedded in its output? This talk presents principles, daily habits, and project-level practices for using AI effectively while maintaining genuine ownership of our work, grounded in pre-AI cognitive science on tool use, learning, and expert intuition, as well as emerging peer-reviewed evidence on AI use in learning contexts.",
+      "bio": "Naim Rashid, PhD, is an Associate Professor of Biostatistics at the UNC Gillings School of Global Public Health with a joint appointment at the UNC Lineberger Comprehensive Cancer Center. His group develops statistical and machine-learning methods for precision oncology, spanning adaptive and Bayesian trial design, deep learning, and high-dimensional inference for genomic data. He serves on the Nature Medicine Statistical Advisory Panel and the V Foundation Scientific Advisory Board and is an Associate Editor of the Annals of Applied Statistics.",
+      "registration_link": "https://sfu.zoom.us/meeting/register/t_dkc6edSq2ql2STmKquqw",
+      "recording_link": "", "recording_platform": ""
+    }
+  ]
+}

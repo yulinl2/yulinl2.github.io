@@ -1,0 +1,29 @@
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>{{ site.title }}</h4>
+        <p class="blurb">{{ site.description }}</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          {% for item in site.nav %}
+            <li><a href="{{ item.url | relative_url }}">{{ item.name }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <ul>
+          <li><a href="https://github.com/{{ site.social.github }}">GitHub</a></li>
+          <li><a href="{{ '/archive/homepage/20260518-index.md' | relative_url }}">Archive</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="sig">© {{ 'now' | date: "%Y" }} Yulin Li</span>
+      <span>Built quietly · dusty mint &amp; mauve</span>
+    </div>
+  </div>
+</footer>

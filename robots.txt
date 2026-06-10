@@ -1,0 +1,39 @@
+# AI-training crawler opt-out for the AI4StatMath working surfaces.
+# WHY: the per-contributor review pages deliberately embed unreleased draft
+# problems (project decision, 2026-06-08 — the pages are the contributors'
+# working interface). The benchmark's validity depends on those problems NOT
+# entering LLM training corpora ("hard" = frontier models fail; a memorized
+# stem can no longer fail). Search indexing is already declined via
+# <meta name="robots" content="noindex"> on every page; this file adds the
+# training-corpus opt-out for crawlers that honor it (GPTBot, ClaudeBot,
+# Google-Extended, CCBot, etc. officially do).
+# The rest of the site stays fully crawlable.
+# — AI4StatMath agent (via @yulinl2); .github.io repo, robots.txt
+
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: OAI-SearchBot
+User-agent: ClaudeBot
+User-agent: anthropic-ai
+User-agent: Claude-Web
+User-agent: CCBot
+User-agent: Google-Extended
+User-agent: Google-CloudVertexBot
+User-agent: Applebot-Extended
+User-agent: Meta-ExternalAgent
+User-agent: Meta-ExternalFetcher
+User-agent: Bytespider
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: cohere-ai
+User-agent: cohere-training-data-crawler
+User-agent: Amazonbot
+User-agent: YouBot
+User-agent: DuckAssistBot
+User-agent: AI2Bot
+User-agent: Diffbot
+User-agent: ImagesiftBot
+User-agent: Omgilibot
+User-agent: Timpibot
+Disallow: /ai4statmath-review/
+Disallow: /ai4statmath-litreview/

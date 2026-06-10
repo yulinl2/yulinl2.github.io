@@ -1,0 +1,31 @@
+{
+  "_comment": "SINGLE SOURCE OF TRUTH for Datasets / Review Articles / Pipelines. Edit one file, commit. CI validates JSON; pages render + search client-side, with a no-JS fallback list.",
+  "datasets": [
+    { "title": "Genomics Data", "tag": "Genomics", "url": "https://odin.mdacc.tmc.edu/~wwang7/data_resources.html", "desc": "Genome-scale resources for method development in oncology and population genetics." },
+    { "title": "Medical Imaging Data", "tag": "Imaging", "url": "https://statsupai.org/pages/neuroimaging2.html", "desc": "Brain and medical imaging datasets for preprocessing and analysis pipelines." },
+    { "title": "Microbiome & Metagenomics", "tag": "Microbiome", "url": "https://statsupai.org/pages/micro2.html", "desc": "Microbiome and metagenomic collections for community and gut–brain studies." },
+    { "title": "EHR Data", "tag": "EHR", "url": "https://statsupai.org/pages/data_ehr.html", "desc": "Electronic Health Record data for real-world evidence and predictive modeling." },
+    { "title": "Clinical Trial Data", "tag": "Clinical Trial", "url": "https://statsupai.org/pages/clinicaltrial.html", "desc": "Clinical-trial datasets to support causal inference and trial methodology." },
+    { "title": "Biobank Data", "tag": "Biobank", "url": "https://statsupai.org/pages/biobank_dataset.html", "desc": "Large-scale biobank resources such as UK Biobank–style population cohorts." },
+    { "title": "Spatial Transcriptomics", "tag": "Spatial omics", "url": "https://statsupai.org/pages/Omics_data.html", "desc": "Spatially resolved transcriptomics datasets for tissue-level analysis." },
+    { "title": "Proteomics Data", "tag": "Proteomics", "url": "https://statsupai.org/pages/Proteogenomics.html", "desc": "Proteomic and proteogenomic resources linking protein and genomic layers." },
+    { "title": "Bioinformatics Data", "tag": "Bioinformatics", "url": "https://statsupai.org/pages/bioinformatics.html", "desc": "General-purpose bioinformatics datasets and tooling references." }
+  ],
+  "articles": [
+    { "title": "Cancer Research", "tag": "Cancer", "url": "https://statsupai.org/pages/Cancer_review_papers.html", "desc": "Key discoveries in cancer genomes over 15 years, plus PCAWG, TCGA and single-cell cancer databases." },
+    { "title": "Electronic Health Records", "tag": "EHR", "url": "https://statsupai.org/pages/ehr_review_papers.html", "desc": "Papers, books and repositories on EHR — from real-world-evidence data prep to advanced statistical/ML analysis." },
+    { "title": "Genetics", "tag": "Genetics", "url": "https://statsupai.org/pages/genetic_review_papers.html", "desc": "GWAS, rare-variant analysis, polygenic risk scores and genomics–proteomics integration." },
+    { "title": "Medical Imaging", "tag": "Imaging", "url": "https://statsupai.org/pages/Neuroimaging_review_papers.html", "desc": "Reviews on medical-imaging preprocessing methods and practical neuroscientific applications." },
+    { "title": "Microbiome & Metagenomics", "tag": "Microbiome", "url": "https://statsupai.org/pages/Microbiome_review_paper.html", "desc": "Microbiota–gut–brain axis, the microbiome in aging and cancer, metagenomics for personalized medicine." },
+    { "title": "Large Language Models", "tag": "AI", "url": "https://statsupai.org/pages/paper_list_ai/list-AI-LLM.html", "desc": "Techniques & architectures, surveys, trustworthy-LLM design and LLM-empowered statistical analysis." },
+    { "title": "AI Safety & Trustworthiness", "tag": "AI", "url": "https://statsupai.org/pages/paper_list_ai/list-AI-Safety.html", "desc": "Algorithmic fairness & bias, privacy & differential privacy, aligning AI with human values." },
+    { "title": "AGI & AI Agents", "tag": "AI", "url": "https://statsupai.org/pages/paper_list_ai/list-AI-Agent.html", "desc": "The frontier of AGI and AI agents — a foundational entry point for statisticians new to the field." }
+  ],
+  "pipelines": [
+    { "title": "EHR Data Pipelines", "tag": "EHR", "url": "https://github.com/data-processing-pipeline/EHR_data_pipelines/tree/main", "desc": "Pipelines for processing Electronic Health Record data into analysis-ready datasets (references the celehs toolset)." },
+    { "title": "Neuroimaging Processing Software", "tag": "Imaging", "url": "https://statsupai.org/pages/Neuroimaging%20Processing%20Software.html", "desc": "Catalog of neuroimaging processing tools with corresponding publications — in progress." },
+    { "title": "Enhance ADMET ML Models", "tag": "Drug discovery", "url": "https://statsupai.org/pages/Data_Fusion_Analysis_Pipeline_pipeline.html", "desc": "Combinatorial fusion analysis (CFA) to improve ADMET ML model performance. Tool: cfanalysis — https://github.com/mquazi/cfanalysis" },
+    { "title": "Clinical Trials Data Processing", "tag": "Clinical Trial", "url": "https://statsupai.org/pages/clinicaltrials_pipeline.html", "desc": "Extract, organize and QC clinical-trial data. Tool: EUCTR Scraper — https://github.com/mquazi/EUCTR" },
+    { "title": "Evaluate Target Druggability", "tag": "Drug discovery", "url": "https://statsupai.org/pages/Evaluate_Target_Druggability.html", "desc": "Temporally validated ML models and prediction workflows for drug-target druggability. Tool: Tclin-like — https://github.com/mquazi/Tclin-like" }
+  ]
+}

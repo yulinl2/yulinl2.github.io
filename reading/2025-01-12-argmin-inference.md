@@ -1,3 +1,8 @@
+---
+title: Confidence set for discrete argmin
+description: "Zhang et al. (2024) — Winners with Confidence: Discrete Argmin Inference."
+---
+
 ### **Zhang et al. (2024)** *Winners with Confidence: Discrete Argmin Inference with an Application to Model Selection*  
 **Tianyu Zhang (CMU), Hao Lee (CMU), Jing Lei (CMU)**  
 [arXiv:2408.02060](https://arxiv.org/abs/2408.02060) — *accessed Jan 2025*  

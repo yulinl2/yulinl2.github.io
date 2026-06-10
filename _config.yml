@@ -1,0 +1,51 @@
+# ── Yulin Li · personal site ───────────────────────────────
+title: Yulin Li
+tagline: Statistics · AI · Music
+description: >-
+  Personal space of Yulin Li — Ph.D. candidate in Statistics at
+  Rutgers, documenting a journey across math, science, and art.
+author: Yulin Li
+url: "https://yulinl2.github.io"
+baseurl: ""
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  hard_wrap: false
+
+# Build hygiene — keep static sub-sites & scratch out of the
+# themed build, but they remain reachable as plain files/links.
+exclude:
+  - "README.md"
+  - "*.code-workspace"
+  - ".vscode"
+  - ".github"
+  - "vendor"
+  - "Gemfile"
+  - "Gemfile.lock"
+  - "toolbox/scratch-papers/GPT"
+
+# Every themed markdown page gets the interior layout by default;
+# the front page opts into the rich home layout explicitly.
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: page
+  - scope:
+      path: "index.md"
+    values:
+      layout: home
+
+# Navigation (rendered in the header + footer)
+nav:
+  - { name: "Research",  url: "/docs/" }
+  - { name: "Library",   url: "/reading/" }
+  - { name: "Projects",  url: "/projects/" }
+  - { name: "Toolbox",   url: "/toolbox/" }
+
+social:
+  github: "yulinl2"
+
+plugins: []

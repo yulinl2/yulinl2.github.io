@@ -1,0 +1,16 @@
+---
+layout: default
+---
+<section class="hero">
+  <div class="container page-head">
+    <p class="crumb"><a href="{{ '/' | relative_url }}">Home</a> &nbsp;/&nbsp; {{ page.title | default: "Page" }}</p>
+    <h1>{{ page.title | default: "Untitled" }}</h1>
+    {% if page.description %}<p class="lead">{{ page.description }}</p>{% endif %}
+  </div>
+</section>
+
+<div class="container">
+  <article class="prose narrow">
+    {{ content }}
+  </article>
+</div>
