@@ -275,7 +275,7 @@ section.method img { display:block; max-width:100%; border-radius:6px;
   <h3 class="il-h">What we did with it</h3>
   <table class="interp-table">
     <tr><td class="il">Dedup gate (live)</td><td class="ir"><code>BAAI/bge-small-en-v1.5</code> — free, local, candidate stems never leave the user's machine.</td></tr>
-    <tr><td class="il">Cross-benchmark UMAP + NN visualization</td><td class="ir">OpenAI override — cleaner geometry, worth the ~$0.03 / build.</td></tr>
+    <tr><td class="il">Cross-benchmark UMAP + NN visualization</td><td class="ir">OpenAI override — cleaner geometry, cheap to rebuild.</td></tr>
     <tr><td class="il">Why the split?</td><td class="ir">BGE's "noisy" 0.8 max cos is fine for production NN: we look for SAME/PARA, ignore the noise. OpenAI's tighter geometry makes UMAPs human-interpretable.</td></tr>
     <tr><td class="il">Decision record</td><td class="ir"><a href="./#decisions">main lit-review → #decisions</a></td></tr>
     <tr><td class="il">What this shootout <em>cannot</em> test</td><td class="ir">Duplicates against contributor submissions — different methodology. See <a href="#siblings">sibling audits</a>.</td></tr>
