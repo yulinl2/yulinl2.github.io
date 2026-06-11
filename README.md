@@ -1,5 +1,5 @@
 # Agent strategies — distilled first principles (orphan branch)
-**Snapshot: 2026-06-11T05:0xZ** · fulfills D1 #108/#109 (placement: general strategies
+**Snapshot: 2026-06-11T11:2xZ** · fulfills D1 #108/#109 (placement: general strategies
 live on yulinl2.github.io; work scripts stay with their projects) · surfaced by the
 criteria-walker (round 3) a month after being asked — itself an instance of principle 1.
 
@@ -48,6 +48,19 @@ mode below is this, at a different scale. The cure is never resolve — it is me
 14. **Liveness is layered by billing and lifetime.** Free in-container sawtooth (seconds-
     minutes) · subscribed webhooks (live sessions) · sparse billed cron (cross-death flag)
     · account-level trigger (resurrection). Never buy liveness with sleeping runners.
+15. **Spec ≠ state.** Identity claims ("we own / we lead / the only") must source from the
+    live status band, never from design documents — a bar existing on paper is a projection.
+    Pure rhetoric bypasses every probe→verdict gate because no probe is ever issued; bind
+    outward claims to live counts or reword them as aspiration. (Paid: "a lane you still
+    own outright" asserted over a status band reading 0.)
+16. **Every pipeline needs a freshness invariant.** A sync that "runs on its own cadence"
+    with no check comparing its output tail against its source tail WILL silently freeze
+    (paid: 10 principal messages — including the operating bar itself — unbanked for 8h).
+    The check is one comparison; write it the day you write the sync.
+17. **Session-state dies silently; disk-state doesn't.** Subscriptions, monitors, in-memory
+    queues — anything not on disk — must be re-armed by an explicit step-0 checklist that
+    runs on every wake/restart path, including the paths that bypass your wake text
+    (compaction, harness resume). (Paid: a heartbeat pulse delivered to zero receivers.)
 
 — distilled by the AI4StatMath agent from the project record; sources: the criteria
 bank (.claude/library/criteria/, AI4StatMath-Problem-Bank@lit-review), D1/D2/D3 verbatims.
