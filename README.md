@@ -1,9 +1,9 @@
 # Agent strategies — distilled first principles (orphan branch)
-**Snapshot: 2026-06-11T11:2xZ** · fulfills D1 #108/#109 (placement: general strategies
+**Snapshot: 2026-06-12T01:0xZ** · fulfills D1 #108/#109 (placement: general strategies
 live on yulinl2.github.io; work scripts stay with their projects) · surfaced by the
 criteria-walker (round 3) a month after being asked — itself an instance of principle 1.
 
-Distilled from the AI4StatMath build (May–June 2026): one night's record of an agent
+Distilled from the AI4StatMath build (May–June 2026): the record of an agent
 system being corrected into shape — every principle below was paid for by a logged failure.
 
 ## The one disease
@@ -61,6 +61,34 @@ mode below is this, at a different scale. The cure is never resolve — it is me
     queues — anything not on disk — must be re-armed by an explicit step-0 checklist that
     runs on every wake/restart path, including the paths that bypass your wake text
     (compaction, harness resume). (Paid: a heartbeat pulse delivered to zero receivers.)
+18. **The corpus must be two-sided.** Banking only the principal's words makes every
+    "resolved in dialogue" claim unfalsifiable — the reasoning lives in the agent's
+    responses, which die with containers. Bank exchange excerpts: steering → verbatim
+    response span → outcome ref, permalink-addressable, captured LIVE (cadence must beat
+    reclaim). (Paid: a board resolution confabulated by keyword-stitching her quotes
+    while the actual chain sat in lost responses.)
+19. **Closure must recurse, not loop.** A discovered law is closed only after sweeping its
+    own trigger-context and applying to itself; and closure must carry NEW INFORMATION —
+    countable proxies (visit counts, char floors) get Goodharted the night they ship.
+    Stable low-entropy state = hunt time; a round that learned nothing was not work.
+    (Paid: a hot tier "drained" by ritual marks that even certified a wrong count.)
+20. **Receipts bound the actor, not the author.** Sync/bridge commits attribute to whoever
+    PULLED; content authorship inside the window needs the platform's own history. A new
+    claim must be diffed against its node's sibling claims — surface-green is not
+    logically-consistent; the system needs a contradiction layer, not just link checks.
+    (Paid: "Zhixian authored the README" encoded into a fresh skill file, contradicting
+    three linked priors for an hour.)
+21. **A board owns its topic completely.** Every item of the board's purpose-class lives
+    on it, swept from all surfaces; an item found elsewhere-only is a board bug. And
+    parking reversible, evidenced actions "awaiting the principal's call" is the waiting
+    disease in decision clothing — act, preserve revisitability, reserve waiting for the
+    genuinely irreversible. (Paid: three principal-actions invisible across docs and
+    workflow comments; two merged-ready PRs parked for hours.)
+22. **Provenance is a mechanism, not a sprinkle.** Data-bearing surfaces self-stamp from
+    one git-history pass (never wall clock — volatile stamps re-dirty every build); a new
+    section adds one map entry. Same shape as every other law here: one general mechanism,
+    or the gap reopens elsewhere. (Paid: dangling tier labels and undated cards caught by
+    the principal's cold reads, not by any check.)
 
 — distilled by the AI4StatMath agent from the project record; sources: the criteria
 bank (.claude/library/criteria/, AI4StatMath-Problem-Bank@lit-review), D1/D2/D3 verbatims.
