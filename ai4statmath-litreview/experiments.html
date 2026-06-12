@@ -216,6 +216,7 @@ section.method img { display:block; max-width:100%; border-radius:6px;
     <a href="./" class="nav-back">← back to lit-review</a>
   </div>
 </nav>
+<div style="background:#1a1f2e;border:1px solid #2a3040;border-radius:6px;margin:10px auto;max-width:1100px;padding:8px 14px;font-size:.85em;color:#9aa4b2"><strong>Historical record</strong> — embedding shootout run 2026-05-2x on a 2,208-stem sample (1.9M pairs). Superseded analysis: <a href="./" style="color:#7aa2f7">the main page</a> full 7,910,199-pair scan over the 4,594-stem pool with per-space calibration. Build stamp: <code>2026-06-12</code>.</div>
 
 <div class="container">
 
@@ -268,7 +269,7 @@ section.method img { display:block; max-width:100%; border-radius:6px;
     <tr><td class="il">Does it mean embeddings are broken?</td><td class="ir"><strong>No.</strong></td></tr>
     <tr><td class="il">Then what?</td><td class="ir">The public <abbr class="term" data-tip="The nine precedent benchmarks judged most likely to collide with AI4Stat/Math&#x27;s scope. This experiment uses only the five publicly-downloadable ones.">Tier-A</abbr> corpora are genuinely distinct. There essentially are no duplicates to find at the top NN rank.</td></tr>
     <tr><td class="il">Why TF-IDF / BGE max cos ≈ 0.8 on UNRELATED?</td><td class="ir">Surface-text similarity (shared boilerplate / templates). Not semantic overlap.</td></tr>
-    <tr><td class="il">Why OpenAI max cos = 0.539?</td><td class="ir">Cleaner geometry — doesn't collapse onto boilerplate. Best signal-to-noise.</td></tr>
+    <tr><td class="il">Why OpenAI max cos = 0.539?</td><td class="ir">Each embedding space has its own cosine scale — absolute values are NOT comparable across spaces; per-space separation (positives vs noise) is the meaningful measure. See the main page's per-space calibration.</td></tr>
     <tr><td class="il">The 1 ADJACENT pair (OpenAI)</td><td class="ir">Only candidate worth eyeballing manually. See <a href="#m-openai">OpenAI detail</a>.</td></tr>
   </table>
 
