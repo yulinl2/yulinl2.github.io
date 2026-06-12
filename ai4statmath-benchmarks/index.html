@@ -74,10 +74,9 @@ select.ss{padding:4px 9px;background:var(--sf);border:1px solid var(--bd);border
 /* CARD */
 .card{background:var(--sf);border:1px solid var(--bd);border-left:4px solid var(--cc,#7c3aed);border-radius:var(--r);overflow:hidden;transition:box-shadow var(--tr);outline:none}
 .card:focus,.card.foc{box-shadow:0 0 0 2px var(--cc,#7c3aed)}
-.ch{display:flex;flex-wrap:wrap;align-items:center;gap:5px;padding:9px 11px;cursor:pointer;user-select:none;transition:background var(--tr)}
+.ch{display:flex;flex-wrap:wrap;align-items:center;gap:5px;padding:7px 11px;cursor:pointer;user-select:none;transition:background var(--tr)}
 .ch:hover{background:var(--sf2)}
-.cds{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--cc,#7c3aed)}
-.cid{font-size:.72rem;color:var(--mu);font-family:monospace}
+.cid{font-size:.7rem;color:var(--mu);font-family:monospace;flex-shrink:0}
 .ctags{display:flex;flex-wrap:wrap;gap:3px;flex:1}
 .tag{font-size:.68rem;padding:2px 6px;border-radius:4px;font-weight:500;background:var(--sf2);color:var(--mu);border:1px solid var(--bd)}
 .tag.de{background:rgba(34,197,94,.12);color:#4ade80;border-color:rgba(34,197,94,.25)}
@@ -92,7 +91,7 @@ select.ss{padding:4px 9px;background:var(--sf);border:1px solid var(--bd);border
 .exi{color:var(--mu);font-size:10px;flex-shrink:0;transition:transform var(--tr)}
 .card.exp .exi{transform:rotate(180deg)}
 .cbdy{padding:0 11px 9px}
-.cprev{font-size:.84rem;color:var(--mu);overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.cprev{font-size:.84rem;line-height:1.65;overflow:hidden;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;white-space:pre-wrap;word-break:break-word}
 .cexp{display:none}
 .card.exp .cexp{display:block}
 .card.exp .cprev{display:none}
@@ -157,6 +156,15 @@ footer a{color:var(--mu);text-decoration:underline}
 .katex-display{overflow-x:auto;padding:2px 0}
 .katex-content{min-height:1px}
 
+/* FLOATING NAV */
+#fnav{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:200;display:none;align-items:center;gap:2px;background:rgba(15,17,23,.8);backdrop-filter:blur(10px);border:1px solid var(--bd);border-radius:28px;padding:4px 6px;box-shadow:0 4px 24px rgba(0,0,0,.45)}
+[data-theme=light] #fnav{background:rgba(248,250,252,.85)}
+.fnb{width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:none;border:none;color:var(--mu);font-size:15px;border-radius:50%;cursor:pointer;transition:all var(--tr);flex-shrink:0}
+.fnb:hover:not(:disabled){color:var(--tx);background:var(--sf2)}
+.fnb:disabled{opacity:.25;cursor:default}
+#fnpi{font-size:.72rem;color:var(--tx);padding:0 6px;white-space:nowrap;min-width:48px;text-align:center;font-variant-numeric:tabular-nums}
+.fndiv{width:1px;height:18px;background:var(--bd);margin:0 2px}
+
 /* BOOKMARKS EMPTY */
 .bem{text-align:center;padding:50px 20px;color:var(--mu);grid-column:1/-1}
 </style>
@@ -189,6 +197,8 @@ footer a{color:var(--mu);text-decoration:underline}
     <div id="mc"></div>
   </div>
 </div>
+
+<div id="fnav"></div>
 
 <footer>
   Data from <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank" target="_blank" rel="noopener">yulinl2/AI4StatMath-Problem-Bank</a>
@@ -397,6 +407,7 @@ function showStatus(h){
   document.getElementById('cc').innerHTML = `<div id="stb">${h}</div>`;
   document.getElementById('sl').innerHTML = '';
   document.getElementById('pg').innerHTML = '';
+  document.getElementById('fnav').style.display = 'none';
 }
 
 // ── FILTER + SORT LOGIC ───────────────────────────────────────────────────────
@@ -434,10 +445,14 @@ function renderCards(d, rows){
     document.getElementById('pg').innerHTML=''; return;
   }
   document.getElementById('cc').innerHTML = slice.map((row,i) => cardHTML(row,d,s+i)).join('');
-  document.getElementById('pg').innerHTML = `
+  document.getElementById('pg').innerHTML = pages > 1 ? `
     <button class="pbtn" onclick="goPage(${S.page-1})" ${S.page<=1?'disabled':''}>← Prev</button>
     <span class="pi">Page ${S.page} of ${pages}</span>
-    <button class="pbtn" onclick="goPage(${S.page+1})" ${S.page>=pages?'disabled':''}>Next →</button>`;
+    <button class="pbtn" onclick="goPage(${S.page+1})" ${S.page>=pages?'disabled':''}>Next →</button>` : '';
+  renderNav(total, pages);
+  requestAnimationFrame(() => {
+    document.querySelectorAll('#cc .cprev').forEach(el => renderK(el));
+  });
 }
 
 // ── CARD HTML ─────────────────────────────────────────────────────────────────
@@ -445,18 +460,18 @@ function cardHTML(row, d, idx){
   const bid = `${d.id}::${row.source_id}`;
   const bm = isBM(bid);
   const tgs = d.tags(row);
-  const prev = (row.stem||'').slice(0,200);
+  const stem = row.stem||'';
+  const prev = stem.slice(0,350);
   const answ = d.ans(row);
   const soln = d.sol(row);
   return `<div class="card" style="--cc:${d.color}" id="c${idx}" tabindex="0" data-id="${esc(bid)}" data-idx="${idx}">
   <div class="ch" onclick="expCard(${idx})">
-    <span class="cds">● ${d.label}</span>
     <span class="cid">${esc(row.source_id||'')}</span>
     <div class="ctags">${tgs.map(t=>`<span class="tag ${t.c}">${esc(t.l)}</span>`).join('')}</div>
     <button class="bkm${bm?' on':''}" onclick="event.stopPropagation();bmTog('${esc(bid)}',${idx})" title="${bm?'Remove bookmark':'Bookmark'}">${bm?'★':'☆'}</button>
     <span class="exi">▼</span>
   </div>
-  <div class="cbdy"><div class="cprev">${esc(prev)}${prev.length<(row.stem||'').length?'…':''}</div></div>
+  <div class="cbdy"><div class="cprev katex-c">${esc(prev)}${prev.length<stem.length?'…':''}</div></div>
   <div class="cexp">
     <div class="cstem katex-c">${esc(row.stem||'')}</div>
     ${spoilerHTML('👁 Answer','ans',answ)}
@@ -523,7 +538,7 @@ async function switchTab(id){
   document.getElementById('main').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-function showBkTab(){ S.bkTab=true; S.tab='__bk__'; renderTabs(); renderBkTab(); }
+function showBkTab(){ S.bkTab=true; S.tab='__bk__'; renderTabs(); renderBkTab(); document.getElementById('fnav').style.display='none'; }
 
 function expCard(idx){
   const c = document.getElementById('c'+idx);
@@ -561,7 +576,15 @@ function clearF(){ S.filt={}; S.q=''; document.getElementById('si').value=''; re
 function setSort(v){ S.sort=v; S.page=1; refresh(); }
 function togCmp(){ S.cmp=!S.cmp; document.body.classList.toggle('cmp',S.cmp); refresh(); }
 
-function goPage(p){ S.page=p; const d=curDS(); const r=S.data[S.tab]; if(d&&r){ renderCards(d,r); document.getElementById('cc').scrollIntoView({behavior:'smooth',block:'start'}); } }
+function goPage(p){
+  const d=curDS(); const r=S.data[S.tab];
+  if(!d||!r) return;
+  const filtered=applyFS(r,d);
+  const pages=Math.max(1,Math.ceil(filtered.length/S.pageSize));
+  if(p<1||p>pages) return;
+  S.page=p; renderCards(d,r);
+  document.getElementById('cc').scrollIntoView({behavior:'smooth',block:'start'});
+}
 
 function refresh(){
   if(S.bkTab){ renderBkTab(); return; }
@@ -614,6 +637,36 @@ function togTheme(){
   try{ localStorage.setItem('ai4sm_theme',nd); }catch{}
 }
 
+// ── FLOATING NAV ──────────────────────────────────────────────────────────────
+function renderNav(total, pages){
+  const nav = document.getElementById('fnav');
+  if(pages <= 1){ nav.style.display='none'; return; }
+  nav.style.display='flex';
+  nav.innerHTML =
+    `<button class="fnb" onclick="scrollTo({top:0,behavior:'smooth'})" title="Top (Home)">↑</button>` +
+    `<div class="fndiv"></div>` +
+    `<button class="fnb" onclick="goPage(${S.page-1})" ${S.page<=1?'disabled':''} title="Prev page (←)">‹</button>` +
+    `<span id="fnpi">${S.page} / ${pages}</span>` +
+    `<button class="fnb" onclick="goPage(${S.page+1})" ${S.page>=pages?'disabled':''} title="Next page (→)">›</button>` +
+    `<div class="fndiv"></div>` +
+    `<button class="fnb" onclick="scrollTo({top:document.body.scrollHeight,behavior:'smooth'})" title="Bottom (End)">↓</button>`;
+}
+
+// ── SWIPE GESTURES ────────────────────────────────────────────────────────────
+{
+  let _tx=0, _ty=0;
+  document.getElementById('cc').addEventListener('touchstart', e => {
+    _tx=e.touches[0].clientX; _ty=e.touches[0].clientY;
+  }, {passive:true});
+  document.getElementById('cc').addEventListener('touchend', e => {
+    const dx=e.changedTouches[0].clientX-_tx;
+    const dy=e.changedTouches[0].clientY-_ty;
+    if(Math.abs(dx)>55 && Math.abs(dx)>Math.abs(dy)*1.5){
+      dx < 0 ? goPage(S.page+1) : goPage(S.page-1);
+    }
+  }, {passive:true});
+}
+
 // ── KEYBOARD NAV ──────────────────────────────────────────────────────────────
 document.addEventListener('keydown', e => {
   if(['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)){ if(e.key==='Escape') e.target.blur(); return; }
@@ -621,12 +674,16 @@ document.addEventListener('keydown', e => {
   if(e.key==='/'){ e.preventDefault(); document.getElementById('si').focus(); }
   else if(e.key==='r'||e.key==='R') doRandom();
   else if(e.key==='Escape') clearF();
-  else if(e.key==='j'||e.key==='ArrowDown'){
+  else if(e.key==='ArrowLeft') goPage(S.page-1);
+  else if(e.key==='ArrowRight') goPage(S.page+1);
+  else if(e.key==='Home'){ e.preventDefault(); scrollTo({top:0,behavior:'smooth'}); }
+  else if(e.key==='End'){ e.preventDefault(); scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); }
+  else if(e.key==='j'){
     e.preventDefault();
     const cs=document.querySelectorAll('.card');
     const n=Math.min(S.focused+1,cs.length-1); S.focused=n;
     cs[n]?.scrollIntoView({behavior:'smooth',block:'nearest'}); cs[n]?.focus();
-  }else if(e.key==='k'||e.key==='ArrowUp'){
+  }else if(e.key==='k'){
     e.preventDefault();
     const cs=document.querySelectorAll('.card');
     const p=Math.max(S.focused-1,0); S.focused=p;
