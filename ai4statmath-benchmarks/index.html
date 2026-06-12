@@ -20,6 +20,8 @@
 html{font-size:16px;scroll-behavior:smooth}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);line-height:1.6;min-height:100vh}
 a{color:inherit}button{cursor:pointer;font-family:inherit}
+
+/* HEADER */
 #hdr{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--bd);padding:10px 14px;display:flex;align-items:center;gap:10px;backdrop-filter:blur(8px)}
 #logo{font-weight:700;font-size:1rem;white-space:nowrap;flex-shrink:0}
 #logo em{color:var(--mu);font-style:normal;font-weight:400}
@@ -29,6 +31,8 @@ a{color:inherit}button{cursor:pointer;font-family:inherit}
 #si:focus{border-color:var(--ac,#7c3aed)}#si::placeholder{color:var(--mu)}
 .ibtn{background:var(--sf);border:1px solid var(--bd);border-radius:8px;color:var(--tx);padding:6px 9px;font-size:15px;flex-shrink:0;transition:background var(--tr)}
 .ibtn:hover{background:var(--sf2)}
+
+/* TABS */
 #tabw{position:sticky;top:49px;z-index:90;background:var(--bg);border-bottom:1px solid var(--bd);overflow-x:auto;scrollbar-width:none}
 #tabw::-webkit-scrollbar{display:none}
 #tabs{display:flex;min-width:max-content;padding:0 8px}
@@ -36,13 +40,19 @@ a{color:inherit}button{cursor:pointer;font-family:inherit}
 .tab:hover{color:var(--tx)}.tab.on{color:var(--tx);border-bottom-color:var(--tc)}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--tc);flex-shrink:0}
 .cnt{font-size:.7rem;background:var(--sf2);padding:1px 6px;border-radius:10px;color:var(--mu)}
+
+/* MAIN */
 #main{max-width:1100px;margin:0 auto;padding:14px}
+
+/* BANNER */
 #bnr{background:var(--sf);border:1px solid var(--bd);border-left:4px solid var(--ac,#7c3aed);border-radius:var(--r);padding:11px 14px;margin-bottom:12px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:.85rem}
 #bnr .bt{font-weight:600;font-size:.95rem}
 #bnr .bd{color:var(--mu);flex:1;min-width:180px}
 #bnr .bl{display:flex;gap:6px;flex-wrap:wrap}
 .pl{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:20px;font-size:.75rem;font-weight:500;text-decoration:none;background:var(--sf2);border:1px solid var(--bd);color:var(--tx);transition:all var(--tr)}
 .pl:hover{border-color:var(--ac,#7c3aed);color:var(--ac,#7c3aed)}
+
+/* FILTER BAR */
 #fb{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px;align-items:center}
 .flbl{font-size:.7rem;color:var(--mu);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-right:2px}
 .chip{padding:3px 10px;border-radius:20px;font-size:.77rem;border:1px solid var(--bd);background:var(--sf);color:var(--mu);cursor:pointer;transition:all var(--tr);white-space:nowrap}
@@ -52,10 +62,16 @@ a{color:inherit}button{cursor:pointer;font-family:inherit}
 select.ss{padding:4px 9px;background:var(--sf);border:1px solid var(--bd);border-radius:7px;color:var(--tx);font-size:.77rem;cursor:pointer}
 .cmpbtn{display:flex;align-items:center;gap:3px;padding:4px 9px;background:var(--sf);border:1px solid var(--bd);border-radius:7px;color:var(--mu);font-size:.77rem;transition:all var(--tr)}
 .cmpbtn.on{color:var(--tx);border-color:var(--ac,#7c3aed)}
+
+/* STATS */
 #sl{font-size:.78rem;color:var(--mu);margin-bottom:10px}#sl strong{color:var(--tx)}
+
+/* CARDS GRID */
 #cc{display:grid;grid-template-columns:1fr;gap:9px}
 @media(min-width:700px){#cc{grid-template-columns:1fr 1fr}}
 @media(min-width:1100px){#cc{grid-template-columns:1fr 1fr 1fr}}
+
+/* CARD */
 .card{background:var(--sf);border:1px solid var(--bd);border-left:4px solid var(--cc,#7c3aed);border-radius:var(--r);overflow:hidden;transition:box-shadow var(--tr);outline:none}
 .card:focus,.card.foc{box-shadow:0 0 0 2px var(--cc,#7c3aed)}
 .ch{display:flex;flex-wrap:wrap;align-items:center;gap:5px;padding:9px 11px;cursor:pointer;user-select:none;transition:background var(--tr)}
@@ -82,13 +98,19 @@ select.ss{padding:4px 9px;background:var(--sf);border:1px solid var(--bd);border
 .card.exp .cprev{display:none}
 body.cmp .cbdy,.card.exp.cmp .cbdy{display:none!important}
 body.cmp .cexp{display:none!important}
+
+/* STEM */
 .cstem{font-size:.88rem;line-height:1.75;padding:0 11px 9px;white-space:pre-wrap;word-break:break-word}
+
+/* SPOILER */
 .spl{margin:6px 11px;border:1px solid var(--bd);border-radius:7px;overflow:hidden}
 .sph{display:flex;align-items:center;gap:6px;padding:7px 11px;cursor:pointer;font-size:.82rem;font-weight:600;background:var(--sf2);user-select:none}
 .sph:hover{filter:brightness(1.08)}
 .sphn{font-size:.7rem;color:var(--mu);font-weight:400}
 .spb{padding:9px 11px;font-size:.85rem;line-height:1.75;border-top:1px solid var(--bd);display:none;white-space:pre-wrap;word-break:break-word}
 .spl.rv .spb{display:block}
+
+/* META */
 .mac{margin:6px 11px 10px}
 .mtog{background:none;border:none;color:var(--mu);font-size:.78rem;cursor:pointer;display:flex;align-items:center;gap:3px;padding:3px 0}
 .mtog:hover{color:var(--tx)}
@@ -99,43 +121,60 @@ body.cmp .cexp{display:none!important}
 .mtbl td:first-child{color:var(--mu);font-weight:600;width:32%;white-space:nowrap}
 .mtbl td:last-child{word-break:break-word}
 .mtbl tr:nth-child(even) td{background:var(--sf2)}
+
+/* CARD FOOTER */
 .cft{padding:4px 11px 9px;display:flex;justify-content:flex-end}
 .srl{font-size:.72rem;color:var(--mu);text-decoration:none;display:flex;align-items:center;gap:3px}
 .srl:hover{color:var(--tx)}
+
+/* STATUS */
 #stb{text-align:center;padding:50px 20px;color:var(--mu);grid-column:1/-1}
 .spin{display:inline-block;width:32px;height:32px;border:3px solid var(--bd);border-top-color:var(--ac,#7c3aed);border-radius:50%;animation:sp .7s linear infinite;margin-bottom:12px}
 @keyframes sp{to{transform:rotate(360deg)}}
 .ebox{background:var(--sf);border:1px solid var(--bd);border-left:4px solid #ef4444;border-radius:var(--r);padding:14px;max-width:480px;margin:0 auto;text-align:left}
 .rbtn{margin-top:8px;padding:5px 14px;background:var(--sf2);border:1px solid var(--bd);border-radius:6px;color:var(--tx);font-size:.82rem;cursor:pointer}
+
+/* PAGINATION */
 #pg{display:flex;align-items:center;justify-content:center;gap:7px;padding:20px 0;flex-wrap:wrap}
 .pbtn{padding:6px 14px;border:1px solid var(--bd);border-radius:7px;background:var(--sf);color:var(--tx);font-size:.85rem;cursor:pointer;transition:all var(--tr)}
 .pbtn:hover:not(:disabled){border-color:var(--ac,#7c3aed)}
 .pbtn:disabled{opacity:.4;cursor:default}
 .pi{font-size:.82rem;color:var(--mu)}
+
+/* MODAL */
 #mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:1000;overflow-y:auto;padding:16px;align-items:flex-start;justify-content:center}
 #mo.op{display:flex}
 #mb{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);max-width:680px;width:100%;margin:20px auto;padding:18px;position:relative}
 #mc{padding-top:6px}
 #mclose{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--mu);font-size:18px;cursor:pointer}
 #mclose:hover{color:var(--tx)}
+
+/* FOOTER */
 footer{border-top:1px solid var(--bd);padding:18px 14px;text-align:center;font-size:.77rem;color:var(--mu);max-width:1100px;margin:30px auto 0}
 footer a{color:var(--mu);text-decoration:underline}
+
+/* KATEX */
 .katex-display{overflow-x:auto;padding:2px 0}
 .katex-content{min-height:1px}
+
+/* BOOKMARKS EMPTY */
 .bem{text-align:center;padding:50px 20px;color:var(--mu);grid-column:1/-1}
 </style>
 </head>
 <body>
+
 <header id="hdr">
-  <div id="logo">AI4StatMath <em>&middot; Benchmark Explorer</em></div>
+  <div id="logo">AI4StatMath <em>· Benchmark Explorer</em></div>
   <div id="sw">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
     <input id="si" type="search" placeholder="Search problems… (/ to focus)" autocomplete="off">
   </div>
-  <button class="ibtn" id="rbtn" title="Random problem (R)">&#127922;</button>
-  <button class="ibtn" id="tbtn" title="Toggle theme">&#127769;</button>
+  <button class="ibtn" id="rbtn" title="Random problem (R)">🎲</button>
+  <button class="ibtn" id="tbtn" title="Toggle theme">🌙</button>
 </header>
+
 <div id="tabw"><div id="tabs"></div></div>
+
 <main id="main">
   <div id="bnr"></div>
   <div id="fb"></div>
@@ -143,246 +182,468 @@ footer a{color:var(--mu);text-decoration:underline}
   <div id="cc"></div>
   <div id="pg"></div>
 </main>
+
 <div id="mo" role="dialog" aria-modal="true">
   <div id="mb">
-    <button id="mclose" title="Close (Esc)">&#x2715;</button>
+    <button id="mclose" title="Close (Esc)">✕</button>
     <div id="mc"></div>
   </div>
 </div>
+
 <footer>
   Data from <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank" target="_blank" rel="noopener">yulinl2/AI4StatMath-Problem-Bank</a>
-  &middot; <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/tree/claude/parquet-ndjson-export-nyz7ia/data/ndjson" target="_blank" rel="noopener">Source NDJSON &#x2197;</a>
-  &middot; Rendered with <a href="https://katex.org" target="_blank" rel="noopener">KaTeX</a>
+  · <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/tree/claude/parquet-ndjson-export-nyz7ia/data/ndjson" target="_blank" rel="noopener">Source NDJSON ↗</a>
+  · Rendered with <a href="https://katex.org" target="_blank" rel="noopener">KaTeX</a>
 </footer>
+
 <script>
 'use strict';
-const RAW='https://raw.githubusercontent.com/yulinl2/AI4StatMath-Problem-Bank/claude/parquet-ndjson-export-nyz7ia/data/ndjson/';
-const DS=[
-  {id:'CMT-Benchmark',label:'CMT-Bench',count:50,color:'#7c3aed',
-   desc:'50 condensed matter theory problems (Hartree-Fock, QMC) — tests LLMs on solid-state physics derivations.',
-   arxiv:'2503.01870',hf:'AI4StatMath/CMT-Benchmark',
-   ans:r=>r.native?.solution,sol:r=>null,
-   tags:r=>tag(r.native?.type,''),
-   filters:[{key:'type',label:'Type',get:r=>r.native?.type}]},
-  {id:'HARDMath',label:'HARDMath',count:1466,color:'#3b82f6',
-   desc:'1,466 hard applied-math problems — ODEs, integrals, nondimensionalization, scaling analysis.',
-   arxiv:'2410.03286',hf:'AI4StatMath/HARDMath',
-   ans:r=>r.native?.answer_val,sol:r=>r.native?.solution_excerpt,
-   tags:r=>[...tag(r.native?.question_type?.replace(/_/g,' '),''),...tag(r.native?.subset!=='main'?r.native?.subset:null,'dm')],
-   filters:[{key:'question_type',label:'Type',get:r=>r.native?.question_type},{key:'subset',label:'Subset',get:r=>r.native?.subset}]},
-  {id:'MathTrap-public',label:'MathTrap',count:208,color:'#f97316',
-   desc:'208 math problems with subtle logical traps — exposes LLM reasoning failures.',
-   arxiv:'2501.04357',hf:'AI4StatMath/MathTrap',
-   ans:r=>r.native?.original_solution,sol:r=>r.native?.human_annotation,
-   tags:r=>{const role=r.native?.triplet_role;const cls=role==='Original'?'ro':role==='Trap'?'rt':'rh';return[...tag(role,cls),...tag(r.native?.trap_category,'')];},
-   filters:[{key:'triplet_role',label:'Role',get:r=>r.native?.triplet_role},{key:'trap_category',label:'Category',get:r=>r.native?.trap_category}]},
-  {id:'PRBench',label:'PRBench',count:1100,color:'#14b8a6',
-   desc:'1,100 expert-level professional-reasoning problems in finance, economics, and regulatory domains.',
-   arxiv:'2504.16228',hf:'AI4StatMath/PRBench',
-   ans:r=>{const rb=r.native?.rubric_buckets;if(!rb)return'Open-ended — evaluated against expert rubric.';try{const a=typeof rb==='string'?JSON.parse(rb):rb;return Array.isArray(a)?a.map((x,i)=>`${i+1}. ${x}`).join('\n'):String(rb);}catch{return String(rb);}},
-   sol:r=>null,
-   tags:r=>[...tag(r.native?.field,''),...(r.native?.is_hard?[{l:'Hard',c:'dh'}]:[])],
-   filters:[{key:'field',label:'Field',get:r=>r.native?.field},{key:'is_hard',label:'Difficulty',get:r=>r.native?.is_hard?'Hard':'Standard'}]},
-  {id:'StatEval-public',label:'StatEval',count:600,color:'#6366f1',
-   desc:'600 statistics & ML problems across foundational (undergrad) and research (grad+) tiers.',
-   arxiv:'2505.19131',hf:'AI4StatMath/StatEval',
-   ans:r=>r.native?.answer_excerpt,sol:r=>r.native?.solution_excerpt,
-   tags:r=>[...tag(r.native?.tier,r.native?.tier==='research'?'dx':''),...tag(r.native?.subject,'')],
-   filters:[{key:'tier',label:'Tier',get:r=>r.native?.tier},{key:'level',label:'Level',get:r=>r.native?.level},{key:'subject',label:'Subject',get:r=>r.native?.subject}]},
-  {id:'StatQA-mini',label:'StatQA★',count:1158,color:'#ec4899',
-   desc:'1,158 real-dataset statistical analysis QA pairs (mini split) — tests practical data analysis skills.',
-   arxiv:'2409.17517',hf:'AI4StatMath/StatQA',
-   ans:r=>{const gt=r.native?.ground_truth_raw;if(!gt)return null;try{const p=typeof gt==='string'?JSON.parse(gt):gt;const out=[];if(p.methods)out.push('Methods: '+(Array.isArray(p.methods)?p.methods.join(', '):p.methods));if(p.columns)out.push('Columns: '+(Array.isArray(p.columns)?p.columns.join(', '):p.columns));if(p.result)out.push('Result: '+p.result);return out.join('\n\n')||JSON.stringify(p,null,2);}catch{return String(gt);}},
-   sol:r=>null,
-   tags:r=>[...tag(r.native?.difficulty,r.native?.difficulty==='easy'?'de':'dh'),...tag(r.native?.task,'')],
-   filters:[{key:'difficulty',label:'Difficulty',get:r=>r.native?.difficulty},{key:'task',label:'Task',get:r=>r.native?.task}]}
+// ── CONFIG ────────────────────────────────────────────────────────────────────
+const RAW = 'data/';
+
+const DS = [
+  { id:'CMT-Benchmark', label:'CMT-Bench', count:50, color:'#7c3aed',
+    desc:'50 condensed matter theory problems (Hartree-Fock, QMC) — tests LLMs on solid-state physics derivations.',
+    arxiv:'2503.01870', hf:'AI4StatMath/CMT-Benchmark',
+    ans: r => r.native?.solution,
+    sol: r => null,
+    tags: r => tag(r.native?.type,''),
+    filters: [{key:'type', label:'Type', get: r => r.native?.type}]
+  },
+  { id:'HARDMath', label:'HARDMath', count:1466, color:'#3b82f6',
+    desc:'1,466 hard applied-math problems — ODEs, integrals, nondimensionalization, scaling analysis.',
+    arxiv:'2410.03286', hf:'AI4StatMath/HARDMath',
+    ans: r => r.native?.answer_val,
+    sol: r => r.native?.solution_excerpt,
+    tags: r => [...tag(r.native?.question_type?.replace(/_/g,' '),''), ...tag(r.native?.subset !== 'main' ? r.native?.subset : null, 'dm')],
+    filters: [{key:'question_type', label:'Type', get:r=>r.native?.question_type}, {key:'subset', label:'Subset', get:r=>r.native?.subset}]
+  },
+  { id:'MathTrap-public', label:'MathTrap', count:208, color:'#f97316',
+    desc:'208 math problems designed with subtle logical traps — exposes LLM reasoning failures.',
+    arxiv:'2501.04357', hf:'AI4StatMath/MathTrap',
+    ans: r => r.native?.original_solution,
+    sol: r => r.native?.human_annotation,
+    tags: r => {
+      const role = r.native?.triplet_role;
+      const cls = role==='Original'?'ro':role==='Trap'?'rt':'rh';
+      return [...tag(role, cls), ...tag(r.native?.trap_category,'')];
+    },
+    filters: [{key:'triplet_role', label:'Role', get:r=>r.native?.triplet_role}, {key:'trap_category', label:'Category', get:r=>r.native?.trap_category}]
+  },
+  { id:'PRBench', label:'PRBench', count:1100, color:'#14b8a6',
+    desc:'1,100 expert-level professional-reasoning problems in finance, economics, and regulatory domains.',
+    arxiv:'2504.16228', hf:'AI4StatMath/PRBench',
+    ans: r => {
+      const rb = r.native?.rubric_buckets;
+      if (!rb) return 'Open-ended — evaluated against expert rubric.';
+      try { const a = typeof rb==='string'?JSON.parse(rb):rb; return Array.isArray(a)?a.map((x,i)=>`${i+1}. ${x}`).join('\n'):String(rb); } catch{ return String(rb); }
+    },
+    sol: r => null,
+    tags: r => [...tag(r.native?.field,''), ...(r.native?.is_hard?[{l:'Hard',c:'dh'}]:[])],
+    filters: [{key:'field', label:'Field', get:r=>r.native?.field}, {key:'is_hard', label:'Difficulty', get:r=>r.native?.is_hard?'Hard':'Standard'}]
+  },
+  { id:'StatEval-public', label:'StatEval', count:600, color:'#6366f1',
+    desc:'600 statistics & ML problems across foundational (undergrad) and research (grad+) tiers.',
+    arxiv:'2505.19131', hf:'AI4StatMath/StatEval',
+    ans: r => r.native?.answer_excerpt,
+    sol: r => r.native?.solution_excerpt,
+    tags: r => [...tag(r.native?.tier, r.native?.tier==='research'?'dx':''), ...tag(r.native?.subject,'')],
+    filters: [{key:'tier', label:'Tier', get:r=>r.native?.tier}, {key:'level', label:'Level', get:r=>r.native?.level}, {key:'subject', label:'Subject', get:r=>r.native?.subject}]
+  },
+  { id:'StatQA-mini', label:'StatQA★', count:1158, color:'#ec4899',
+    desc:'1,158 real-dataset statistical analysis QA pairs (mini split) — tests practical data analysis skills.',
+    arxiv:'2409.17517', hf:'AI4StatMath/StatQA',
+    ans: r => {
+      const gt = r.native?.ground_truth_raw;
+      if (!gt) return null;
+      try {
+        const p = typeof gt==='string'?JSON.parse(gt):gt;
+        const out = [];
+        if (p.methods) out.push('Methods: ' + (Array.isArray(p.methods)?p.methods.join(', '):p.methods));
+        if (p.columns) out.push('Columns: ' + (Array.isArray(p.columns)?p.columns.join(', '):p.columns));
+        if (p.result) out.push('Result: ' + p.result);
+        return out.join('\n\n') || JSON.stringify(p, null, 2);
+      } catch { return String(gt); }
+    },
+    sol: r => null,
+    tags: r => [...tag(r.native?.difficulty, r.native?.difficulty==='easy'?'de':'dh'), ...tag(r.native?.task,'')],
+    filters: [{key:'difficulty', label:'Difficulty', get:r=>r.native?.difficulty}, {key:'task', label:'Task', get:r=>r.native?.task}]
+  }
 ];
-function tag(v,cls){return v?[{l:String(v),c:cls}]:[];}
-const S={tab:'CMT-Benchmark',bkTab:false,q:'',filt:{},sort:'default',cmp:false,page:1,pageSize:30,data:{},loading:{},errors:{},focused:-1};
-function getBMs(){try{return JSON.parse(localStorage.getItem('ai4sm_bm')||'[]');}catch{return[];}}
-function setBMs(a){try{localStorage.setItem('ai4sm_bm',JSON.stringify(a));}catch{}}
-function isBM(id){return getBMs().includes(id);}
-function toggleBM(id){let a=getBMs();a.includes(id)?a=a.filter(x=>x!==id):a.push(id);setBMs(a);return a.includes(id);}
-const _kq=[];
-function _flushKatex(){_kq.forEach(el=>_rk(el));_kq.length=0;}
-function renderK(el){if(window._katexReady&&window.renderMathInElement){_rk(el);}else{_kq.push(el);}}
-function _rk(el){try{renderMathInElement(el,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false});}catch(e){}}
+
+function tag(v, cls){ return v ? [{l:String(v), c:cls}] : []; }
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+const S = {
+  tab: 'CMT-Benchmark', bkTab: false,
+  q: '', filt: {}, sort: 'default', cmp: false,
+  page: 1, pageSize: 30,
+  data: {}, loading: {}, errors: {},
+  focused: -1
+};
+
+// ── BOOKMARKS ─────────────────────────────────────────────────────────────────
+function getBMs(){ try{ return JSON.parse(localStorage.getItem('ai4sm_bm')||'[]'); }catch{ return []; } }
+function setBMs(a){ try{ localStorage.setItem('ai4sm_bm', JSON.stringify(a)); }catch{} }
+function isBM(id){ return getBMs().includes(id); }
+function toggleBM(id){ let a=getBMs(); a.includes(id)?a=a.filter(x=>x!==id):a.push(id); setBMs(a); return a.includes(id); }
+
+// ── KATEX ─────────────────────────────────────────────────────────────────────
+const _kq = [];
+function _flushKatex(){ _kq.forEach(el => _rk(el)); _kq.length=0; }
+function renderK(el){
+  if(window._katexReady && window.renderMathInElement){
+    _rk(el);
+  } else { _kq.push(el); }
+}
+function _rk(el){
+  try{
+    renderMathInElement(el, {
+      delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],
+      throwOnError:false
+    });
+  }catch(e){}
+}
+
+// ── DATA LOADING ──────────────────────────────────────────────────────────────
 async function load(id){
-  if(S.data[id])return S.data[id];
-  if(S.loading[id])return null;
-  S.loading[id]=true;delete S.errors[id];
+  if(S.data[id]) return S.data[id];
+  if(S.loading[id]) return null;
+  S.loading[id] = true;
+  delete S.errors[id];
   showStatus(`<div class="spin"></div><div>Loading ${id}…</div>`);
   try{
-    const r=await fetch(RAW+id+'.ndjson');
-    if(!r.ok)throw new Error(`HTTP ${r.status} ${r.statusText}`);
-    const t=await r.text();
-    S.data[id]=t.split('\n').filter(Boolean).map(l=>{const row=JSON.parse(l);if(typeof row.native==='string'){try{row.native=JSON.parse(row.native);}catch{}}return row;});
-    S.loading[id]=false;return S.data[id];
+    const r = await fetch(RAW + id + '.ndjson');
+    if(!r.ok) throw new Error(`HTTP ${r.status} ${r.statusText}`);
+    const t = await r.text();
+    S.data[id] = t.split('\n').filter(Boolean).map(l => {
+      const row = JSON.parse(l);
+      if(typeof row.native === 'string'){ try{ row.native = JSON.parse(row.native); }catch{} }
+      return row;
+    });
+    S.loading[id] = false;
+    return S.data[id];
   }catch(err){
-    S.loading[id]=false;S.errors[id]=err.message;
-    showStatus(`<div class="ebox"><strong>Failed to load ${esc(id)}</strong><br><small style="color:var(--mu)">${esc(err.message)}</small><br><small style="color:var(--mu)">URL: ${esc(RAW+id+'.ndjson')}</small><br><small style="color:var(--mu);margin-top:4px;display:block">&#128161; Fresh deployment? <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/actions" target="_blank" style="color:inherit">Trigger the GitHub Actions workflow</a> to generate data files first.</small><button class="rbtn" onclick="retryLoad('${id}')">&#8635; Retry</button></div>`);
+    S.loading[id] = false;
+    S.errors[id] = err.message;
+    showStatus(`<div class="ebox"><strong>Failed to load ${esc(id)}</strong><br>
+      <small style="color:var(--mu)">${esc(err.message)}</small><br>
+      <small style="color:var(--mu)">Expected: ${esc(RAW+id+'.ndjson')}</small><br>
+      <small style="color:var(--mu);margin-top:4px;display:block">💡 If this is a fresh deployment, trigger the <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/actions" target="_blank" style="color:inherit">GitHub Actions workflow</a> to generate data files.</small>
+      <button class="rbtn" onclick="retryLoad('${id}')">↻ Retry</button></div>`);
     return null;
   }
 }
-async function retryLoad(id){delete S.loading[id];delete S.errors[id];await switchTab(id);}
+async function retryLoad(id){ delete S.loading[id]; delete S.errors[id]; await switchTab(id); }
+
+// ── RENDER: TABS ──────────────────────────────────────────────────────────────
 function renderTabs(){
-  const bmc=getBMs().length;
-  document.getElementById('tabs').innerHTML=
-    DS.map(d=>`<button class="tab${S.tab===d.id&&!S.bkTab?' on':''}" style="--tc:${d.color}" onclick="switchTab('${d.id}')"><span class="dot"></span>${d.label}<span class="cnt">${d.count.toLocaleString()}</span></button>`).join('')+
-    `<button class="tab${S.bkTab?' on':''}" style="--tc:#fbbf24" onclick="showBkTab()">&#9733; Bookmarks<span class="cnt">${bmc}</span></button>`;
+  const bmc = getBMs().length;
+  document.getElementById('tabs').innerHTML =
+    DS.map(d => `<button class="tab${S.tab===d.id&&!S.bkTab?' on':''}" style="--tc:${d.color}" onclick="switchTab('${d.id}')"><span class="dot"></span>${d.label}<span class="cnt">${d.count.toLocaleString()}</span></button>`).join('')+
+    `<button class="tab${S.bkTab?' on':''}" style="--tc:#fbbf24" onclick="showBkTab()">★ Bookmarks<span class="cnt">${bmc}</span></button>`;
 }
+
+// ── RENDER: BANNER ────────────────────────────────────────────────────────────
 function renderBanner(d){
-  const el=document.getElementById('bnr');
-  if(!d){el.innerHTML='';return;}
-  el.style.setProperty('--ac',d.color);
-  document.getElementById('si').style.setProperty('--ac',d.color);
-  el.innerHTML=`<div><div class="bt" style="color:${d.color}">${d.label}</div></div><div class="bd">${esc(d.desc)}</div><div class="bl">${d.arxiv?`<a class="pl" href="https://arxiv.org/abs/${d.arxiv}" target="_blank" rel="noopener">&#128196; arXiv:${d.arxiv}</a>`:''} ${d.hf?`<a class="pl" href="https://huggingface.co/datasets/${d.hf}" target="_blank" rel="noopener">&#129303; HuggingFace</a>`:''} <a class="pl" href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/tree/claude/parquet-ndjson-export-nyz7ia/data/ndjson" target="_blank" rel="noopener">&#128190; NDJSON source</a></div>`;
+  const el = document.getElementById('bnr');
+  if(!d){ el.innerHTML=''; return; }
+  el.style.setProperty('--ac', d.color);
+  document.getElementById('si').style.setProperty('--ac', d.color);
+  el.innerHTML = `<div><div class="bt" style="color:${d.color}">${d.label}</div></div>
+    <div class="bd">${esc(d.desc)}</div>
+    <div class="bl">
+      ${d.arxiv?`<a class="pl" href="https://arxiv.org/abs/${d.arxiv}" target="_blank" rel="noopener">📄 arXiv:${d.arxiv}</a>`:''}
+      ${d.hf?`<a class="pl" href="https://huggingface.co/datasets/${d.hf}" target="_blank" rel="noopener">🤗 HuggingFace</a>`:''}
+      <a class="pl" href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/tree/claude/parquet-ndjson-export-nyz7ia/data/ndjson" target="_blank" rel="noopener">💾 NDJSON source</a>
+    </div>`;
 }
-function renderFB(d,rows){
-  const fb=document.getElementById('fb');
-  if(!d||!rows){fb.innerHTML='';return;}
-  let h='';
-  (d.filters||[]).forEach(f=>{
-    const vals=[...new Set(rows.map(r=>f.get(r)).filter(Boolean))].sort();
-    if(vals.length<2)return;
-    const fs=S.filt[f.key]||new Set();
-    h+=`<div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center"><span class="flbl">${f.label}:</span>`;
-    vals.forEach(v=>h+=`<button class="chip${fs.has(v)?' on':''}" onclick="togFilt('${f.key}','${v.replace(/\\/g,'\\\\').replace(/'/g,'\\\'')}')">${esc(String(v))}</button>`);
-    h+='</div>';
+
+// ── RENDER: FILTER BAR ────────────────────────────────────────────────────────
+function renderFB(d, rows){
+  const fb = document.getElementById('fb');
+  if(!d||!rows){ fb.innerHTML=''; return; }
+  let h = '';
+  (d.filters||[]).forEach(f => {
+    const vals = [...new Set(rows.map(r=>f.get(r)).filter(Boolean))].sort();
+    if(vals.length < 2) return;
+    const fs = S.filt[f.key]||new Set();
+    h += `<div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center"><span class="flbl">${f.label}:</span>`;
+    vals.forEach(v => h += `<button class="chip${fs.has(v)?' on':''}" onclick="togFilt('${f.key}','${v.replace(/\\/g,'\\\\').replace(/'/g,'\\\'')}')">${esc(String(v))}</button>`);
+    h += '</div>';
   });
-  h+=`<div class="fsp"></div><select class="ss" onchange="setSort(this.value)"><option value="default"${S.sort==='default'?' selected':''}>Default order</option><option value="shuffle"${S.sort==='shuffle'?' selected':''}>Shuffle &#127922;</option><option value="ia"${S.sort==='ia'?' selected':''}>ID &#8593;</option><option value="id"${S.sort==='id'?' selected':''}>ID &#8595;</option></select><button class="cmpbtn${S.cmp?' on':''}" onclick="togCmp()">&#9635; Compact</button>`;
-  fb.innerHTML=h;
+  h += `<div class="fsp"></div>
+    <select class="ss" onchange="setSort(this.value)">
+      <option value="default"${S.sort==='default'?' selected':''}>Default order</option>
+      <option value="shuffle"${S.sort==='shuffle'?' selected':''}>Shuffle 🎲</option>
+      <option value="ia"${S.sort==='ia'?' selected':''}>ID ↑</option>
+      <option value="id"${S.sort==='id'?' selected':''}>ID ↓</option>
+    </select>
+    <button class="cmpbtn${S.cmp?' on':''}" onclick="togCmp()">⬜ Compact</button>`;
+  fb.innerHTML = h;
 }
-function showStatus(h){document.getElementById('cc').innerHTML=`<div id="stb">${h}</div>`;document.getElementById('sl').innerHTML='';document.getElementById('pg').innerHTML='';}
-function applyFS(rows,d){
-  let r=rows;
-  if(S.q.trim()){const q=S.q.toLowerCase();r=r.filter(x=>x.stem&&x.stem.toLowerCase().includes(q));}
-  Object.entries(S.filt).forEach(([k,vs])=>{if(!vs||!vs.size)return;const f=d.filters?.find(x=>x.key===k);if(!f)return;r=r.filter(x=>{const v=f.get(x);return v&&vs.has(String(v));});});
-  if(S.sort==='shuffle')r=[...r].sort(()=>Math.random()-.5);
-  else if(S.sort==='ia')r=[...r].sort((a,b)=>(a.source_id||'').localeCompare(b.source_id||''));
-  else if(S.sort==='id')r=[...r].sort((a,b)=>(b.source_id||'').localeCompare(a.source_id||''));
+
+// ── STATUS ────────────────────────────────────────────────────────────────────
+function showStatus(h){
+  document.getElementById('cc').innerHTML = `<div id="stb">${h}</div>`;
+  document.getElementById('sl').innerHTML = '';
+  document.getElementById('pg').innerHTML = '';
+}
+
+// ── FILTER + SORT LOGIC ───────────────────────────────────────────────────────
+function applyFS(rows, d){
+  let r = rows;
+  if(S.q.trim()){
+    const q = S.q.toLowerCase();
+    r = r.filter(x => x.stem && x.stem.toLowerCase().includes(q));
+  }
+  Object.entries(S.filt).forEach(([k, vs]) => {
+    if(!vs||!vs.size) return;
+    const f = d.filters?.find(x=>x.key===k);
+    if(!f) return;
+    r = r.filter(x => { const v=f.get(x); return v && vs.has(String(v)); });
+  });
+  if(S.sort==='shuffle') r=[...r].sort(()=>Math.random()-.5);
+  else if(S.sort==='ia') r=[...r].sort((a,b)=>(a.source_id||'').localeCompare(b.source_id||''));
+  else if(S.sort==='id') r=[...r].sort((a,b)=>(b.source_id||'').localeCompare(a.source_id||''));
   return r;
 }
-function renderCards(d,rows){
-  const filtered=applyFS(rows,d);
-  const total=filtered.length;
-  const pages=Math.max(1,Math.ceil(total/S.pageSize));
-  if(S.page>pages)S.page=pages;
-  const s=(S.page-1)*S.pageSize,e=Math.min(s+S.pageSize,total);
-  const slice=filtered.slice(s,e);
-  document.getElementById('sl').innerHTML=`Showing <strong>${s+1}–${e}</strong> of <strong>${total.toLocaleString()}</strong> problems`;
-  if(total===0){document.getElementById('cc').innerHTML=`<div id="stb"><div style="color:var(--mu)">No problems match your filters.</div><button class="rbtn" onclick="clearF()">Clear filters</button></div>`;document.getElementById('pg').innerHTML='';return;}
-  document.getElementById('cc').innerHTML=slice.map((row,i)=>cardHTML(row,d,s+i)).join('');
-  document.getElementById('pg').innerHTML=`<button class="pbtn" onclick="goPage(${S.page-1})" ${S.page<=1?'disabled':''}>&#8592; Prev</button><span class="pi">Page ${S.page} of ${pages}</span><button class="pbtn" onclick="goPage(${S.page+1})" ${S.page>=pages?'disabled':''}>Next &#8594;</button>`;
+
+// ── RENDER: CARDS ─────────────────────────────────────────────────────────────
+function renderCards(d, rows){
+  const filtered = applyFS(rows, d);
+  const total = filtered.length;
+  const pages = Math.max(1, Math.ceil(total/S.pageSize));
+  if(S.page > pages) S.page = pages;
+  const s = (S.page-1)*S.pageSize, e = Math.min(s+S.pageSize, total);
+  const slice = filtered.slice(s, e);
+
+  document.getElementById('sl').innerHTML = `Showing <strong>${s+1}–${e}</strong> of <strong>${total.toLocaleString()}</strong> problems`;
+
+  if(total===0){
+    document.getElementById('cc').innerHTML = `<div id="stb"><div style="color:var(--mu)">No problems match your filters.</div><button class="rbtn" onclick="clearF()">Clear filters</button></div>`;
+    document.getElementById('pg').innerHTML=''; return;
+  }
+  document.getElementById('cc').innerHTML = slice.map((row,i) => cardHTML(row,d,s+i)).join('');
+  document.getElementById('pg').innerHTML = `
+    <button class="pbtn" onclick="goPage(${S.page-1})" ${S.page<=1?'disabled':''}>← Prev</button>
+    <span class="pi">Page ${S.page} of ${pages}</span>
+    <button class="pbtn" onclick="goPage(${S.page+1})" ${S.page>=pages?'disabled':''}>Next →</button>`;
 }
-function cardHTML(row,d,idx){
-  const bid=`${d.id}::${row.source_id}`;
-  const bm=isBM(bid);
-  const tgs=d.tags(row);
-  const prev=(row.stem||'').slice(0,200);
-  const answ=d.ans(row);const soln=d.sol(row);
-  return `<div class="card" style="--cc:${d.color}" id="c${idx}" tabindex="0" data-id="${esc(bid)}" data-idx="${idx}"><div class="ch" onclick="expCard(${idx})"><span class="cds">&#9679; ${d.label}</span><span class="cid">${esc(row.source_id||'')}</span><div class="ctags">${tgs.map(t=>`<span class="tag ${t.c}">${esc(t.l)}</span>`).join('')}</div><button class="bkm${bm?' on':''}" onclick="event.stopPropagation();bmTog('${esc(bid)}',${idx})" title="${bm?'Remove bookmark':'Bookmark'}">${bm?'&#9733;':'&#9734;'}</button><span class="exi">&#9660;</span></div><div class="cbdy"><div class="cprev">${esc(prev)}${prev.length<(row.stem||'').length?'…':''}</div></div><div class="cexp"><div class="cstem katex-c">${esc(row.stem||'')}</div>${spoilerHTML('&#128065; Answer',answ)}${spoilerHTML('&#128208; Solution',soln)}<div class="mac" id="m${idx}"><button class="mtog" onclick="togMeta(${idx})">&#9656; Metadata</button>${metaHTML(row,d)}</div></div><div class="cft">${row.lookup_url?`<a class="srl" href="${esc(row.lookup_url)}" target="_blank" rel="noopener">Source &#8599;</a>`:''}</div></div>`;
+
+// ── CARD HTML ─────────────────────────────────────────────────────────────────
+function cardHTML(row, d, idx){
+  const bid = `${d.id}::${row.source_id}`;
+  const bm = isBM(bid);
+  const tgs = d.tags(row);
+  const prev = (row.stem||'').slice(0,200);
+  const answ = d.ans(row);
+  const soln = d.sol(row);
+  return `<div class="card" style="--cc:${d.color}" id="c${idx}" tabindex="0" data-id="${esc(bid)}" data-idx="${idx}">
+  <div class="ch" onclick="expCard(${idx})">
+    <span class="cds">● ${d.label}</span>
+    <span class="cid">${esc(row.source_id||'')}</span>
+    <div class="ctags">${tgs.map(t=>`<span class="tag ${t.c}">${esc(t.l)}</span>`).join('')}</div>
+    <button class="bkm${bm?' on':''}" onclick="event.stopPropagation();bmTog('${esc(bid)}',${idx})" title="${bm?'Remove bookmark':'Bookmark'}">${bm?'★':'☆'}</button>
+    <span class="exi">▼</span>
+  </div>
+  <div class="cbdy"><div class="cprev">${esc(prev)}${prev.length<(row.stem||'').length?'…':''}</div></div>
+  <div class="cexp">
+    <div class="cstem katex-c">${esc(row.stem||'')}</div>
+    ${spoilerHTML('👁 Answer','ans',answ)}
+    ${spoilerHTML('📐 Solution','sol',soln)}
+    <div class="mac" id="m${idx}">
+      <button class="mtog" onclick="togMeta(${idx})">▸ Metadata</button>
+      ${metaHTML(row,d)}
+    </div>
+  </div>
+  <div class="cft">${row.lookup_url?`<a class="srl" href="${esc(row.lookup_url)}" target="_blank" rel="noopener">Source ↗</a>`:''}</div>
+</div>`;
 }
-function spoilerHTML(label,content){
-  if(!content)return'';
-  return `<div class="spl"><div class="sph" onclick="togSpl(this)">${label} <span class="sphn">(click to reveal)</span></div><div class="spb katex-c">${esc(String(content))}</div></div>`;
+
+function spoilerHTML(label, key, content){
+  if(!content) return '';
+  return `<div class="spl">
+  <div class="sph" onclick="togSpl(this)">
+    ${label} <span class="sphn">(click to reveal)</span>
+  </div>
+  <div class="spb katex-c">${esc(String(content))}</div>
+</div>`;
 }
-function metaHTML(row,d){
-  const n=row.native||{};
-  const skip=new Set(['solution','answer_val','answer_excerpt','solution_excerpt','ground_truth_raw','original_solution','human_annotation','gpt4_annotation','rubric_buckets','relevant_column_raw','results_raw','in_mini']);
-  const rows=[['source_id',row.source_id],['benchmark',row.source_benchmark],['ingested_at',row.ingested_at?new Date(row.ingested_at).toLocaleDateString():null],...Object.entries(n).filter(([k])=>!skip.has(k))].filter(([,v])=>v!=null&&v!=='');
+
+function metaHTML(row, d){
+  const n = row.native||{};
+  const skip = new Set(['solution','answer_val','answer_excerpt','solution_excerpt','ground_truth_raw','original_solution','human_annotation','gpt4_annotation','rubric_buckets','relevant_column_raw','results_raw','in_mini']);
+  const rows = [
+    ['source_id', row.source_id],['benchmark', row.source_benchmark],
+    ['ingested_at', row.ingested_at ? new Date(row.ingested_at).toLocaleDateString() : null],
+    ...Object.entries(n).filter(([k]) => !skip.has(k))
+  ].filter(([,v]) => v!=null && v!=='');
   return `<table class="mtbl">${rows.map(([k,v])=>`<tr><td>${esc(k)}</td><td>${esc(String(v))}</td></tr>`).join('')}</table>`;
 }
+
+// ── BOOKMARKS TAB ─────────────────────────────────────────────────────────────
 function renderBkTab(){
-  const bms=getBMs();
-  const el=document.getElementById('bnr');
+  const bms = getBMs();
+  const el = document.getElementById('bnr');
   el.style.setProperty('--ac','#fbbf24');
-  el.innerHTML=`<div class="bt" style="color:#fbbf24">&#9733; Bookmarks</div><div class="bd">${bms.length} saved problem${bms.length!==1?'s':''}</div>`;
+  el.innerHTML = `<div class="bt" style="color:#fbbf24">★ Bookmarks</div><div class="bd">${bms.length} saved problem${bms.length!==1?'s':''}</div>`;
   document.getElementById('fb').innerHTML='';
   document.getElementById('sl').innerHTML='';
   document.getElementById('pg').innerHTML='';
-  if(!bms.length){document.getElementById('cc').innerHTML='<div class="bem"><div>No bookmarks yet.</div><small>Click &#9734; on any card to save it here.</small></div>';return;}
-  const cards=bms.map((bid,i)=>{const[dsId,sid]=bid.split('::');const ds=DS.find(d=>d.id===dsId);const rows=S.data[dsId]||[];const row=rows.find(r=>r.source_id===sid);if(!row||!ds)return'';return cardHTML(row,ds,9000+i);}).filter(Boolean);
-  document.getElementById('cc').innerHTML=cards.length?cards.join(''):'<div class="bem">Bookmarked datasets not loaded yet — visit their tabs first.</div>';
+  if(!bms.length){ document.getElementById('cc').innerHTML='<div class="bem"><div>No bookmarks yet.</div><small>Click ☆ on any card to save it here.</small></div>'; return; }
+  const cards = bms.map((bid,i)=>{
+    const [dsId,sid] = bid.split('::');
+    const ds = DS.find(d=>d.id===dsId);
+    const rows = S.data[dsId]||[];
+    const row = rows.find(r=>r.source_id===sid);
+    if(!row||!ds) return '';
+    return cardHTML(row, ds, 9000+i);
+  }).filter(Boolean);
+  document.getElementById('cc').innerHTML = cards.length ? cards.join('') : '<div class="bem">Bookmarked datasets not loaded yet — visit their tabs first.</div>';
 }
+
+// ── EVENTS ────────────────────────────────────────────────────────────────────
 async function switchTab(id){
-  S.tab=id;S.bkTab=false;S.page=1;S.filt={};
+  S.tab=id; S.bkTab=false; S.page=1; S.filt={};
   renderTabs();
-  const d=DS.find(x=>x.id===id);
-  renderBanner(d);renderFB(d,null);
-  if(!S.data[id]){const r=await load(id);if(!r)return;}
-  renderFB(d,S.data[id]);renderCards(d,S.data[id]);
+  const d = DS.find(x=>x.id===id);
+  renderBanner(d); renderFB(d, null);
+  if(!S.data[id]){ const r=await load(id); if(!r) return; }
+  renderFB(d, S.data[id]); renderCards(d, S.data[id]);
   document.getElementById('main').scrollIntoView({behavior:'smooth',block:'start'});
 }
-function showBkTab(){S.bkTab=true;S.tab='__bk__';renderTabs();renderBkTab();}
+
+function showBkTab(){ S.bkTab=true; S.tab='__bk__'; renderTabs(); renderBkTab(); }
+
 function expCard(idx){
-  const c=document.getElementById('c'+idx);
-  if(!c)return;
+  const c = document.getElementById('c'+idx);
+  if(!c) return;
   c.classList.toggle('exp');
-  S.focused=idx;
-  if(c.classList.contains('exp')){c.querySelectorAll('.katex-c').forEach(el=>renderK(el));}
+  S.focused = idx;
+  if(c.classList.contains('exp')){
+    c.querySelectorAll('.katex-c').forEach(el=>renderK(el));
+  }
 }
+
 function togSpl(hEl){
-  const s=hEl.closest('.spl');
+  const s = hEl.closest('.spl');
   s.classList.toggle('rv');
-  if(s.classList.contains('rv')){const b=s.querySelector('.spb');if(b)renderK(b);const h=hEl.querySelector('.sphn');if(h)h.textContent='';}
+  if(s.classList.contains('rv')){
+    const b=s.querySelector('.spb'); if(b) renderK(b);
+    const h=hEl.querySelector('.sphn'); if(h) h.textContent='';
+  }
 }
+
 function togMeta(idx){
   const m=document.getElementById('m'+idx);
-  if(!m)return;
+  if(!m) return;
   m.classList.toggle('op');
   const b=m.querySelector('.mtog');
-  if(b)b.textContent=m.classList.contains('op')?'▾ Metadata':'▸ Metadata';
+  if(b) b.textContent = m.classList.contains('op')?'▾ Metadata':'▸ Metadata';
 }
-function togFilt(key,val){
-  if(!S.filt[key])S.filt[key]=new Set();
+
+function togFilt(key, val){
+  if(!S.filt[key]) S.filt[key]=new Set();
   S.filt[key].has(val)?S.filt[key].delete(val):S.filt[key].add(val);
-  S.page=1;refresh();
+  S.page=1; refresh();
 }
-function clearF(){S.filt={};S.q='';document.getElementById('si').value='';refresh();}
-function setSort(v){S.sort=v;S.page=1;refresh();}
-function togCmp(){S.cmp=!S.cmp;document.body.classList.toggle('cmp',S.cmp);refresh();}
-function goPage(p){S.page=p;const d=curDS();const r=S.data[S.tab];if(d&&r){renderCards(d,r);document.getElementById('cc').scrollIntoView({behavior:'smooth',block:'start'});}}
-function refresh(){if(S.bkTab){renderBkTab();return;}const d=curDS();const r=S.data[S.tab];if(!d||!r)return;renderFB(d,r);renderCards(d,r);}
-function curDS(){return DS.find(d=>d.id===S.tab);}
-function bmTog(id,idx){const on=toggleBM(id);const b=document.querySelector('#c'+idx+' .bkm');if(b){b.textContent=on?'&#9733;':'&#9734;';b.classList.toggle('on',on);b.title=on?'Remove bookmark':'Bookmark';}renderTabs();}
+function clearF(){ S.filt={}; S.q=''; document.getElementById('si').value=''; refresh(); }
+function setSort(v){ S.sort=v; S.page=1; refresh(); }
+function togCmp(){ S.cmp=!S.cmp; document.body.classList.toggle('cmp',S.cmp); refresh(); }
+
+function goPage(p){ S.page=p; const d=curDS(); const r=S.data[S.tab]; if(d&&r){ renderCards(d,r); document.getElementById('cc').scrollIntoView({behavior:'smooth',block:'start'}); } }
+
+function refresh(){
+  if(S.bkTab){ renderBkTab(); return; }
+  const d=curDS(); const r=S.data[S.tab];
+  if(!d||!r) return;
+  renderFB(d,r); renderCards(d,r);
+}
+function curDS(){ return DS.find(d=>d.id===S.tab); }
+
+function bmTog(id, idx){
+  const on=toggleBM(id);
+  const b=document.querySelector('#c'+idx+' .bkm');
+  if(b){ b.textContent=on?'★':'☆'; b.classList.toggle('on',on); b.title=on?'Remove bookmark':'Bookmark'; }
+  renderTabs();
+}
+
 async function doRandom(){
   const loaded=DS.filter(d=>S.data[d.id]);
-  if(!loaded.length){await switchTab(DS[0].id);setTimeout(doRandom,200);return;}
+  if(!loaded.length){ await switchTab(DS[0].id); setTimeout(doRandom,200); return; }
   const d=loaded[Math.floor(Math.random()*loaded.length)];
   const rows=S.data[d.id];
   const row=rows[Math.floor(Math.random()*rows.length)];
   showModal(row,d);
 }
-function showModal(row,d){
+
+function showModal(row, d){
   const mc=document.getElementById('mc');
   const tgs=d.tags(row);
-  const answ=d.ans(row);const soln=d.sol(row);
-  mc.innerHTML=`<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px;border-bottom:1px solid var(--bd);padding-bottom:10px"><span class="cds" style="color:${d.color}">&#9679; ${d.label}</span><span class="cid">${esc(row.source_id||'')}</span>${tgs.map(t=>`<span class="tag ${t.c}">${esc(t.l)}</span>`).join('')}</div><div class="cstem katex-c">${esc(row.stem||'')}</div>${spoilerHTML('&#128065; Answer',answ)}${spoilerHTML('&#128208; Solution',soln)}${row.lookup_url?`<div style="margin-top:10px"><a class="pl" href="${esc(row.lookup_url)}" target="_blank" rel="noopener">Source &#8599;</a></div>`:''}`;
+  const answ=d.ans(row); const soln=d.sol(row);
+  mc.innerHTML=`<div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px;border-bottom:1px solid var(--bd);padding-bottom:10px">
+    <span class="cds" style="color:${d.color}">● ${d.label}</span>
+    <span class="cid">${esc(row.source_id||'')}</span>
+    ${tgs.map(t=>`<span class="tag ${t.c}">${esc(t.l)}</span>`).join('')}
+  </div>
+  <div class="cstem katex-c">${esc(row.stem||'')}</div>
+  ${spoilerHTML('👁 Answer','ans',answ)}
+  ${spoilerHTML('📐 Solution','sol',soln)}
+  ${row.lookup_url?`<div style="margin-top:10px"><a class="pl" href="${esc(row.lookup_url)}" target="_blank" rel="noopener">Source ↗</a></div>`:''}`;
   document.getElementById('mo').classList.add('op');
   renderK(mc);
 }
-function closeModal(){document.getElementById('mo').classList.remove('op');}
-function togTheme(){const html=document.documentElement;const nd=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',nd);document.getElementById('tbtn').textContent=nd==='dark'?'🌙':'☀️';try{localStorage.setItem('ai4sm_theme',nd);}catch{}}
-document.addEventListener('keydown',e=>{
-  if(['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)){if(e.key==='Escape')e.target.blur();return;}
-  if(document.getElementById('mo').classList.contains('op')){if(e.key==='Escape')closeModal();return;}
-  if(e.key==='/'){e.preventDefault();document.getElementById('si').focus();}
-  else if(e.key==='r'||e.key==='R')doRandom();
-  else if(e.key==='Escape')clearF();
-  else if(e.key==='j'||e.key==='ArrowDown'){e.preventDefault();const cs=document.querySelectorAll('.card');const n=Math.min(S.focused+1,cs.length-1);S.focused=n;cs[n]?.scrollIntoView({behavior:'smooth',block:'nearest'});cs[n]?.focus();}
-  else if(e.key==='k'||e.key==='ArrowUp'){e.preventDefault();const cs=document.querySelectorAll('.card');const p=Math.max(S.focused-1,0);S.focused=p;cs[p]?.scrollIntoView({behavior:'smooth',block:'nearest'});cs[p]?.focus();}
-  else if(e.key==='Enter'&&S.focused>=0)expCard(S.focused);
+
+function closeModal(){ document.getElementById('mo').classList.remove('op'); }
+
+function togTheme(){
+  const html=document.documentElement;
+  const nd=html.getAttribute('data-theme')==='dark'?'light':'dark';
+  html.setAttribute('data-theme',nd);
+  document.getElementById('tbtn').textContent=nd==='dark'?'🌙':'☀️';
+  try{ localStorage.setItem('ai4sm_theme',nd); }catch{}
+}
+
+// ── KEYBOARD NAV ──────────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if(['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)){ if(e.key==='Escape') e.target.blur(); return; }
+  if(document.getElementById('mo').classList.contains('op')){ if(e.key==='Escape') closeModal(); return; }
+  if(e.key==='/'){ e.preventDefault(); document.getElementById('si').focus(); }
+  else if(e.key==='r'||e.key==='R') doRandom();
+  else if(e.key==='Escape') clearF();
+  else if(e.key==='j'||e.key==='ArrowDown'){
+    e.preventDefault();
+    const cs=document.querySelectorAll('.card');
+    const n=Math.min(S.focused+1,cs.length-1); S.focused=n;
+    cs[n]?.scrollIntoView({behavior:'smooth',block:'nearest'}); cs[n]?.focus();
+  }else if(e.key==='k'||e.key==='ArrowUp'){
+    e.preventDefault();
+    const cs=document.querySelectorAll('.card');
+    const p=Math.max(S.focused-1,0); S.focused=p;
+    cs[p]?.scrollIntoView({behavior:'smooth',block:'nearest'}); cs[p]?.focus();
+  }else if(e.key==='Enter'&&S.focused>=0) expCard(S.focused);
 });
+
+// ── SEARCH ────────────────────────────────────────────────────────────────────
 let _st;
-document.getElementById('si').addEventListener('input',e=>{clearTimeout(_st);_st=setTimeout(()=>{S.q=e.target.value;S.page=1;refresh();},200);});
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-document.getElementById('mclose').addEventListener('click',closeModal);
-document.getElementById('mo').addEventListener('click',e=>{if(e.target===document.getElementById('mo'))closeModal();});
-document.getElementById('rbtn').addEventListener('click',doRandom);
-document.getElementById('tbtn').addEventListener('click',togTheme);
+document.getElementById('si').addEventListener('input', e => {
+  clearTimeout(_st);
+  _st=setTimeout(()=>{ S.q=e.target.value; S.page=1; refresh(); }, 200);
+});
+
+// ── UTILS ─────────────────────────────────────────────────────────────────────
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// ── MODAL CLOSE ───────────────────────────────────────────────────────────────
+document.getElementById('mclose').addEventListener('click', closeModal);
+document.getElementById('mo').addEventListener('click', e => { if(e.target===document.getElementById('mo')) closeModal(); });
+document.getElementById('rbtn').addEventListener('click', doRandom);
+document.getElementById('tbtn').addEventListener('click', togTheme);
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
 (function init(){
-  try{const t=localStorage.getItem('ai4sm_theme');if(t){document.documentElement.setAttribute('data-theme',t);document.getElementById('tbtn').textContent=t==='dark'?'🌙':'☀️';}}catch{}
+  try{ const t=localStorage.getItem('ai4sm_theme'); if(t){ document.documentElement.setAttribute('data-theme',t); document.getElementById('tbtn').textContent=t==='dark'?'🌙':'☀️'; } }catch{}
   renderTabs();
   switchTab('CMT-Benchmark');
 })();
