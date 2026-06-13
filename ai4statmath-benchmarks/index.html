@@ -110,8 +110,13 @@ body.cmp .cexp{display:none!important}
 .sph{display:flex;align-items:center;gap:6px;padding:7px 11px;cursor:pointer;font-size:.82rem;font-weight:600;background:var(--sf2);user-select:none}
 .sph:hover{filter:brightness(1.08)}
 .sphn{font-size:.7rem;color:var(--mu);font-weight:400}
-.spb{padding:9px 11px;font-size:.85rem;line-height:1.75;border-top:1px solid var(--bd);display:none;white-space:pre-wrap;word-break:break-word}
+.splchev{margin-left:auto;font-size:.75rem;color:var(--mu);transition:transform .2s;display:inline-block;line-height:1}
+.spl.rv .splchev{transform:rotate(180deg)}
+.spb{border-top:1px solid var(--bd);display:none;max-height:320px;overflow-y:auto}
 .spl.rv .spb{display:block}
+.spbc{padding:9px 11px;font-size:.85rem;line-height:1.75;white-space:pre-wrap;word-break:break-word}
+.spbclose{display:block;position:sticky;bottom:0;width:100%;padding:5px 0;text-align:center;background:var(--sf2);border:none;border-top:1px solid var(--bd);cursor:pointer;font-size:.73rem;color:var(--mu);letter-spacing:.02em}
+.spbclose:hover{color:var(--tx);background:var(--sf)}
 
 /* META */
 .mac{margin:6px 11px 10px}
@@ -500,9 +505,12 @@ function spoilerHTML(label, key, content){
   if(!content) return '';
   return `<div class="spl">
   <div class="sph" onclick="togSpl(this)">
-    ${label} <span class="sphn">(click to reveal)</span>
+    ${label} <span class="sphn">(tap to reveal)</span><span class="splchev">▾</span>
   </div>
-  <div class="spb katex-c">${esc(String(content))}</div>
+  <div class="spb katex-c">
+    <div class="spbc">${esc(String(content))}</div>
+    <button class="spbclose" onclick="togSplClose(this)">▲ collapse</button>
+  </div>
 </div>`;
 }
 
@@ -540,7 +548,7 @@ function renderBkTab(){
 
 // ── EVENTS ────────────────────────────────────────────────────────────────────
 async function switchTab(id){
-  S.tab=id; S.bkTab=false; S.page=1; S.filt={};
+  S.tab=id; S.bkTab=false; S.page=1; S.filt={}; S.focused=-1;
   renderTabs();
   const d = DS.find(x=>x.id===id);
   renderBanner(d); renderFB(d, null);
@@ -567,7 +575,15 @@ function togSpl(hEl){
   if(s.classList.contains('rv')){
     const b=s.querySelector('.spb'); if(b) renderK(b);
     const h=hEl.querySelector('.sphn'); if(h) h.textContent='';
+  } else {
+    const h=hEl.querySelector('.sphn'); if(h) h.textContent='(tap to reveal)';
   }
+}
+
+function togSplClose(btn){
+  const s = btn.closest('.spl');
+  s.classList.remove('rv');
+  const h=s.querySelector('.sphn'); if(h) h.textContent='(tap to reveal)';
 }
 
 function togMeta(idx){
@@ -651,32 +667,53 @@ function togTheme(){
   try{ localStorage.setItem('ai4sm_theme',nd); }catch{}
 }
 
+// ── QUESTION NAV ──────────────────────────────────────────────────────────────
+function _cards(){ return document.querySelectorAll('#cc .card'); }
+
+function focusCard(domIdx){
+  const cs=_cards(); if(!cs[domIdx]) return;
+  S.focused=domIdx;
+  cs[domIdx].scrollIntoView({behavior:'smooth',block:'nearest'});
+  cs[domIdx].focus();
+  renderNav._refresh && renderNav._refresh();
+}
+
+function fnFirst(){ const cs=_cards(); if(cs.length){ S.focused=0; cs[0].scrollIntoView({behavior:'smooth',block:'start'}); cs[0].focus(); } }
+function fnLast(){ const cs=_cards(); if(cs.length){ const n=cs.length-1; S.focused=n; cs[n].scrollIntoView({behavior:'smooth',block:'nearest'}); cs[n].focus(); } }
+function fnPrevQ(){ const cs=_cards(); if(!cs.length) return; const p=Math.max((S.focused<0?0:S.focused)-1,0); S.focused=p; cs[p].scrollIntoView({behavior:'smooth',block:'nearest'}); cs[p].focus(); }
+function fnNextQ(){ const cs=_cards(); if(!cs.length) return; const n=Math.min((S.focused<0?-1:S.focused)+1,cs.length-1); S.focused=n; cs[n].scrollIntoView({behavior:'smooth',block:'nearest'}); cs[n].focus(); }
+
 // ── FLOATING NAV ──────────────────────────────────────────────────────────────
 function renderNav(total, pages){
   const nav = document.getElementById('fnav');
-  if(pages <= 1){ nav.style.display='none'; return; }
+  if(total <= 0){ nav.style.display='none'; return; }
   nav.style.display='flex';
   nav.innerHTML =
-    `<button class="fnb" onclick="scrollTo({top:0,behavior:'smooth'})" title="Top (Home)">↑</button>` +
+    `<button class="fnb" onclick="fnFirst()" title="First question on page (⤒)">⤒</button>` +
+    `<button class="fnb" onclick="fnPrevQ()" title="Prev question (k / ↑)">↑</button>` +
     `<div class="fndiv"></div>` +
     `<button class="fnb" onclick="goPage(${S.page-1})" ${S.page<=1?'disabled':''} title="Prev page (←)">‹</button>` +
-    `<span id="fnpi">${S.page} / ${pages}</span>` +
+    `<span id="fnpi">${pages>1?S.page+'/'+pages:total}</span>` +
     `<button class="fnb" onclick="goPage(${S.page+1})" ${S.page>=pages?'disabled':''} title="Next page (→)">›</button>` +
     `<div class="fndiv"></div>` +
-    `<button class="fnb" onclick="scrollTo({top:document.body.scrollHeight,behavior:'smooth'})" title="Bottom (End)">↓</button>`;
+    `<button class="fnb" onclick="fnNextQ()" title="Next question (j / ↓)">↓</button>` +
+    `<button class="fnb" onclick="fnLast()" title="Last question on page (⤓)">⤓</button>`;
 }
 
-// ── SWIPE GESTURES ────────────────────────────────────────────────────────────
+// ── SWIPE GESTURES (bench switch) ─────────────────────────────────────────────
 {
   let _tx=0, _ty=0;
-  document.getElementById('cc').addEventListener('touchstart', e => {
+  document.getElementById('main').addEventListener('touchstart', e => {
     _tx=e.touches[0].clientX; _ty=e.touches[0].clientY;
   }, {passive:true});
-  document.getElementById('cc').addEventListener('touchend', e => {
+  document.getElementById('main').addEventListener('touchend', e => {
     const dx=e.changedTouches[0].clientX-_tx;
     const dy=e.changedTouches[0].clientY-_ty;
-    if(Math.abs(dx)>55 && Math.abs(dx)>Math.abs(dy)*1.5){
-      dx < 0 ? goPage(S.page+1) : goPage(S.page-1);
+    if(Math.abs(dx)>60 && Math.abs(dx)>Math.abs(dy)*1.8){
+      if(S.bkTab) return;
+      const cur=DS.findIndex(d=>d.id===S.tab);
+      if(dx<0 && cur<DS.length-1) switchTab(DS[cur+1].id);
+      else if(dx>0 && cur>0) switchTab(DS[cur-1].id);
     }
   }, {passive:true});
 }
@@ -690,19 +727,13 @@ document.addEventListener('keydown', e => {
   else if(e.key==='Escape') clearF();
   else if(e.key==='ArrowLeft') goPage(S.page-1);
   else if(e.key==='ArrowRight') goPage(S.page+1);
-  else if(e.key==='Home'){ e.preventDefault(); scrollTo({top:0,behavior:'smooth'}); }
-  else if(e.key==='End'){ e.preventDefault(); scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); }
-  else if(e.key==='j'){
-    e.preventDefault();
-    const cs=document.querySelectorAll('.card');
-    const n=Math.min(S.focused+1,cs.length-1); S.focused=n;
-    cs[n]?.scrollIntoView({behavior:'smooth',block:'nearest'}); cs[n]?.focus();
-  }else if(e.key==='k'){
-    e.preventDefault();
-    const cs=document.querySelectorAll('.card');
-    const p=Math.max(S.focused-1,0); S.focused=p;
-    cs[p]?.scrollIntoView({behavior:'smooth',block:'nearest'}); cs[p]?.focus();
-  }else if(e.key==='Enter'&&S.focused>=0) expCard(S.focused);
+  else if(e.key==='ArrowUp'){ e.preventDefault(); fnPrevQ(); }
+  else if(e.key==='ArrowDown'){ e.preventDefault(); fnNextQ(); }
+  else if(e.key==='Home'){ e.preventDefault(); fnFirst(); }
+  else if(e.key==='End'){ e.preventDefault(); fnLast(); }
+  else if(e.key==='j'){ e.preventDefault(); fnNextQ(); }
+  else if(e.key==='k'){ e.preventDefault(); fnPrevQ(); }
+  else if(e.key==='Enter'&&S.focused>=0) expCard(S.focused);
 });
 
 // ── SEARCH ────────────────────────────────────────────────────────────────────
