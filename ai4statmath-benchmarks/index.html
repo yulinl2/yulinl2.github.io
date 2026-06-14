@@ -42,7 +42,7 @@
 html{font-size:16px}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
      background:var(--bg);color:var(--tx);line-height:1.6;min-height:100vh}
-button{cursor:pointer;font-family:inherit}
+button{cursor:pointer;font-family:inherit;touch-action:manipulation}
 a{color:inherit}
 
 /* ══ STICKY CHROME (one unit — no gap possible) ══════════════════════════════ */
@@ -74,25 +74,31 @@ a{color:inherit}
         color:var(--mu);width:14px;height:14px;pointer-events:none}
 #si{width:100%;padding:6px 10px 6px 30px;background:var(--sf2);
     border:1px solid var(--bd);border-radius:8px;color:var(--tx);
-    font-size:.875rem;outline:none;transition:border-color var(--t)}
+    font-size:.875rem;outline:none;
+    box-shadow:inset 3px 0 0 var(--ac,#7c3aed);
+    transition:border-color var(--t),box-shadow var(--t)}
 #si:focus{border-color:var(--ac,#7c3aed)}
 #si::placeholder{color:var(--mu)}
-#sl{font-size:.72rem;color:var(--mu);min-height:1em}
+#sl{font-size:.72rem;color:var(--mu);min-height:1em;display:flex;flex-wrap:wrap;
+    align-items:center;gap:5px;padding-top:2px}
 #sl strong{color:var(--tx)}
 
 /* ══ MAIN ══════════════════════════════════════════════════════════════════ */
 #main{max-width:var(--w);margin:0 auto;padding:12px 14px}
 
-/* ── HERO flat (no box, no elevation — lowest visual layer) */
-#bnr{padding:14px 14px 16px;border-bottom:2px solid var(--bd);margin-bottom:16px;
-     position:relative}
-#bnr::before{content:'';position:absolute;left:0;top:0;bottom:0;
-             width:4px;background:var(--ac,#7c3aed)}
+/* ── HERO — flat, no left bar; accent lives on title text + watermark bg */
+#bnr{padding:16px 16px 18px;border-bottom:1px solid var(--bd);margin-bottom:12px;
+     position:relative;overflow:hidden;
+     background:color-mix(in srgb,var(--ac,#7c3aed) 4%,var(--bg))}
+.bwm{position:absolute;right:-10px;top:-14px;font-size:118px;line-height:1;
+     opacity:.05;pointer-events:none;user-select:none;color:var(--ac,#7c3aed);
+     font-style:normal;font-weight:900;
+     font-family:Georgia,'Times New Roman',serif;transition:color var(--t)}
 .bt{font-size:1.35rem;font-weight:800;letter-spacing:-.025em;line-height:1.2;
-    padding-left:14px;margin-bottom:5px;color:var(--ac,#7c3aed)}
-.bd{color:var(--mu);font-size:.86rem;line-height:1.6;padding-left:14px;
+    margin-bottom:5px;color:var(--ac,#7c3aed)}
+.bd{color:var(--mu);font-size:.86rem;line-height:1.6;
     margin-bottom:12px;max-width:580px}
-.bl{padding-left:14px;display:flex;gap:8px;flex-wrap:wrap}
+.bl{display:flex;gap:8px;flex-wrap:wrap}
 .pl{display:inline-flex;align-items:center;gap:3px;padding:3px 9px;border-radius:20px;
     font-size:.75rem;font-weight:500;text-decoration:none;
     background:var(--sf2);border:1px solid var(--bd);color:var(--tx);
@@ -108,8 +114,22 @@ a{color:inherit}
       border:1px solid var(--bd);background:var(--sf);color:var(--mu);
       cursor:pointer;transition:all var(--t) var(--e);white-space:nowrap}
 .chip:hover{border-color:var(--ac,#7c3aed);color:var(--tx)}
-.chip.on{background:var(--ac,#7c3aed);border-color:var(--ac,#7c3aed);color:#fff}
+.chip.on{background:color-mix(in srgb,var(--ac,#7c3aed) 15%,var(--sf));
+         border-color:color-mix(in srgb,var(--ac,#7c3aed) 56%,var(--bd));
+         color:color-mix(in srgb,var(--ac,#7c3aed) 90%,var(--tx))}
 .chip:active{transform:scale(.93);transition:transform var(--tf)}
+.chipc{font-size:.62rem;opacity:.62;margin-left:2px}
+/* Active filter chips shown in sticky count bar */
+.atag{display:inline-flex;align-items:center;gap:4px;padding:2px 7px 2px 8px;
+      border-radius:12px;font-size:.7rem;cursor:pointer;white-space:nowrap;
+      background:color-mix(in srgb,var(--ac,#7c3aed) 13%,var(--sf));
+      border:1px solid color-mix(in srgb,var(--ac,#7c3aed) 42%,var(--bd));
+      color:color-mix(in srgb,var(--ac,#7c3aed) 90%,var(--tx));
+      transition:all var(--t) var(--e)}
+.atag:hover{background:color-mix(in srgb,var(--ac,#7c3aed) 24%,var(--sf))}
+.atag:active{transform:scale(.92);transition:transform var(--tf)}
+/* Info tip on filter group labels */
+.filtip{cursor:help;font-size:.65rem;opacity:.55}
 select.ss{padding:4px 9px;background:var(--sf);border:1px solid var(--bd);
           border-radius:7px;color:var(--tx);font-size:.77rem;cursor:pointer}
 .cmpbtn{display:flex;align-items:center;gap:3px;padding:4px 9px;
@@ -119,23 +139,31 @@ select.ss{padding:4px 9px;background:var(--sf);border:1px solid var(--bd);
 .fsp{flex:1}
 
 /* ── CARDS GRID */
-#cc{display:grid;grid-template-columns:1fr;gap:8px}
+#cc{display:grid;grid-template-columns:1fr;gap:3px}
 @media(min-width:700px){#cc{grid-template-columns:1fr 1fr}}
 @media(min-width:1100px){#cc{grid-template-columns:1fr 1fr 1fr}}
 
 /* Dim-out siblings when any card is expanded */
 #cc.has-exp .card{opacity:var(--op-dim);transition:opacity var(--ts) var(--e)}
 #cc.has-exp .card.exp{opacity:1}
+#cc.has-exp .card.nav-focus{opacity:.62}
 
-/* ── CARD */
-.card{background:var(--sf);border:1px solid var(--bd);
-      border-left:4px solid color-mix(in srgb,var(--cc,#7c3aed) 45%,var(--bd));
-      border-radius:var(--r);overflow:hidden;outline:none;
-      box-shadow:0 1px 6px rgba(0,0,0,.28);
+/* ── CARD — flat hero-style: ::before accent bar, no box border/shadow */
+.card{background:var(--sf);border:none;
+      border-bottom:1px solid color-mix(in srgb,var(--bd) 50%,transparent);
+      border-radius:3px;overflow:hidden;outline:none;position:relative;
       scroll-margin-top:calc(var(--scroll-top) + 14px);scroll-margin-bottom:80px;
       transition:opacity var(--ts) var(--e),box-shadow var(--t) var(--e)}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+              background:color-mix(in srgb,var(--cc,#7c3aed) 70%,transparent);
+              pointer-events:none}
 #cc>.card:nth-child(even){background:var(--sf2)}
-.card.exp{box-shadow:0 3px 16px rgba(0,0,0,.4)}
+#cc>.card:nth-child(even)::before{opacity:.48}
+.card.exp{box-shadow:0 2px 20px rgba(0,0,0,.38);z-index:2}
+.card.exp::before{opacity:1!important;background:color-mix(in srgb,var(--cc,#7c3aed) 92%,transparent)}
+/* Nav focus — visual anchor for ↑↓ navigation */
+.card.nav-focus::before{opacity:1;background:color-mix(in srgb,var(--cc,#7c3aed) 82%,transparent)}
+.card.nav-focus>.ch{background:color-mix(in srgb,var(--cc,#7c3aed) 7%,var(--sf))}
 .ch{display:flex;flex-wrap:wrap;align-items:center;gap:5px;padding:7px 11px;
     cursor:pointer;user-select:none;transition:background var(--t) var(--e)}
 .ch:hover{background:var(--sf2)}
@@ -285,7 +313,7 @@ body.cmp .cft,body.cmp .ansb{display:none!important}
 [data-theme=light] #fnav{background:rgba(243,245,251,.93)}
 .fnb{width:38px;height:38px;display:flex;align-items:center;justify-content:center;
      background:none;border:none;color:var(--mu);font-size:17px;border-radius:50%;
-     cursor:pointer;flex-shrink:0;
+     cursor:pointer;flex-shrink:0;touch-action:manipulation;
      transition:color var(--t) var(--e),background var(--t) var(--e),transform var(--tf)}
 .fnb:hover:not(:disabled){color:var(--tx);background:var(--sf2)}
 .fnb:active:not(:disabled){transform:scale(1.26)}
@@ -308,6 +336,9 @@ footer a{color:var(--mu);text-decoration:underline;text-underline-offset:2px}
 /* ── BENCH SWITCH ANIMATION */
 @keyframes fadeSlideIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 #cc.anim{animation:fadeSlideIn .35s var(--e) both}
+/* ── FLOATING NAV BOUNCE (end-of-list feedback) */
+@keyframes fnbBounce{0%,100%{transform:scale(1)}35%{transform:scale(.76)}68%{transform:scale(1.14)}}
+.fnb.bnc{animation:fnbBounce .3s var(--e)}
 </style>
 </head>
 <body>
@@ -356,7 +387,7 @@ footer a{color:var(--mu);text-decoration:underline;text-underline-offset:2px}
 // metaPreview: explicit per-dataset native fields shown as header meta-hint.
 // Explicit list avoids the heuristic blank-rendering bug (B3).
 const DS = [
-  { id:'CMT-Benchmark', label:'CMT-Bench', count:50, color:'#7c3aed',
+  { id:'CMT-Benchmark', label:'CMT-Bench', count:50, color:'#7c3aed', symbol:'Ψ',
     desc:'50 condensed matter theory problems (Hartree-Fock, QMC) — tests LLMs on solid-state physics derivations.',
     arxiv:'2503.01870', hf:'AI4StatMath/CMT-Benchmark',
     ans: r => r.native?.solution, sol: r => null,
@@ -364,7 +395,7 @@ const DS = [
     filters: [{key:'type',label:'Type',get:r=>r.native?.type}],
     metaPreview:[]
   },
-  { id:'HARDMath', label:'HARDMath', count:1466, color:'#3b82f6',
+  { id:'HARDMath', label:'HARDMath', count:1466, color:'#3b82f6', symbol:'∫',
     desc:'1,466 hard applied-math problems — ODEs, integrals, nondimensionalization, scaling analysis.',
     arxiv:'2410.03286', hf:'AI4StatMath/HARDMath',
     ans: r => r.native?.answer_val,
@@ -373,7 +404,7 @@ const DS = [
     filters: [{key:'question_type',label:'Type',get:r=>r.native?.question_type},{key:'subset',label:'Subset',get:r=>r.native?.subset}],
     metaPreview:['answer_type']
   },
-  { id:'MathTrap-public', label:'MathTrap', count:208, color:'#f97316',
+  { id:'MathTrap-public', label:'MathTrap', count:208, color:'#f97316', symbol:'≠',
     desc:'208 math problems designed with subtle logical traps — exposes LLM reasoning failures.',
     arxiv:'2501.04357', hf:'AI4StatMath/MathTrap',
     ans: r => r.native?.original_solution,
@@ -382,7 +413,7 @@ const DS = [
     filters: [{key:'triplet_role',label:'Role',get:r=>r.native?.triplet_role},{key:'trap_category',label:'Category',get:r=>r.native?.trap_category}],
     metaPreview:['source_dataset']
   },
-  { id:'PRBench', label:'PRBench', count:1100, color:'#14b8a6',
+  { id:'PRBench', label:'PRBench', count:1100, color:'#14b8a6', symbol:'⚖',
     desc:'1,100 expert-level professional-reasoning problems in finance, economics, and regulatory domains.',
     arxiv:'2504.16228', hf:'AI4StatMath/PRBench',
     ans: r => { const rb=r.native?.rubric_buckets; if(!rb) return 'Open-ended — evaluated against expert rubric.'; try{const a=typeof rb==='string'?JSON.parse(rb):rb; return Array.isArray(a)?a.map((x,i)=>`${i+1}. ${x}`).join('\n'):String(rb);}catch{return String(rb);} },
@@ -391,7 +422,7 @@ const DS = [
     filters: [{key:'field',label:'Field',get:r=>r.native?.field},{key:'is_hard',label:'Difficulty',get:r=>r.native?.is_hard?'Hard':'Standard'}],
     metaPreview:['domain','topic']
   },
-  { id:'StatEval-public', label:'StatEval', count:600, color:'#6366f1',
+  { id:'StatEval-public', label:'StatEval', count:600, color:'#6366f1', symbol:'σ',
     desc:'600 statistics & ML problems across foundational (undergrad) and research (grad+) tiers.',
     arxiv:'2505.19131', hf:'AI4StatMath/StatEval',
     ans: r => r.native?.answer_excerpt,
@@ -400,7 +431,7 @@ const DS = [
     filters: [{key:'tier',label:'Tier',get:r=>r.native?.tier},{key:'level',label:'Level',get:r=>r.native?.level},{key:'subject',label:'Subject',get:r=>r.native?.subject}],
     metaPreview:['level','subtype']
   },
-  { id:'StatQA-mini', label:'StatQA★', count:1158, color:'#ec4899',
+  { id:'StatQA-mini', label:'StatQA★', count:1158, color:'#ec4899', symbol:'χ',
     desc:'1,158 real-dataset statistical analysis QA pairs (mini split) — tests practical data analysis skills.',
     arxiv:'2409.17517', hf:'AI4StatMath/StatQA',
     ans: r => { const gt=r.native?.ground_truth_raw; if(!gt) return null; try{const p=typeof gt==='string'?JSON.parse(gt):gt; const out=[]; if(p.methods) out.push('Methods: '+(Array.isArray(p.methods)?p.methods.join(', '):p.methods)); if(p.columns) out.push('Columns: '+(Array.isArray(p.columns)?p.columns.join(', '):p.columns)); if(p.result) out.push('Result: '+p.result); return out.join('\n\n')||JSON.stringify(p,null,2);}catch{return String(gt);} },
@@ -411,6 +442,7 @@ const DS = [
   }
 ];
 function tag(v,cls){return v?[{l:String(v),c:cls}]:[]}
+function _jsq(s){return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'")}
 
 // ── STATE ────────────────────────────────────────────────────────────────────
 const S={tab:'CMT-Benchmark',bkTab:false,q:'',filt:{},sort:'default',cmp:false,
@@ -472,9 +504,10 @@ function renderTabs(){
 function renderBanner(d){
   const el=document.getElementById('bnr');
   if(!d){el.innerHTML='';return}
-  el.style.setProperty('--ac',d.color);
-  document.getElementById('si').style.setProperty('--ac',d.color);
-  el.innerHTML=`<div class="bt">${d.label}</div>
+  // Set --ac globally so all elements (chips, search, etc.) inherit benchmark color
+  document.documentElement.style.setProperty('--ac',d.color);
+  el.innerHTML=`${d.symbol?`<span class="bwm" aria-hidden="true">${d.symbol}</span>`:''}
+    <div class="bt">${d.label}</div>
     <div class="bd">${esc(d.desc)}</div>
     <div class="bl">
       ${d.arxiv?`<a class="pl" href="https://arxiv.org/abs/${d.arxiv}" target="_blank" rel="noopener">📄 arXiv:${d.arxiv}</a>`:''}
@@ -488,12 +521,18 @@ function renderFB(d,rows){
   const fb=document.getElementById('fb');
   if(!d||!rows){fb.innerHTML='';return}
   let h='';
+  const orAndTip='Within a group: selecting multiple values matches any (OR). Across groups: all groups must match (AND).';
   (d.filters||[]).forEach(f=>{
-    const vals=[...new Set(rows.map(r=>f.get(r)).filter(Boolean))].sort();
+    const vals=[...new Set(rows.map(r=>f.get(r)).filter(v=>v!=null&&String(v).trim()))].sort();
     if(vals.length<2) return;
     const fs=S.filt[f.key]||new Set();
-    h+=`<div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center"><span class="flbl">${f.label}:</span>`;
-    vals.forEach(v=>h+=`<button class="chip${fs.has(v)?' on':''}" onclick="togFilt('${f.key}','${v.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}'">${esc(String(v))}</button>`);
+    h+=`<div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center">
+      <span class="flbl">${esc(f.label)} <span class="filtip" title="${esc(orAndTip)}">ⓘ</span>:</span>`;
+    vals.forEach(v=>{
+      const sv=String(v);
+      const cnt=rows.filter(r=>{const rv=f.get(r);return rv!=null&&String(rv)===sv}).length;
+      h+=`<button class="chip${fs.has(sv)?' on':''}" onclick="togFilt('${_jsq(f.key)}','${_jsq(sv)}')">${esc(sv)}<span class="chipc">${cnt}</span></button>`;
+    });
     h+='</div>';
   });
   h+=`<div class="fsp"></div>
@@ -535,10 +574,19 @@ function renderCards(d,rows,animate){
   if(animate){const cc=document.getElementById('cc');cc.classList.remove('anim');void cc.offsetWidth;cc.classList.add('anim');}
   const filtered=applyFS(rows,d);
   const total=filtered.length;
+  const allTotal=rows.length;
   const pages=Math.max(1,Math.ceil(total/S.pageSize));
   if(S.page>pages) S.page=pages;
   const s=(S.page-1)*S.pageSize, e=Math.min(s+S.pageSize,total);
-  document.getElementById('sl').innerHTML=total===0?'':`Showing <strong>${s+1}–${e}</strong> of <strong>${total.toLocaleString()}</strong>`;
+  // Sticky count bar: active filter chips + count
+  const hasFilter=Object.values(S.filt).some(vs=>vs&&vs.size>0)||S.q.trim().length>0;
+  const chips=Object.entries(S.filt)
+    .flatMap(([k,vs])=>[...vs].map(v=>`<button class="atag" onclick="togFilt('${_jsq(k)}','${_jsq(v)}')" title="Remove filter">✕ ${esc(String(v))}</button>`)).join('');
+  document.getElementById('sl').innerHTML=chips+(
+    total===0?'<span style="color:var(--mu)">no matches</span>'
+    :hasFilter?`<span style="color:var(--mu)">${total.toLocaleString()} matched of ${allTotal.toLocaleString()}</span>`
+    :`<span style="color:var(--mu)">${s+1}–${e} of <strong>${total.toLocaleString()}</strong></span>`
+  );
   if(total===0){
     document.getElementById('cc').innerHTML=`<div id="stb"><div style="color:var(--mu)">No problems match your filters.</div><button class="rbtn" onclick="clearF()">Clear filters</button></div>`;
     document.getElementById('pg').innerHTML=''; return;
@@ -623,7 +671,7 @@ function metaHTML(row,d){
 function renderBkTab(){
   const bms=getBMs();
   const el=document.getElementById('bnr');
-  el.style.setProperty('--ac','#fbbf24');
+  document.documentElement.style.setProperty('--ac','#fbbf24');
   el.innerHTML=`<div class="bt" style="color:#fbbf24">★ Bookmarks</div><div class="bd">${bms.length} saved problem${bms.length!==1?'s':''}</div>`;
   document.getElementById('fb').innerHTML='';
   document.getElementById('pg').innerHTML='';
@@ -650,12 +698,13 @@ async function switchTab(id){
   renderBanner(d);renderFB(d,null);
   if(!S.data[id]){const r=await load(id);if(!r) return}
   renderFB(d,S.data[id]);renderCards(d,S.data[id],true);
-  document.getElementById('main').scrollIntoView({behavior:'smooth',block:'start'});
+  window.scrollTo({top:0,behavior:'smooth'});  // Reveal full hero on bench switch
 }
 function showBkTab(){S.bkTab=true;S.tab='__bk__';renderTabs();renderBkTab()}
 
 function expCard(idx){
   const c=document.getElementById('c'+idx);if(!c) return;
+  _clearNavFocus();  // Manual expand clears nav-focus highlight
   const wasExp=c.classList.contains('exp');
   c.classList.toggle('exp');S.focused=idx;
   const cc=document.getElementById('cc');
@@ -714,7 +763,8 @@ function togCmp(){S.cmp=!S.cmp;document.body.classList.toggle('cmp',S.cmp);refre
 function goPage(p){
   const d=curDS();const r=S.data[S.tab];if(!d||!r) return;
   const pages=Math.max(1,Math.ceil(applyFS(r,d).length/S.pageSize));
-  if(p<1||p>pages) return;
+  if(p<1){_bounceFnb('fnPgPrev');return}
+  if(p>pages){_bounceFnb('fnPgNext');return}
   S.page=p;S.focused=-1;renderCards(d,r);
   document.getElementById('cc').scrollIntoView({behavior:'smooth',block:'start'});
 }
@@ -749,7 +799,8 @@ function showModal(row,d){
   <div class="cstem katex-c" style="cursor:default;padding:0 0 10px">${esc(row.stem||'')}</div>
   ${spoilerHTML('Answer',answ)}
   ${spoilerHTML('Solution',soln)}
-  ${row.lookup_url?`<div style="margin-top:10px"><a class="srl" href="${esc(row.lookup_url)}" target="_blank" rel="noopener">Source ↗</a></div>`:''}`;  document.getElementById('mo').classList.add('op');
+  ${row.lookup_url?`<div style="margin-top:10px"><a class="srl" href="${esc(row.lookup_url)}" target="_blank" rel="noopener">Source ↗</a></div>`:''}`;
+  document.getElementById('mo').classList.add('op');
   renderK(mc);
 }
 function closeModal(){document.getElementById('mo').classList.remove('op')}
@@ -766,10 +817,31 @@ function togTheme(){
 
 // ── QUESTION NAV ──────────────────────────────────────────────────────────────
 function _cards(){return document.querySelectorAll('#cc .card')}
-function fnFirst(){const cs=_cards();if(cs.length){S.focused=0;cs[0].scrollIntoView({behavior:'smooth',block:'start'});cs[0].focus()}}
-function fnLast(){const cs=_cards();if(cs.length){const n=cs.length-1;S.focused=n;cs[n].scrollIntoView({behavior:'smooth',block:'center'});cs[n].focus({preventScroll:true})}}
-function fnPrevQ(){const cs=_cards();if(!cs.length) return;const p=Math.max((S.focused<0?0:S.focused)-1,0);S.focused=p;cs[p].scrollIntoView({behavior:'smooth',block:'center'});cs[p].focus({preventScroll:true})}
-function fnNextQ(){const cs=_cards();if(!cs.length) return;const n=Math.min((S.focused<0?-1:S.focused)+1,cs.length-1);S.focused=n;cs[n].scrollIntoView({behavior:'smooth',block:'center'});cs[n].focus({preventScroll:true})}
+function _clearNavFocus(){document.querySelectorAll('#cc .card.nav-focus').forEach(c=>c.classList.remove('nav-focus'))}
+function _bounceFnb(id){
+  const b=document.getElementById(id);if(!b) return;
+  b.classList.remove('bnc');void b.offsetWidth;b.classList.add('bnc');
+  b.addEventListener('animationend',()=>b.classList.remove('bnc'),{once:true});
+}
+function _setNavFocus(cs,idx){
+  _clearNavFocus();
+  S.focused=idx;
+  cs[idx].classList.add('nav-focus');
+  cs[idx].scrollIntoView({behavior:'smooth',block:'center'});
+  cs[idx].focus({preventScroll:true});
+}
+function fnFirst(){const cs=_cards();if(cs.length) _setNavFocus(cs,0)}
+function fnLast(){const cs=_cards();if(cs.length) _setNavFocus(cs,cs.length-1)}
+function fnPrevQ(){
+  const cs=_cards();if(!cs.length) return;
+  if(S.focused<=0){_bounceFnb('fnPrev');return}
+  _setNavFocus(cs,S.focused-1);
+}
+function fnNextQ(){
+  const cs=_cards();if(!cs.length) return;
+  if(S.focused>=cs.length-1){_bounceFnb('fnNext');return}
+  _setNavFocus(cs,S.focused<0?0:S.focused+1);
+}
 
 // ── FLOATING NAV ──────────────────────────────────────────────────────────────
 function renderNav(total,pages){
@@ -777,15 +849,15 @@ function renderNav(total,pages){
   if(total<=0){nav.style.display='none';return}
   nav.style.display='flex';
   nav.innerHTML=
-    `<button class="fnb" onclick="fnFirst()" title="First question (⤒)">⤒</button>`+
-    `<button class="fnb" onclick="fnPrevQ()" title="Prev question (k/↑)">↑</button>`+
+    `<button class="fnb" id="fnFirst" onclick="fnFirst()" title="First question (⤒)">⤒</button>`+
+    `<button class="fnb" id="fnPrev" onclick="fnPrevQ()" title="Prev question (k/↑)">↑</button>`+
     `<div class="fndiv"></div>`+
-    `<button class="fnb" onclick="goPage(${S.page-1})" ${S.page<=1?'disabled':''} title="Prev page (←)">‹</button>`+
+    `<button class="fnb" id="fnPgPrev" onclick="goPage(${S.page-1})" ${S.page<=1?'disabled':''} title="Prev page (←)">‹</button>`+
     `<span id="fnpi">${pages>1?S.page+'/'+pages:total}</span>`+
-    `<button class="fnb" onclick="goPage(${S.page+1})" ${S.page>=pages?'disabled':''} title="Next page (→)">›</button>`+
+    `<button class="fnb" id="fnPgNext" onclick="goPage(${S.page+1})" ${S.page>=pages?'disabled':''} title="Next page (→)">›</button>`+
     `<div class="fndiv"></div>`+
-    `<button class="fnb" onclick="fnNextQ()" title="Next question (j/↓)">↓</button>`+
-    `<button class="fnb" onclick="fnLast()" title="Last question (⤓)">⤓</button>`;
+    `<button class="fnb" id="fnNext" onclick="fnNextQ()" title="Next question (j/↓)">↓</button>`+
+    `<button class="fnb" id="fnLast" onclick="fnLast()" title="Last question (⤓)">⤓</button>`;
 }
 
 // ── SWIPE (bench switch) ──────────────────────────────────────────────────────
@@ -821,8 +893,8 @@ document.addEventListener('keydown',e=>{
   if(e.key==='/'){e.preventDefault();document.getElementById('si').focus()}
   else if(e.key==='r'||e.key==='R') doRandom();
   else if(e.key==='Escape') clearF();
-  else if(e.key==='ArrowLeft') goPage(S.page-1);
-  else if(e.key==='ArrowRight') goPage(S.page+1);
+  else if(e.key==='ArrowLeft'){e.preventDefault();goPage(S.page-1)}
+  else if(e.key==='ArrowRight'){e.preventDefault();goPage(S.page+1)}
   else if(e.key==='ArrowUp'){e.preventDefault();fnPrevQ()}
   else if(e.key==='ArrowDown'){e.preventDefault();fnNextQ()}
   else if(e.key==='Home'){e.preventDefault();fnFirst()}
