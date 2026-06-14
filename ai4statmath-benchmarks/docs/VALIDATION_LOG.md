@@ -102,3 +102,26 @@ Self-contained (every item traces to a verbatim source) · coherent (no
 conflicting specs; DL-1 reconciles the one doc/build divergence) · complete
 (all S2 items ✅/🔧/📝 except #24 explicitly ⏳). **Converged** pending the
 vision audit.
+
+---
+
+## 7. Bug log — Session 3 (2026-06-14)
+
+> Issues identified from user-submitted screenshots (S3·M1). Categories: L = LaTeX rendering, G = Gesture/animation.
+
+| # | Category | Screenshot | Root cause | Fix | Status |
+|---|---|---|---|---|---|
+| L1 | LaTeX-Preview | p1–p2: subscripts garbled (dots instead of `ε x⁴`) | `stem.slice(0,350)` can truncate mid-expression; KaTeX receives incomplete `$…` and produces broken output in `.cprev` | Removed `katex-c` from `.cprev` div; removed rAF that called `renderK` on previews. Preview shows raw (escaped) text only; KaTeX fires only on expand | 🔧 |
+| L2 | LaTeX-Render | p3: equation completely unrendered | Equation likely uses `\begin{align}` or similar environment with no surrounding `$$`/`\[` delimiters; auto-render silently skips it | ⏳ Needs per-dataset data investigation to confirm delimiter issue; add pre-processing if confirmed | ⏳ |
+| L3 | LaTeX-Scroll | p4: equation cut short, cannot scroll | Gesture conflict (G1): swipe handler on `#main` captured the horizontal touch before the `.katex-display{overflow-x:auto}` scroll container could receive it; also added `-webkit-overflow-scrolling:touch` for iOS momentum | Fixed by G1 fix | 🔧 |
+| L4 | LaTeX-Solution | p5: solution text cut short | `.spb{max-height:320px}` clips long content; content is scrollable but not obvious; some datasets also use truncated `solution_excerpt` fields by design | Increased `.spb` max-height 320→500 px, `.ansb` 280→400 px | 🔧 |
+| G1 | Gesture | Horizontal equation scroll triggers bench switch | `touchstart`/`touchend` on `#main` checked `dx>60 && dx>dy*1.8` without detecting whether the touch originated inside a scrollable element | On `touchstart`, walk ancestors from touch target to `#main`; set `_swipeBlocked=true` if any has `scrollWidth > clientWidth+2`; skip bench switch on `touchend` when blocked | 🔧 |
+| G2 | Animation | Bench switch flashes/abrupt (not smooth) | `switchTab()` synchronously replaces `#cc` innerHTML with no transition | Added CSS `@keyframes fadeSlideIn` (opacity 0→1, translateY 5→0, 0.35s eased); `renderCards(d,rows,animate)` restarts it via class toggle + forced reflow; `switchTab` passes `animate=true` | 🔧 |
+
+### Decision DL-8 — No KaTeX on preview text (L1 root-cause resolution)
+
+The collapsed preview (`stem.slice(0,350)`) is fundamentally unsafe to feed into KaTeX: any cut inside a `$…$` expression produces corrupted glyph output. The correct invariant is: **KaTeX only fires on complete, unspliced text nodes** — i.e. `.cstem` (full stem on expand), `.spb` (spoiler on reveal), `.ansb` (answer on toggle), and the modal. Raw-text preview with `-webkit-line-clamp` costs zero rendering and has zero risk of corruption. If math in the preview is desired in future, truncate at a safe boundary *before* the first `$` that would be cut; but this is lower priority than avoiding garbled output.
+
+### Decision DL-9 — Swipe vs. scroll: block-not-delegate (G1 resolution)
+
+The swipe handler delegates only the `touchend` branch, but the gate must be set at `touchstart` (when the touch target is available). Walking to the first `scrollWidth > clientWidth` ancestor is the minimal detection: it fires for `.katex-display{overflow-x:auto}` when an equation is wider than its container, and for any future horizontally-scrollable element, without naming specific classes. The `+2` epsilon absorbs sub-pixel rounding without false-positives on non-scrollable content.

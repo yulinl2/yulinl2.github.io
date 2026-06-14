@@ -168,10 +168,27 @@ When did I say "no emoji"? Last time I mentioned emoji was out of the "follow th
 ### S2·M6 [V] — 2026-06-14 05:32 UTC
 ```
 Make a space to track my user msgs verbatim. Practice again the following.
-
 > Before execution, make a structured design request doc. Summarize all problem feedbacks and desirable features, consolidate the motivations and rationales, then resolve relationship between all specs mentioned, so on and so forth.
 Break down the tasks hierarchically, split stages along sequential dependency,  and separate decoupled branches of work under different categories.
 While banking individual items, identify the natural grouping between similar items along the way, and establish group boundaries to reduce local context burden solving each branch of work. Then fill more details into the spaces and gaps, and reiterate.
 Expand into lower-level details one at a time. Validate locally and laterally within the same level before moving down to the next level, e.g., check requests / complaints against dialogue records for info completeness, then record decisions made and rationales, etc.
 Iterate until convergence, upon self-containedness, coherence, and completion.
+```
+
+---
+
+## Session 3 (2026-06-14) — `[V]` verbatim from transcript
+
+### S3·M1 [V] — 2026-06-14 (approx)
+```
+A batch of latex rendering issues: investigate root cause and resolve systematically.
+p1-2: subscripts becoming 3 dots before problem expansion.
+p3: equation not rendered.
+p4: equation cut short (can't scroll).
+p5: solution cut short.
+
+Also: UX wise, scrolling to reveal tail of a long equation resulted in switching to the next bench (intention misaligned).
+bench switch animation still flashing, not smooth enough -- any better tools/template/engine for this?
+
+Keep these issue reports logged and pooled by category. Later we'll think about how you can emulate what I did to discover the UX issues.
 ```
