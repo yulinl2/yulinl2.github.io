@@ -258,13 +258,13 @@ Keep these issue reports logged and pooled by category. Later we'll think about 
 这么一看，是不是就有很多固定的、成块的工作流程，是可以refactor出来的？需要refactor的不一定只是代码呀，也可能是你的工作流程本身
 ```
 
-### S3·M9 [V] — 2026-06-14
+### S3·M9 [V] — 2026-06-14 (approx)
 [with screenshot IMG_1979 showing live site completely blank — no tabs, no cards, only header + search + footer]
 ```
 你确定哦？是不是live emulator还是太简单机械？是不是应该设计一个专门的agent？
 ```
 
-### S3·M10 [V] — 2026-06-14
+### S3·M10 [V] — 2026-06-14 19:50 UTC
 ```
 之前报的一些问题和需求还是没有到位，请继续。另：
 
@@ -280,4 +280,14 @@ Keep these issue reports logged and pooled by category. Later we'll think about 
 1. 记得同时保持更新docs和issue更新。或者Issue作为一个index，连接各个重要设计文档的最新版
 2. 说过的每一个问题都要加入emulator agent的检查清单（作为开发时的自动防regression机制）
 3. Emulator加项目也要unit test直到确认成功（短期内你多耗一点token亲自检查，长期下来重复调用成熟的独立module能帮你省掉很多context占用）
+```
+
+### S3·M11 [V] — 2026-06-14 19:54 UTC
+```
+现在这些卡片这么多参数层层套叠的函数逻辑真的好管理吗？这么多函数真的需要自己从底层写起吗？能一口气把所有功能需求实现到底吗？不能借用已有的优质模板/skills吗？或者真的不需要用React来modularize吗？这样是不是可以先一口气捋明白所有手势需求的互动逻辑，然后再兵分几路分头实现？（feature逻辑还是有冲突）
+```
+
+### S3·M12 [V] — 2026-06-14 19:54 UTC
+```
+你自己一边执行一边用emulator确认，要是任务逻辑复杂就先plan，先top down分析规划，然后善用sub-agent于各自探索吸收
 ```
