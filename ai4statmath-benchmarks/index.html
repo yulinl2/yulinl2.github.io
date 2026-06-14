@@ -84,12 +84,14 @@ a{color:inherit}
 #sl strong{color:var(--tx)}
 
 /* ══ MAIN ══════════════════════════════════════════════════════════════════ */
-#main{max-width:var(--w);margin:0 auto;padding:12px 14px}
+#main{max-width:var(--w);margin:0 auto;padding:8px 14px 12px}
 
-/* ── HERO — flat, no left bar; accent lives on title text + watermark bg */
-#bnr{padding:16px 16px 18px;border-bottom:1px solid var(--bd);margin-bottom:12px;
+/* ── HERO — full-bleed bg (left/right/top flush), content max-width aligned */
+#bnr{padding:0;border-bottom:1px solid var(--bd);margin-bottom:0;
      position:relative;overflow:hidden;
      background:color-mix(in srgb,var(--ac,#7c3aed) 4%,var(--bg))}
+/* content column: same 14px side padding as #main so title aligns with cards */
+.bnrc{max-width:var(--w);margin:0 auto;padding:20px 14px 20px;position:relative}
 .bwm{position:absolute;right:-10px;top:-14px;font-size:118px;line-height:1;
      opacity:.05;pointer-events:none;user-select:none;color:var(--ac,#7c3aed);
      font-style:normal;font-weight:900;
@@ -364,8 +366,8 @@ footer a{color:var(--mu);text-decoration:underline;text-underline-offset:2px}
   </div>
 </div>
 
+<div id="bnr"></div>
 <main id="main">
-  <div id="bnr"></div>
   <div id="fb"></div>
   <div id="cc"></div>
   <div id="pg"></div>
@@ -380,6 +382,7 @@ footer a{color:var(--mu);text-decoration:underline;text-underline-offset:2px}
   Data from <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank" target="_blank" rel="noopener">yulinl2/AI4StatMath-Problem-Bank</a>
   · <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/tree/claude/parquet-ndjson-export-nyz7ia/data/ndjson" target="_blank" rel="noopener">Source NDJSON ↗</a>
   · Rendered with <a href="https://katex.org" target="_blank" rel="noopener">KaTeX</a>
+  <br><span id="build-ts" style="font-size:.65rem;opacity:.45;letter-spacing:.02em">Deployed: —</span>
 </footer>
 <script>
 'use strict';
@@ -507,12 +510,14 @@ function renderBanner(d){
   // Set --ac globally so all elements (chips, search, etc.) inherit benchmark color
   document.documentElement.style.setProperty('--ac',d.color);
   el.innerHTML=`${d.symbol?`<span class="bwm" aria-hidden="true">${d.symbol}</span>`:''}
-    <div class="bt">${d.label}</div>
-    <div class="bd">${esc(d.desc)}</div>
-    <div class="bl">
-      ${d.arxiv?`<a class="pl" href="https://arxiv.org/abs/${d.arxiv}" target="_blank" rel="noopener">📄 arXiv:${d.arxiv}</a>`:''}
-      ${d.hf?`<a class="pl" href="https://huggingface.co/datasets/${d.hf}" target="_blank" rel="noopener">🤗 HuggingFace</a>`:''}
-      <a class="pl" href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/tree/claude/parquet-ndjson-export-nyz7ia/data/ndjson" target="_blank" rel="noopener">💾 NDJSON source</a>
+    <div class="bnrc">
+      <div class="bt">${d.label}</div>
+      <div class="bd">${esc(d.desc)}</div>
+      <div class="bl">
+        ${d.arxiv?`<a class="pl" href="https://arxiv.org/abs/${d.arxiv}" target="_blank" rel="noopener">📄 arXiv:${d.arxiv}</a>`:''}
+        ${d.hf?`<a class="pl" href="https://huggingface.co/datasets/${d.hf}" target="_blank" rel="noopener">🤗 HuggingFace</a>`:''}
+        <a class="pl" href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/tree/claude/parquet-ndjson-export-nyz7ia/data/ndjson" target="_blank" rel="noopener">💾 NDJSON source</a>
+      </div>
     </div>`;
 }
 
@@ -527,7 +532,7 @@ function renderFB(d,rows){
     if(vals.length<2) return;
     const fs=S.filt[f.key]||new Set();
     h+=`<div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center">
-      <span class="flbl">${esc(f.label)} <span class="filtip" title="${esc(orAndTip)}">ⓘ</span>:</span>`;
+      <span class="flbl"><span class="filtip" title="${esc(orAndTip)}">ⓘ</span> ${esc(f.label)}:</span>`;
     vals.forEach(v=>{
       const sv=String(v);
       const cnt=rows.filter(r=>{const rv=f.get(r);return rv!=null&&String(rv)===sv}).length;
@@ -672,7 +677,7 @@ function renderBkTab(){
   const bms=getBMs();
   const el=document.getElementById('bnr');
   document.documentElement.style.setProperty('--ac','#fbbf24');
-  el.innerHTML=`<div class="bt" style="color:#fbbf24">★ Bookmarks</div><div class="bd">${bms.length} saved problem${bms.length!==1?'s':''}</div>`;
+  el.innerHTML=`<div class="bnrc"><div class="bt" style="color:#fbbf24">★ Bookmarks</div><div class="bd">${bms.length} saved problem${bms.length!==1?'s':''}</div></div>`;
   document.getElementById('fb').innerHTML='';
   document.getElementById('pg').innerHTML='';
   document.getElementById('sl').innerHTML='';
@@ -929,6 +934,15 @@ document.getElementById('tbtn').addEventListener('click',togTheme);
   calibrate();
   new ResizeObserver(calibrate).observe(sticky);
   window.addEventListener('resize',calibrate);
+})();
+
+// ── DEPLOY TIMESTAMP ──────────────────────────────────────────────────────────
+// Reads Last-Modified from the page's own HTTP headers — shows which build is live.
+(function(){
+  fetch(location.href,{method:'HEAD',cache:'no-cache'})
+    .then(r=>{const d=r.headers.get('last-modified');const el=document.getElementById('build-ts');
+      if(el&&d) el.textContent='Deployed: '+new Date(d).toISOString().replace('T',' ').slice(0,16)+' UTC';
+    }).catch(()=>{});
 })();
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
