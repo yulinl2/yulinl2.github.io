@@ -147,6 +147,25 @@ section.problem { background:var(--bg-card); border:1px solid var(--border);
                   border-radius:14px; padding:22px 26px; margin:18px 0;
                   scroll-margin-top:120px; min-width:0;
                   border-left:4px solid var(--bg-accent); }
+/* ── pagination: one problem per view (additive; body.paged is set by JS only,
+   so with JS off the page degrades to the full stacked scroll). The per-problem
+   content grew long, so we show one problem at a time + a pager; the timeline
+   rail doubles as the page selector. ── */
+body.paged section.problem { display:none; }
+body.paged section.problem.is-current { display:block; }
+.pager { position:sticky; top:52px; z-index:40; display:flex; align-items:center;
+         gap:12px; justify-content:space-between; margin:16px 0 4px;
+         background:rgba(15,23,42,0.92); backdrop-filter:saturate(160%) blur(10px);
+         border:1px solid var(--border); border-radius:10px; padding:8px 12px; }
+.pager .pg-label { flex:1; min-width:0; text-align:center; font-weight:600;
+         font-size:.92em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.pager button { flex:0 0 auto; cursor:pointer; border:1px solid var(--border);
+         background:var(--bg-card); color:var(--fg); border-radius:8px;
+         padding:6px 14px; font-size:.9em; white-space:nowrap; }
+.pager button:hover:not(:disabled) { background:var(--bg-accent); }
+.pager button:disabled { opacity:.4; cursor:default; }
+@media (max-width:720px){ .pager{ top:48px; padding:7px 8px; gap:6px; }
+         .pager button{ padding:6px 10px; } .pager .pg-label{ font-size:.8em; } }
 /* Completeness tint — FACTUAL states only (frame-test: a color keyed to a judgment
    verdict is a scorecard re-entering through CSS; D2 #111 retired verdicts).
    The three judgment verdicts share one neutral accent; the two factual
@@ -1230,6 +1249,75 @@ Concrete actions:
     });
   }, {rootMargin:'-30% 0px -55% 0px'});
   sections.forEach(function(s){ io.observe(s); });
+
+  // ── PAGINATION: one problem per view (the per-problem content grew long).
+  // Additive layer: body.paged is set only here, so no-JS degrades to the full
+  // stacked scroll. The timeline rail bullets + a pager bar switch pages; deep
+  // links (#problem-N) and in-problem sub-anchors (#problem-N-sweep) are kept.
+  (function(){
+    if (sections.length < 2) return;            // a single problem needs no pager
+    document.body.classList.add('paged');
+    var cur = 0;
+    var bar = document.createElement('div');
+    bar.className = 'pager';
+    bar.innerHTML =
+      '<button class="pg-prev" type="button" aria-label="previous problem">← Prev</button>' +
+      '<span class="pg-label" aria-live="polite"></span>' +
+      '<button class="pg-next" type="button" aria-label="next problem">Next →</button>';
+    sections[0].parentNode.insertBefore(bar, sections[0]);
+    var label = bar.querySelector('.pg-label');
+    var prevB = bar.querySelector('.pg-prev'), nextB = bar.querySelector('.pg-next');
+    function titleOf(s){
+      var h = s.querySelector('.p-head h2, .p-head h1, h2, h3');
+      var t = h ? h.textContent.trim().replace(/\s+/g,' ') : s.id;
+      return t.length > 48 ? t.slice(0,46) + '…' : t;
+    }
+    function idxOfId(id){
+      for (var k=0;k<sections.length;k++){
+        if (id === sections[k].id || id.indexOf(sections[k].id + '-') === 0) return k;
+      }
+      return -1;
+    }
+    function render(i, opts){
+      opts = opts || {};
+      cur = Math.max(0, Math.min(i, sections.length - 1));
+      sections.forEach(function(s,k){ s.classList.toggle('is-current', k === cur); });
+      label.textContent = 'Problem ' + (cur+1) + ' / ' + sections.length + ' — ' + titleOf(sections[cur]);
+      prevB.disabled = (cur === 0); nextB.disabled = (cur === sections.length - 1);
+      Object.keys(railSections).forEach(function(t){ railSections[t].classList.remove('active'); });
+      var rs = railSections[sections[cur].id]; if (rs) rs.classList.add('active');
+      if (!opts.silent) { try { history.replaceState(null,'','#'+sections[cur].id); } catch(e){} }
+      if (opts.scrollTop !== false) { try { bar.scrollIntoView({block:'start'}); } catch(e){ window.scrollTo(0,0); } }
+    }
+    prevB.addEventListener('click', function(){ render(cur-1); });
+    nextB.addEventListener('click', function(){ render(cur+1); });
+    // any anchor pointing at a problem (rail bullet, sub-anchor, nav chip) pages there
+    document.addEventListener('click', function(e){
+      var a = e.target.closest('a[href^="#problem-"]'); if (!a) return;
+      var id = a.getAttribute('href').slice(1); var k = idxOfId(id); if (k < 0) return;
+      e.preventDefault(); render(k);
+      if (id !== sections[k].id) {
+        var sub = document.getElementById(id);
+        if (sub) setTimeout(function(){ try{ sub.scrollIntoView({block:'start'}); }catch(_){} }, 0);
+      }
+    });
+    window.addEventListener('hashchange', function(){
+      var k = idxOfId((location.hash||'').slice(1)); if (k >= 0) render(k, {silent:true});
+    });
+    document.addEventListener('keydown', function(e){
+      var tn = (e.target && e.target.tagName) || '';
+      if (/^(INPUT|TEXTAREA|SELECT)$/.test(tn) || (e.target && e.target.isContentEditable)) return;
+      if (e.key === 'ArrowLeft') render(cur-1);
+      else if (e.key === 'ArrowRight') render(cur+1);
+    });
+    // initial page = the deep-linked problem if any, else the first
+    var k0 = location.hash ? idxOfId(location.hash.slice(1)) : -1;
+    render(k0 >= 0 ? k0 : 0, {silent:true, scrollTop:false});
+    if (k0 >= 0 && location.hash.indexOf('-') > 0) {
+      var sub0 = document.getElementById(location.hash.slice(1));
+      if (sub0) setTimeout(function(){ try{ sub0.scrollIntoView({block:'start'}); }catch(_){} }, 60);
+    }
+  })();
 
   // (Panel round 1, engineer P1: the old "thumb-scrub" handler was dead —
   // it early-returned on its own anchor children, so it only fired in the

@@ -144,6 +144,25 @@ section.problem { background:var(--bg-card); border:1px solid var(--border);
                   border-radius:14px; padding:22px 26px; margin:18px 0;
                   scroll-margin-top:120px; min-width:0;
                   border-left:4px solid var(--bg-accent); }
+/* ── pagination: one problem per view (additive; body.paged is set by JS only,
+   so with JS off the page degrades to the full stacked scroll). The per-problem
+   content grew long, so we show one problem at a time + a pager; the timeline
+   rail doubles as the page selector. ── */
+body.paged section.problem { display:none; }
+body.paged section.problem.is-current { display:block; }
+.pager { position:sticky; top:52px; z-index:40; display:flex; align-items:center;
+         gap:12px; justify-content:space-between; margin:16px 0 4px;
+         background:rgba(15,23,42,0.92); backdrop-filter:saturate(160%) blur(10px);
+         border:1px solid var(--border); border-radius:10px; padding:8px 12px; }
+.pager .pg-label { flex:1; min-width:0; text-align:center; font-weight:600;
+         font-size:.92em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.pager button { flex:0 0 auto; cursor:pointer; border:1px solid var(--border);
+         background:var(--bg-card); color:var(--fg); border-radius:8px;
+         padding:6px 14px; font-size:.9em; white-space:nowrap; }
+.pager button:hover:not(:disabled) { background:var(--bg-accent); }
+.pager button:disabled { opacity:.4; cursor:default; }
+@media (max-width:720px){ .pager{ top:48px; padding:7px 8px; gap:6px; }
+         .pager button{ padding:6px 10px; } .pager .pg-label{ font-size:.8em; } }
 /* Completeness tint — FACTUAL states only (frame-test: a color keyed to a judgment
    verdict is a scorecard re-entering through CSS; D2 #111 retired verdicts).
    The three judgment verdicts share one neutral accent; the two factual
@@ -698,7 +717,7 @@ button.nav-chat { display:none; }
   <p class="dim small" style="margin:2px 0 0">Pipeline-wide across <strong>all</strong> reviewed submissions (counts only; individual pages stay opt-in gated). Counts are <strong>information, not verdicts</strong>: reviewed problems, open action items (concrete next steps the auto-reviewer drafted for the authors), and gaps the agent filled — proposed tags and verifier drafts. Latest review activity: <strong>2026-06-10 21:42 UTC</strong>.</p>
   <div class="hub-tiles">
     <div class="hub-tile"><div class="num">17</div><div class="lbl" title="reviewed = has a Stage-1 review; 17 of the 18 filled+drafted submissions have one.">problems reviewed</div></div>
-    <div class="hub-tile t-info" title="Concrete next steps the auto-reviewer drafted across all submissions — information for the authors to act on, never accept/reject verdicts."><div class="num">67</div><div class="lbl">current action items ☑ <span class="dim">(75 surfaced · 8 superseded by re-review)</span></div></div>
+    <div class="hub-tile t-info" title="Concrete next steps the auto-reviewer drafted across all submissions — information for the authors to act on, never accept/reject verdicts."><div class="num">67</div><div class="lbl">current action items ☑ <span class="dim">(70 surfaced · 3 superseded by re-review)</span></div></div>
     <div class="hub-tile t-info" title="Counts only verifiers that genuinely validated against an author oracle: graded the answer key as pass AND rejected every plausibly-wrong response. Drafts in not_auto_verifiable mode await the author&#x27;s oracle — the agent never fabricates one. +5 awaiting the author&#x27;s oracle (not auto-verifiable — excluded from numerator AND denominator, not failures)."><div class="num">9/10</div><div class="lbl">auto-verifiable validated ✓</div><div class="lbl dim">+5 awaiting the author&#x27;s oracle</div></div>
     <div class="hub-tile t-ready"><div class="num">8/12</div><div class="lbl" title="SCREENING bar (working-hypothesis OR; formulations conflict — #147 slot 0): fails at least one gate model across all its graded runs; 4/12 fail both (model-side Stage-2 bar). Oracle adjudication is a separate human axis (oracle adjudication (human axis): 1 confirmed correct · 5 wording-ambiguous · 2 flagged broken · 0 pending · 4 consensus-consistent). HIGHER is better — failing frontier models is the goal. Source: data/eval/sweep-digest.json, sweep-20260603-170524.">pass screening bar ✓ (sweep 2026-06-03 · gpt-5.4, gpt-5.5, haiku-4-5, opus-4-6, opus-4-7, sonnet-4-6)</div></div>
     <div class="hub-tile t-info"><div class="num">17</div><div class="lbl" title="Agent-proposed structured tags (capability·domain·subtopic·difficulty) surfaced on the problem cards for the author to confirm.">tags proposed 🏷</div></div>
