@@ -473,9 +473,9 @@ function renderBanner(d){
   el.innerHTML=`<div class="bt">${d.label}</div>
     <div class="bd">${esc(d.desc)}</div>
     <div class="bl">
-      ${d.arxiv?`<a class="pl" href="https://arxiv.org/abs/${d.arxiv}" target="_blank" rel="noopener">arXiv:${d.arxiv}</a>`:''}
-      ${d.hf?`<a class="pl" href="https://huggingface.co/datasets/${d.hf}" target="_blank" rel="noopener">HuggingFace</a>`:''}
-      <a class="pl" href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/tree/claude/parquet-ndjson-export-nyz7ia/data/ndjson" target="_blank" rel="noopener">NDJSON source</a>
+      ${d.arxiv?`<a class="pl" href="https://arxiv.org/abs/${d.arxiv}" target="_blank" rel="noopener">📄 arXiv:${d.arxiv}</a>`:''}
+      ${d.hf?`<a class="pl" href="https://huggingface.co/datasets/${d.hf}" target="_blank" rel="noopener">🤗 HuggingFace</a>`:''}
+      <a class="pl" href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/tree/claude/parquet-ndjson-export-nyz7ia/data/ndjson" target="_blank" rel="noopener">💾 NDJSON source</a>
     </div>`;
 }
 
