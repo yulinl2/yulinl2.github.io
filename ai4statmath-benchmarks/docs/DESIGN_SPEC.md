@@ -28,7 +28,17 @@ problems from 6 public math/stat benchmarks. It works, but has grown as one
 
 ## 1. Architecture Decision
 
-**Chosen: Preact + htm + @preact/signals, all via CDN (ESM), zero build.**
+> **SHIPPED: vanilla JS, zero build.** See VALIDATION_LOG DL-1. The
+> comparison below was the pre-build analysis (Preact+htm was the leading
+> *recommendation*); at build time, after the user said "you decide what's best
+> behind the scene; I'll judge only by the webpage," vanilla was chosen for zero
+> new dependencies, lowest regression risk, and reuse of the existing loader —
+> the rendered page is identical either way. Transfer value lives in the
+> framework-agnostic artifacts (DS registry, token layer, checklist method), not
+> the framework. Preact remains the option to revisit when the lit-review app's
+> interactivity warrants reactive components.
+
+**Pre-build comparison (recommendation was Preact + htm + signals, CDN, zero build):**
 
 | Criterion | Vanilla | **Preact+htm (chosen)** | React+Vite |
 |---|---|---|---|
@@ -206,7 +216,9 @@ contiguous sticky stack + flat hero, (c) config-driven cards.**
 
 ## 5. Decisions Log
 
-- **D-1** Preact+htm over React/vanilla — transfer goal + zero-build (see §1).
+- **D-1** ~~Preact+htm over React/vanilla~~ → **superseded by DL-1: shipped
+  vanilla JS** (zero build, zero new deps, identical webpage; Preact deferred to
+  the lit-review work). See VALIDATION_LOG §4.
 - **D-2** Single-file output retained — deployment parity with MCP push.
 - **D-3** Docs live in repo under `ai4statmath-benchmarks/docs/`, versioned;
   may later be mirrored as a Claude Code skill for cross-session reuse.

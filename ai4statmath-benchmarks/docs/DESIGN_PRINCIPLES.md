@@ -62,10 +62,12 @@ re-orientation effort.
 shadow + tint (not emoji) to signal affordance/volume/distinction.
 **Why.** Conventions are zero-learning-cost. Emoji glyphs are inconsistent
 across themes/platforms and read as decorative noise on a dense scholarly page.
-**Pattern.** Inline text links → underline. Buttons → tinted fill + soft shadow
-for "raised/pressable"; distinct tints for distinct actions (answer vs
-solution vs source). Reserve SVG icons for controls where a glyph genuinely
-speeds scanning (nav arrows, theme).
+**Pattern.** Inline text links → underline. Interactive buttons → tinted fill +
+soft shadow convey affordance without relying on a glyph; distinct tints for
+distinct actions (answer vs solution vs source). Reserve SVG icons for controls
+where a shape genuinely speeds scanning (nav arrows, theme toggle).
+Platform-brand emoji follow their own convention and stay: 🤗 HuggingFace,
+📄 arXiv, 💾 data — these are the convention, not an exception to it.
 
 ### P7 — Generous, predictable touch targets
 **Rule.** Interactive controls ≥ ~38px; sticky offsets keep scrolled-to content
