@@ -263,3 +263,21 @@ Keep these issue reports logged and pooled by category. Later we'll think about 
 ```
 你确定哦？是不是live emulator还是太简单机械？是不是应该设计一个专门的agent？
 ```
+
+### S3·M10 [V] — 2026-06-14
+```
+之前报的一些问题和需求还是没有到位，请继续。另：
+
+- 默认的problem card亮度太暗了，现在中档的亮度（也就是↑↓切换时稍亮的那一档）作为默认亮度就好。在↑↓切换时要最亮的那个focus要跟着走，不要停留在原先手动点击的那个问题上面
+- 现在top/bottom两个按钮再点一次又会回退一点
+- 现在swipe left/right翻页又没了（正常逻辑应该是仅仅在又滑动预览的long equation窗口内disable滑动翻页）
+- 背景底纹要用纯色svg，可以有大logo，但是要有平铺花纹填满空余部位
+
+---
+
+行动规则：
+
+1. 记得同时保持更新docs和issue更新。或者Issue作为一个index，连接各个重要设计文档的最新版
+2. 说过的每一个问题都要加入emulator agent的检查清单（作为开发时的自动防regression机制）
+3. Emulator加项目也要unit test直到确认成功（短期内你多耗一点token亲自检查，长期下来重复调用成熟的独立module能帮你省掉很多context占用）
+```
