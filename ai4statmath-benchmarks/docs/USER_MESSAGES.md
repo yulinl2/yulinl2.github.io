@@ -192,3 +192,38 @@ bench switch animation still flashing, not smooth enough -- any better tools/tem
 
 Keep these issue reports logged and pooled by category. Later we'll think about how you can emulate what I did to discover the UX issues.
 ```
+
+### S3·M2 [V] — 2026-06-14 (with screenshot IMG_1965 of MathTrap hero)
+```
+关于视觉设计问题：
+- 问一下哈，search problems 是限定在同一个bench里search的吗？还是全局？如果是同一个bench的话能不能给搜索框左侧也带上那个跟problem card一样的高亮竖边，这样暗示就非常明显了。
+- problem card的高亮颜色现在亮度就很好。不过我还是不喜欢左边这个高亮竖边的内侧圆角，感觉太多弧线了，把高亮竖边的右侧border变成全部竖切会干净很多
+- 其实现在hero（p1）的竖线边框格式用在problem card上感觉会清爽很多，拥挤的感觉会好很多，留给题目显示的位置也变多了。然后只要一格一格高亮线深浅交错，就已经很容易区分奇偶数题目了。整体也不会太flashy。
+- 至于hero本身，还不如取消左侧高亮竖线（毕竟代表性高亮色已经用在标题大字上了）。还不如变成背景watermark底纹tint（你思考设计一下怎么样才低调好看，每个benchmark还能够体现出问题性质的不同）。这样hero才没有那么明显的像问题一样被框住的感觉（而是它作为主题包含住下面的所有问题案例）。
+
+标签问题：
+- 现在选完标签之后好像没看到筛选效果
+- 而且选完滑上去再回来就又失效了
+- 最好选择完标签之后激活的标签能够出现在sticky搜索框下面那个总数统计的位置旁边，不然往下滑一会儿看不到就忘了
+- 最好选了标签之后在搜索框下面显示的是满足筛选要求的计数（页面题数/达标总数）
+- 最好各个标签内部本身也能显示在总题库里符合单独这个标签的占了多少题（n/N）
+- 而且标签高亮框颜色与benchmark不匹配（而且亮色描边还不如暗色填充，依旧是视觉刺激疲劳的问题）
+- 而且一次只能选中一个标签，不管是同组（比如两个category）的还是跨组的（比如role搭配category）
+- role和category关系也不明。。是搭配关系？还是互斥？各种类似功能性标签最好能够搭配一个info tip
+
+动作逻辑：
+- 切换benchmark时第一次打开的bench是否应该回到顶端，reveal完整的hero介绍，而不是从中间的问题开始？
+- 切换benchmark时是否应该记忆上一次停留的页数和位置？
+```
+
+### S3·M3 [V] — 2026-06-14
+```
+动作逻辑：
+
+- 现在连点两下nav key还是会触发页面缩放。
+- 另外↑↓换题时并没有focus的颜色跟随（focus依旧停留在上一轮手动展开的位置），也就没有获得即时物理响应的爽感。。
+- 另外现在上下左右滑动/翻页到头时继续点击按钮没有动作反馈（比如常见的拉开-回弹动画），只有微弱的原地抽动，反馈欠缺且不自然
+
+
+有没有哪个成熟模板/引擎能够系统性地解决这些模式问题呢？
+```
