@@ -22,7 +22,7 @@
   --t:.3s; --tf:.1s; --ts:.42s;
   --e:cubic-bezier(.25,.1,.25,1); --eo:cubic-bezier(0,0,.3,1);
   /* Opacity */
-  --op-dim:.28;
+  --op-dim:.62;
   /* Layout */
   --r:10px; --rs:6px; --hit:38px; --w:1100px; --scroll-top:92px;
   /* Tag tints (soft) */
@@ -148,7 +148,7 @@ select.ss{padding:4px 9px;background:var(--sf);border:1px solid var(--bd);
 /* Dim-out siblings when any card is expanded */
 #cc.has-exp .card{opacity:var(--op-dim);transition:opacity var(--ts) var(--e)}
 #cc.has-exp .card.exp{opacity:1}
-#cc.has-exp .card.nav-focus{opacity:.62}
+#cc.has-exp .card.nav-focus{opacity:1}
 
 /* ── CARD — flat hero-style: ::before accent bar, no box border/shadow */
 .card{background:var(--sf);border:none;
@@ -164,8 +164,9 @@ select.ss{padding:4px 9px;background:var(--sf);border:1px solid var(--bd);
 .card.exp{box-shadow:0 2px 20px rgba(0,0,0,.38);z-index:2}
 .card.exp::before{opacity:1!important;background:color-mix(in srgb,var(--cc,#7c3aed) 92%,transparent)}
 /* Nav focus — visual anchor for ↑↓ navigation */
-.card.nav-focus::before{opacity:1;background:color-mix(in srgb,var(--cc,#7c3aed) 82%,transparent)}
-.card.nav-focus>.ch{background:color-mix(in srgb,var(--cc,#7c3aed) 7%,var(--sf))}
+/* nav-focus: the moving focus that ↑↓ drives — always fully lit */
+.card.nav-focus::before{opacity:1!important;background:color-mix(in srgb,var(--cc,#7c3aed) 92%,transparent)!important}
+.card.nav-focus>.ch{background:color-mix(in srgb,var(--cc,#7c3aed) 9%,var(--sf))}
 .ch{display:flex;flex-wrap:wrap;align-items:center;gap:5px;padding:7px 11px;
     cursor:pointer;user-select:none;transition:background var(--t) var(--e)}
 .ch:hover{background:var(--sf2)}
@@ -569,12 +570,57 @@ function renderTabs(){
     `<button class="tab${S.bkTab?' on':''}" style="--tc:#fbbf24" onclick="showBkTab()">★ Bookmarks<span class="cnt">${bmc}</span></button>`;
 }
 
+// ── HERO BG PATTERN (per-bench SVG tile) ─────────────────────────────────────
+function getBgPattern(d){
+  const c=d.color;
+  // Solid-color SVG tiles, one per benchmark theme
+  const tiles={
+    'CMT-Benchmark':
+      "<svg xmlns='http://www.w3.org/2000/svg' width='32' height='56'>" +
+      "<polygon points='16,1 31,10 31,28 16,37 1,28 1,10' fill='none' stroke='"+c+"' stroke-width='0.7' opacity='0.13'/>" +
+      "<polygon points='16,37 31,46 31,64 16,73 1,64 1,46' fill='none' stroke='"+c+"' stroke-width='0.7' opacity='0.13'/>" +
+      "</svg>",
+    'HARDMath':
+      "<svg xmlns='http://www.w3.org/2000/svg' width='60' height='22'>" +
+      "<path d='M0,11 C15,-1 15,23 30,11 C45,-1 45,23 60,11' fill='none' stroke='"+c+"' stroke-width='0.9' opacity='0.13'/>" +
+      "</svg>",
+    'MathTrap-public':
+      "<svg xmlns='http://www.w3.org/2000/svg' width='36' height='36'>" +
+      "<line x1='9' y1='14' x2='27' y2='14' stroke='"+c+"' stroke-width='1.1' stroke-linecap='round' opacity='0.14'/>" +
+      "<line x1='9' y1='22' x2='27' y2='22' stroke='"+c+"' stroke-width='1.1' stroke-linecap='round' opacity='0.14'/>" +
+      "<line x1='11' y1='7' x2='25' y2='29' stroke='"+c+"' stroke-width='1.1' stroke-linecap='round' opacity='0.14'/>" +
+      "</svg>",
+    'PRBench':
+      "<svg xmlns='http://www.w3.org/2000/svg' width='22' height='22'>" +
+      "<line x1='0' y1='0' x2='22' y2='22' stroke='"+c+"' stroke-width='0.5' opacity='0.12'/>" +
+      "<line x1='11' y1='0' x2='22' y2='11' stroke='"+c+"' stroke-width='0.5' opacity='0.12'/>" +
+      "<line x1='0' y1='11' x2='11' y2='22' stroke='"+c+"' stroke-width='0.5' opacity='0.12'/>" +
+      "</svg>",
+    'StatEval-public':
+      "<svg xmlns='http://www.w3.org/2000/svg' width='44' height='28'>" +
+      "<path d='M0,24 Q5,24 11,12 Q22,-1 33,12 Q39,24 44,24' fill='none' stroke='"+c+"' stroke-width='0.9' opacity='0.13'/>" +
+      "</svg>",
+    'StatQA-mini':
+      "<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'>" +
+      "<circle cx='12' cy='12' r='1.4' fill='"+c+"' opacity='0.17'/>" +
+      "<circle cx='0' cy='0' r='0.8' fill='"+c+"' opacity='0.1'/>" +
+      "<circle cx='24' cy='0' r='0.8' fill='"+c+"' opacity='0.1'/>" +
+      "<circle cx='0' cy='24' r='0.8' fill='"+c+"' opacity='0.1'/>" +
+      "<circle cx='24' cy='24' r='0.8' fill='"+c+"' opacity='0.1'/>" +
+      "</svg>",
+  };
+  const svg=tiles[d.id]||("<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20'><circle cx='10' cy='10' r='1' fill='"+c+"' opacity='0.1'/></svg>");
+  return 'url("data:image/svg+xml,'+encodeURIComponent(svg)+'")';
+}
+
 // ── RENDER: BANNER (flat hero) ────────────────────────────────────────────────
 function renderBanner(d){
   const el=document.getElementById('bnr');
-  if(!d){el.innerHTML='';return}
+  if(!d){el.innerHTML='';el.style.backgroundImage='';return}
   // Set --ac globally so all elements (chips, search, etc.) inherit benchmark color
   document.documentElement.style.setProperty('--ac',d.color);
+  el.style.backgroundImage=getBgPattern(d);
+  el.style.backgroundRepeat='repeat';
   el.innerHTML=`${d.symbol?`<span class="bwm" aria-hidden="true">${d.symbol}</span>`:''}
     <div class="bnrc">
       <div class="bt">${d.label}</div>
@@ -899,15 +945,19 @@ function _bounceFnb(id){
   b.classList.remove('bnc');void b.offsetWidth;b.classList.add('bnc');
   b.addEventListener('animationend',()=>b.classList.remove('bnc'),{once:true});
 }
-function _setNavFocus(cs,idx){
+function _setNavFocus(cs,idx,block){
   _clearNavFocus();
+  // Collapse any expanded card so nav-focus is the sole bright focus
+  document.querySelectorAll('#cc .card.exp').forEach(c=>c.classList.remove('exp'));
+  document.getElementById('cc').classList.remove('has-exp');
   S.focused=idx;
   cs[idx].classList.add('nav-focus');
-  cs[idx].scrollIntoView({behavior:'smooth',block:'center'});
+  if(block==='top') window.scrollTo({top:0,behavior:'smooth'});
+  else cs[idx].scrollIntoView({behavior:'smooth',block:block||'center'});
   cs[idx].focus({preventScroll:true});
 }
-function fnFirst(){const cs=_cards();if(cs.length) _setNavFocus(cs,0)}
-function fnLast(){const cs=_cards();if(cs.length) _setNavFocus(cs,cs.length-1)}
+function fnFirst(){const cs=_cards();if(cs.length) _setNavFocus(cs,0,'top')}
+function fnLast(){const cs=_cards();if(cs.length) _setNavFocus(cs,cs.length-1,'end')}
 function fnPrevQ(){
   const cs=_cards();if(!cs.length) return;
   if(S.focused<=0){_bounceFnb('fnPrev');return}
@@ -955,9 +1005,8 @@ function renderNav(total,pages){
     if(_swipeBlocked) return;
     const dx=e.changedTouches[0].clientX-_tx,dy=e.changedTouches[0].clientY-_ty;
     if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.8&&!S.bkTab){
-      const cur=DS.findIndex(d=>d.id===S.tab);
-      if(dx<0&&cur<DS.length-1) switchTab(DS[cur+1].id);
-      else if(dx>0&&cur>0) switchTab(DS[cur-1].id);
+      if(dx<0) goPage(S.page+1);  // swipe left → next page
+      else     goPage(S.page-1);  // swipe right → prev page
     }
   },{passive:true});
 }
