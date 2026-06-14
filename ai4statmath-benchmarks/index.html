@@ -605,7 +605,7 @@ function renderFB(d,rows){
       const cnt=rows.filter(r=>{const rv=f.get(r);return rv!=null&&String(rv)===sv}).length;
       const desc=d.filterDescriptions?.[f.key]?.[sv];
       const tip=desc?`<span class="filtip" style="pointer-events:none">ⓘ</span> `:'';
-      h+=`<button class="chip${fs.has(sv)?' on':''}" onclick="togFilt('${_jsq(f.key)}','${_jsq(sv)}')"${desc?` title="${esc(desc)}"`:''} >${tip}${esc(sv)}<span class="chipc">${cnt}</span></button>`;
+      h+=`<button class="chip${fs.has(sv)?' on':''}" onclick="togFilt('${_jsq(f.key)}','${_jsq(sv)}')"${desc?` title="${esc(desc)}"`:'} >${tip}${esc(sv)}<span class="chipc">${cnt}</span></button>`;
     });
     h+='</div>';
   });
