@@ -227,3 +227,39 @@ Keep these issue reports logged and pooled by category. Later we'll think about 
 
 有没有哪个成熟模板/引擎能够系统性地解决这些模式问题呢？
 ```
+
+### S3·M4 [V] — 2026-06-14
+```
+1. info tip夹在冒号和原词之间好奇怪，这种情况就把info tip放词前面（左边）吧
+2. 最好在页面哪个地方悄悄注释上deploy的时间...页面现在还是deploy在 https://yulinl2.github.io/ai4statmath-benchmarks/ 吗？
+3. 滑动翻页换bench的时候上边navbar被手机屏幕截断的部分有自动跟随出现吗？
+4. hero的背景fill能不能不要被框住，多一道empty margin有点束缚感，能不能左右上三边铺开到顶？这样标题字符可以从原block corner起始，和下面的card border对齐
+```
+
+### S3·M5 [V] — 2026-06-14
+```
+1. 完辽，我觉得每个tag也需要各自的info tip（就还是放在左边吧，让集体保持一致），光看缩写我发现我看不懂🤦🏻
+2. 现在这么多额外的页面标记数据、config，你是怎么整理数据结构的呢？是否易拓展、易维护呢？都follow了业界顶级前端设计的best practice了吗？如果我们后面还要逐题消灭render问题呢？
+3. 咦，奇怪了，已经好几分钟了，怎么还没看到deploy呢？（刷新页面也没变）
+```
+
+### S3·M6 [V] — 2026-06-14
+```
+你现在有defer哪些工作吗？你先把我之前提到过的所有要求都implement到位了再说
+```
+
+### S3·M7 [V] — 2026-06-14
+```
+而且现在网站已经error out了，这本身就是一个对于当前工程架构与workflow规范的警示信号。如果做得这么费力的话，是不是一种该整合工具的信号（比如一个可以循环利用、定期call的emulator来自查网页实例上线显示状态）？Reflect and operate strategically. Use sub-agents with modularized workflow来节省你的精力，系统解决注意力分散问题. (That's the whole point of that hierarchical workflow I gave you.)
+```
+
+### S3·M8 [V] — 2026-06-14
+```
+这么一看，是不是就有很多固定的、成块的工作流程，是可以refactor出来的？需要refactor的不一定只是代码呀，也可能是你的工作流程本身
+```
+
+### S3·M9 [V] — 2026-06-14
+[with screenshot IMG_1979 showing live site completely blank — no tabs, no cards, only header + search + footer]
+```
+你确定哦？是不是live emulator还是太简单机械？是不是应该设计一个专门的agent？
+```

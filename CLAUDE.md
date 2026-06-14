@@ -37,12 +37,43 @@ for branch in ['main', 'claude/parquet-ndjson-export-nyz7ia']:
 ```
 - Payload ~67KB, well under 700KB limit. On HTTP 4xx, retry with exponential backoff.
 
-### BLOCK C — VERIFY (sub-agent, run after every push)
-Launch a VERIFY sub-agent that:
-1. `sleep 120` (GitHub Pages deploy window)
-2. WebFetch the live URL, check identifiers present and file > 30KB
-3. Fetch `data/CMT-Benchmark.ndjson.gz.b64`, confirm HTTP 200
-4. Report PASS/FAIL table
+### BLOCK C — VERIFY (Playwright headless Chromium, run after every push)
+**Do NOT use WebFetch** — it only checks HTML source, not JS execution; it gave false-positives.
+Use Playwright to actually execute the page in Chromium:
+
+```bash
+# Check deployment is live (new Last-Modified):
+python3 -c "
+import urllib.request
+r = urllib.request.urlopen('https://yulinl2.github.io/ai4statmath-benchmarks/', timeout=15)
+print('Last-Modified:', r.headers.get('last-modified'))
+print('Content-Length:', r.headers.get('content-length'))
+"
+# Then run Playwright (wait for deploy; Pages takes ~2 min):
+node /tmp/verify_live3.js
+```
+
+`/tmp/verify_live3.js` template:
+```javascript
+const { chromium } = require('/opt/node22/lib/node_modules/playwright');
+(async () => {
+  const browser = await chromium.launch({
+    executablePath: '/opt/pw-browsers/chromium-1223/chrome-linux64/chrome',
+    args: ['--no-sandbox', '--disable-dev-shm-usage']
+  });
+  const page = await browser.newContext({ ignoreHTTPSErrors: true }).then(c => c.newPage());
+  const errors = [];
+  page.on('pageerror', e => errors.push(e.message));
+  await page.goto('https://yulinl2.github.io/ai4statmath-benchmarks/', { waitUntil: 'networkidle', timeout: 30000 });
+  await page.waitForTimeout(3000);
+  const tabs  = await page.$$eval('.tab', els => els.length);
+  const cards = await page.$$eval('.card', els => els.length);
+  const hasPT = await page.evaluate(() => typeof prepTex === 'function');
+  console.log(JSON.stringify({ tabs, cards, hasPrepTex: hasPT, errors }, null, 2));
+  await browser.close();
+})().catch(e => { console.error(e.message); process.exit(1); });
+```
+Expected: `tabs: 7, cards: 30, hasPrepTex: true, errors: []`
 
 ### BLOCK D — DOCUMENT
 Append new user messages to `ai4sm-docs/USER_MESSAGES.md` verbatim.
