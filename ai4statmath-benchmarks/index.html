@@ -505,14 +505,13 @@ function tag(v,cls){return v?[{l:String(v),c:cls}]:[]}
 function _jsq(s){return String(s).replace(/\\/g,'\\\\').replace(/'/g,"\\'")}
 
 // ── LATEX PREPROCESS ──────────────────────────────────────────────────────────
-// Wraps bare display-math environments in \[...\] so KaTeX auto-render can find
-// them. Already-delimited math ($$...$$, \[...\]) is left untouched via the
-// alternation: group 1 matches and returns unchanged; group 2 matches and wraps.
-const _DISP_ENV='(?:equation|align|gather|multline|flalign)\\*?';
-const _prepRe=new RegExp(
-  `(\\$\\$[\\s\\S]*?\\$\\$|\\\\\\[[\\s\\S]*?\\\\\\])|(\\\\begin\\{${_DISP_ENV}\\}[\\s\\S]*?\\\\end\\{${_DISP_ENV}\\})`,
-  'g');
-function prepTex(s){return s.replace(_prepRe,(m,delim)=>delim?m:`\\[\n${m}\n\\]`)}
+// Wraps bare display-math environments in \[...\] so KaTeX auto-render finds them.
+// Group 1 (already-delimited) is returned unchanged; group 2 (bare env) gets wrapped.
+function prepTex(s){
+  return String(s).replace(
+    /(\$\$[\s\S]*?\$\$|\\\[[\s\S]*?\\\])|(\\begin\{(?:equation|align|gather|multline|flalign)[*]?\}[\s\S]*?\\end\{(?:equation|align|gather|multline|flalign)[*]?\})/g,
+    function(m,d){return d?m:'\\[\n'+m+'\n\\]';});
+}
 
 // ── STATE ────────────────────────────────────────────────────────────────────
 const S={tab:'CMT-Benchmark',bkTab:false,q:'',filt:{},sort:'default',cmp:false,
