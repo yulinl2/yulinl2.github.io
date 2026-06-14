@@ -367,7 +367,7 @@ const DS = [
     sol: r => r.native?.solution_excerpt,
     tags: r => [...tag(r.native?.question_type?.replace(/_/g,' '),''), ...tag(r.native?.subset!=='main'?r.native?.subset:null,'dm')],
     filters: [{key:'question_type',label:'Type',get:r=>r.native?.question_type},{key:'subset',label:'Subset',get:r=>r.native?.subset}],
-    metaPreview:['answer_type','subset']
+    metaPreview:['answer_type']
   },
   { id:'MathTrap-public', label:'MathTrap', count:208, color:'#f97316',
     desc:'208 math problems designed with subtle logical traps — exposes LLM reasoning failures.',
@@ -376,7 +376,7 @@ const DS = [
     sol: r => r.native?.human_annotation,
     tags: r => { const role=r.native?.triplet_role; const cls=role==='Original'?'ro':role==='Trap'?'rt':'rh'; return [...tag(role,cls),...tag(r.native?.trap_category,'')]; },
     filters: [{key:'triplet_role',label:'Role',get:r=>r.native?.triplet_role},{key:'trap_category',label:'Category',get:r=>r.native?.trap_category}],
-    metaPreview:['trap_category']
+    metaPreview:['source_dataset']
   },
   { id:'PRBench', label:'PRBench', count:1100, color:'#14b8a6',
     desc:'1,100 expert-level professional-reasoning problems in finance, economics, and regulatory domains.',
@@ -385,7 +385,7 @@ const DS = [
     sol: r => null,
     tags: r => [...tag(r.native?.field,''),...(r.native?.is_hard?[{l:'Hard',c:'dh'}]:[])],
     filters: [{key:'field',label:'Field',get:r=>r.native?.field},{key:'is_hard',label:'Difficulty',get:r=>r.native?.is_hard?'Hard':'Standard'}],
-    metaPreview:['source','category']
+    metaPreview:['domain','topic']
   },
   { id:'StatEval-public', label:'StatEval', count:600, color:'#6366f1',
     desc:'600 statistics & ML problems across foundational (undergrad) and research (grad+) tiers.',
@@ -394,7 +394,7 @@ const DS = [
     sol: r => r.native?.solution_excerpt,
     tags: r => [...tag(r.native?.tier,r.native?.tier==='research'?'dx':''),...tag(r.native?.subject,'')],
     filters: [{key:'tier',label:'Tier',get:r=>r.native?.tier},{key:'level',label:'Level',get:r=>r.native?.level},{key:'subject',label:'Subject',get:r=>r.native?.subject}],
-    metaPreview:['level','topic']
+    metaPreview:['level','subtype']
   },
   { id:'StatQA-mini', label:'StatQA★', count:1158, color:'#ec4899',
     desc:'1,158 real-dataset statistical analysis QA pairs (mini split) — tests practical data analysis skills.',
@@ -403,7 +403,7 @@ const DS = [
     sol: r => null,
     tags: r => [...tag(r.native?.difficulty,r.native?.difficulty==='easy'?'de':'dh'),...tag(r.native?.task,'')],
     filters: [{key:'difficulty',label:'Difficulty',get:r=>r.native?.difficulty},{key:'task',label:'Task',get:r=>r.native?.task}],
-    metaPreview:['dataset_name','task']
+    metaPreview:['dataset_name']
   }
 ];
 function tag(v,cls){return v?[{l:String(v),c:cls}]:[]}
@@ -764,9 +764,9 @@ function togTheme(){
 // ── QUESTION NAV ──────────────────────────────────────────────────────────────
 function _cards(){return document.querySelectorAll('#cc .card')}
 function fnFirst(){const cs=_cards();if(cs.length){S.focused=0;cs[0].scrollIntoView({behavior:'smooth',block:'start'});cs[0].focus()}}
-function fnLast(){const cs=_cards();if(cs.length){const n=cs.length-1;S.focused=n;cs[n].scrollIntoView({behavior:'smooth',block:'nearest'});cs[n].focus()}}
-function fnPrevQ(){const cs=_cards();if(!cs.length) return;const p=Math.max((S.focused<0?0:S.focused)-1,0);S.focused=p;cs[p].scrollIntoView({behavior:'smooth',block:'nearest'});cs[p].focus()}
-function fnNextQ(){const cs=_cards();if(!cs.length) return;const n=Math.min((S.focused<0?-1:S.focused)+1,cs.length-1);S.focused=n;cs[n].scrollIntoView({behavior:'smooth',block:'nearest'});cs[n].focus()}
+function fnLast(){const cs=_cards();if(cs.length){const n=cs.length-1;S.focused=n;cs[n].scrollIntoView({behavior:'smooth',block:'center'});cs[n].focus({preventScroll:true})}}
+function fnPrevQ(){const cs=_cards();if(!cs.length) return;const p=Math.max((S.focused<0?0:S.focused)-1,0);S.focused=p;cs[p].scrollIntoView({behavior:'smooth',block:'center'});cs[p].focus({preventScroll:true})}
+function fnNextQ(){const cs=_cards();if(!cs.length) return;const n=Math.min((S.focused<0?-1:S.focused)+1,cs.length-1);S.focused=n;cs[n].scrollIntoView({behavior:'smooth',block:'center'});cs[n].focus({preventScroll:true})}
 
 // ── FLOATING NAV ──────────────────────────────────────────────────────────────
 function renderNav(total,pages){
