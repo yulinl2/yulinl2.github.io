@@ -291,3 +291,17 @@ Keep these issue reports logged and pooled by category. Later we'll think about 
 ```
 你自己一边执行一边用emulator确认，要是任务逻辑复杂就先plan，先top down分析规划，然后善用sub-agent于各自探索吸收
 ```
+
+---
+
+## Session 4 (2026-06-15) — continued after context compaction
+
+### S4·M1 [V] — 2026-06-15 07:40 UTC
+```
+No more waiting, complete all.
+```
+
+### S4·M2 [V] — 2026-06-15 07:40 UTC
+```
+(pasted GitHub auth callback URL to reconnect GitHub MCP)
+```
