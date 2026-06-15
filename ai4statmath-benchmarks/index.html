@@ -335,6 +335,15 @@ footer{border-top:1px solid var(--bd);padding:18px 14px;text-align:center;
        font-size:.77rem;color:var(--mu);max-width:var(--w);margin:30px auto 0}
 footer a{color:var(--mu);text-decoration:underline;text-underline-offset:2px}
 
+/* ── ORIGINAL PROBLEM CONTEXT (MathTrap — shows source stem alongside trap) */
+.cctx{margin:4px 11px 8px;border:1px solid var(--bd);border-radius:var(--rs);
+      overflow:hidden;border-left:3px solid color-mix(in srgb,var(--cc,#f97316) 38%,var(--bd))}
+.ctxhdr{padding:5px 11px;font-size:.72rem;font-weight:700;color:var(--mu);
+        background:var(--sf2);display:flex;align-items:center;gap:5px;letter-spacing:.02em}
+.ctxsrc{font-weight:400;opacity:.6;font-size:.68rem}
+.ctxbdy{padding:8px 11px 10px;font-size:.84rem;line-height:1.7;
+        white-space:pre-wrap;word-break:break-word;border-top:1px solid var(--bd)}
+
 /* ── KATEX */
 .katex-display{overflow-x:auto;padding:2px 0;-webkit-overflow-scrolling:touch}
 
@@ -401,14 +410,18 @@ const DS = [
     filters: [{key:'type',label:'Type',get:r=>r.native?.type}],
     filterDescriptions: {
       type: {
-        'DMRG':'Density Matrix Renormalization Group — variational numerical method for strongly-correlated 1D/2D quantum systems',
-        'ED':'Exact Diagonalization — full numerical diagonalization of the Hamiltonian; exponential cost, exact result',
-        'HF':'Hartree-Fock — self-consistent mean-field approximation for many-electron wave functions',
-        'QMC':'Quantum Monte Carlo — stochastic methods (VMC, DQMC, AFQMC) for quantum many-body systems',
-        'DMET':'Density Matrix Embedding Theory — partitions lattice into impurity + bath, solved at high accuracy',
-        'DFT':'Density Functional Theory — electronic structure from the electron density via exchange-correlation functionals',
-        'CCSD':'Coupled Cluster Singles and Doubles — systematically improvable post-HF method; gold standard for molecules',
-        'GW':'GW approximation — many-body perturbation theory for quasiparticle energies and band gaps',
+        'DMRG':'Density Matrix Renormalization Group — iteratively optimizes a tensor-network (MPS) ansatz; the standard method for 1D strongly-correlated quantum systems',
+        'ED':'Exact Diagonalization — numerically diagonalizes the full Hamiltonian matrix; gives exact eigenvalues but cost grows exponentially with system size',
+        'HF':'Hartree-Fock — each electron moves in the average field of all others (mean-field); the baseline approximation for many-electron systems',
+        'QMC':'Quantum Monte Carlo — stochastic sampling of quantum mechanical expectation values (VMC, DQMC, AFQMC); scales polynomially but has sign-problem issues',
+        'DMET':'Density Matrix Embedding Theory — embeds a small impurity cluster in a self-consistent bath; captures local correlations at high accuracy',
+        'DFT':'Density Functional Theory — computes ground-state electron density via exchange-correlation functionals; the workhorse of computational materials science',
+        'CCSD':'Coupled Cluster Singles and Doubles — systematically improvable post-Hartree-Fock method; considered near-exact for small molecules',
+        'GW':'GW approximation — many-body perturbation theory for quasiparticle energies and band gaps in solids',
+        'PEPS':'Projected Entangled Pair States — 2D tensor network that extends DMRG/MPS to two-dimensional lattice systems',
+        'SM':'Slave-particle methods (slave-boson, slave-spin) — decompose correlated electrons into auxiliary particles to enable mean-field treatment of Mott physics',
+        'VMC':'Variational Monte Carlo — stochastically minimizes the energy of a parameterized trial wave function; flexible and sign-problem-free',
+        'Other':'Computational or analytical methods not listed in the main categories above',
       }
     },
     metaPreview:[]
@@ -422,17 +435,23 @@ const DS = [
     filters: [{key:'question_type',label:'Type',get:r=>r.native?.question_type},{key:'subset',label:'Subset',get:r=>r.native?.subset}],
     filterDescriptions: {
       question_type: {
-        'scaling_analysis':'Determine how a quantity scales with a parameter (e.g. power-law) without solving exactly',
-        'nondimensionalization':'Rescale variables to eliminate units and identify the key dimensionless governing parameters',
-        'approximation':'Derive an analytical approximation valid in some limit (e.g. small-angle, large-N)',
-        'integration':'Evaluate a definite or indefinite integral, often requiring substitution or special functions',
-        'ODE':'Ordinary differential equation — find exact or approximate solutions to ODEs or systems thereof',
-        'PDE':'Partial differential equation — boundary/initial value problems for PDEs',
-        'series_expansion':'Expand a function as a power series (Taylor, Laurent, asymptotic) and identify leading terms',
+        'ODE':'Ordinary differential equation — find exact or approximate closed-form solutions to first- or higher-order ODEs',
+        'integral':'Evaluate a definite or indefinite integral, often requiring substitution, integration by parts, or special functions',
+        'scaling_analysis':'Determine how a quantity scales with a parameter (power-law exponent) without solving the full problem exactly',
+        'nondimensionalization':'Rescale variables to remove physical units and identify the key dimensionless groups that govern the problem',
+        'nondimensionalization_symbolic':'Identify and express dimensionless groups symbolically by rescaling variables with unknown scale factors',
+        'nondimensionalization_numeric':'Compute numerical values of dimensionless parameters after rescaling variables in a concrete system',
+        'approximation':'Derive an analytical approximation valid in a specified limit (e.g. small-angle, large-N, weak coupling)',
+        'polynomial_roots':'Find the roots of a polynomial equation using analytical formulas or systematic numerical methods',
+        'polynomial_roots_corrections':'Correct or refine a polynomial root-finding result, often adding perturbative or numerical corrections',
+        'series_expansion':'Expand a function as a power series (Taylor, Laurent, asymptotic) and identify the dominant terms',
+        'word_problems':'Applied word problems requiring mathematical modeling — set up the equations from a verbal description',
+        'PDE':'Partial differential equation — solve boundary- or initial-value problems for PDEs using separation of variables or transforms',
       },
       subset: {
-        'main':'Primary benchmark split used in the original paper',
-        'supplementary':'Extended problems beyond the main split',
+        'main':'Primary benchmark split used in the original HARDMath paper (1,060 problems)',
+        'mini':'Smaller curated split (366 problems) for faster evaluation',
+        'word_problems':'Applied word problems drawn from real-world contexts',
       }
     },
     metaPreview:['question_type']
@@ -442,13 +461,27 @@ const DS = [
     arxiv:'2501.04357', hf:'AI4StatMath/MathTrap',
     ans: r => r.native?.original_solution,
     sol: r => r.native?.human_annotation,
+    solLabel: r => 'Trap Analysis',
+    context: r => {
+      const role=r.native?.triplet_role;
+      if(role!=='Trap'&&role!=='Hint') return null;
+      const orig=r.native?.original_problem_text; if(!orig) return null;
+      return {src:r.native?.source_dataset||'',text:orig};
+    },
     tags: r => { const role=r.native?.triplet_role; const cls=role==='Original'?'ro':role==='Trap'?'rt':'rh'; return [...tag(role,cls),...tag(r.native?.trap_category,'')]; },
     filters: [{key:'triplet_role',label:'Role',get:r=>r.native?.triplet_role},{key:'trap_category',label:'Category',get:r=>r.native?.trap_category}],
     filterDescriptions: {
       triplet_role: {
-        'Original':'The unmodified source problem — used as the baseline for trap construction',
-        'Trap':'Version with a subtle logical error or misleading condition inserted to fool the model',
-        'Hint':'The trap version accompanied by a corrective hint guiding toward the right approach',
+        'Original':'The unmodified source problem — baseline before any trap is introduced',
+        'Trap':'The source problem modified with a subtle logical error or contradictory condition designed to mislead the solver',
+        'Hint':'The trap version accompanied by a corrective hint that guides toward the right approach',
+      },
+      trap_category: {
+        'Direct Contradiction':'A new constraint is added that directly conflicts with an existing condition (e.g. two incompatible numerical values)',
+        'Indirect Contradiction':'A modified condition creates an implicit contradiction that requires careful multi-step reasoning to detect',
+        'Concept Undefined':'A key term or object referenced in the problem is left undefined or ambiguous, making a unique solution impossible',
+        'Missing Condition':'A necessary condition for a unique solution is omitted — the problem is under-determined',
+        'Violating Common Sense':'A stated condition is physically or practically impossible in any realistic setting',
       }
     },
     metaPreview:['triplet_role']
@@ -461,9 +494,13 @@ const DS = [
     tags: r => [...tag(r.native?.field,''),...(r.native?.is_hard?[{l:'Hard',c:'dh'}]:[])],
     filters: [{key:'field',label:'Field',get:r=>r.native?.field},{key:'is_hard',label:'Difficulty',get:r=>r.native?.is_hard?'Hard':'Standard'}],
     filterDescriptions: {
+      field: {
+        'Finance':'Problems in financial analysis, valuation, risk assessment, and regulatory compliance',
+        'Legal':'Legal reasoning, statutory interpretation, and regulatory analysis problems',
+      },
       is_hard: {
-        'Hard':'Problems that require multi-step expert reasoning and are harder than typical certification exams',
-        'Standard':'Standard-difficulty problems at expert professional level',
+        'Hard':'Multi-step expert reasoning problems, harder than typical professional certification exams',
+        'Standard':'Standard expert-level difficulty — appropriate for a practicing professional in the field',
       }
     },
     metaPreview:['field']
@@ -477,13 +514,17 @@ const DS = [
     filters: [{key:'tier',label:'Tier',get:r=>r.native?.tier},{key:'level',label:'Level',get:r=>r.native?.level},{key:'subject',label:'Subject',get:r=>r.native?.subject}],
     filterDescriptions: {
       tier: {
-        'research':'Graduate-level and research-grade statistics problems requiring advanced methods',
-        'standard':'Undergraduate foundational statistics — probability, inference, regression basics',
+        'foundational':'Undergraduate-level foundational statistics — probability, inference, regression, and core methods',
+        'research':'Graduate-level and research-grade problems requiring advanced statistical theory or methodology',
       },
       level: {
-        'easy':'Straightforward application of a single concept or formula',
-        'medium':'Requires combining concepts or multi-step derivations',
-        'hard':'Demands deep conceptual understanding and non-routine problem-solving',
+        'undergraduate':'Problems solvable with standard undergraduate statistics coursework',
+        'graduate':'Problems that require graduate-level theory or techniques beyond a standard undergraduate curriculum',
+      },
+      subject: {
+        'machine learning':'Statistical methods applied to learning algorithms: model selection, generalization, bias-variance tradeoff',
+        'probability':'Probability theory, distributions, combinatorics, conditional probability, and stochastic processes',
+        'statistic':'Classical statistical inference: estimation, hypothesis testing, confidence intervals, regression',
       }
     },
     metaPreview:['tier','level']
@@ -497,8 +538,15 @@ const DS = [
     filters: [{key:'difficulty',label:'Difficulty',get:r=>r.native?.difficulty},{key:'task',label:'Task',get:r=>r.native?.task}],
     filterDescriptions: {
       difficulty: {
-        'easy':'Single-step analysis task on a clean dataset with clear instructions',
-        'hard':'Multi-step or open-ended analysis; requires choosing the right method from context',
+        'easy':'Single-step analysis task on a clean dataset with explicit instructions',
+        'hard':'Multi-step or open-ended analysis requiring judgment about which statistical method to apply',
+      },
+      task: {
+        'Contingency Table Test':'Test for independence or association between two categorical variables using a chi-square test',
+        'Correlation Analysis':'Measure the strength and direction of a linear relationship between two numerical variables (Pearson r, Spearman ρ)',
+        'Descriptive Statistics':'Compute summary statistics: mean, median, variance, standard deviation, quartiles, skewness',
+        'Distribution Compliance Test':'Test whether a sample follows a specified probability distribution (e.g., Kolmogorov-Smirnov, Shapiro-Wilk normality test)',
+        'Variance Test':'Test for equality of variances across groups (e.g., Levene\'s test, Bartlett\'s test, F-test)',
       }
     },
     metaPreview:['task']
@@ -661,10 +709,11 @@ function renderFB(d,rows){
       <span class="flbl"><span class="filtip" title="${esc(orAndTip)}">ⓘ</span> ${esc(f.label)}:</span>`;
     vals.forEach(v=>{
       const sv=String(v);
+      const displaySv=sv.replace(/_/g,' ');
       const cnt=rows.filter(r=>{const rv=f.get(r);return rv!=null&&String(rv)===sv}).length;
       const desc=d.filterDescriptions?.[f.key]?.[sv];
       const tip=desc?`<span class="filtip" style="pointer-events:none">ⓘ</span> `:'';
-      h+=`<button class="chip${fs.has(sv)?' on':''}" onclick="togFilt('${_jsq(f.key)}','${_jsq(sv)}')"${desc?` title="${esc(desc)}"`:''} >${tip}${esc(sv)}<span class="chipc">${cnt}</span></button>`;
+      h+=`<button class="chip${fs.has(sv)?' on':''}" onclick="togFilt('${_jsq(f.key)}','${_jsq(sv)}')"${desc?` title="${esc(desc)}"`:''} >${tip}${esc(displaySv)}<span class="chipc">${cnt}</span></button>`;
     });
     h+='</div>';
   });
@@ -743,7 +792,7 @@ function metaPreviewText(row,d){
   return (d.metaPreview||[])
     .map(k=>n[k])
     .filter(v=>v!=null&&String(v).trim().length>0&&String(v).length<60)
-    .slice(0,2).map(v=>String(v)).join(' · ');
+    .slice(0,2).map(v=>String(v).replace(/_/g,' ')).join(' · ');
 }
 
 function cardHTML(row,d,idx){
@@ -755,6 +804,8 @@ function cardHTML(row,d,idx){
   const stemTex=prepTex(stem);  // wrap bare display envs for KaTeX
   const answ=d.ans(row);
   const soln=d.sol(row);
+  const solLabel=d.solLabel?d.solLabel(row):'Solution';
+  const ctx=d.context?d.context(row):null;
   const meta=metaPreviewText(row,d);
   return `<div class="card" style="--cc:${d.color}" id="c${idx}" tabindex="0" data-id="${esc(bid)}" data-idx="${idx}">
   <div class="ch" onclick="expCard(${idx})">
@@ -767,7 +818,10 @@ function cardHTML(row,d,idx){
   <div class="cbdy" onclick="expCard(${idx})"><div class="cprev">${esc(prev)}${prev.length<stem.length?'…':''}</div></div>
   <div class="cexp">
     <div class="cstem katex-c" onclick="expCard(${idx})">${esc(stemTex)}</div>
-    ${soln?spoilerHTML('Solution',soln):''}
+    ${ctx?`<div class="cctx">
+      <div class="ctxhdr">◈ Original Problem${ctx.src?` <span class="ctxsrc">· from ${esc(ctx.src)}</span>`:''}
+      </div><div class="ctxbdy katex-c">${esc(prepTex(ctx.text))}</div></div>`:''}
+    ${soln?spoilerHTML(solLabel,soln):''}
     <div class="mac" id="m${idx}">
       <button class="mtog" onclick="togMeta(${idx})">▸ Metadata</button>
       ${metaHTML(row,d)}
