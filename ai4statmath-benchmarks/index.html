@@ -46,7 +46,7 @@ button{cursor:pointer;font-family:inherit;touch-action:manipulation}
 a{color:inherit}
 
 /* ══ STICKY CHROME (one unit — no gap possible) ══════════════════════════════ */
-#sticky{position:sticky;top:0;z-index:100;background:var(--bg)}
+#sticky{position:sticky;top:0;z-index:100;background:var(--bg);box-shadow:0 1px 0 var(--bd)}
 #hdr{display:flex;align-items:center;gap:8px;padding:8px 14px;
      border-bottom:1px solid var(--bd);backdrop-filter:blur(12px)}
 #logo{font-weight:700;font-size:.95rem;flex:1;min-width:0;
@@ -68,7 +68,7 @@ a{color:inherit}
 .tab:hover{color:var(--tx)}.tab.on{color:var(--tx);border-bottom-color:var(--tc)}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--tc);flex-shrink:0}
 .cnt{font-size:.7rem;background:var(--sf2);padding:1px 6px;border-radius:10px;color:var(--mu)}
-#sb{padding:5px 14px 4px;border-bottom:1px solid var(--bd)}
+#sb{padding:5px 14px 4px}
 #sw{position:relative;margin-bottom:3px}
 #sw svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);
         color:var(--mu);width:14px;height:14px;pointer-events:none}
@@ -84,16 +84,17 @@ a{color:inherit}
 #sl strong{color:var(--tx)}
 
 /* ══ MAIN ══════════════════════════════════════════════════════════════════ */
-#main{max-width:var(--w);margin:0 auto;padding:8px 14px 12px}
+#main{max-width:var(--w);margin:0 auto;padding:8px 14px 12px;touch-action:manipulation}
 
 /* ── HERO — full-bleed bg (left/right/top flush), content max-width aligned */
 #bnr{padding:0;border-bottom:1px solid var(--bd);margin-bottom:0;
-     position:relative;overflow:hidden;
+     width:100%;position:relative;overflow:hidden;
      background:color-mix(in srgb,var(--ac,#7c3aed) 4%,var(--bg))}
 /* content column: same 14px side padding as #main so title aligns with cards */
 .bnrc{max-width:var(--w);margin:0 auto;padding:20px 14px 20px;position:relative}
-.bwm{position:absolute;right:-10px;top:-14px;font-size:118px;line-height:1;
-     opacity:.05;pointer-events:none;user-select:none;color:var(--ac,#7c3aed);
+.bwm{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+     font-size:160px;line-height:1;
+     opacity:.045;pointer-events:none;user-select:none;color:var(--ac,#7c3aed);
      font-style:normal;font-weight:900;
      font-family:Georgia,'Times New Roman',serif;transition:color var(--t)}
 .bt{font-size:1.35rem;font-weight:800;letter-spacing:-.025em;line-height:1.2;
@@ -141,7 +142,7 @@ select.ss{padding:4px 9px;background:var(--sf);border:1px solid var(--bd);
 .fsp{flex:1}
 
 /* ── CARDS GRID */
-#cc{display:grid;grid-template-columns:1fr;gap:3px}
+#cc{display:grid;grid-template-columns:1fr;gap:3px;touch-action:manipulation}
 @media(min-width:700px){#cc{grid-template-columns:1fr 1fr}}
 @media(min-width:1100px){#cc{grid-template-columns:1fr 1fr 1fr}}
 
@@ -157,6 +158,7 @@ select.ss{padding:4px 9px;background:var(--sf);border:1px solid var(--bd);
       scroll-margin-top:calc(var(--scroll-top) + 14px);scroll-margin-bottom:80px;
       transition:opacity var(--ts) var(--e),box-shadow var(--t) var(--e)}
 .card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+              border-radius:3px 0 0 3px;
               background:color-mix(in srgb,var(--cc,#7c3aed) 70%,transparent);
               pointer-events:none}
 #cc>.card:nth-child(even){background:var(--sf2)}
@@ -340,8 +342,8 @@ footer a{color:var(--mu);text-decoration:underline;text-underline-offset:2px}
 @keyframes fadeSlideIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 #cc.anim{animation:fadeSlideIn .35s var(--e) both}
 /* ── FLOATING NAV BOUNCE (end-of-list feedback) */
-@keyframes fnbBounce{0%,100%{transform:scale(1)}35%{transform:scale(.76)}68%{transform:scale(1.14)}}
-.fnb.bnc{animation:fnbBounce .3s var(--e)}
+@keyframes fnbBounce{0%{transform:scale(1)}15%{transform:scale(.7)}42%{transform:scale(1.18)}62%{transform:scale(.93)}80%{transform:scale(1.07)}100%{transform:scale(1)}}
+.fnb.bnc{animation:fnbBounce .48s var(--eo)}
 </style>
 </head>
 <body>
@@ -433,7 +435,7 @@ const DS = [
         'supplementary':'Extended problems beyond the main split',
       }
     },
-    metaPreview:['answer_type']
+    metaPreview:['question_type']
   },
   { id:'MathTrap-public', label:'MathTrap', count:208, color:'#f97316', symbol:'≠',
     desc:'208 math problems designed with subtle logical traps — exposes LLM reasoning failures.',
@@ -449,7 +451,7 @@ const DS = [
         'Hint':'The trap version accompanied by a corrective hint guiding toward the right approach',
       }
     },
-    metaPreview:['source_dataset']
+    metaPreview:['triplet_role']
   },
   { id:'PRBench', label:'PRBench', count:1100, color:'#14b8a6', symbol:'⚖',
     desc:'1,100 expert-level professional-reasoning problems in finance, economics, and regulatory domains.',
@@ -464,7 +466,7 @@ const DS = [
         'Standard':'Standard-difficulty problems at expert professional level',
       }
     },
-    metaPreview:['domain','topic']
+    metaPreview:['field']
   },
   { id:'StatEval-public', label:'StatEval', count:600, color:'#6366f1', symbol:'σ',
     desc:'600 statistics & ML problems across foundational (undergrad) and research (grad+) tiers.',
@@ -484,7 +486,7 @@ const DS = [
         'hard':'Demands deep conceptual understanding and non-routine problem-solving',
       }
     },
-    metaPreview:['level','subtype']
+    metaPreview:['tier','level']
   },
   { id:'StatQA-mini', label:'StatQA★', count:1158, color:'#ec4899', symbol:'χ',
     desc:'1,158 real-dataset statistical analysis QA pairs (mini split) — tests practical data analysis skills.',
@@ -499,7 +501,7 @@ const DS = [
         'hard':'Multi-step or open-ended analysis; requires choosing the right method from context',
       }
     },
-    metaPreview:['dataset_name']
+    metaPreview:['task']
   }
 ];
 function tag(v,cls){return v?[{l:String(v),c:cls}]:[]}
@@ -526,7 +528,8 @@ function prepTex(s){
 
 // ── STATE ────────────────────────────────────────────────────────────────────
 const S={tab:'CMT-Benchmark',bkTab:false,q:'',filt:{},sort:'default',cmp:false,
-         page:1,pageSize:30,focused:-1,data:{},loading:{},errors:{},savedPage:{}};
+         page:1,pageSize:30,focused:-1,data:{},loading:{},errors:{},savedPage:{},savedFilt:{}};
+function cloneFilt(f){const c={};Object.entries(f).forEach(([k,vs])=>{c[k]=new Set(vs)});return c;}
 
 // ── BOOKMARKS ─────────────────────────────────────────────────────────────────
 function getBMs(){try{return JSON.parse(localStorage.getItem('ai4sm_bm')||'[]')}catch{return[]}}
@@ -631,6 +634,7 @@ function renderBanner(d){
   document.documentElement.style.setProperty('--ac',d.color);
   el.style.backgroundImage=getBgPattern(d);
   el.style.backgroundRepeat='repeat';
+  el.style.backgroundPosition='0 0';
   el.innerHTML=`${d.symbol?`<span class="bwm" aria-hidden="true">${d.symbol}</span>`:''}
     <div class="bnrc">
       <div class="bt">${d.label}</div>
@@ -700,7 +704,8 @@ function applyFS(rows,d){
 
 // ── RENDER: CARDS ─────────────────────────────────────────────────────────────
 function renderCards(d,rows,animate){
-  if(animate){const cc=document.getElementById('cc');cc.classList.remove('anim');void cc.offsetWidth;cc.classList.add('anim');}
+  const cc=document.getElementById('cc');
+  if(animate){cc.innerHTML='';cc.classList.remove('anim');void cc.offsetWidth;cc.classList.add('anim');}
   const filtered=applyFS(rows,d);
   const total=filtered.length;
   const allTotal=rows.length;
@@ -821,9 +826,9 @@ function renderBkTab(){
 
 // ── EVENTS ────────────────────────────────────────────────────────────────────
 async function switchTab(id){
-  // Remember current page before leaving this bench
-  if(!S.bkTab&&S.tab!==id&&S.data[S.tab]) S.savedPage[S.tab]=S.page;
-  S.tab=id;S.bkTab=false;S.page=S.savedPage[id]||1;S.filt={};S.focused=-1;
+  // Remember page and filter state before leaving this bench
+  if(!S.bkTab&&S.tab!==id&&S.data[S.tab]){S.savedPage[S.tab]=S.page;S.savedFilt[S.tab]=cloneFilt(S.filt);}
+  S.tab=id;S.bkTab=false;S.page=S.savedPage[id]||1;S.filt=cloneFilt(S.savedFilt[id]||{});S.focused=-1;
   document.getElementById('cc').classList.remove('has-exp');
   renderTabs();
   const d=DS.find(x=>x.id===id);
@@ -961,10 +966,13 @@ function _setNavFocus(cs,idx,block){
   document.querySelectorAll('#cc .card.exp').forEach(c=>c.classList.remove('exp'));
   document.getElementById('cc').classList.remove('has-exp');
   S.focused=idx;
-  cs[idx].classList.add('nav-focus');
   if(block==='top') window.scrollTo({top:0,behavior:'smooth'});
   else cs[idx].scrollIntoView({behavior:'smooth',block:block||'center'});
-  cs[idx].focus({preventScroll:true});
+  // Defer highlight by one frame so scroll starts before the card lights up
+  requestAnimationFrame(()=>{
+    cs[idx].classList.add('nav-focus');
+    cs[idx].focus({preventScroll:true});
+  });
 }
 function fnFirst(){const cs=_cards();if(cs.length) _setNavFocus(cs,0,'top')}
 function fnLast(){const cs=_cards();if(cs.length) _setNavFocus(cs,cs.length-1,'end')}
