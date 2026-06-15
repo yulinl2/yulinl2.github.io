@@ -122,6 +122,45 @@ vision audit.
 
 The collapsed preview (`stem.slice(0,350)`) is fundamentally unsafe to feed into KaTeX: any cut inside a `$…$` expression produces corrupted glyph output. The correct invariant is: **KaTeX only fires on complete, unspliced text nodes** — i.e. `.cstem` (full stem on expand), `.spb` (spoiler on reveal), `.ansb` (answer on toggle), and the modal. Raw-text preview with `-webkit-line-clamp` costs zero rendering and has zero risk of corruption. If math in the preview is desired in future, truncate at a safe boundary *before* the first `$` that would be cut; but this is lower priority than avoiding garbled output.
 
+---
+
+## 8. S4 session log (2026-06-15) — complete all remaining items
+
+### 8a. Batch 1 — All deferred open items (B-N2/N4/N5/F2/V1/V3/V4/V6, F-H2/H5, B-V2)
+
+All 41 tracked items resolved. Final emulator run: `pass:true, tabs:7, cards:30, chips:8, fnbs:6, errors:[]`.
+
+See Issue #32 (now closed) for the full resolution table.
+
+### 8b. Batch 2 — UX audit pass (Playwright multi-perspective)
+
+Playwright emulator run as: (1) mobile researcher, (2) undergrad student, (3) data auditor.
+
+Findings and fixes:
+
+| Finding | Fix | Verified |
+|---------|-----|---------|
+| MathTrap Trap/Hint cards show only the modified problem with zero original context | Added `.cctx` "◈ Original Problem · from {source}" section using `native.original_problem_text`; fires only for Trap/Hint role | ✅ hasCtx:true on 0_Trap |
+| Spoiler label "Solution" wrong for MathTrap — content is `human_annotation` (trap analysis) | Added `solLabel` function to DS registry; MathTrap returns 'Trap Analysis' | ✅ spoilerLabel confirmed |
+| HARDMath filter chips show raw `nondimensionalization_symbolic` with underscores | `renderFB`: `displaySv = sv.replace(/_/g,' ')` for display while raw value stays in filter logic | ✅ no underscores in chips |
+| `metaPreviewText` also shows underscored values in card header meta hint | `.map(v=>String(v).replace(/_/g,' '))` in `metaPreviewText` | ✅ |
+| StatEval filter descriptions keyed on 'standard'/'easy'/'medium'/'hard' — actual values are 'foundational'/'graduate'/'undergraduate' | Rewrote filterDescriptions with correct keys; all 7 StatEval chips now have ⓘ | ✅ all chips `hasTooltip:true` |
+| ~50% of chips across all datasets had no tooltip (no filterDescriptions entry) | Added complete descriptions for CMT (PEPS/SM/VMC/Other), HARDMath (all 12 types), MathTrap (trap_category), PRBench (Finance/Legal), StatEval (subject), StatQA (task) | ✅ StatQA: all 7 have tooltip |
+| CMT descriptions too technical for undergrad | Rewrote all to include plain-language "what it computes" alongside the acronym | ✅ |
+
+### Decision DL-10 — MathTrap context vs. inline triplet linking
+
+Option A: Cross-link triplet members at render time by ID prefix (0_Original ↔ 0_Trap).
+Option B: Use `native.original_problem_text` already present on ALL records.
+
+Chose B: zero cross-dataset join needed; always available even when filtered to Trap-only view; simpler template code. The original problem text is the only evidence needed for the dedup context — the user can compare trap stem vs. original stem directly in the same card.
+
+### Decision DL-11 — Chip label cleaning
+
+Chip values like `nondimensionalization_symbolic` are raw native field values stored as filter keys. Cleaning with `.replace(/_/g,' ')` applies only at the display layer; the raw value is still passed to `togFilt` so filter logic is unaffected. This maintains the invariant that displayed label ≠ stored key is fine as long as display is a deterministic transformation of the key.
+
+---
+
 ### Decision DL-9 — Swipe vs. scroll: block-not-delegate (G1 resolution)
 
 The swipe handler delegates only the `touchend` branch, but the gate must be set at `touchstart` (when the touch target is available). Walking to the first `scrollWidth > clientWidth` ancestor is the minimal detection: it fires for `.katex-display{overflow-x:auto}` when an equation is wider than its container, and for any future horizontally-scrollable element, without naming specific classes. The `+2` epsilon absorbs sub-pixel rounding without false-positives on non-scrollable content.
