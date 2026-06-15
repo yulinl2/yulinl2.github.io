@@ -207,9 +207,9 @@ select.ss{padding:4px 9px;background:var(--sf);border:1px solid var(--bd);
 /* collapsed: show cbdy (preview), hide cstem */
 .card:not(.exp) .cstem{display:none}
 .card:not(.exp) .cbdy{display:block}
-/* expanded: hide cbdy, show cstem */
+/* expanded: hide cbdy, fade stem in to reduce height-jump jarring */
 .card.exp .cbdy{display:none}
-.card.exp .cstem{display:block}
+.card.exp .cstem{display:block;animation:fadeSlideIn var(--t) var(--e) both}
 body.cmp .cbdy,.card.exp.cmp .cbdy{display:none!important}
 body.cmp .cexp,.card.exp.cmp .cstem{display:none!important}
 
