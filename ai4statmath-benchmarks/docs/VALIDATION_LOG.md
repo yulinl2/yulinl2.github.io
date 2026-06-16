@@ -164,3 +164,41 @@ Chip values like `nondimensionalization_symbolic` are raw native field values st
 ### Decision DL-9 — Swipe vs. scroll: block-not-delegate (G1 resolution)
 
 The swipe handler delegates only the `touchend` branch, but the gate must be set at `touchstart` (when the touch target is available). Walking to the first `scrollWidth > clientWidth` ancestor is the minimal detection: it fires for `.katex-display{overflow-x:auto}` when an equation is wider than its container, and for any future horizontally-scrollable element, without naming specific classes. The `+2` epsilon absorbs sub-pixel rounding without false-positives on non-scrollable content.
+
+---
+
+## 9. S4 self-audit — info accuracy pass (2026-06-16)
+
+### 9a. Audit method
+
+Python analysis of all `filterDescriptions` keys vs. actual chip values produced by `renderFB` (from live Playwright chip enumeration across all 6 tabs). Cross-checked dataset `desc` fields against actual question_type/subset chip counts.
+
+### 9b. Findings and fixes
+
+| Dataset | Issue | Fix | Status |
+|---------|-------|-----|--------|
+| CMT | filterDescriptions had 4 dead keys: DMET, DFT, CCSD, GW — none appear in actual chip set (8 chip values: DMRG/ED/HF/QMC/PEPS/SM/VMC/Other) | Removed dead keys from CMT filterDescriptions | ✅ |
+| HARDMath | `desc` said "scaling analysis" — scaling_analysis has 0 records in data | Rewrote desc: "ODEs, integrals, nondimensionalization, and polynomial root-finding" | ✅ |
+| HARDMath | filterDescriptions question_type had 6 dead keys: scaling_analysis, nondimensionalization (bare), approximation, series_expansion, word_problems, PDE — none appear as chips | Removed dead keys; kept: ODE/integral/nondim_symbolic/nondim_numeric/poly_roots/poly_roots_corrections | ✅ |
+| MathTrap | filterDescriptions triplet_role had 'Hint' — no Hint records exist in 208-item public release; context() also guarded for Hint role unnecessarily | Removed 'Hint' from filterDescriptions; removed Hint from context() guard (now `role!=='Trap'` only) | ✅ |
+| PRBench | `desc` said "finance, economics, and regulatory domains" — actual fields are Finance(600) + Legal(500) | Changed to "finance and legal domains" | ✅ |
+| PRBench | `is_hard` filter in `filters` array — always suppressed because all 1100 records have same is_hard value (renderFB skips groups with <2 unique values); is_hard tag also meaningless if uniform | Removed is_hard from filters, tags, and filterDescriptions | ✅ |
+
+### 9c. Post-fix emulator result
+
+```json
+{
+  "tabs": 7, "cards": 30, "hasPrepTex": true,
+  "prBench": { "hasIsHardFilter": false, "chips": ["Finance 600","Legal 500"] },
+  "hardMath": { "hasScalingChip": false, "chips": ["ODE","integral","nondim numeric","nondim symbolic","poly roots","poly roots corrections","main","mini","word problems"] },
+  "mathTrap": { "hasHintChip": false, "chips": ["Original","Trap","Concept Undefined","Direct Contradiction","Indirect Contradiction","Missing Condition","Violating Common Sense"] },
+  "cmt": { "hasDeadKeys": false },
+  "errors": []
+}
+```
+
+All accuracy issues resolved. Zero dead filterDescriptions keys. Zero factually-wrong desc fields.
+
+### Decision DL-12 — Dead filterDescriptions keys
+
+Dead keys (filterDescriptions entries with no matching chip) are actively misleading: if a tooltip appears in some future display mode, it would claim fields exist in the data that don't. The policy going forward: only include a filterDescriptions key when a corresponding chip *actually appears* in the current data. This is validated by the self-audit emulator run above.
