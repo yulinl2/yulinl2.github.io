@@ -414,10 +414,6 @@ const DS = [
         'ED':'Exact Diagonalization — numerically diagonalizes the full Hamiltonian matrix; gives exact eigenvalues but cost grows exponentially with system size',
         'HF':'Hartree-Fock — each electron moves in the average field of all others (mean-field); the baseline approximation for many-electron systems',
         'QMC':'Quantum Monte Carlo — stochastic sampling of quantum mechanical expectation values (VMC, DQMC, AFQMC); scales polynomially but has sign-problem issues',
-        'DMET':'Density Matrix Embedding Theory — embeds a small impurity cluster in a self-consistent bath; captures local correlations at high accuracy',
-        'DFT':'Density Functional Theory — computes ground-state electron density via exchange-correlation functionals; the workhorse of computational materials science',
-        'CCSD':'Coupled Cluster Singles and Doubles — systematically improvable post-Hartree-Fock method; considered near-exact for small molecules',
-        'GW':'GW approximation — many-body perturbation theory for quasiparticle energies and band gaps in solids',
         'PEPS':'Projected Entangled Pair States — 2D tensor network that extends DMRG/MPS to two-dimensional lattice systems',
         'SM':'Slave-particle methods (slave-boson, slave-spin) — decompose correlated electrons into auxiliary particles to enable mean-field treatment of Mott physics',
         'VMC':'Variational Monte Carlo — stochastically minimizes the energy of a parameterized trial wave function; flexible and sign-problem-free',
@@ -427,7 +423,7 @@ const DS = [
     metaPreview:[]
   },
   { id:'HARDMath', label:'HARDMath', count:1466, color:'#3b82f6', symbol:'∫',
-    desc:'1,466 hard applied-math problems — ODEs, integrals, nondimensionalization, scaling analysis.',
+    desc:'1,466 hard applied-math problems — ODEs, integrals, nondimensionalization, and polynomial root-finding.',
     arxiv:'2410.03286', hf:'AI4StatMath/HARDMath',
     ans: r => r.native?.answer_val,
     sol: r => r.native?.solution_excerpt,
@@ -437,16 +433,10 @@ const DS = [
       question_type: {
         'ODE':'Ordinary differential equation — find exact or approximate closed-form solutions to first- or higher-order ODEs',
         'integral':'Evaluate a definite or indefinite integral, often requiring substitution, integration by parts, or special functions',
-        'scaling_analysis':'Determine how a quantity scales with a parameter (power-law exponent) without solving the full problem exactly',
-        'nondimensionalization':'Rescale variables to remove physical units and identify the key dimensionless groups that govern the problem',
         'nondimensionalization_symbolic':'Identify and express dimensionless groups symbolically by rescaling variables with unknown scale factors',
         'nondimensionalization_numeric':'Compute numerical values of dimensionless parameters after rescaling variables in a concrete system',
-        'approximation':'Derive an analytical approximation valid in a specified limit (e.g. small-angle, large-N, weak coupling)',
         'polynomial_roots':'Find the roots of a polynomial equation using analytical formulas or systematic numerical methods',
         'polynomial_roots_corrections':'Correct or refine a polynomial root-finding result, often adding perturbative or numerical corrections',
-        'series_expansion':'Expand a function as a power series (Taylor, Laurent, asymptotic) and identify the dominant terms',
-        'word_problems':'Applied word problems requiring mathematical modeling — set up the equations from a verbal description',
-        'PDE':'Partial differential equation — solve boundary- or initial-value problems for PDEs using separation of variables or transforms',
       },
       subset: {
         'main':'Primary benchmark split used in the original HARDMath paper (1,060 problems)',
@@ -464,7 +454,7 @@ const DS = [
     solLabel: r => 'Trap Analysis',
     context: r => {
       const role=r.native?.triplet_role;
-      if(role!=='Trap'&&role!=='Hint') return null;
+      if(role!=='Trap') return null;
       const orig=r.native?.original_problem_text; if(!orig) return null;
       return {src:r.native?.source_dataset||'',text:orig};
     },
@@ -474,7 +464,6 @@ const DS = [
       triplet_role: {
         'Original':'The unmodified source problem — baseline before any trap is introduced',
         'Trap':'The source problem modified with a subtle logical error or contradictory condition designed to mislead the solver',
-        'Hint':'The trap version accompanied by a corrective hint that guides toward the right approach',
       },
       trap_category: {
         'Direct Contradiction':'A new constraint is added that directly conflicts with an existing condition (e.g. two incompatible numerical values)',
@@ -487,21 +476,17 @@ const DS = [
     metaPreview:['triplet_role']
   },
   { id:'PRBench', label:'PRBench', count:1100, color:'#14b8a6', symbol:'⚖',
-    desc:'1,100 expert-level professional-reasoning problems in finance, economics, and regulatory domains.',
+    desc:'1,100 expert-level professional-reasoning problems in finance and legal domains.',
     arxiv:'2504.16228', hf:'AI4StatMath/PRBench',
     ans: r => { const rb=r.native?.rubric_buckets; if(!rb) return 'Open-ended — evaluated against expert rubric.'; try{const a=typeof rb==='string'?JSON.parse(rb):rb; return Array.isArray(a)?a.map((x,i)=>`${i+1}. ${x}`).join('\n'):String(rb);}catch{return String(rb);} },
     sol: r => null,
-    tags: r => [...tag(r.native?.field,''),...(r.native?.is_hard?[{l:'Hard',c:'dh'}]:[])],
-    filters: [{key:'field',label:'Field',get:r=>r.native?.field},{key:'is_hard',label:'Difficulty',get:r=>r.native?.is_hard?'Hard':'Standard'}],
+    tags: r => [...tag(r.native?.field,'')],
+    filters: [{key:'field',label:'Field',get:r=>r.native?.field}],
     filterDescriptions: {
       field: {
-        'Finance':'Problems in financial analysis, valuation, risk assessment, and regulatory compliance',
-        'Legal':'Legal reasoning, statutory interpretation, and regulatory analysis problems',
+        'Finance':'Problems in financial analysis, valuation, risk assessment, and investment decision-making',
+        'Legal':'Legal reasoning, statutory interpretation, case law analysis, and regulatory compliance problems',
       },
-      is_hard: {
-        'Hard':'Multi-step expert reasoning problems, harder than typical professional certification exams',
-        'Standard':'Standard expert-level difficulty — appropriate for a practicing professional in the field',
-      }
     },
     metaPreview:['field']
   },
