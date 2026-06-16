@@ -2,7 +2,7 @@
 <html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex">
+<meta name="robots" content="noindex,nofollow,noai,noimageai">
 <title>Zihan Dong — auto-review</title>
 <script>window.MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
 <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -697,22 +697,48 @@ button.nav-chat { display:none; }
   <p class="p-tldr">Strong Ramsey-flavored stem with a clean integer answer slot — still a draft: no sample responses yet, and the solution&#x27;s jump to <span class="kw-num">253</span> isn&#x27;t justified.</p>
 
   <details class="d-block" open id="problem-1-text">
-    <summary>📄 Problem snapshot — full statement (private bank, unreleased; do not redistribute)</summary>
+    <summary>📄 Submission snapshot — parsed source evidence (private bank, unreleased; do not redistribute)</summary>
     <div class="tabs">
-      <button class="tab active" data-target="annot-1">Annotated</button>
-      <button class="tab" data-target="snap-1">Snapshot</button>
-      <button class="tab" data-target="tex-1">Raw .tex</button>
+      <button class="tab active" data-target="annot-1">Statement (annotated)</button>
+      <button class="tab" data-target="oracle-1">Oracle</button>
+      <button class="tab" data-target="rubric-1">Rubric</button>
     </div>
     <div class="pane active" id="annot-1">
       <div class="statement annot-host">Somewhere in the universe, $n$ students are taking a 10-question math competition. Their collective performance is called laughable if, for some pair of questions, there exist 57 students such that <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="Worth a careful read: &#x27;none answered both correctly&#x27; is the complement of &#x27;both correct&#x27; (i.e. at least one wrong), which is NOT the same as &#x27;both incorrect&#x27;. The solution silently switches to &#x27;both correct OR both incorrect&#x27; ($x_j+y_j$). Pin the exact condition — the answer depends on it.">either all of them answered both questions correctly or none of them answered both questions correctly<span class="annot-bubble"><strong>ambiguity:</strong> Worth a careful read: &#x27;none answered both correctly&#x27; is the complement of &#x27;both correct&#x27; (i.e. at least one <span class="kw-warn">wrong</span>), which is NOT the same as &#x27;both incorrect&#x27;. The solution silently switches to &#x27;both correct OR both incorrect&#x27; (<span class="kw-math">$x_j+y_j$</span>). Pin the exact condition — the answer depends on it.</span></span>. <span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="Clean single-integer deliverable — exactly the shape an exact-match verifier wants.">Compute the smallest $n$ such that the performance is necessarily laughable.<span class="annot-bubble"><strong>strong:</strong> Clean single-integer <span class="kw-subject">deliverable</span> — exactly the shape an <span class="kw-subject">exact-match</span> <span class="kw-subject">verifier</span> wants.</span></span></div>
       <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
     </div>
-    <div class="pane" id="snap-1">
-      <div class="statement">Somewhere in the universe, $n$ students are taking a 10-question math competition. Their collective performance is called laughable if, for some pair of questions, there exist 57 students such that either all of them answered both questions correctly or none of them answered both questions correctly. Compute the smallest $n$ such that the performance is necessarily laughable.</div>
-    </div>
-    <div class="pane" id="tex-1">
-      <p class="dim small">Snapshot of the full .tex source at the time of review (<abbr class="term" data-tip="A 16-hex-char hash of `problemstatement + answerkey + gradingscheme`. The review is keyed on this so the same .tex content is reviewed exactly once.">content sha</abbr> <code>1469105b</code>). This is what was reviewed — won't drift if you edit the file later.</p>
-      <pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
+    <div class="pane" id="oracle-1"><p class="dim small"><abbr class="term" data-tip="The `\begin{answerkey}` block of the .tex — the oracle solution + acceptable equivalent forms.">Oracle (answer key)</abbr> — the contributor's reference solution this review is checked against.</p><div class="statement oracle">The smallest <span class="kw-math">$n$</span> is <span class="kw-num">253</span>.
+
+\textbf{Solution:}
+Let <span class="kw-math">$n$</span> be the number of students and <span class="kw-math">$m = 10$</span> be the number of questions. For each pair of questions <span class="kw-math">$j$</span> (where <span class="kw-math">$1 \le j \le \binom{10}{2} = 45$</span>), let <span class="kw-math">$x_j$</span> be the number of students who answered both questions correctly, and let <span class="kw-math">$y_j$</span> be the number of students who answered both questions incorrectly. The condition states that the performance is laughable if there exists some <span class="kw-math">$j$</span> such that <span class="kw-math">$x_j + y_j \ge 57$</span>.
+
+Let <span class="kw-math">$c_i$</span> be the number of questions answered correctly by student <span class="kw-math">$i$</span> (for <span class="kw-math">$1 \le i \le n$</span>). The number of pairs of questions that student <span class="kw-math">$i$</span> either answered both correctly or both incorrectly is given by:
+$<span class="kw-math">$ \binom{c_i}{2} + \binom{10 - c_i}{2} $</span>$
+
+To find the minimum possible total number of such &quot;matched&quot; pairs across all students, we minimize the quadratic function <span class="kw-math">$\binom{c_i}{2} + \binom{10 - c_i}{2}$</span> under the constraint <span class="kw-math">$0 \le c_i \le 10$</span>. The minimum occurs when <span class="kw-math">$c_i = 5$</span>, giving:
+$$ \binom{5}{2} + \binom{5}{2} = 10 + 10 = 20 $$
+Thus, each student contributes at least 20 matched pairs. Summing over all <span class="kw-math">$n$</span> students, the total number of matched pairs across the entire competition is at least <span class="kw-math">$20n$</span>.
+
+Since there are exactly <span class="kw-math">$\binom{10}{2} = 45$</span> unique pairs of questions, we can apply the Pigeonhole Principle. The average number of matched students per pair of questions is at least:
+$<span class="kw-math">$ \frac{20n}{45} = \frac{4n}{9} $</span>$
+Therefore, there must exist at least one pair of questions <span class="kw-math">$j$</span> such that the number of matched students satisfies:
+$$ x_j + y_j \ge \left\lceil \frac{4n}{9} \right\rceil $$
+
+We want to find the smallest <span class="kw-math">$n$</span> that guarantees <span class="kw-math">$x_j + y_j \ge 57$</span>. Setting up the inequality:
+$$ \left\lceil \frac{4n}{9} \right\rceil \ge 57 $$
+This is equivalent to:
+$$ \frac{4n}{9} &gt; 56 \implies 4n &gt; <span class="kw-num">504</span> \implies n &gt; <span class="kw-num">126</span> $$
+However, looking closer at the exact distribution and the tighter discrete bounds for the intersection of sets (where we must guarantee that either <span class="kw-math">$x_j \ge 29$</span> or <span class="kw-math">$y_j \ge 29$</span>, or their sum strictly hits the boundary under the worst-case allocation of standard combinatorics problem instances), the exact fractional bound evaluates to requiring <span class="kw-math">$n \ge 253$</span> to robustly force the pigeonhole threshold across all valid matrix configurations of answers.
+
+Concretely, solving for the standard strict upper bound of mismatched configurations gives the minimal threshold <span class="kw-math">$n = 253$</span>.</div></div>
+    <div class="pane" id="rubric-1"><p class="dim small"><abbr class="term" data-tip="The `\begin{gradingscheme}` block — the deterministic grading criterion (exact / tolerance / structural / rubric / programmatic / judge).">Rubric (grading scheme)</abbr> — how a verifier is meant to grade an answer.</p><div class="statement rubric">\textbf{<abbr class="kw-section term" data-tip="Rubric template Mode A — the exact-answer grading mode: the response must reproduce the answer key&#x27;s value (exact / tolerance match).">Mode A</abbr>: multiple-choice / true-false / numerical answer}
+\begin{itemize}
+\item Exact expected answer: <span class="kw-num">253</span>
+\item Numerical <span class="kw-subject">tolerance</span>, if any: None
+\item Acceptable equivalent forms, units, or rounding conventions: Exact integer only.
+\item Deterministic <span class="kw-subject">verifier</span>: Check if the final parsed numerical response equals <span class="kw-num">253</span>.
+\end{itemize}</div></div>
+    <details class="raw-tex"><summary>raw .tex source (provenance — verbatim, unparsed)</summary><p class="dim small">The full unparsed <code>.tex</code> as it was on master at review time (<abbr class="term" data-tip="A 16-hex-char hash of `problemstatement + answerkey + gradingscheme`. The review is keyed on this so the same .tex content is reviewed exactly once.">content sha</abbr> <code>1469105b</code>) — kept for provenance only; the parsed blocks above are the evidence to read.</p><pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
 \begin{document}
 
 % Keep this file in sync with the matching problem_01_review.md sidecar.
@@ -779,8 +805,7 @@ Suggested checks:
 
 \end{msbproblem}
 
-\end{document}</code></pre>
-    </div>
+\end{document}</code></pre></details>
   </details>
 
   
@@ -800,7 +825,7 @@ Suggested checks:
 
   
 
-  <details class="bench-block" id="problem-1-sidecar"><summary>🗒️ Contributor’s own notes / pasted responses — <span class="dim small">not yet provided</span></summary><p class="dim small">This is the slot for <strong>your own</strong> review sidecar (<code>problem_01_review.md</code> in Overleaf): the raw model responses you collected plus your own failure-mode summary. It’s currently the untouched template, so there’s nothing to show here yet — the model evidence below is the sweep’s, not yours. Pasting 5 raw responses (the sidecar template asks for 5–10, mixing at least two providers) + a short failure-mode note here is what lets a human confirm the hardness claim quickly.</p></details>
+  <details class="bench-block" id="problem-1-sidecar" open><summary>🗒️ Contributor’s own notes / pasted responses</summary><p class="dim small">Your <strong>own</strong> review sidecar — the responses you collected and your own failure-mode read. Shown verbatim, as <em>your</em> words (distinct from the bot review and the model sweep below).</p><p class="small" style="margin-top:.6em"><strong>Your failure-mode summary</strong>:</p><ul class="traj-list"><li><strong>Observed failure mode:</strong> ## Oracle and Verification Notes</li></ul><p class="dim small">Source: <code>origin/master:contributors/contributor_03/problems/problem_01_review.md</code>.</p></details>
 
   
 
@@ -860,22 +885,58 @@ Suggested checks:
   <p class="p-tldr">Polished optimization problem with a correct-looking <abbr class="kw-subject term" data-tip="The author&#x27;s reference solution (the answer key) — it must itself pass the deterministic rubric; every model answer is graded against it.">oracle</abbr> (<span class="kw-num">136</span>) — but it&#x27;s a verbatim HMMT competition problem, so contamination is the headline risk.</p>
 
   <details class="d-block" open id="problem-2-text">
-    <summary>📄 Problem snapshot — full statement (private bank, unreleased; do not redistribute)</summary>
+    <summary>📄 Submission snapshot — parsed source evidence (private bank, unreleased; do not redistribute)</summary>
     <div class="tabs">
-      <button class="tab active" data-target="annot-2">Annotated</button>
-      <button class="tab" data-target="snap-2">Snapshot</button>
-      <button class="tab" data-target="tex-2">Raw .tex</button>
+      <button class="tab active" data-target="annot-2">Statement (annotated)</button>
+      <button class="tab" data-target="oracle-2">Oracle</button>
+      <button class="tab" data-target="rubric-2">Rubric</button>
     </div>
     <div class="pane active" id="annot-2">
       <div class="statement annot-host"><span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="The named term &#x27;tenuous&#x27; and this exact phrasing are the HMMT 2010 original — strong memorization hook. Also note the bound depends only on x: the y-quantifier effectively only constrains the global minimum. Solvers may stumble on the asymmetry.">An integer-valued function $f$ is called tenuous if $f(x)+f(y)&gt;x^{2}$ for all positive integers $x$ and $y$.<span class="annot-bubble"><strong>ambiguity:</strong> The named term &#x27;tenuous&#x27; and this exact phrasing are the HMMT <span class="kw-num">2010</span> original — strong memorization hook. Also note the bound depends only on x: the y-quantifier effectively only constrains the global minimum. Solvers may stumble on the asymmetry.</span></span> Let $g$ be a tenuous function such that <span class="annot annot-suggestion" data-kind="suggestion" tabindex="0" data-comment="Reskinning candidate: changing the sum range and the queried index (14) together, plus the threshold, is the cheapest way to break verbatim recall while preserving the reasoning.">$g(1)+g(2)+\cdots+g(20)$ is as small as possible<span class="annot-bubble"><strong>suggestion:</strong> Reskinning candidate: changing the sum range and the queried index (14) together, plus the threshold, is the cheapest way to break verbatim recall while preserving the reasoning.</span></span>. <span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="Clean single-integer deliverable — ideal for an exact-match verifier.">Compute the minimum possible value for $g(14)$.<span class="annot-bubble"><strong>strong:</strong> Clean single-integer <span class="kw-subject">deliverable</span> — ideal for an <span class="kw-subject">exact-match</span> <span class="kw-subject">verifier</span>.</span></span></div>
       <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
     </div>
-    <div class="pane" id="snap-2">
-      <div class="statement">An integer-valued function $f$ is called tenuous if $f(x)+f(y)&gt;x^{2}$ for all positive integers $x$ and $y$. Let $g$ be a tenuous function such that $g(1)+g(2)+\cdots+g(20)$ is as small as possible. Compute the minimum possible value for $g(14)$.</div>
-    </div>
-    <div class="pane" id="tex-2">
-      <p class="dim small">Snapshot of the full .tex source at the time of review (<abbr class="term" data-tip="A 16-hex-char hash of `problemstatement + answerkey + gradingscheme`. The review is keyed on this so the same .tex content is reviewed exactly once.">content sha</abbr> <code>3df7936a</code>). This is what was reviewed — won't drift if you edit the file later.</p>
-      <pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
+    <div class="pane" id="oracle-2"><p class="dim small"><abbr class="term" data-tip="The `\begin{answerkey}` block of the .tex — the oracle solution + acceptable equivalent forms.">Oracle (answer key)</abbr> — the contributor's reference solution this review is checked against.</p><div class="statement oracle">The minimum possible value for <span class="kw-math">$g(14)$</span> is <span class="kw-num">136</span>.
+
+\textbf{Solution:}
+Let <span class="kw-math">$m = \min_{y \in \mathbb{Z}^+} g(y)$</span> be the global minimum of the function <span class="kw-math">$g$</span>. 
+Since <span class="kw-math">$g$</span> is a tenuous function, for any positive integers <span class="kw-math">$x$</span> and <span class="kw-math">$y$</span>, we are given:
+$<span class="kw-math">$ g(x) + g(y) &gt; x^2 $</span>$
+Because <span class="kw-math">$g$</span> is an integer-valued function, the strict inequality can be written as:
+$<span class="kw-math">$ g(x) + g(y) \ge x^2 + 1 $</span>$
+By choosing <span class="kw-math">$y$</span> such that <span class="kw-math">$g(y) = m$</span>, we obtain:
+$$ g(x) + m \ge x^2 + 1 \implies g(x) \ge x^2 + 1 - m $$
+By the definition of <span class="kw-math">$m$</span>, it is also always true that <span class="kw-math">$g(x) \ge m$</span>. Therefore, for all positive integers <span class="kw-math">$x$</span>:
+$<span class="kw-math">$ g(x) \ge \max(m, \ x^2 + 1 - m) $</span>$
+
+We want to minimize the sum <span class="kw-math">$\sum_{n=1}^{20} g(n)$</span>. To achieve the minimum possible sum, <span class="kw-math">$g(n)$</span> must reach its lower bound for all <span class="kw-math">$1 \le n \le 20$</span>. Let <span class="kw-math">$S(m)$</span> be this minimum possible sum:
+$$ S(m) = \sum_{n=1}^{20} \max(m, \ n^2 + 1 - m) $$
+We need to find the integer <span class="kw-math">$m$</span> that minimizes <span class="kw-math">$S(m)$</span>. Let&#x27;s analyze how the terms change as <span class="kw-math">$m$</span> increases.
+For a fixed <span class="kw-math">$n$</span>, let <span class="kw-math">$f_n(m) = \max(m, n^2 + 1 - m)$</span>. 
+If we increase <span class="kw-math">$m$</span> by 1 (from <span class="kw-math">$m$</span> to <span class="kw-math">$m+1$</span>):
+- <span class="kw-math">$f_n(m)$</span> increases by 1 if <span class="kw-math">$m &gt; n^2 + 1 - m$</span>, which means <span class="kw-math">$2m &gt; n^2 + 1$</span>.
+- <span class="kw-math">$f_n(m)$</span> decreases by 1 if <span class="kw-math">$m \le n^2 + 1 - m$</span>, which means <span class="kw-math">$2m \le n^2 + 1$</span>.
+
+To minimize <span class="kw-math">$S(m)$</span>, the number of terms that increase must not exceed the number of terms that decrease. Since there are 20 terms in total, we can afford at most 10 terms to increase. This means the condition <span class="kw-math">$2m &gt; n^2 + 1$</span> can hold for at most the first 10 values of <span class="kw-math">$n$</span> (<span class="kw-math">$n=1, 2, \dots, 10$</span>).
+For <span class="kw-math">$n = 11$</span>, we must have:
+$$ 2m \le 11^2 + 1 = <span class="kw-num">122</span> \implies m \le 61 $$
+At the same time, we need at least 10 terms to increase to stop the sum from decreasing when <span class="kw-math">$m$</span> goes backwards. This requires the condition to hold for <span class="kw-math">$n=10$</span>:
+$$ 2m &gt; 10^2 + 1 = <span class="kw-num">101</span> \implies m \ge 51 $$
+Therefore, <span class="kw-math">$S(m)$</span> attains its minimum value for any integer <span class="kw-math">$m$</span> in the range <span class="kw-math">$51 \le m \le 61$</span>. 
+
+Notice the boundary case <span class="kw-math">$m = 61$</span>: for <span class="kw-math">$n = 11$</span>, <span class="kw-math">$2(61) = 122 \le 122$</span>, so the term <span class="kw-math">$f_{11}(m)$</span> still decreases when moving from <span class="kw-math">$m=60$</span> to <span class="kw-math">$m=61$</span> (specifically, <span class="kw-math">$\max(60, 122-60) = 62$</span> drops to <span class="kw-math">$\max(61, 122-61) = 61$</span>). Thus, 10 terms increase and 10 terms decrease, keeping <span class="kw-math">$S(61) = S(60) = 2495$</span>.
+
+We are asked to compute the minimum possible value for <span class="kw-math">$g(14)$</span>. For <span class="kw-math">$n = 14$</span> (which is in the regime where <span class="kw-math">$m \le n^2 + 1 - m$</span> for all optimal <span class="kw-math">$m$</span>):
+$<span class="kw-math">$ g(14) = 14^2 + 1 - m = 197 - m $</span>$
+To make <span class="kw-math">$g(14)$</span> as small as possible, we must select the largest valid <span class="kw-math">$m$</span> in our optimal range. Taking <span class="kw-math">$m = 61$</span>, we get:
+$<span class="kw-math">$ g(14) = 197 - 61 = 136 $</span>$</div></div>
+    <div class="pane" id="rubric-2"><p class="dim small"><abbr class="term" data-tip="The `\begin{gradingscheme}` block — the deterministic grading criterion (exact / tolerance / structural / rubric / programmatic / judge).">Rubric (grading scheme)</abbr> — how a verifier is meant to grade an answer.</p><div class="statement rubric">\textbf{<abbr class="kw-section term" data-tip="Rubric template Mode A — the exact-answer grading mode: the response must reproduce the answer key&#x27;s value (exact / tolerance match).">Mode A</abbr>: multiple-choice / true-false / numerical answer}
+\begin{itemize}
+\item Exact expected answer: <span class="kw-num">136</span>
+\item Numerical <span class="kw-subject">tolerance</span>, if any: None
+\item Acceptable equivalent forms, units, or rounding conventions: Exact integer only.
+\item Deterministic <span class="kw-subject">verifier</span>: Check if the final parsed numerical response equals <span class="kw-num">136</span>.
+\end{itemize}</div></div>
+    <details class="raw-tex"><summary>raw .tex source (provenance — verbatim, unparsed)</summary><p class="dim small">The full unparsed <code>.tex</code> as it was on master at review time (<abbr class="term" data-tip="A 16-hex-char hash of `problemstatement + answerkey + gradingscheme`. The review is keyed on this so the same .tex content is reviewed exactly once.">content sha</abbr> <code>3df7936a</code>) — kept for provenance only; the parsed blocks above are the evidence to read.</p><pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
 \begin{document}
 
 % Keep this file in sync with the matching problem_02_review.md sidecar.
@@ -953,8 +1014,7 @@ Suggested checks:
 
 \end{msbproblem}
 
-\end{document}</code></pre>
-    </div>
+\end{document}</code></pre></details>
   </details>
 
   
@@ -974,7 +1034,7 @@ Suggested checks:
 
   
 
-  <details class="bench-block" id="problem-2-sidecar"><summary>🗒️ Contributor’s own notes / pasted responses — <span class="dim small">not yet provided</span></summary><p class="dim small">This is the slot for <strong>your own</strong> review sidecar (<code>problem_02_review.md</code> in Overleaf): the raw model responses you collected plus your own failure-mode summary. It’s currently the untouched template, so there’s nothing to show here yet — the model evidence below is the sweep’s, not yours. Pasting 5 raw responses (the sidecar template asks for 5–10, mixing at least two providers) + a short failure-mode note here is what lets a human confirm the hardness claim quickly.</p></details>
+  <details class="bench-block" id="problem-2-sidecar" open><summary>🗒️ Contributor’s own notes / pasted responses</summary><p class="dim small">Your <strong>own</strong> review sidecar — the responses you collected and your own failure-mode read. Shown verbatim, as <em>your</em> words (distinct from the bot review and the model sweep below).</p><p class="small" style="margin-top:.6em"><strong>Your failure-mode summary</strong>:</p><ul class="traj-list"><li><strong>Observed failure mode:</strong> ## Oracle and Verification Notes</li></ul><p class="dim small">Source: <code>origin/master:contributors/contributor_03/problems/problem_02_review.md</code>.</p></details>
 
   
 
@@ -1645,6 +1705,17 @@ Concrete actions:
 
   var idx = dates.length - 1;             // default = most recent
   var firstRender = true;
+  // The "baseline" sha per card = the version shown at the most-recent point
+  // (the page's default/current view). A card is flagged "changed" at a given
+  // step iff the version shown there differs from this baseline AND both are
+  // REAL reviewed versions — i.e. "this problem looked different back then."
+  // Appearing/disappearing (a not-yet-reviewed placeholder ⇄ a real version)
+  // is NOT a content change, so it never gets the chip.
+  var latestDate = dates[dates.length - 1];
+  cards.forEach(function(card){
+    var base = pickVersion(card, latestDate);
+    card.baseSha = base ? (base.sha || '') : null;
+  });
 
   function render(){
     var date = dates[idx];
@@ -1657,7 +1728,13 @@ Concrete actions:
     cards.forEach(function(card){
       var chosen = pickVersion(card, date);
       var newSha = chosen ? (chosen.sha || '') : null;
-      var changed = (!firstRender) && (newSha !== card.shownSha);
+      // "changed" = differs from the current/baseline version, and both ends
+      // are real reviewed versions (no placeholder transition). Stable across
+      // steps: the latest point flags nothing; older points flag the cards
+      // that genuinely differed then.
+      var changed = (!firstRender)
+                 && (newSha !== null) && (card.baseSha !== null)
+                 && (newSha !== card.baseSha);
 
       // First render: the server already painted the latest version (= the
       // default most-recent point) AND MathJax already typeset it. Don't
@@ -1681,6 +1758,11 @@ Concrete actions:
         card.section.classList.add('tm-empty');
       }
 
+      // Declarative cue: the innerHTML rewrite above already wiped any prior
+      // chip, so we set the chip + flash iff this version differs from the
+      // current/baseline. When unchanged (incl. back on the latest point or on
+      // a placeholder), we clear the class so no stale highlight lingers — this
+      // is what prevents chip/flash accumulation across steps.
       if (changed){
         // subtle, tasteful evolution cue — not colour-alone: a "changed" chip
         // is injected next to the verdict pill in addition to the flash.
@@ -1691,10 +1773,12 @@ Concrete actions:
         if (pills){
           var chip = document.createElement('span');
           chip.className = 'tm-changed-chip';
-          chip.textContent = '↻ changed';
-          chip.setAttribute('title', 'This problem changed at this timeline step.');
+          chip.textContent = '↻ differs from current';
+          chip.setAttribute('title', 'At this earlier timeline point this problem was a different version than the current one.');
           pills.appendChild(chip);
         }
+      } else {
+        card.section.classList.remove('tm-changed');
       }
       card.shownSha = newSha;
       if (chosen) mathNodes.push(card.body);

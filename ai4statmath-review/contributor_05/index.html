@@ -2,7 +2,7 @@
 <html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex">
+<meta name="robots" content="noindex,nofollow,noai,noimageai">
 <title>Matteo Bonvini — auto-review</title>
 <script>window.MathJax = { tex: { inlineMath: [['$', '$']] } };</script>
 <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -626,7 +626,7 @@ button.nav-chat { display:none; }
       <span class="name">Matteo Bonvini</span>
       <span class="sub">· auto-review</span>
     </div>
-    <div class="nav-chips"><a class="chip chip-reviewed" href="#problem-1"><span class="ch-num">#01</span> <span class="ch-kw">Minimax lower</span></a><a class="chip chip-reviewed" href="#problem-2"><span class="ch-num">#02</span> <span class="ch-kw">Estimation value</span></a><a class="chip chip-reviewed" href="#problem-3"><span class="ch-num">#03</span> <span class="ch-kw">Time varying</span></a><a class="chip chip-reviewed" href="#problem-5"><span class="ch-num">#05</span> <span class="ch-kw">Efficient influence</span></a><a class="chip chip-reviewed" href="#problem-6"><span class="ch-num">#06</span> <span class="ch-kw">Quadratic estimator</span></a><a class="chip chip-stub" href="#problem-4"><span class="ch-num">#04</span> <span class="ch-kw">draft</span></a></div>
+    <div class="nav-chips"><a class="chip chip-reviewed" href="#problem-1"><span class="ch-num">#01</span> <span class="ch-kw">Minimax lower</span></a><a class="chip chip-reviewed" href="#problem-2"><span class="ch-num">#02</span> <span class="ch-kw">Estimation value</span></a><a class="chip chip-reviewed" href="#problem-3"><span class="ch-num">#03</span> <span class="ch-kw">Time varying</span></a><a class="chip chip-reviewed" href="#problem-5"><span class="ch-num">#05</span> <span class="ch-kw">Efficient influence</span></a><a class="chip chip-reviewed" href="#problem-6"><span class="ch-num">#06</span> <span class="ch-kw">Quadratic estimator</span></a></div>
     <button class="nav-chat" onclick="document.querySelector('.chat-fab').click();">💬 chat</button>
     <a class="nav-back" href="../">← hub</a>
   </div>
@@ -680,7 +680,7 @@ button.nav-chat { display:none; }
       <p class="dim small framing-note"><em>Research-level problems with submissions in progress — this page exists to help complete them.</em></p>
       <div class="dash-tiles">
         <div class="tile"><div class="num">5</div><div class="lbl">problems reviewed</div></div>
-        <div class="tile t-progress"><div class="num">1</div><div class="lbl"><abbr class="term" data-tip="Drafts detected on master: the problem statement has been edited, but the title/answer key are still the template, so no review ran yet. Fill them in and the next sync will pick them up — see the card(s) at the bottom of the page.">draft detected ✎</abbr></div></div>
+        
         
         
         
@@ -707,42 +707,109 @@ button.nav-chat { display:none; }
   
 
   <details class="d-block" open id="problem-1-text">
-    <summary>📄 Problem snapshot — full statement (private bank, unreleased; do not redistribute)</summary>
+    <summary>📄 Submission snapshot — parsed source evidence (private bank, unreleased; do not redistribute)</summary>
     <div class="tabs">
-      <button class="tab active" data-target="annot-1">Annotated</button>
-      <button class="tab" data-target="snap-1">Snapshot</button>
-      <button class="tab" data-target="tex-1">Raw .tex</button>
+      <button class="tab active" data-target="annot-1">Statement (annotated)</button>
+      <button class="tab" data-target="oracle-1">Oracle</button>
+      <button class="tab" data-target="rubric-1">Rubric</button>
     </div>
     <div class="pane active" id="annot-1">
-      <div class="statement annot-host">Consider a sample of $n$ iid observations $O_i = (A_i, X_i)$, $1 \leq i \leq n$, where $X \in [0,1]^d$ and $A \in \{0, 1\}$. The density of one observation is $p(o) := p_X(x) r(x)^A\{1 - r(x)\}^{1-A}$, where $r(X) = P(A = 1 \mid X)$. Suppose <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="Notation gap: dP(x) should be the X-marginal dP_X(x); under P_X = Uniform([0,1]^d) this is just Lebesgue measure, so psi = integral_{[0,1]^d} r^2(x) dx. Worth writing dP_X explicitly to avoid confusion with the full distribution P of O.">the estimand is $\psi = \int r^2(x) dP(x)$<span class="annot-bubble"><strong>ambiguity:</strong> Notation gap: dP(x) should be the X-marginal dP_X(x); under P_X = Uniform([0,1]^d) this is just Lebesgue measure, so psi = integral_{[0,1]^d} r^2(x) dx. Worth writing dP_X explicitly to avoid confusion with the full distribution P of O.</span></span>. <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="Is hat r a fixed (arbitrary, possibly data-independent) measurable function that the adversary&#x27;s class is built around, or an actual estimator computed from the same sample? In the structure-agnostic setup of 2305.04116 it is a fixed reference function and the lower bound must hold for ALL such hat r. State this explicitly -- it materially changes the proof and the rubric.">Given an estimator $\widehat{r}(x)$<span class="annot-bubble"><strong>ambiguity:</strong> Is hat r a fixed (arbitrary, possibly data-independent) measurable function that the adversary&#x27;s class is built around, or an actual estimator computed from the same sample? In the structure-agnostic setup of <span class="kw-num">2305</span>.<span class="kw-num">04116</span> it is a fixed reference function and the lower bound must hold for ALL such hat r. State this explicitly -- it materially changes the proof and the <span class="kw-subject">rubric</span>.</span></span>, consider the following <span class="annot annot-praise" data-kind="praise" tabindex="0" data-comment="Good sourcing to the canonical reference. Recommend also stating in the answerkey the precise theorem/section being specialized so graders can audit against the source.">``structure-agnostic&#x27;&#x27; class of densities (see \url{https://arxiv.org/pdf/2305.04116})<span class="annot-bubble"><strong>praise:</strong> Good sourcing to the canonical reference. Recommend also stating in the <abbr class="kw-section term" data-tip="The `\begin{answerkey}` block of the .tex — the oracle solution + acceptable equivalent forms.">answerkey</abbr> the precise theorem/section being specialized so graders can audit against the source.</span></span>:
-\begin{align*}
-    \mathcal{P}(\epsilon_n) = \left\{p: P_X = \text{Uniform}([0,1]^d), <span class="annot annot-missing" data-kind="missing" tabindex="0" data-comment="Assumptions to pin down: range/boundedness of r and hat r (e.g. r, hat r in [delta, 1-delta] or just [0,1]); whether r is otherwise unrestricted (the &#x27;agnostic&#x27; point). The construction needs r to stay a valid probability and to allow perturbations of size ~epsilon_n; specifying bounds prevents degenerate priors.">\int \{\widehat{r}(x) - r(x)\}^2 dP(x) \leq \epsilon_n^2<span class="annot-bubble"><strong>missing:</strong> Assumptions to pin down: range/boundedness of r and hat r (e.g. r, hat r in [delta, 1-delta] or just [0,1]); whether r is otherwise unrestricted (the &#x27;agnostic&#x27; point). The construction needs r to stay a valid probability and to allow perturbations of size ~epsilon_n; specifying bounds prevents degenerate priors.</span></span>  \right\}.
-\end{align*}
-Prove that
-\begin{align*}
-    <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="inf over psi_n: clarify that the infimum is over ALL estimators psi_n = psi_n(O_1,...,O_n) (arbitrary measurable functions of the sample), so the bound is a genuine minimax lower bound, not over a restricted estimator class.">\inf_{\psi_n} \sup_{p \in \mathcal{P}(\epsilon_n)}<span class="annot-bubble"><strong>ambiguity:</strong> inf over psi_n: clarify that the infimum is over ALL estimators psi_n = psi_n(O_1,...,O_n) (arbitrary measurable functions of the sample), so the bound is a genuine minimax lower bound, not over a restricted estimator class.</span></span> E_p|\psi_n - \psi_p| <span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="This is the crux and is correct in spirit: with a single nuisance r estimated at L2 rate epsilon_n, no estimator can beat squared bias of order epsilon_n^2 in the structure-agnostic class (there is no second nuisance to exploit for a product/double-robust rate). This is exactly the hard, non-obvious content that makes the problem benchmark-worthy.">\gtrsim \epsilon_n^2<span class="annot-bubble"><strong>strong:</strong> This is the crux and is correct in spirit: with a single nuisance r estimated at L2 rate epsilon_n, no estimator can beat squared bias of order epsilon_n^2 in the structure-agnostic class (there is no second nuisance to exploit for a product/double-robust rate). This is exactly the hard, non-obvious content that makes the problem benchmark-worthy.</span></span>.
-\end{align*}</div>
+      <div class="statement annot-host">Consider a sample of $n$ iid observations $O_i = (A_iY_i, A_i, X_i)$, $1 \leq i \leq n$, where $X \in [0,1]^d$, $A \in \{0, 1\}$ and $Y \in \{0, 1\}$. The density of one observation is $p(o) := p_X(x) / r(x) \{r(x) - 1\}^{1-A}\{b(x)^Y\{1 - b(x)\}^{1-Y}\}^A$, where $r(X) = 1/P(A = 1 \mid X)$ and $b(x) = P(Y = 1 | A = 1, X)$. Suppose the estimand is $\psi = \int b(x) dP(x)$. Given estimators $\widehat{r}(x)$ and $\widehat{b}(x)$, bounded away from 0 and 1, consider the following <span class="annot annot-praise" data-kind="praise" tabindex="0" data-comment="Good sourcing to the canonical reference. Recommend also stating in the answerkey the precise theorem/section being specialized so graders can audit against the source.">``structure-agnostic&#x27;&#x27; class of densities (see \url{https://arxiv.org/pdf/2305.04116})<span class="annot-bubble"><strong>praise:</strong> Good sourcing to the canonical reference. Recommend also stating in the <abbr class="kw-section term" data-tip="The `\begin{answerkey}` block of the .tex — the oracle solution + acceptable equivalent forms.">answerkey</abbr> the precise theorem/section being specialized so graders can audit against the source.</span></span>: \begin{align*} \mathcal{P}(\epsilon_n) = \left\{p: \int \{\widehat{r}(x) - r(x)\}^2 dP(x) \leq \epsilon^2_n , \quad \int \{\widehat{b}(x) - b(x)\}^2 dP(x) \leq \epsilon^2_n \right\}. \end{align*} Prove that \begin{align*} <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="inf over psi_n: clarify that the infimum is over ALL estimators psi_n = psi_n(O_1,...,O_n) (arbitrary measurable functions of the sample), so the bound is a genuine minimax lower bound, not over a restricted estimator class.">\inf_{\psi_n} \sup_{p \in \mathcal{P}(\epsilon_n)}<span class="annot-bubble"><strong>ambiguity:</strong> inf over psi_n: clarify that the infimum is over ALL estimators psi_n = psi_n(O_1,...,O_n) (arbitrary measurable functions of the sample), so the bound is a genuine minimax lower bound, not over a restricted estimator class.</span></span> E_p|\psi_n - \psi_p| <span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="This is the crux and is correct in spirit: with a single nuisance r estimated at L2 rate epsilon_n, no estimator can beat squared bias of order epsilon_n^2 in the structure-agnostic class (there is no second nuisance to exploit for a product/double-robust rate). This is exactly the hard, non-obvious content that makes the problem benchmark-worthy.">\gtrsim \epsilon_n^2<span class="annot-bubble"><strong>strong:</strong> This is the crux and is correct in spirit: with a single nuisance r estimated at L2 rate epsilon_n, no estimator can beat squared bias of order epsilon_n^2 in the structure-agnostic class (there is no second nuisance to exploit for a product/double-robust rate). This is exactly the hard, non-obvious content that makes the problem benchmark-worthy.</span></span>. \end{align*}</div>
       <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
     </div>
-    <div class="pane" id="snap-1">
-      <div class="statement">Consider a sample of $n$ iid observations $O_i = (A_i, X_i)$, $1 \leq i \leq n$, where $X \in [0,1]^d$ and $A \in \{0, 1\}$. The density of one observation is $p(o) := p_X(x) r(x)^A\{1 - r(x)\}^{1-A}$, where $r(X) = P(A = 1 \mid X)$. Suppose the estimand is $\psi = \int r^2(x) dP(x)$. Given an estimator $\widehat{r}(x)$, consider the following ``structure-agnostic&#x27;&#x27; class of densities (see \url{https://arxiv.org/pdf/2305.04116}):
-\begin{align*}
-    \mathcal{P}(\epsilon_n) = \left\{p: P_X = \text{Uniform}([0,1]^d), \int \{\widehat{r}(x) - r(x)\}^2 dP(x) \leq \epsilon_n^2  \right\}.
-\end{align*}
-Prove that
-\begin{align*}
-    \inf_{\psi_n} \sup_{p \in \mathcal{P}(\epsilon_n)} E_p|\psi_n - \psi_p| \gtrsim \epsilon_n^2.
-\end{align*}</div>
-    </div>
-    <div class="pane" id="tex-1">
-      <p class="dim small">Snapshot of the full .tex source at the time of review (<abbr class="term" data-tip="A 16-hex-char hash of `problemstatement + answerkey + gradingscheme`. The review is keyed on this so the same .tex content is reviewed exactly once.">content sha</abbr> <code>93ceac6d</code>). This is what was reviewed — won't drift if you edit the file later.</p>
-      <pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
+    <div class="pane" id="oracle-1"><p class="dim small"><abbr class="term" data-tip="The `\begin{answerkey}` block of the .tex — the oracle solution + acceptable equivalent forms.">Oracle (answer key)</abbr> — the contributor's reference solution this review is checked against.</p><div class="statement oracle">The result can be derived by the following two lemmas. 
+
+\textbf{Lemma 1, Lemma 1 in \url{https://arxiv.org/pdf/<span class="kw-num">2305</span>.<span class="kw-num">04116</span>} / Theorem 2.15 in \url{https://link.springer.com/book/10.<span class="kw-num">1007</span>/b13794}}
+
+Let <span class="kw-math">$F(\theta)$</span> be a functional and <span class="kw-math">$\{P_\theta, \theta \in \Theta\}$</span> be a statistical model. Consider two priors distributions <span class="kw-math">$\mu_0$</span> and <span class="kw-math">$\mu_1$</span> on <span class="kw-math">$\Theta$</span> and define the posteriors:
+		\begin{align*}
+			P_j(A) = \int P_\theta^n(A) \mu_j(d\theta), \text{ for all measurable } A \text{ and } j \in \{0, 1\}.
+		\end{align*}Assume that
+		\begin{enumerate}
+			\item There exists <span class="kw-math">$c$</span> and <span class="kw-math">$s &gt; 0$</span> such that <span class="kw-math">$\mu_0(\theta: F(\theta) \leq c) = 1$</span> and <span class="kw-math">$\mu_1(\theta: F(\theta) \geq c + 2s) = 1$</span>.
+			\item The Hellinger distance satisfies <span class="kw-math">$H^2(P_1, P_0) \leq \alpha &lt; 2$</span>.
+		\end{enumerate}
+		Then, it holds that
+		\begin{align*}
+			\inf_{T_n} \sup_{\theta \in \Theta} \E| T_n - F(\theta)| \ \geq s \cdot \frac{1 - \sqrt{\alpha(1-\alpha/4)}}{2}.
+		\end{align*}
+
+	\textbf{Lemma 2, Theorem 2.1 in \url{https://pmc.ncbi.nlm.nih.gov/articles/PMC5884174/}}
+	
+    Let <span class="kw-math">$k$</span> be a positive integer, let $\mathcal{X} = \cup_{j = 1}^k \mathcal{X}_j$ be a measurable partition of the sample space. Given a vector <span class="kw-math">$\lambda = (\lambda_1, \ldots, \lambda_k)$</span> in some product measurable space $\Lambda = \lambda_1 \times \cdots \lambda_k<span class="kw-math">$ let $</span>P_\lambda<span class="kw-math">$ and $</span>Q_\lambda<span class="kw-math">$ be probablity measures on $</span>\mathcal{X}$ such that
+		\begin{enumerate}
+			\item $P_\lambda(\mathcal{X}_j) = Q_\lambda(X_j) = p_j<span class="kw-math">$ for every $</span>\lambda \in \Lambda<span class="kw-math">$, for some probability vector $</span>(p_1, \ldots, p_k)$. 
+			\item The restrictions of <span class="kw-math">$P_\lambda$</span> and <span class="kw-math">$Q_\lambda$</span> to <span class="kw-math">$\mathcal{X}_j$</span> depend on the <span class="kw-math">$j\text{th}$</span> coordinate <span class="kw-math">$\lambda_j$</span> of <span class="kw-math">$\lambda = (\lambda_1, \ldots, \lambda_k)$</span> only.
+		\end{enumerate}
+		For <span class="kw-math">$p_\lambda$</span> and <span class="kw-math">$q_\lambda$</span> densities of the measures <span class="kw-math">$P_\lambda$</span> and <span class="kw-math">$Q_\lambda$</span> that are jointly measurable in the parameter <span class="kw-math">$\lambda$</span> and the observation, and <span class="kw-math">$\pi$</span> a probability measure on <span class="kw-math">$\Lambda$</span>, define <span class="kw-math">$p = \int p_\lambda d\pi(\lambda)$</span>  and <span class="kw-math">$q = \int q_\lambda d\pi(\lambda)$</span>, and set
+		\begin{align*}
+			&amp; \delta_1 = \max_j \sup_\lambda \int_{\mathcal{X}_j} \frac{(p_\lambda - p)^2}{p_\lambda} \frac{d\nu}{p_j}, \quad \delta_2 = \max_j \sup_\lambda \int_{\mathcal{X}_j} \frac{(q_\lambda - p_\lambda)^2}{p_\lambda} \frac{d\nu}{p_j},  \\
+            &amp; \delta_3 = \max_j \sup_\lambda \int_{\mathcal{X}_j} \frac{(q - p)^2}{p_\lambda} \frac{d\nu}{p_j}.
+		\end{align*}
+		If <span class="kw-math">$np_j(1 + \delta_1 + \delta_2) \leq A$</span> for all <span class="kw-math">$j$</span> and $\underline{B} \leq p_\lambda \leq \overline{B}<span class="kw-math">$ for positive constants $</span>A<span class="kw-math">$, $</span>\underline{B}<span class="kw-math">$, $</span>\overline{B}<span class="kw-math">$, then there exists a constant $</span>C<span class="kw-math">$ that depends only on $</span>A<span class="kw-math">$, $</span>\underline{B}<span class="kw-math">$, $</span>\overline{B}$ such that, for any product probability measure <span class="kw-math">$\pi = \pi_1 \otimes \cdots \otimes p_k$</span>,
+		\begin{align*}
+			H^2(P_1, P_2) \leq C n^2 (\max_j p_j)(\delta_2^2 + \delta_1\delta_2) + Cn\delta_3.
+		\end{align*}
+
+
+	Let <span class="kw-math">$B: \mathbb{R}^d \to \mathbb{R}$</span> be a function with support on <span class="kw-math">$[0, 1/2]^d$</span> such that <span class="kw-math">$\int  B(u) du = 0$</span> and <span class="kw-math">$\int B^2(u) du = 1$</span>. Let <span class="kw-math">$k$</span> be an integer and <span class="kw-math">$\mathcal{X}_1, \ldots, \mathcal{X}_k$</span> be traslates of the cube <span class="kw-math">$k^{-1/d}[0, 1/2]^d$</span> that are disjoint and contained in <span class="kw-math">$[0, 1]^d$</span>. Let <span class="kw-math">$m_1, \ldots, m_k$</span> be the bottom left corners of these cubes. Let $\lambda = (\lambda_1, \ldots, \lambda_k) \in \{-1, 1\}^k<span class="kw-math">$. For shorthand notation, let $</span>B_j(x) = B\{k^{1/d}(x- m_j)\}$. 
+
+Define:
+	\begin{align*}
+		&amp; r_{p_\lambda}(x) = r_{q_\lambda}(x) = \widehat{r}(x) + \epsilon_n \sum_{j  = 1}^k \lambda_j B_j(x), \quad b_{p_\lambda}(x)  = \widehat{b}(x) - \epsilon_n \frac{\widehat{b}(x)}{\widehat{r}(x)} \sum_{j = 1}^k \lambda_j B_j(x), \\
+		&amp;  \text{and} \quad b_{q_\lambda}(x) = b_{1\lambda}(x) + \frac{\delta_n}{\widehat\omega(x)} \sum_{j  = 1}^k \lambda_j B_j(x).
+	\end{align*}
+	We have $\| \widehat{r} - r_{p_\lambda}\|_2 \ = \|\widehat{r} - r_{q_\lambda}\| \ =  \epsilon_n<span class="kw-math">$, $</span>\|\widehat{b} - \widehat{b}_{p_\lambda} \| \ \lesssim \epsilon_n<span class="kw-math">$, and $</span>\|\widehat{b} - b_{q_\lambda}\| \ \lesssim \epsilon_n<span class="kw-math">$. Consider the densities $</span>p_\lambda(x)<span class="kw-math">$ and $</span>q_\lambda(x)<span class="kw-math">$, where $</span>g(x) = P_X(x) / r(x)$:
+	\begin{align*}
+		&amp; p_\lambda(Y, A, X) = g(X) \{r_{p_\lambda}(X) - 1\}^{1-A}[b_{p_\lambda}(X)^Y\{1-b_{p_\lambda}(X)\}^{1-Y}]^A \\
+		&amp; q_\lambda(Y, A, X) = g(X) \{r_{q_\lambda}(X) - 1\}^{1-A}[b_{q_\lambda}(X)^Y\{1-b_{q_\lambda}(X)\}^{1-Y}]^A
+	\end{align*}
+	By construction, <span class="kw-math">$p_\lambda$</span> and <span class="kw-math">$q_\lambda$</span> are part of <span class="kw-math">$\mathcal{P}(\epsilon_n)$</span>. Set $g(X) = g = \{\int \widehat{r}(x) dx\}^{-1}<span class="kw-math">$ so that the density of $</span>X<span class="kw-math">$, $</span>f_{p_\lambda}(x) = p_{X, q_\lambda}(x) = r_{p_\lambda}(x) g(x) = r_{q_\lambda}(x) g(x)$, integrates to 1. We have
+	\begin{align*}
+		\psi_{p_\lambda} &amp;=  g \int r_{p_\lambda}(x) b_{p_\lambda}(x) dx = g \int \widehat{r}(x) \widehat{b}(x) dx - g \epsilon^2_n \sum_{j = 1}^k \int B^2_j(x) \frac{\widehat{b}(x)}{\widehat{r}(x)} dx \\
+		\psi_{q_\lambda}	&amp; =  \int r_{q_\lambda}(x) b_{q_\lambda}(x) g(x) dx =  \psi_{p_\lambda} +  g \epsilon^2_n \int \sum_{j = 1}^k B^2_j(x)\{\widehat{r}(x)\}^{-1} dx
+	\end{align*}
+	This means that  $|\psi_{q_\lambda} - \psi_{p_\lambda}| \ \gtrsim \epsilon^2_n<span class="kw-math">$ for every $</span>\lambda<span class="kw-math">$. Let $</span>\omega(\lambda)<span class="kw-math">$ denote a product prior on $</span>\lambda = (\lambda_1, \ldots, \lambda_k)<span class="kw-math">$ such that $</span>\omega_j(\lambda = -1) = \omega_j(\lambda = 1) = 1/2$.
+	Let <span class="kw-math">$O = (X, A, Y)$</span> and define $\mathcal{O} = \cup_{j = 1}^k \mathcal{O}_j<span class="kw-math">$, where $</span>\mathcal{O}_j = \mathcal{X}_j \times \{0, 1\}^2<span class="kw-math">$. Notice that $</span>p_j = \int_{\mathcal{O}_j} p_\lambda d\nu = \int_{\mathcal{O}_j} q_\lambda d\nu  = k^{-1}$. Next, we have
+	\begin{align*}
+		&amp; p(O):= \int p_\lambda(Y, A, X) d\omega(\lambda) = g(X) \{\widehat{r}(X) - 1\}^{1-A} [\widehat{b}(X)^Y\{1-\widehat{b}(X)\}^{1-Y}]^A, \\
+		&amp; p_\lambda(O) - p(O) = g(X) \{\omega_{p_\lambda}(X) - \widehat{r}(X)\}^{1-A}[\{b_{p_\lambda}(X) - \widehat{b}(X)\}^Y\{\widehat{b}(X) - \mu_{p_\lambda}(X)\}^{1-Y}]^A, \\
+		&amp; q_\lambda(O) - p_\lambda(O) = A g(X) \{b_{q_\lambda}(X) - b_{p_\lambda}(X)\}^Y\{ b_{p_\lambda}(X) - b_{q_\lambda}(X) \}^{1-Y}, \\
+		&amp; q(O) - p(O) := \int \{q_\lambda(Y, A, X) - p_\lambda(Y, A, X)\} d\omega(\lambda).
+	\end{align*}
+	Next, we apply Lemma 2 (Robins et al&#x27;s Theorem 2.1). Notice that <span class="kw-math">$\delta_1 \lesssim \epsilon_n^2$</span>, <span class="kw-math">$\delta_2 \lesssim \epsilon_n^2$</span> and <span class="kw-math">$\delta_3 = 0$</span>. Therefore,
+	\begin{align*}
+		H^2\left( \int p^n_\lambda d\omega(\lambda), \int q^n_\lambda d\omega(\lambda)\right) \lesssim n^2k^{-1}\epsilon_n^4.
+	\end{align*}
+	In this light, choosing <span class="kw-math">$k$</span> large enough yields that the Hellinger distance is bounded. The lower bound then follows by Lemma 1. 
+
+\textcolor{red}{I originally had a simpler question along the same lines but ChatGPT started answering it correctly in the last few days. So I switched to using a proposition that one can find in my paper \url{https://arxiv.org/pdf/<span class="kw-num">2405</span>.<span class="kw-num">08525</span>} and in \url{https://arxiv.org/pdf/<span class="kw-num">2402</span>.<span class="kw-num">14264</span>} for a more general statement.}</div></div>
+    <div class="pane" id="rubric-1"><p class="dim small"><abbr class="term" data-tip="The `\begin{gradingscheme}` block — the deterministic grading criterion (exact / tolerance / structural / rubric / programmatic / judge).">Rubric (grading scheme)</abbr> — how a verifier is meant to grade an answer.</p><div class="statement rubric">Delete the <span class="kw-subject">rubric</span> mode you are not using before submitting.
+
+\textbf{<abbr class="kw-section term" data-tip="Rubric template Mode A — the exact-answer grading mode: the response must reproduce the answer key&#x27;s value (exact / tolerance match).">Mode A</abbr>: multiple-choice / true-false / numerical answer}
+\begin{itemize}
+\item Exact expected answer:
+\item Numerical <span class="kw-subject">tolerance</span>, if any:
+\item Acceptable equivalent forms, units, or rounding conventions:
+\item Deterministic <span class="kw-subject">verifier</span>:
+\end{itemize}
+
+\textbf{<abbr class="kw-section term" data-tip="Rubric template Mode B — the proof-checklist grading mode: the response is graded against an enumerated list of required proof steps / structural criteria.">Mode B</abbr>: proof / derivation / analysis}
+\begin{enumerate}[label=\arabic*.]
+\item <span class="kw-warn">TODO</span>: <span class="kw-subject">criterion</span> 1 that a correct response must satisfy.
+\item <span class="kw-warn">TODO</span>: <span class="kw-subject">criterion</span> 2 covering the central derivation, proof step, or logical dependency.
+\item <span class="kw-warn">TODO</span>: <span class="kw-subject">criterion</span> 3 covering the final conclusion, edge cases, and correctness conditions.
+\item <span class="kw-warn">TODO</span>: if using an agent-as-judge, state the pass/fail schema and the evidence the judge must cite.
+\end{enumerate}
+
+The <abbr class="kw-subject term" data-tip="The author&#x27;s reference solution (the answer key) — it must itself pass the deterministic rubric; every model answer is graded against it.">oracle</abbr> solution above must satisfy every <span class="kw-subject">criterion</span> that remains in the final <span class="kw-subject">rubric</span>. Do not rely on point totals or vibes-based grading.</div></div>
+    <details class="raw-tex"><summary>raw .tex source (provenance — verbatim, unparsed)</summary><p class="dim small">The full unparsed <code>.tex</code> as it was on master at review time (<abbr class="term" data-tip="A 16-hex-char hash of `problemstatement + answerkey + gradingscheme`. The review is keyed on this so the same .tex content is reviewed exactly once.">content sha</abbr> <code>93ceac6d</code>) — kept for provenance only; the parsed blocks above are the evidence to read.</p><pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
 \begin{document}
 
 % Keep this file in sync with the matching problem_01_review.md sidecar.
 
 \problemsetup
-  {Minimax lower bounds for structure-agnostic functional estimation}
+  {Minimax Lower Bounds for Structure-Agnostic Functional Estimation}
   {Statistics}
   {Minimax theory}
   {Qualifying-exam-plus}
@@ -753,22 +820,81 @@ Prove that
   {Prove}
   {proof logic}
   {rubric based}
-  {Assuming the estimated propensity score is $\widehat\pi(x) = 1/2$.}
+  {}
 \begin{msbproblem}
 
 \begin{problemstatement}
-Consider a sample of $n$ iid observations $O_i = (A_i, X_i)$, $1 \leq i \leq n$, where $X \in [0,1]^d$ and $A \in \{0, 1\}$. The density of one observation is $p(o) := p_X(x) r(x)^A\{1 - r(x)\}^{1-A}$, where $r(X) = P(A = 1 \mid X)$. Suppose the estimand is $\psi = \int r^2(x) dP(x)$. Given an estimator $\widehat{r}(x)$, consider the following ``structure-agnostic&#x27;&#x27; class of densities (see \url{https://arxiv.org/pdf/2305.04116}):
-\begin{align*}
-    \mathcal{P}(\epsilon_n) = \left\{p: P_X = \text{Uniform}([0,1]^d), \int \{\widehat{r}(x) - r(x)\}^2 dP(x) \leq \epsilon_n^2  \right\}.
-\end{align*}
-Prove that
-\begin{align*}
-    \inf_{\psi_n} \sup_{p \in \mathcal{P}(\epsilon_n)} E_p|\psi_n - \psi_p| \gtrsim \epsilon_n^2.
-\end{align*}
+Consider a sample of $n$ iid observations $O_i = (A_iY_i, A_i, X_i)$, $1 \leq i \leq n$, where $X \in [0,1]^d$, $A \in \{0, 1\}$ and $Y \in \{0, 1\}$. The density of one observation is $p(o) := p_X(x) / r(x) \{r(x) - 1\}^{1-A}\{b(x)^Y\{1 - b(x)\}^{1-Y}\}^A$, where $r(X) = 1/P(A = 1 \mid X)$ and $b(x) = P(Y = 1 | A = 1, X)$. Suppose the estimand is $\psi = \int b(x) dP(x)$. Given estimators $\widehat{r}(x)$ and $\widehat{b}(x)$, bounded away from 0 and 1, consider the following ``structure-agnostic&#x27;&#x27; class of densities (see \url{https://arxiv.org/pdf/2305.04116}): \begin{align*} \mathcal{P}(\epsilon_n) = \left\{p: \int \{\widehat{r}(x) - r(x)\}^2 dP(x) \leq \epsilon^2_n , \quad \int \{\widehat{b}(x) - b(x)\}^2 dP(x) \leq \epsilon^2_n \right\}. \end{align*} Prove that \begin{align*} \inf_{\psi_n} \sup_{p \in \mathcal{P}(\epsilon_n)} E_p|\psi_n - \psi_p| \gtrsim \epsilon_n^2. \end{align*}
 \end{problemstatement}
 
 \begin{answerkey}
-Give the oracle solution here. If the problem has an exact or numerical answer, state it explicitly and list any acceptable equivalent forms. If the problem is proof-based or analysis-style, write the reference solution so that each rubric criterion below can be checked deterministically or audited line by line.
+The result can be derived by the following two lemmas. 
+
+\textbf{Lemma 1, Lemma 1 in \url{https://arxiv.org/pdf/2305.04116} / Theorem 2.15 in \url{https://link.springer.com/book/10.1007/b13794}}
+
+Let $F(\theta)$ be a functional and $\{P_\theta, \theta \in \Theta\}$ be a statistical model. Consider two priors distributions $\mu_0$ and $\mu_1$ on $\Theta$ and define the posteriors:
+		\begin{align*}
+			P_j(A) = \int P_\theta^n(A) \mu_j(d\theta), \text{ for all measurable } A \text{ and } j \in \{0, 1\}.
+		\end{align*}Assume that
+		\begin{enumerate}
+			\item There exists $c$ and $s &gt; 0$ such that $\mu_0(\theta: F(\theta) \leq c) = 1$ and $\mu_1(\theta: F(\theta) \geq c + 2s) = 1$.
+			\item The Hellinger distance satisfies $H^2(P_1, P_0) \leq \alpha &lt; 2$.
+		\end{enumerate}
+		Then, it holds that
+		\begin{align*}
+			\inf_{T_n} \sup_{\theta \in \Theta} \E| T_n - F(\theta)| \ \geq s \cdot \frac{1 - \sqrt{\alpha(1-\alpha/4)}}{2}.
+		\end{align*}
+
+	\textbf{Lemma 2, Theorem 2.1 in \url{https://pmc.ncbi.nlm.nih.gov/articles/PMC5884174/}}
+	
+    Let $k$ be a positive integer, let $\mathcal{X} = \cup_{j = 1}^k \mathcal{X}_j$ be a measurable partition of the sample space. Given a vector $\lambda = (\lambda_1, \ldots, \lambda_k)$ in some product measurable space $\Lambda = \lambda_1 \times \cdots \lambda_k$ let $P_\lambda$ and $Q_\lambda$ be probablity measures on $\mathcal{X}$ such that
+		\begin{enumerate}
+			\item $P_\lambda(\mathcal{X}_j) = Q_\lambda(X_j) = p_j$ for every $\lambda \in \Lambda$, for some probability vector $(p_1, \ldots, p_k)$. 
+			\item The restrictions of $P_\lambda$ and $Q_\lambda$ to $\mathcal{X}_j$ depend on the $j\text{th}$ coordinate $\lambda_j$ of $\lambda = (\lambda_1, \ldots, \lambda_k)$ only.
+		\end{enumerate}
+		For $p_\lambda$ and $q_\lambda$ densities of the measures $P_\lambda$ and $Q_\lambda$ that are jointly measurable in the parameter $\lambda$ and the observation, and $\pi$ a probability measure on $\Lambda$, define $p = \int p_\lambda d\pi(\lambda)$  and $q = \int q_\lambda d\pi(\lambda)$, and set
+		\begin{align*}
+			&amp; \delta_1 = \max_j \sup_\lambda \int_{\mathcal{X}_j} \frac{(p_\lambda - p)^2}{p_\lambda} \frac{d\nu}{p_j}, \quad \delta_2 = \max_j \sup_\lambda \int_{\mathcal{X}_j} \frac{(q_\lambda - p_\lambda)^2}{p_\lambda} \frac{d\nu}{p_j},  \\
+            &amp; \delta_3 = \max_j \sup_\lambda \int_{\mathcal{X}_j} \frac{(q - p)^2}{p_\lambda} \frac{d\nu}{p_j}.
+		\end{align*}
+		If $np_j(1 + \delta_1 + \delta_2) \leq A$ for all $j$ and $\underline{B} \leq p_\lambda \leq \overline{B}$ for positive constants $A$, $\underline{B}$, $\overline{B}$, then there exists a constant $C$ that depends only on $A$, $\underline{B}$, $\overline{B}$ such that, for any product probability measure $\pi = \pi_1 \otimes \cdots \otimes p_k$,
+		\begin{align*}
+			H^2(P_1, P_2) \leq C n^2 (\max_j p_j)(\delta_2^2 + \delta_1\delta_2) + Cn\delta_3.
+		\end{align*}
+
+
+	Let $B: \mathbb{R}^d \to \mathbb{R}$ be a function with support on $[0, 1/2]^d$ such that $\int  B(u) du = 0$ and $\int B^2(u) du = 1$. Let $k$ be an integer and $\mathcal{X}_1, \ldots, \mathcal{X}_k$ be traslates of the cube $k^{-1/d}[0, 1/2]^d$ that are disjoint and contained in $[0, 1]^d$. Let $m_1, \ldots, m_k$ be the bottom left corners of these cubes. Let $\lambda = (\lambda_1, \ldots, \lambda_k) \in \{-1, 1\}^k$. For shorthand notation, let $B_j(x) = B\{k^{1/d}(x- m_j)\}$. 
+
+Define:
+	\begin{align*}
+		&amp; r_{p_\lambda}(x) = r_{q_\lambda}(x) = \widehat{r}(x) + \epsilon_n \sum_{j  = 1}^k \lambda_j B_j(x), \quad b_{p_\lambda}(x)  = \widehat{b}(x) - \epsilon_n \frac{\widehat{b}(x)}{\widehat{r}(x)} \sum_{j = 1}^k \lambda_j B_j(x), \\
+		&amp;  \text{and} \quad b_{q_\lambda}(x) = b_{1\lambda}(x) + \frac{\delta_n}{\widehat\omega(x)} \sum_{j  = 1}^k \lambda_j B_j(x).
+	\end{align*}
+	We have $\| \widehat{r} - r_{p_\lambda}\|_2 \ = \|\widehat{r} - r_{q_\lambda}\| \ =  \epsilon_n$, $\|\widehat{b} - \widehat{b}_{p_\lambda} \| \ \lesssim \epsilon_n$, and $\|\widehat{b} - b_{q_\lambda}\| \ \lesssim \epsilon_n$. Consider the densities $p_\lambda(x)$ and $q_\lambda(x)$, where $g(x) = P_X(x) / r(x)$:
+	\begin{align*}
+		&amp; p_\lambda(Y, A, X) = g(X) \{r_{p_\lambda}(X) - 1\}^{1-A}[b_{p_\lambda}(X)^Y\{1-b_{p_\lambda}(X)\}^{1-Y}]^A \\
+		&amp; q_\lambda(Y, A, X) = g(X) \{r_{q_\lambda}(X) - 1\}^{1-A}[b_{q_\lambda}(X)^Y\{1-b_{q_\lambda}(X)\}^{1-Y}]^A
+	\end{align*}
+	By construction, $p_\lambda$ and $q_\lambda$ are part of $\mathcal{P}(\epsilon_n)$. Set $g(X) = g = \{\int \widehat{r}(x) dx\}^{-1}$ so that the density of $X$, $f_{p_\lambda}(x) = p_{X, q_\lambda}(x) = r_{p_\lambda}(x) g(x) = r_{q_\lambda}(x) g(x)$, integrates to 1. We have
+	\begin{align*}
+		\psi_{p_\lambda} &amp;=  g \int r_{p_\lambda}(x) b_{p_\lambda}(x) dx = g \int \widehat{r}(x) \widehat{b}(x) dx - g \epsilon^2_n \sum_{j = 1}^k \int B^2_j(x) \frac{\widehat{b}(x)}{\widehat{r}(x)} dx \\
+		\psi_{q_\lambda}	&amp; =  \int r_{q_\lambda}(x) b_{q_\lambda}(x) g(x) dx =  \psi_{p_\lambda} +  g \epsilon^2_n \int \sum_{j = 1}^k B^2_j(x)\{\widehat{r}(x)\}^{-1} dx
+	\end{align*}
+	This means that  $|\psi_{q_\lambda} - \psi_{p_\lambda}| \ \gtrsim \epsilon^2_n$ for every $\lambda$. Let $\omega(\lambda)$ denote a product prior on $\lambda = (\lambda_1, \ldots, \lambda_k)$ such that $\omega_j(\lambda = -1) = \omega_j(\lambda = 1) = 1/2$.
+	Let $O = (X, A, Y)$ and define $\mathcal{O} = \cup_{j = 1}^k \mathcal{O}_j$, where $\mathcal{O}_j = \mathcal{X}_j \times \{0, 1\}^2$. Notice that $p_j = \int_{\mathcal{O}_j} p_\lambda d\nu = \int_{\mathcal{O}_j} q_\lambda d\nu  = k^{-1}$. Next, we have
+	\begin{align*}
+		&amp; p(O):= \int p_\lambda(Y, A, X) d\omega(\lambda) = g(X) \{\widehat{r}(X) - 1\}^{1-A} [\widehat{b}(X)^Y\{1-\widehat{b}(X)\}^{1-Y}]^A, \\
+		&amp; p_\lambda(O) - p(O) = g(X) \{\omega_{p_\lambda}(X) - \widehat{r}(X)\}^{1-A}[\{b_{p_\lambda}(X) - \widehat{b}(X)\}^Y\{\widehat{b}(X) - \mu_{p_\lambda}(X)\}^{1-Y}]^A, \\
+		&amp; q_\lambda(O) - p_\lambda(O) = A g(X) \{b_{q_\lambda}(X) - b_{p_\lambda}(X)\}^Y\{ b_{p_\lambda}(X) - b_{q_\lambda}(X) \}^{1-Y}, \\
+		&amp; q(O) - p(O) := \int \{q_\lambda(Y, A, X) - p_\lambda(Y, A, X)\} d\omega(\lambda).
+	\end{align*}
+	Next, we apply Lemma 2 (Robins et al&#x27;s Theorem 2.1). Notice that $\delta_1 \lesssim \epsilon_n^2$, $\delta_2 \lesssim \epsilon_n^2$ and $\delta_3 = 0$. Therefore,
+	\begin{align*}
+		H^2\left( \int p^n_\lambda d\omega(\lambda), \int q^n_\lambda d\omega(\lambda)\right) \lesssim n^2k^{-1}\epsilon_n^4.
+	\end{align*}
+	In this light, choosing $k$ large enough yields that the Hellinger distance is bounded. The lower bound then follows by Lemma 1. 
+
+\textcolor{red}{I originally had a simpler question along the same lines but ChatGPT started answering it correctly in the last few days. So I switched to using a proposition that one can find in my paper \url{https://arxiv.org/pdf/2405.08525} and in \url{https://arxiv.org/pdf/2402.14264} for a more general statement.}
 \end{answerkey}
 
 \begin{gradingscheme}
@@ -807,8 +933,7 @@ Suggested checks:
 \end{msbproblem}
 
 \end{document}
-</code></pre>
-    </div>
+</code></pre></details>
   </details>
 
   
@@ -828,7 +953,7 @@ Suggested checks:
 
   
 
-  <details class="bench-block" id="problem-1-sidecar"><summary>🗒️ Contributor’s own notes / pasted responses — <span class="dim small">not yet provided</span></summary><p class="dim small">This is the slot for <strong>your own</strong> review sidecar (<code>problem_01_review.md</code> in Overleaf): the raw model responses you collected plus your own failure-mode summary. It’s currently the untouched template, so there’s nothing to show here yet — the model evidence below is the sweep’s, not yours. Pasting 5 raw responses (the sidecar template asks for 5–10, mixing at least two providers) + a short failure-mode note here is what lets a human confirm the hardness claim quickly.</p></details>
+  <details class="bench-block" id="problem-1-sidecar" open><summary>🗒️ Contributor’s own notes / pasted responses</summary><p class="dim small">Your <strong>own</strong> review sidecar — the responses you collected and your own failure-mode read. Shown verbatim, as <em>your</em> words (distinct from the bot review and the model sweep below).</p><p class="small" style="margin-top:.6em"><strong>Your failure-mode summary</strong>:</p><ul class="traj-list"><li><strong>Observed failure mode:</strong> ## Oracle and Verification Notes</li></ul><p class="dim small">Source: <code>origin/master:contributors/contributor_05/problems/problem_01_review.md</code>.</p></details>
 
   
 
@@ -898,82 +1023,74 @@ Suggested checks:
   
 
   <details class="d-block" open id="problem-2-text">
-    <summary>📄 Problem snapshot — full statement (private bank, unreleased; do not redistribute)</summary>
+    <summary>📄 Submission snapshot — parsed source evidence (private bank, unreleased; do not redistribute)</summary>
     <div class="tabs">
-      <button class="tab active" data-target="annot-2">Annotated</button>
-      <button class="tab" data-target="snap-2">Snapshot</button>
-      <button class="tab" data-target="tex-2">Raw .tex</button>
+      <button class="tab active" data-target="annot-2">Statement (annotated)</button>
+      <button class="tab" data-target="oracle-2">Oracle</button>
+      <button class="tab" data-target="rubric-2">Rubric</button>
     </div>
     <div class="pane active" id="annot-2">
-      <div class="statement annot-host">Consider a sample of $n$ iid observations $O_i = (Y_i, A_i, X_i)$, $1 \leq i \leq n$, where $X \in [0,1]^d$, $Y\in \mathcal{Y}$ and $A \in \{0,1\}$. For $\tau(X) = \mathbb E(Y\mid A=1,X)-\mathbb E(Y\mid A=0,X)$, consider the following estimand
-  \[
-    <span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="This is the value of the (population) optimal treatment rule. The estimand is pathwise differentiable, and its EIF is varphi(O)d(X) (with d the population-optimal rule), which is the crux of why root-n inference is achievable despite the non-smooth indicator.">\psi=\mathbb E\{\tau(X)d(X)\},
-    \qquad
-    d(X)=I\{\tau(X)&gt;0\}<span class="annot-bubble"><strong>strong:</strong> This is the value of the (population) optimal treatment rule. The estimand is pathwise differentiable, and its EIF is varphi(O)d(X) (with d the population-optimal rule), which is the crux of why root-n inference is achievable despite the non-smooth indicator.</span></span>.
-  \]
-  Consider the estimator
-  \[
-    \widehat\psi= \frac{1}{n} \sum_{i = 1}^n \widehat\varphi(O_i) \, I\{\widehat \tau(X_i)&gt;0\},
-  \]
-  where
-  \[
-    \varphi(O)=
-    <span class="annot annot-missing" data-kind="missing" tabindex="0" data-comment="Positivity / overlap is required for r(X) and 1-r(X) in the denominators but is never assumed. Add 0&lt;r(X)&lt;1 a.s. (preferably bounded away from 0 and 1).">\frac{A}{r(X)}\{Y-\mu_1(X)\}<span class="annot-bubble"><strong>missing:</strong> Positivity / overlap is required for r(X) and 1-r(X) in the denominators but is never assumed. Add 0&lt;r(X)&lt;1 a.s. (preferably bounded away from 0 and 1).</span></span>
-    -
-    \frac{1-A}{1-r(X)}\{Y-\mu_0(X)\}
-    +\mu_1(X)-\mu_0(X),
-  \]
-  where \(r(X)=P(A=1\mid X)\) and \(\mu_a(X)=\mathbb E(Y\mid A=a,X)\). Suppose the following margin condition holds
-  \begin{align*}
-       <span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="Margin condition with exponent alpha=1. This is the key regularity condition (Luedtke-van der Laan &#x27;non-exceptional law&#x27;): it makes the plug-in error from estimating d(X) second order. Note c&gt;=0 allows c=0, the degenerate well-separated case; the interesting regime is c&gt;0.">P\{0&lt;|\tau(X)|\le t\}\le ct<span class="annot-bubble"><strong>strong:</strong> Margin condition with exponent alpha=1. This is the key regularity condition (Luedtke-van der Laan &#x27;non-exceptional law&#x27;): it makes the plug-in <span class="kw-warn">error</span> from estimating d(X) second order. Note c&gt;=0 allows c=0, the degenerate well-separated case; the interesting regime is c&gt;0.</span></span>
-  \end{align*}
-  for some $c \geq 0$ and all $t \in (0, t_0]$ for some $t_0$. Suppose $\widehat\mu_0(x)$, $\widehat\mu_1(x)$, $\widehat\tau(x)$, and $\widehat{r}(x)$ are <span class="annot annot-praise" data-kind="praise" tabindex="0" data-comment="Revision resolves two prior review items at once: all four nuisances (mu_0, mu_1, tau-hat, r-hat) are now listed (typo fixed) and the cross-fitting/sample-splitting scheme is pinned to an independent size-n training sample.">computed on a separate, independent, training sample of size $n$<span class="annot-bubble"><strong>praise:</strong> Revision resolves two prior review items at once: all four nuisances (mu_0, mu_1, tau-hat, r-hat) are now listed (<span class="kw-warn">typo</span> fixed) and the cross-fitting/sample-splitting scheme is pinned to an independent size-n training sample.</span></span>. If
-  \begin{align*}
-      &amp; \int \{\widehat\varphi(o) - \varphi(o)\}^2 dP(o) = o_P(1), \qquad <span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="This uniform rate combined with the margin condition (exponent 1) controls the rule-misclassification region; n^{-1/4} times margin-1 yields an o_P(n^{-1/2}) bias contribution, which is exactly what is needed.">\sup_{x \in [0,1]^d}|\widehat\tau(x) - \tau(x)| = o_P(n^{-1/4})<span class="annot-bubble"><strong>strong:</strong> This uniform rate combined with the margin condition (exponent 1) controls the rule-misclassification region; n^{-1/4} times margin-1 yields an o_P(n^{-1/2}) bias contribution, which is exactly what is needed.</span></span>, \\
-      &amp; <span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="Standard doubly-robust product-rate (mixed-bias) condition ensuring the second-order remainder of the AIPW term is o_P(n^{-1/2}). Together with cross-fitting it removes empirical-process / Donsker requirements on the nuisances.">\int \{\widehat{r}(x) - r(x)\}^2 dP(x) \max_{a \in \{0,1\}} \int \{\widehat\mu_a(x) - \mu_a(x)\}^2 dP(x) = o_P(n^{-1})<span class="annot-bubble"><strong>strong:</strong> Standard doubly-robust product-rate (mixed-bias) condition ensuring the second-order remainder of the AIPW term is o_P(n^{-1/2}). Together with cross-fitting it removes empirical-process / Donsker requirements on the nuisances.</span></span>,
-  \end{align*}
-  does it hold that $\sqrt{n}(\widehat\psi - \psi) \stackrel{d}{\to} N(0, \sigma^2)$ for some $\sigma^2$ <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="Good catch acknowledging the exceptional-law regime where the limit variance can be random. But the oracle/rubric must commit: under margin exponent 1 with a non-exceptional law the classical answer is a FIXED sigma^2 = Var(varphi(O)d(X)); if the random-variance regime is intended to be in scope, the expected answer and grading change. State which.">(possibly random)<span class="annot-bubble"><strong>ambiguity:</strong> Good catch acknowledging the exceptional-law regime where the limit variance can be random. But the <abbr class="kw-subject term" data-tip="The author&#x27;s reference solution (the answer key) — it must itself pass the deterministic rubric; every model answer is graded against it.">oracle</abbr>/<span class="kw-subject">rubric</span> must commit: under margin exponent 1 with a non-exceptional law the classical answer is a FIXED sigma^2 = Var(varphi(O)d(X)); if the random-variance regime is intended to be in scope, the expected answer and grading change. State which.</span></span>?</div>
+      <div class="statement annot-host">\textcolor{red}{ChatGPT 5.5-High now solves this correctly, but Claude 4.8-High still does not.} % Consider a sample of $n$ iid observations $O_i = (Y_i, A_i, X_i)$, $1 \leq i \leq n$, where $X \in [0,1]^d$, $Y\in \mathcal{Y}$ and $A \in \{0,1\}$. For $\tau(X) = \mathbb E(Y\mid A=1,X)-\mathbb E(Y\mid A=0,X)$, consider the following estimand
+
+ %   <span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="This is the value of the (population) optimal treatment rule. The estimand is pathwise differentiable, and its EIF is varphi(O)d(X) (with d the population-optimal rule), which is the crux of why root-n inference is achievable despite the non-smooth indicator.">\psi=\mathbb E\{\tau(X)d(X)\},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Consider <span class="annot-bubble"><strong>strong:</strong> This is the value of the (population) optimal treatment rule. The estimand is pathwise differentiable, and its EIF is varphi(O)d(X) (with d the population-optimal rule), which is the crux of why root-n inference is achievable despite the non-smooth indicator.</span></span>a sample of $n$ iid observations $O_i = (Y_i, A_i, X_i)$, $1 \leq i \leq n$, where $X \in [0,1]^d$, $Y\in \mathcal{Y}$ and $A \in \{0,1\}$. For $\tau(X) = \mathbb E(Y\mid A=1,X)-\mathbb E(Y\mid A=0,X)$, consider the following estimand \[ \psi=\mathbb E\{\tau(X)d(X)\}, \qquad <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="Convention at the boundary tau(X)=0 is unspecified (strict &#x27;&gt;&#x27;). Under the margin condition P{0&lt;|tau|&lt;=t}&lt;=ct the boundary set may have positive mass at exactly tau=0; clarify whether P(tau(X)=0)=0 is assumed, since it affects pathwise differentiability.">d(X)=I\{\tau(X)&gt;0\}<span class="annot-bubble"><strong>ambiguity:</strong> <span class="kw-subject">Convention</span> at the boundary tau(X)=0 is unspecified (strict &#x27;&gt;&#x27;). Under the margin condition P{0&lt;|tau|&lt;=t}&lt;=ct the boundary set may have positive mass at exactly tau=0; clarify whether P(tau(X)=0)=0 is assumed, since it affects pathwise differentiability.</span></span>. \] Consider the estimator \[ \widehat\psi= \frac{1}{n} \sum_{i = 1}^n \widehat\varphi(O_i) \, I\{\widehat \tau(X_i)&gt;0\}, \] where \[ \varphi(O)= <span class="annot annot-missing" data-kind="missing" tabindex="0" data-comment="Positivity / overlap is required for r(X) and 1-r(X) in the denominators but is never assumed. Add 0&lt;r(X)&lt;1 a.s. (preferably bounded away from 0 and 1).">\frac{A}{r(X)}\{Y-\mu_1(X)\}<span class="annot-bubble"><strong>missing:</strong> Positivity / overlap is required for r(X) and 1-r(X) in the denominators but is never assumed. Add 0&lt;r(X)&lt;1 a.s. (preferably bounded away from 0 and 1).</span></span> - \frac{1-A}{1-r(X)}\{Y-\mu_0(X)\} +\mu_1(X)-\mu_0(X), \] where \(r(X)=P(A=1\mid X)\) and \(\mu_a(X)=\mathbb E(Y\mid A=a,X)\). Suppose the following margin condition holds \begin{align*} P\{0\leq|\tau(X)|\le t\}\le ct \end{align*} 
+for some $c \geq 0$ and all $t \in (0, t_0]$ for some $t_0$. Suppose $\widehat\mu_0(x)$, $\widehat\mu_1(x)$, $\widehat\tau(x)$, and $\widehat{r}(x)$ are <span class="annot annot-praise" data-kind="praise" tabindex="0" data-comment="Revision resolves two prior review items at once: all four nuisances (mu_0, mu_1, tau-hat, r-hat) are now listed (typo fixed) and the cross-fitting/sample-splitting scheme is pinned to an independent size-n training sample.">computed on a separate, independent, training sample of size $n$<span class="annot-bubble"><strong>praise:</strong> Revision resolves two prior review items at once: all four nuisances (mu_0, mu_1, tau-hat, r-hat) are now listed (<span class="kw-warn">typo</span> fixed) and the cross-fitting/sample-splitting scheme is pinned to an independent size-n training sample.</span></span>. 
+If \begin{align*} &amp; \int \{\widehat\varphi(o) - \varphi(o)\}^2 dP(o) = o_P(1), \\ &amp; <span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="Standard doubly-robust product-rate (mixed-bias) condition ensuring the second-order remainder of the AIPW term is o_P(n^{-1/2}). Together with cross-fitting it removes empirical-process / Donsker requirements on the nuisances.">\int \{\widehat{r}(x) - r(x)\}^2 dP(x) \max_{a \in \{0,1\}} \int \{\widehat\mu_a(x) - \mu_a(x)\}^2 dP(x) = o_P(n^{-1})<span class="annot-bubble"><strong>strong:</strong> Standard doubly-robust product-rate (mixed-bias) condition ensuring the second-order remainder of the AIPW term is o_P(n^{-1/2}). Together with cross-fitting it removes empirical-process / Donsker requirements on the nuisances.</span></span>, 
+\end{align*} Does it hold that $\liminf_{n \to \infty} P\left(\widehat\psi \leq \psi + z_{1-\alpha} \sqrt{\frac{\text{var}(I(d(X) &gt; 0)\varphi(O))}{n}}\right) \geq 1-\alpha$?</div>
       <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
     </div>
-    <div class="pane" id="snap-2">
-      <div class="statement">Consider a sample of $n$ iid observations $O_i = (Y_i, A_i, X_i)$, $1 \leq i \leq n$, where $X \in [0,1]^d$, $Y\in \mathcal{Y}$ and $A \in \{0,1\}$. For $\tau(X) = \mathbb E(Y\mid A=1,X)-\mathbb E(Y\mid A=0,X)$, consider the following estimand
-  \[
-    \psi=\mathbb E\{\tau(X)d(X)\},
-    \qquad
-    d(X)=I\{\tau(X)&gt;0\}.
-  \]
-  Consider the estimator
-  \[
-    \widehat\psi= \frac{1}{n} \sum_{i = 1}^n \widehat\varphi(O_i) \, I\{\widehat \tau(X_i)&gt;0\},
-  \]
-  where
-  \[
-    \varphi(O)=
-    \frac{A}{r(X)}\{Y-\mu_1(X)\}
-    -
-    \frac{1-A}{1-r(X)}\{Y-\mu_0(X)\}
-    +\mu_1(X)-\mu_0(X),
-  \]
-  where \(r(X)=P(A=1\mid X)\) and \(\mu_a(X)=\mathbb E(Y\mid A=a,X)\). Suppose the following margin condition holds
-  \begin{align*}
-       P\{0&lt;|\tau(X)|\le t\}\le ct
-  \end{align*}
-  for some $c \geq 0$ and all $t \in (0, t_0]$ for some $t_0$. Suppose $\widehat\mu_0(x)$, $\widehat\mu_1(x)$, $\widehat\tau(x)$, and $\widehat{r}(x)$ are computed on a separate, independent, training sample of size $n$. If
-  \begin{align*}
-      &amp; \int \{\widehat\varphi(o) - \varphi(o)\}^2 dP(o) = o_P(1), \qquad \sup_{x \in [0,1]^d}|\widehat\tau(x) - \tau(x)| = o_P(n^{-1/4}), \\
-      &amp; \int \{\widehat{r}(x) - r(x)\}^2 dP(x) \max_{a \in \{0,1\}} \int \{\widehat\mu_a(x) - \mu_a(x)\}^2 dP(x) = o_P(n^{-1}),
-  \end{align*}
-  does it hold that $\sqrt{n}(\widehat\psi - \psi) \stackrel{d}{\to} N(0, \sigma^2)$ for some $\sigma^2$ (possibly random)?</div>
-    </div>
-    <div class="pane" id="tex-2">
-      <p class="dim small">Snapshot of the full .tex source at the time of review (<abbr class="term" data-tip="A 16-hex-char hash of `problemstatement + answerkey + gradingscheme`. The review is keyed on this so the same .tex content is reviewed exactly once.">content sha</abbr> <code>8472602a</code>). This is what was reviewed — won't drift if you edit the file later.</p>
-      <pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
+    <div class="pane" id="oracle-2"><p class="dim small"><abbr class="term" data-tip="The `\begin{answerkey}` block of the .tex — the oracle solution + acceptable equivalent forms.">Oracle (answer key)</abbr> — the contributor's reference solution this review is checked against.</p><div class="statement oracle">Give the <abbr class="kw-subject term" data-tip="The author&#x27;s reference solution (the answer key) — it must itself pass the deterministic rubric; every model answer is graded against it.">oracle</abbr> solution here. If the problem has an exact or numerical answer, state it explicitly and list any acceptable equivalent forms. If the problem is proof-based or analysis-style, write the reference solution so that each <span class="kw-subject">rubric</span> <span class="kw-subject">criterion</span> below can be checked deterministically or audited line by line.</div></div>
+    <div class="pane" id="rubric-2"><p class="dim small"><abbr class="term" data-tip="The `\begin{gradingscheme}` block — the deterministic grading criterion (exact / tolerance / structural / rubric / programmatic / judge).">Rubric (grading scheme)</abbr> — how a verifier is meant to grade an answer.</p><div class="statement rubric">Delete the <span class="kw-subject">rubric</span> mode you are not using before submitting.
+
+\textbf{<abbr class="kw-section term" data-tip="Rubric template Mode A — the exact-answer grading mode: the response must reproduce the answer key&#x27;s value (exact / tolerance match).">Mode A</abbr>: multiple-choice / true-false / numerical answer}
+\begin{itemize}
+\item Exact expected answer:
+\item Numerical <span class="kw-subject">tolerance</span>, if any:
+\item Acceptable equivalent forms, units, or rounding conventions:
+\item Deterministic <span class="kw-subject">verifier</span>:
+\end{itemize}
+
+\textbf{<abbr class="kw-section term" data-tip="Rubric template Mode B — the proof-checklist grading mode: the response is graded against an enumerated list of required proof steps / structural criteria.">Mode B</abbr>: proof / derivation / analysis}
+\begin{enumerate}[label=\arabic*.]
+\item <span class="kw-warn">TODO</span>: <span class="kw-subject">criterion</span> 1 that a correct response must satisfy.
+\item <span class="kw-warn">TODO</span>: <span class="kw-subject">criterion</span> 2 covering the central derivation, proof step, or logical dependency.
+\item <span class="kw-warn">TODO</span>: <span class="kw-subject">criterion</span> 3 covering the final conclusion, edge cases, and correctness conditions.
+\item <span class="kw-warn">TODO</span>: if using an agent-as-judge, state the pass/fail schema and the evidence the judge must cite.
+\end{enumerate}
+
+The <abbr class="kw-subject term" data-tip="The author&#x27;s reference solution (the answer key) — it must itself pass the deterministic rubric; every model answer is graded against it.">oracle</abbr> solution above must satisfy every <span class="kw-subject">criterion</span> that remains in the final <span class="kw-subject">rubric</span>. Do not rely on point totals or vibes-based grading.</div></div>
+    <details class="raw-tex"><summary>raw .tex source (provenance — verbatim, unparsed)</summary><p class="dim small">The full unparsed <code>.tex</code> as it was on master at review time (<abbr class="term" data-tip="A 16-hex-char hash of `problemstatement + answerkey + gradingscheme`. The review is keyed on this so the same .tex content is reviewed exactly once.">content sha</abbr> <code>8472602a</code>) — kept for provenance only; the parsed blocks above are the evidence to read.</p><pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
 \begin{document}
 
 % Keep this file in sync with the matching problem_02_review.md sidecar.
 
 \problemsetup
-  {Estimation of the value function at the optimal treatment rule}
+  {Estimation of the Value Function at the Optimal Treatment Rule}
   {Statistics}
   {Causal inference}
   {Qualifying-exam-plus}
@@ -984,38 +1101,42 @@ Suggested checks:
   {TODO: compute / prove / diagnose / simulate / plan / debug}
   {TODO: challenged capability}
   {TODO: exact match / numerical tolerance / structural check / rubric-based / agent-as-judge / programmatic test}
-  {TODO: short observed failure mode}
+  {TODO: failing to realize that excluding zero from the margin condition invalidates the standard CLT justification}
 \begin{msbproblem}
 
 \begin{problemstatement}
-Consider a sample of $n$ iid observations $O_i = (Y_i, A_i, X_i)$, $1 \leq i \leq n$, where $X \in [0,1]^d$, $Y\in \mathcal{Y}$ and $A \in \{0,1\}$. For $\tau(X) = \mathbb E(Y\mid A=1,X)-\mathbb E(Y\mid A=0,X)$, consider the following estimand
-  \[
-    \psi=\mathbb E\{\tau(X)d(X)\},
-    \qquad
-    d(X)=I\{\tau(X)&gt;0\}.
-  \]
-  Consider the estimator
-  \[
-    \widehat\psi= \frac{1}{n} \sum_{i = 1}^n \widehat\varphi(O_i) \, I\{\widehat \tau(X_i)&gt;0\},
-  \]
-  where
-  \[
-    \varphi(O)=
-    \frac{A}{r(X)}\{Y-\mu_1(X)\}
-    -
-    \frac{1-A}{1-r(X)}\{Y-\mu_0(X)\}
-    +\mu_1(X)-\mu_0(X),
-  \]
-  where \(r(X)=P(A=1\mid X)\) and \(\mu_a(X)=\mathbb E(Y\mid A=a,X)\). Suppose the following margin condition holds
-  \begin{align*}
-       P\{0&lt;|\tau(X)|\le t\}\le ct
-  \end{align*}
-  for some $c \geq 0$ and all $t \in (0, t_0]$ for some $t_0$. Suppose $\widehat\mu_0(x)$, $\widehat\mu_1(x)$, $\widehat\tau(x)$, and $\widehat{r}(x)$ are computed on a separate, independent, training sample of size $n$. If
-  \begin{align*}
-      &amp; \int \{\widehat\varphi(o) - \varphi(o)\}^2 dP(o) = o_P(1), \qquad \sup_{x \in [0,1]^d}|\widehat\tau(x) - \tau(x)| = o_P(n^{-1/4}), \\
-      &amp; \int \{\widehat{r}(x) - r(x)\}^2 dP(x) \max_{a \in \{0,1\}} \int \{\widehat\mu_a(x) - \mu_a(x)\}^2 dP(x) = o_P(n^{-1}),
-  \end{align*}
-  does it hold that $\sqrt{n}(\widehat\psi - \psi) \stackrel{d}{\to} N(0, \sigma^2)$ for some $\sigma^2$ (possibly random)?
+\textcolor{red}{ChatGPT 5.5-High now solves this correctly, but Claude 4.8-High still does not.} % Consider a sample of $n$ iid observations $O_i = (Y_i, A_i, X_i)$, $1 \leq i \leq n$, where $X \in [0,1]^d$, $Y\in \mathcal{Y}$ and $A \in \{0,1\}$. For $\tau(X) = \mathbb E(Y\mid A=1,X)-\mathbb E(Y\mid A=0,X)$, consider the following estimand
+%  \[
+ %   \psi=\mathbb E\{\tau(X)d(X)\},
+%    d(X)=I\{\tau(X)&gt;0\}.
+%  \]
+%  Consider the estimator
+%  \[
+% \widehat\psi= \frac{1}{n} \sum_{i = 1}^n \widehat\varphi(O_i) \, I\{\widehat \tau(X_i)&gt;0\},
+%  \]
+%  where
+%  \[
+%    \varphi(O)=
+%    \frac{A}{r(X)}\{Y-\mu_1(X)\}
+%    -
+%    \frac{1-A}{1-r(X)}\{Y-\mu_0(X)\}
+%    +\mu_1(X)-\mu_0(X),
+%  \]
+%  where \(r(X)=P(A=1\mid X)\) and \(\mu_a(X)=\mathbb E(Y\mid A=a,X)\). Suppose the following margin condition holds
+%  \begin{align*}
+%       P\{0&lt;|\tau(X)|\le t\}\le ct
+%  \end{align*}
+%  for some $c \geq 0$ and all $t \in (0, t_0]$ for some $t_0$. Suppose $\widehat\mu_0(x)$, $\widehat\mu_1(x)$, $\widehat\tau(x)$, and $\widehat{r}(x)$ are computed on a separate, independent, training sample of size $n$. If
+%  \begin{align*}
+%      &amp; \int \{\widehat\varphi(o) - \varphi(o)\}^2 dP(o) = o_P(1), \qquad \sup_{x \in [0,1]^d}|\widehat\tau(x) - \tau(x)| = o_P(n^{-1/4}), \\
+%      &amp; \int \{\widehat{r}(x) - r(x)\}^2 dP(x) \max_{a \in \{0,1\}} \int \{\widehat\mu_a(x) - \mu_a(x)\}^2 dP(x) = o_P(n^{-1}),
+%  \end{align*}
+%  does it hold that $\sqrt{n}(\widehat\psi - \psi) \stackrel{d}{\to} N(0, \sigma^2)$ for some $\sigma^2$?
+
+Consider a sample of $n$ iid observations $O_i = (Y_i, A_i, X_i)$, $1 \leq i \leq n$, where $X \in [0,1]^d$, $Y\in \mathcal{Y}$ and $A \in \{0,1\}$. For $\tau(X) = \mathbb E(Y\mid A=1,X)-\mathbb E(Y\mid A=0,X)$, consider the following estimand \[ \psi=\mathbb E\{\tau(X)d(X)\}, \qquad d(X)=I\{\tau(X)&gt;0\}. \] Consider the estimator \[ \widehat\psi= \frac{1}{n} \sum_{i = 1}^n \widehat\varphi(O_i) \, I\{\widehat \tau(X_i)&gt;0\}, \] where \[ \varphi(O)= \frac{A}{r(X)}\{Y-\mu_1(X)\} - \frac{1-A}{1-r(X)}\{Y-\mu_0(X)\} +\mu_1(X)-\mu_0(X), \] where \(r(X)=P(A=1\mid X)\) and \(\mu_a(X)=\mathbb E(Y\mid A=a,X)\). Suppose the following margin condition holds \begin{align*} P\{0\leq|\tau(X)|\le t\}\le ct \end{align*} 
+for some $c \geq 0$ and all $t \in (0, t_0]$ for some $t_0$. Suppose $\widehat\mu_0(x)$, $\widehat\mu_1(x)$, $\widehat\tau(x)$, and $\widehat{r}(x)$ are computed on a separate, independent, training sample of size $n$. 
+If \begin{align*} &amp; \int \{\widehat\varphi(o) - \varphi(o)\}^2 dP(o) = o_P(1), \\ &amp; \int \{\widehat{r}(x) - r(x)\}^2 dP(x) \max_{a \in \{0,1\}} \int \{\widehat\mu_a(x) - \mu_a(x)\}^2 dP(x) = o_P(n^{-1}), 
+\end{align*} Does it hold that $\liminf_{n \to \infty} P\left(\widehat\psi \leq \psi + z_{1-\alpha} \sqrt{\frac{\text{var}(I(d(X) &gt; 0)\varphi(O))}{n}}\right) \geq 1-\alpha$?
 \end{problemstatement}
 
 \begin{answerkey}
@@ -1058,8 +1179,7 @@ Suggested checks:
 \end{msbproblem}
 
 \end{document}
-</code></pre>
-    </div>
+</code></pre></details>
   </details>
 
   
@@ -1079,26 +1199,9 @@ Suggested checks:
 
   
 
-  <details class="bench-block" id="problem-2-sidecar"><summary>🗒️ Contributor’s own notes / pasted responses — <span class="dim small">not yet provided</span></summary><p class="dim small">This is the slot for <strong>your own</strong> review sidecar (<code>problem_02_review.md</code> in Overleaf): the raw model responses you collected plus your own failure-mode summary. It’s currently the untouched template, so there’s nothing to show here yet — the model evidence below is the sweep’s, not yours. Pasting 5 raw responses (the sidecar template asks for 5–10, mixing at least two providers) + a short failure-mode note here is what lets a human confirm the hardness claim quickly.</p></details>
+  <details class="bench-block" id="problem-2-sidecar" open><summary>🗒️ Contributor’s own notes / pasted responses</summary><p class="dim small">Your <strong>own</strong> review sidecar — the responses you collected and your own failure-mode read. Shown verbatim, as <em>your</em> words (distinct from the bot review and the model sweep below).</p><p class="small" style="margin-top:.6em"><strong>Your failure-mode summary</strong>:</p><ul class="traj-list"><li><strong>Observed failure mode:</strong> ## Oracle and Verification Notes</li></ul><p class="dim small">Source: <code>origin/master:contributors/contributor_05/problems/problem_02_review.md</code>.</p></details>
 
   
-<details class="d-block dedup-block" id="problem-2-dedup">
-  <summary>🔍 Cross-benchmark matches <span class="dim small">(4 total)</span></summary>
-  <div class="dedup-headline"><span class="pill v-revision">△ 4 adjacent matches (topical, not duplicate)</span></div>
-  <p class="dim small">BGE recall (on the problem <em>statement</em>) × Claude method-judge vs the The nine precedent benchmarks judged most likely to collide …. </p>
-  <p class="dim small">⚠ <code>cos</code> is <strong>surface similarity</strong> (a recall signal on wording), <em>not</em> a duplicate measure — dense embeddings cluster by vocabulary, so they over-flag surface-similar stems and miss method-equivalent ones (see <code>research/dedup-methodology-deep-research.md</code>). The duplicate call is the <strong>method-judge verdict</strong>, not <code>cos</code>. Method-level dedup is being upgraded to embed the <em>solution trajectory</em> + judge (charter: <code>.claude/library/charters/dedup.md</code>).</p>
-  <div class="table-wrap"><table class="dedup-table"><thead><tr>
-    <th>verdict</th><th class="n">cos</th><th>source</th><th>matched stem</th><th>judge reason</th>
-  </tr></thead><tbody><tr><td><span class="pill v-revision">△ ADJ</span></td><td class="n cos-cell"><strong>536.052</strong></td><td><code>StatEval-public</code><br><span class="dim small">research_52</span></td><td class="stem">**Premises (Assumptions, Conditions):**
-- Assumption A1: (A1) $(X_{i},T_{i},(1 - T_{i})R_{i}),i\in \mathcal{I}_{2}$ are independent and identically distributed random vectors satisfying condition (7),…</td><td class="dim small">Treatment/control setup with propensity score, but focuses on density ratio bounds, not heterogeneous treatment effects or margin conditions</td></tr><tr><td><span class="pill v-revision">△ ADJ</span></td><td class="n cos-cell"><strong>529.909</strong></td><td><code>StatEval-public</code><br><span class="dim small">research_51</span></td><td class="stem">**Premises (Assumptions, Conditions):**
-- Assumption A1: (A1) $(X_{i},T_{i},(1 - T_{i})R_{i}),i\in \mathcal{I}_{2}$ are independent and identically distributed random vectors satisfying condition (7),…</td><td class="dim small">Treatment/control setup with propensity score, but focuses on density ratio bounds, not heterogeneous treatment effects or margin conditions</td></tr><tr><td><span class="pill v-revision">△ ADJ</span></td><td class="n cos-cell"><strong>471.889</strong></td><td><code>StatEval-public</code><br><span class="dim small">research_10</span></td><td class="stem">**Premises (Assumptions, Conditions):**
-
-
-**Part 1**: Assume that \(\chi\) is a measurable feature space, \(0&lt;\alpha&lt;1\), and that \((X,R,T)\) are random variables with \(T\in\{0,1\}\), such that \(\m…</td><td class="dim small">Treatment variable T, conditional independence given X, but fragment incomplete; unclear if addresses heterogeneous treatment effects or margin condit</td></tr><tr><td><span class="pill v-revision">△ ADJ</span></td><td class="n cos-cell"><strong>459.040</strong></td><td><code>StatEval-public</code><br><span class="dim small">research_251</span></td><td class="stem">**Premises (Assumptions, Conditions):**
-- Assumption C1: (C1) The basis vector $\Phi(\cdot)$ in (3) satisfies that $\mathbb{E}[\| \Phi(X) \|_{\ell_2}^2] &lt; \infty$ .
-- Assumption C2: (C2) The error ter…</td><td class="dim small">Cross-fitted nuisance estimators and orthogonalized debiasing, but basis regression setup differs from heterogeneous treatment effects with margin con</td></tr></tbody></table></div>
-</details>
-
 
   <details class="d-block" id="problem-2-verifier"><summary>🧪 Verifier — not auto-verifiable yet (awaiting the author's oracle)</summary>
 <div class="verifier-card">
@@ -1166,28 +1269,43 @@ Suggested checks:
   
 
   <details class="d-block" open id="problem-3-text">
-    <summary>📄 Problem snapshot — full statement (private bank, unreleased; do not redistribute)</summary>
+    <summary>📄 Submission snapshot — parsed source evidence (private bank, unreleased; do not redistribute)</summary>
     <div class="tabs">
-      <button class="tab active" data-target="annot-3">Annotated</button>
-      <button class="tab" data-target="snap-3">Snapshot</button>
-      <button class="tab" data-target="tex-3">Raw .tex</button>
+      <button class="tab active" data-target="annot-3">Statement (annotated)</button>
+      <button class="tab" data-target="oracle-3">Oracle</button>
+      <button class="tab" data-target="rubric-3">Rubric</button>
     </div>
     <div class="pane active" id="annot-3">
-      <div class="statement annot-host">I have data from <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="Good that an ordering is given, but the temporal/ordering semantics are only implied. State that each variable precedes the next in time and, ideally, give the DAG (A1-&gt;I1, A1-&gt;I2, I1-&gt;I2, A1-&gt;A2, I1-&gt;A2, A2-&gt;I2). The reader must infer the confounding structure that makes the trap work.">the temporal ordering $(A_1, I_1, A_2, I_2)$<span class="annot-bubble"><strong>ambiguity:</strong> Good that an ordering is given, but the temporal/ordering semantics are only implied. State that each variable precedes the next in time and, ideally, give the DAG (A1-&gt;I1, A1-&gt;I2, I1-&gt;I2, A1-&gt;A2, I1-&gt;A2, A2-&gt;I2). The reader must infer the confounding structure that makes the trap work.</span></span>. Here \(A_1\) is a first measure intended to reduce Covid-19 contagion, \(I_1\) is the infection rate measured after \(A_1\), \(A_2\) is a second measure chosen after observing \((A_1,I_1)\), and \(I_2\) is the later infection rate. Suppose \(A_1\) is randomized, and <span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="This is the crux: I1 is simultaneously a mediator of A1 and a confounder of the A2-&gt;I2 relationship (a time-varying confounder affected by prior treatment). It is exactly the configuration where standard regression adjustment fails and g-methods are required. Keep it.">\(A_2\) is randomized conditional on the observed history \((A_1,I_1)\)<span class="annot-bubble"><strong>strong:</strong> This is the crux: I1 is simultaneously a mediator of A1 and a confounder of the A2-&gt;I2 relationship (a time-varying confounder affected by prior treatment). It is exactly the configuration where standard regression adjustment fails and g-methods are required. Keep it.</span></span>. Suppose further that <span class="annot annot-missing" data-kind="missing" tabindex="0" data-comment="Correct specification of the conditional mean does NOT make beta1 a causal total effect. Because I1 is a post-treatment mediator/descendant of A1, including it in the regression conditions away the indirect path A1-&gt;I1-&gt;I2 and can open collider bias. The rubric must reward recognizing that &#x27;correctly specified&#x27; is a red herring for the total effect.">the linear model \[ I_2=\beta_0+\beta_1A_1+\beta_2I_1+\beta_3A_2+\epsilon \] is correctly specified<span class="annot-bubble"><strong>missing:</strong> Correct specification of the conditional mean does NOT make beta1 a causal total effect. Because I1 is a post-treatment mediator/descendant of A1, including it in the regression conditions away the indirect path A1-&gt;I1-&gt;I2 and can open collider bias. The <span class="kw-subject">rubric</span> must reward recognizing that &#x27;correctly specified&#x27; is a red herring for the total effect.</span></span>, i.e., <span class="annot annot-suggestion" data-kind="suggestion" tabindex="0" data-comment="This pins beta1 as a partial (conditional-on-I1) regression coefficient, i.e. at best a controlled direct effect of A1 at fixed I1 under linearity/no-interaction, not the total effect. Worth making the intended estimand explicit so graders can distinguish &#x27;CDE&#x27; answers from &#x27;total effect&#x27; answers.">$E(\epsilon \mid A_1, I_1, A_2) = 0$<span class="annot-bubble"><strong>suggestion:</strong> This pins beta1 as a partial (conditional-on-I1) regression coefficient, i.e. at best a controlled direct effect of A1 at fixed I1 under linearity/no-interaction, not the total effect. Worth making the intended estimand explicit so graders can distinguish &#x27;CDE&#x27; answers from &#x27;total effect&#x27; answers.</span></span>, and <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="Positivity should be stated concretely (0&lt;P(A1=a)&lt;1 and 0&lt;P(A2=a2|A1,I1)&lt;1 a.s.); sequential ignorability / sequential randomization is the assumption actually doing the identification work and is never named, only implied by &#x27;randomized conditional on history&#x27;. Name it.">assume consistency and positivity<span class="annot-bubble"><strong>ambiguity:</strong> Positivity should be stated concretely (0&lt;P(A1=a)&lt;1 and 0&lt;P(A2=a2|A1,I1)&lt;1 a.s.); sequential ignorability / sequential randomization is the assumption actually doing the identification work and is never named, only implied by &#x27;randomized conditional on history&#x27;. Name it.</span></span>. In my data, <span class="annot annot-suggestion" data-kind="suggestion" tabindex="0" data-comment="Sharpen the trap by also asking the converse: if beta1=0, does that prove A1 has no effect on I2? (No: an indirect effect through I1 can exist even when the I1-adjusted coefficient is zero.) This makes the question harder and the rubric more discriminating.">\(\widehat\beta_1\) is estimated to be nonzero<span class="annot-bubble"><strong>suggestion:</strong> Sharpen the trap by also asking the converse: if beta1=0, does that prove A1 has no effect on I2? (No: an indirect effect through I1 can exist even when the I1-adjusted coefficient is zero.) This makes the question harder and the <span class="kw-subject">rubric</span> more discriminating.</span></span>. <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="&#x27;some effect&#x27; is the load-bearing ambiguity: total effect, controlled direct effect, or natural direct/indirect effect? The oracle must define the target estimand. As written, a model could defensibly answer &#x27;yes, a direct effect holding I1 fixed&#x27; which is not clearly wrong unless the intended estimand is specified.">Can I interpret this as saying that there is some effect of \(A_1\) on \(I_2\)?<span class="annot-bubble"><strong>ambiguity:</strong> &#x27;some effect&#x27; is the load-bearing <span class="kw-subject">ambiguity</span>: total effect, controlled direct effect, or natural direct/indirect effect? The <abbr class="kw-subject term" data-tip="The author&#x27;s reference solution (the answer key) — it must itself pass the deterministic rubric; every model answer is graded against it.">oracle</abbr> must define the target estimand. As written, a model could defensibly answer &#x27;yes, a direct effect holding I1 fixed&#x27; which is not clearly <span class="kw-warn">wrong</span> unless the intended estimand is specified.</span></span></div>
+      <div class="statement annot-host">I have data $(A, X, Y)$, where $A$ is a treatment of interest that is completely randomized. From domain knowledge, the treatment is supposed to be beneficial and constant across the population from which the data is randomly sampled from. The sample consist $n$ iid observations of the triplet $O_i = (A_i,X_i, Y_i)$. I have fitted a linear regression model $Y_i = \beta A_i + \gamma X_i + \epsilon_i$ that I am fairly confident is correctly specified. The level-5\% test rejects the null hypothesis $\beta = 0$. Does this imply that the data provide statistically significant evidence that the effect is nonzero?</div>
       <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
     </div>
-    <div class="pane" id="snap-3">
-      <div class="statement">I have data from the temporal ordering $(A_1, I_1, A_2, I_2)$. Here \(A_1\) is a first measure intended to reduce Covid-19 contagion, \(I_1\) is the infection rate measured after \(A_1\), \(A_2\) is a second measure chosen after observing \((A_1,I_1)\), and \(I_2\) is the later infection rate. Suppose \(A_1\) is randomized, and \(A_2\) is randomized conditional on the observed history \((A_1,I_1)\). Suppose further that the linear model \[ I_2=\beta_0+\beta_1A_1+\beta_2I_1+\beta_3A_2+\epsilon \] is correctly specified, i.e., $E(\epsilon \mid A_1, I_1, A_2) = 0$, and assume consistency and positivity. In my data, \(\widehat\beta_1\) is estimated to be nonzero. Can I interpret this as saying that there is some effect of \(A_1\) on \(I_2\)?</div>
-    </div>
-    <div class="pane" id="tex-3">
-      <p class="dim small">Snapshot of the full .tex source at the time of review (<abbr class="term" data-tip="A 16-hex-char hash of `problemstatement + answerkey + gradingscheme`. The review is keyed on this so the same .tex content is reviewed exactly once.">content sha</abbr> <code>62fdd952</code>). This is what was reviewed — won't drift if you edit the file later.</p>
-      <pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
+    <div class="pane" id="oracle-3"><p class="dim small"><abbr class="term" data-tip="The `\begin{answerkey}` block of the .tex — the oracle solution + acceptable equivalent forms.">Oracle (answer key)</abbr> — the contributor's reference solution this review is checked against.</p><div class="statement oracle">As stated the answer should be ``not necessarily.&#x27;&#x27; In fact, even if <span class="kw-math">$A$</span> is completely randomized, say <span class="kw-math">$A \sim \text{Bern}(1/2)$</span>, if <span class="kw-math">$X$</span> is a post-treatment variable that (i) is affected by <span class="kw-math">$A$</span>, (ii) is affected by an unmeasured <span class="kw-math">$U$</span> that also affects <span class="kw-math">$Y$</span>, then regressing <span class="kw-math">$Y$</span> on both <span class="kw-math">$A$</span> and <span class="kw-math">$X$</span> can introduce collider bias (<span class="kw-math">$X$</span> is the collider). That is, even if <span class="kw-math">$A$</span> is marginally unconfounded, it could be confounded given <span class="kw-math">$X$</span>.</div></div>
+    <div class="pane" id="rubric-3"><p class="dim small"><abbr class="term" data-tip="The `\begin{gradingscheme}` block — the deterministic grading criterion (exact / tolerance / structural / rubric / programmatic / judge).">Rubric (grading scheme)</abbr> — how a verifier is meant to grade an answer.</p><div class="statement rubric">Delete the <span class="kw-subject">rubric</span> mode you are not using before submitting.
+
+\textbf{<abbr class="kw-section term" data-tip="Rubric template Mode A — the exact-answer grading mode: the response must reproduce the answer key&#x27;s value (exact / tolerance match).">Mode A</abbr>: multiple-choice / true-false / numerical answer}
+\begin{itemize}
+\item Exact expected answer:
+\item Numerical <span class="kw-subject">tolerance</span>, if any:
+\item Acceptable equivalent forms, units, or rounding conventions:
+\item Deterministic <span class="kw-subject">verifier</span>:
+\end{itemize}
+
+\textbf{<abbr class="kw-section term" data-tip="Rubric template Mode B — the proof-checklist grading mode: the response is graded against an enumerated list of required proof steps / structural criteria.">Mode B</abbr>: proof / derivation / analysis}
+\begin{enumerate}[label=\arabic*.]
+\item <span class="kw-warn">TODO</span>: <span class="kw-subject">criterion</span> 1 that a correct response must satisfy.
+\item <span class="kw-warn">TODO</span>: <span class="kw-subject">criterion</span> 2 covering the central derivation, proof step, or logical dependency.
+\item <span class="kw-warn">TODO</span>: <span class="kw-subject">criterion</span> 3 covering the final conclusion, edge cases, and correctness conditions.
+\item <span class="kw-warn">TODO</span>: if using an agent-as-judge, state the pass/fail schema and the evidence the judge must cite.
+\end{enumerate}
+
+The <abbr class="kw-subject term" data-tip="The author&#x27;s reference solution (the answer key) — it must itself pass the deterministic rubric; every model answer is graded against it.">oracle</abbr> solution above must satisfy every <span class="kw-subject">criterion</span> that remains in the final <span class="kw-subject">rubric</span>. Do not rely on point totals or vibes-based grading.</div></div>
+    <details class="raw-tex"><summary>raw .tex source (provenance — verbatim, unparsed)</summary><p class="dim small">The full unparsed <code>.tex</code> as it was on master at review time (<abbr class="term" data-tip="A 16-hex-char hash of `problemstatement + answerkey + gradingscheme`. The review is keyed on this so the same .tex content is reviewed exactly once.">content sha</abbr> <code>62fdd952</code>) — kept for provenance only; the parsed blocks above are the evidence to read.</p><pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
 \begin{document}
 
 % Keep this file in sync with the matching problem_03_review.md sidecar.
 
 \problemsetup
-  {Time-varying causal inference}
+  {Time-Varying Causal Inference}
   {Statistics}
   {Causal inference}
   {Qualifying-exam-plus}
@@ -1198,15 +1316,16 @@ Suggested checks:
   {TODO: compute / prove / diagnose / simulate / plan / debug}
   {TODO: challenged capability}
   {TODO: exact match / numerical tolerance / structural check / rubric-based / agent-as-judge / programmatic test}
-  {TODO: short observed failure mode}
+  {Missing the possibility of collider bias.}
 \begin{msbproblem}
 
 \begin{problemstatement}
-I have data from the temporal ordering $(A_1, I_1, A_2, I_2)$. Here \(A_1\) is a first measure intended to reduce Covid-19 contagion, \(I_1\) is the infection rate measured after \(A_1\), \(A_2\) is a second measure chosen after observing \((A_1,I_1)\), and \(I_2\) is the later infection rate. Suppose \(A_1\) is randomized, and \(A_2\) is randomized conditional on the observed history \((A_1,I_1)\). Suppose further that the linear model \[ I_2=\beta_0+\beta_1A_1+\beta_2I_1+\beta_3A_2+\epsilon \] is correctly specified, i.e., $E(\epsilon \mid A_1, I_1, A_2) = 0$, and assume consistency and positivity. In my data, \(\widehat\beta_1\) is estimated to be nonzero. Can I interpret this as saying that there is some effect of \(A_1\) on \(I_2\)?
+%I have data from the temporal ordering $(A_1, I_1, A_2, I_2)$. Here \(A_1\) is a first measure intended to reduce Covid-19 contagion, \(I_1\) is the infection rate measured after \(A_1\), \(A_2\) is a second measure chosen after observing \((A_1,I_1)\), and \(I_2\) is the later infection rate. Suppose \(A_1\) is randomized, and \(A_2\) is randomized conditional on the observed history \((A_1,I_1)\). Suppose further that the linear model \[ I_2=\beta_0+\beta_1A_1+\beta_2I_1+\beta_3A_2+\epsilon \] is correctly specified, i.e., $E(\epsilon \mid A_1, I_1, A_2) = 0$, and assume consistency and positivity. In my data, \(\widehat\beta_1\) is estimated to be nonzero. Can I interpret this as saying that there is some effect of \(A_1\) on \(I_2\)?
+I have data $(A, X, Y)$, where $A$ is a treatment of interest that is completely randomized. From domain knowledge, the treatment is supposed to be beneficial and constant across the population from which the data is randomly sampled from. The sample consist $n$ iid observations of the triplet $O_i = (A_i,X_i, Y_i)$. I have fitted a linear regression model $Y_i = \beta A_i + \gamma X_i + \epsilon_i$ that I am fairly confident is correctly specified. The level-5\% test rejects the null hypothesis $\beta = 0$. Does this imply that the data provide statistically significant evidence that the effect is nonzero?
 \end{problemstatement}
 
 \begin{answerkey}
-Give the oracle solution here. If the problem has an exact or numerical answer, state it explicitly and list any acceptable equivalent forms. If the problem is proof-based or analysis-style, write the reference solution so that each rubric criterion below can be checked deterministically or audited line by line.
+As stated the answer should be ``not necessarily.&#x27;&#x27; In fact, even if $A$ is completely randomized, say $A \sim \text{Bern}(1/2)$, if $X$ is a post-treatment variable that (i) is affected by $A$, (ii) is affected by an unmeasured $U$ that also affects $Y$, then regressing $Y$ on both $A$ and $X$ can introduce collider bias ($X$ is the collider). That is, even if $A$ is marginally unconfounded, it could be confounded given $X$.
 \end{answerkey}
 
 \begin{gradingscheme}
@@ -1245,8 +1364,7 @@ Suggested checks:
 \end{msbproblem}
 
 \end{document}
-</code></pre>
-    </div>
+</code></pre></details>
   </details>
 
   
@@ -1266,7 +1384,7 @@ Suggested checks:
 
   
 
-  <details class="bench-block" id="problem-3-sidecar"><summary>🗒️ Contributor’s own notes / pasted responses — <span class="dim small">not yet provided</span></summary><p class="dim small">This is the slot for <strong>your own</strong> review sidecar (<code>problem_03_review.md</code> in Overleaf): the raw model responses you collected plus your own failure-mode summary. It’s currently the untouched template, so there’s nothing to show here yet — the model evidence below is the sweep’s, not yours. Pasting 5 raw responses (the sidecar template asks for 5–10, mixing at least two providers) + a short failure-mode note here is what lets a human confirm the hardness claim quickly.</p></details>
+  <details class="bench-block" id="problem-3-sidecar" open><summary>🗒️ Contributor’s own notes / pasted responses</summary><p class="dim small">Your <strong>own</strong> review sidecar — the responses you collected and your own failure-mode read. Shown verbatim, as <em>your</em> words (distinct from the bot review and the model sweep below).</p><p class="small" style="margin-top:.6em"><strong>Your failure-mode summary</strong>:</p><ul class="traj-list"><li><strong>Observed failure mode:</strong> ## Oracle and Verification Notes</li></ul><p class="dim small">Source: <code>origin/master:contributors/contributor_05/problems/problem_03_review.md</code>.</p></details>
 
   
 
@@ -1336,14 +1454,14 @@ Suggested checks:
   
 
   <details class="d-block" open id="problem-5-text">
-    <summary>📄 Problem snapshot — full statement (private bank, unreleased; do not redistribute)</summary>
+    <summary>📄 Submission snapshot — parsed source evidence (private bank, unreleased; do not redistribute)</summary>
     <div class="tabs">
-      <button class="tab active" data-target="annot-5">Annotated</button>
-      <button class="tab" data-target="snap-5">Snapshot</button>
-      <button class="tab" data-target="tex-5">Raw .tex</button>
+      <button class="tab active" data-target="annot-5">Statement (annotated)</button>
+      <button class="tab" data-target="oracle-5">Oracle</button>
+      <button class="tab" data-target="rubric-5">Rubric</button>
     </div>
     <div class="pane active" id="annot-5">
-      <div class="statement annot-host">Consider a partially linear model
+      <div class="statement annot-host">\textcolor{red}{ChatGPT 5.5-High now solves this correctly, but Claude 4.8-High still does not.} Consider a partially linear model
   \[
     <span class="annot annot-strong" data-kind="strong" tabindex="0" data-comment="Clean, standard partially linear (Robinson) model. The target estimand beta is unambiguous and the structure is well-posed.">Y=\beta A+\omega(X)+\epsilon<span class="annot-bubble"><strong>strong:</strong> Clean, standard partially linear (Robinson) model. The target estimand beta is unambiguous and the structure is well-posed.</span></span>,
     \qquad
@@ -1352,24 +1470,33 @@ Suggested checks:
   The interest is in estimating $\beta$ using <span class="annot annot-nit" data-kind="nit" tabindex="0" data-comment="Typo: &#x27;a n iid copies&#x27; should read &#x27;n iid copies&#x27;. Otherwise data structure is clear.">a $n$ iid copies of $O_i = (X_i, A_i, Y_i)$<span class="annot-bubble"><strong>nit:</strong> <span class="kw-warn">Typo</span>: &#x27;a n iid copies&#x27; should read &#x27;n iid copies&#x27;. Otherwise data structure is clear.</span></span>. <span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="Underspecified deliverable: &#x27;the efficient influence function&#x27; admits several algebraically-equivalent forms (residual-on-residual, V^{-1}(A-m)eps, etc.) and &#x27;the corresponding estimator&#x27; could be the one-step, the estimating-equation/Robinson, or the cross-fitted double-ML estimator. Acceptable equivalent forms and the required estimator must be enumerated in the rubric for deterministic grading.">Derive the efficient influence function of \(\beta\) in this model and the corresponding estimator.<span class="annot-bubble"><strong>ambiguity:</strong> <span class="kw-warn">Underspecified</span> <span class="kw-subject">deliverable</span>: &#x27;the efficient influence function&#x27; admits several algebraically-equivalent forms (residual-on-residual, V^{-1}(A-m)eps, etc.) and &#x27;the corresponding estimator&#x27; could be the one-step, the estimating-equation/Robinson, or the cross-fitted double-ML estimator. Acceptable equivalent forms and the required estimator must be enumerated in the <span class="kw-subject">rubric</span> for deterministic grading.</span></span></div>
       <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
     </div>
-    <div class="pane" id="snap-5">
-      <div class="statement">Consider a partially linear model
-  \[
-    Y=\beta A+\omega(X)+\epsilon,
-    \qquad
-    \mathbb E(\epsilon\mid A,X)=0 .
-  \]
-  The interest is in estimating $\beta$ using a $n$ iid copies of $O_i = (X_i, A_i, Y_i)$. Derive the efficient influence function of \(\beta\) in this model and the corresponding estimator.</div>
-    </div>
-    <div class="pane" id="tex-5">
-      <p class="dim small">Snapshot of the full .tex source at the time of review (<abbr class="term" data-tip="A 16-hex-char hash of `problemstatement + answerkey + gradingscheme`. The review is keyed on this so the same .tex content is reviewed exactly once.">content sha</abbr> <code>f5fb0c35</code>). This is what was reviewed — won't drift if you edit the file later.</p>
-      <pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
+    <div class="pane" id="oracle-5"><p class="dim small"><abbr class="term" data-tip="The `\begin{answerkey}` block of the .tex — the oracle solution + acceptable equivalent forms.">Oracle (answer key)</abbr> — the contributor's reference solution this review is checked against.</p><div class="statement oracle">Give the <abbr class="kw-subject term" data-tip="The author&#x27;s reference solution (the answer key) — it must itself pass the deterministic rubric; every model answer is graded against it.">oracle</abbr> solution here. If the problem has an exact or numerical answer, state it explicitly and list any acceptable equivalent forms. If the problem is proof-based or analysis-style, write the reference solution so that each <span class="kw-subject">rubric</span> <span class="kw-subject">criterion</span> below can be checked deterministically or audited line by line.</div></div>
+    <div class="pane" id="rubric-5"><p class="dim small"><abbr class="term" data-tip="The `\begin{gradingscheme}` block — the deterministic grading criterion (exact / tolerance / structural / rubric / programmatic / judge).">Rubric (grading scheme)</abbr> — how a verifier is meant to grade an answer.</p><div class="statement rubric">Delete the <span class="kw-subject">rubric</span> mode you are not using before submitting.
+
+\textbf{<abbr class="kw-section term" data-tip="Rubric template Mode A — the exact-answer grading mode: the response must reproduce the answer key&#x27;s value (exact / tolerance match).">Mode A</abbr>: multiple-choice / true-false / numerical answer}
+\begin{itemize}
+\item Exact expected answer:
+\item Numerical <span class="kw-subject">tolerance</span>, if any:
+\item Acceptable equivalent forms, units, or rounding conventions:
+\item Deterministic <span class="kw-subject">verifier</span>:
+\end{itemize}
+
+\textbf{<abbr class="kw-section term" data-tip="Rubric template Mode B — the proof-checklist grading mode: the response is graded against an enumerated list of required proof steps / structural criteria.">Mode B</abbr>: proof / derivation / analysis}
+\begin{enumerate}[label=\arabic*.]
+\item <span class="kw-warn">TODO</span>: <span class="kw-subject">criterion</span> 1 that a correct response must satisfy.
+\item <span class="kw-warn">TODO</span>: <span class="kw-subject">criterion</span> 2 covering the central derivation, proof step, or logical dependency.
+\item <span class="kw-warn">TODO</span>: <span class="kw-subject">criterion</span> 3 covering the final conclusion, edge cases, and correctness conditions.
+\item <span class="kw-warn">TODO</span>: if using an agent-as-judge, state the pass/fail schema and the evidence the judge must cite.
+\end{enumerate}
+
+The <abbr class="kw-subject term" data-tip="The author&#x27;s reference solution (the answer key) — it must itself pass the deterministic rubric; every model answer is graded against it.">oracle</abbr> solution above must satisfy every <span class="kw-subject">criterion</span> that remains in the final <span class="kw-subject">rubric</span>. Do not rely on point totals or vibes-based grading.</div></div>
+    <details class="raw-tex"><summary>raw .tex source (provenance — verbatim, unparsed)</summary><p class="dim small">The full unparsed <code>.tex</code> as it was on master at review time (<abbr class="term" data-tip="A 16-hex-char hash of `problemstatement + answerkey + gradingscheme`. The review is keyed on this so the same .tex content is reviewed exactly once.">content sha</abbr> <code>f5fb0c35</code>) — kept for provenance only; the parsed blocks above are the evidence to read.</p><pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
 \begin{document}
 
 % Keep this file in sync with the matching problem_05_review.md sidecar.
 
 \problemsetup
-  {Efficient influence function in a partially linear model}
+  {Efficient Influence Function in a Partially Linear Model}
   {Statistics}
   {Semiparametric efficiency theory}
   {Qualifying-exam-plus}
@@ -1384,7 +1511,7 @@ Suggested checks:
 \begin{msbproblem}
 
 \begin{problemstatement}
-Consider a partially linear model
+\textcolor{red}{ChatGPT 5.5-High now solves this correctly, but Claude 4.8-High still does not.} Consider a partially linear model
   \[
     Y=\beta A+\omega(X)+\epsilon,
     \qquad
@@ -1433,8 +1560,7 @@ Suggested checks:
 \end{msbproblem}
 
 \end{document}
-</code></pre>
-    </div>
+</code></pre></details>
   </details>
 
   
@@ -1454,19 +1580,9 @@ Suggested checks:
 
   
 
-  <details class="bench-block" id="problem-5-sidecar"><summary>🗒️ Contributor’s own notes / pasted responses — <span class="dim small">not yet provided</span></summary><p class="dim small">This is the slot for <strong>your own</strong> review sidecar (<code>problem_05_review.md</code> in Overleaf): the raw model responses you collected plus your own failure-mode summary. It’s currently the untouched template, so there’s nothing to show here yet — the model evidence below is the sweep’s, not yours. Pasting 5 raw responses (the sidecar template asks for 5–10, mixing at least two providers) + a short failure-mode note here is what lets a human confirm the hardness claim quickly.</p></details>
+  <details class="bench-block" id="problem-5-sidecar" open><summary>🗒️ Contributor’s own notes / pasted responses</summary><p class="dim small">Your <strong>own</strong> review sidecar — the responses you collected and your own failure-mode read. Shown verbatim, as <em>your</em> words (distinct from the bot review and the model sweep below).</p><p class="small" style="margin-top:.6em"><strong>Your failure-mode summary</strong>:</p><ul class="traj-list"><li><strong>Observed failure mode:</strong> ## Oracle and Verification Notes</li></ul><p class="dim small">Source: <code>origin/master:contributors/contributor_05/problems/problem_05_review.md</code>.</p></details>
 
   
-<details class="d-block dedup-block" open id="problem-5-dedup">
-  <summary>🔍 Cross-benchmark matches <span class="dim small">(2 total)</span></summary>
-  <div class="dedup-headline"><span class="pill v-rework">✗ 1 PARAPHRASE match</span></div>
-  <p class="dim small">BGE recall (on the problem <em>statement</em>) × Claude method-judge vs the The nine precedent benchmarks judged most likely to collide …. </p>
-  <p class="dim small">⚠ <code>cos</code> is <strong>surface similarity</strong> (a recall signal on wording), <em>not</em> a duplicate measure — dense embeddings cluster by vocabulary, so they over-flag surface-similar stems and miss method-equivalent ones (see <code>research/dedup-methodology-deep-research.md</code>). The duplicate call is the <strong>method-judge verdict</strong>, not <code>cos</code>. Method-level dedup is being upgraded to embed the <em>solution trajectory</em> + judge (charter: <code>.claude/library/charters/dedup.md</code>).</p>
-  <div class="table-wrap"><table class="dedup-table"><thead><tr>
-    <th>verdict</th><th class="n">cos</th><th>source</th><th>matched stem</th><th>judge reason</th>
-  </tr></thead><tbody><tr><td><span class="pill v-revision">△ ADJ</span></td><td class="n cos-cell"><strong>65.899</strong></td><td><code>StatEval-public</code><br><span class="dim small">foundational_83</span></td><td class="stem">Consider the normal linear regression model \( Y = X\beta + \varepsilon \), where \( X \) is an \( n \times p \) design matrix of full column rank \( p \), and \( \varepsilon \sim N_n(0, \sigma^2 I_n)…</td><td class="dim small">Standard linear regression estimation and properties; candidate addresses semiparametric partially linear model and efficient influence function.</td></tr><tr><td><span class="pill v-rework">✗ PARA</span></td><td class="n cos-cell"><strong>58.465</strong></td><td><code>StatEval-public</code><br><span class="dim small">foundational_623</span></td><td class="stem">Consider the linear regression model $Y = X\theta + e$, where $e \sim \mathcal{N}(0,1)$ and $e$ is independent of $X$. Find the efficient score function for $\theta$.</td><td class="dim small">Linear regression model asks for efficient score function; candidate asks for efficient influence function in partially linear model—related method.</td></tr></tbody></table></div>
-</details>
-
 
   <details class="d-block" id="problem-5-verifier"><summary>🧪 Verifier — not auto-verifiable yet (awaiting the author's oracle)</summary>
 <div class="verifier-card">
@@ -1534,18 +1650,18 @@ Suggested checks:
   
 
   <details class="d-block" open id="problem-6-text">
-    <summary>📄 Problem snapshot — full statement (private bank, unreleased; do not redistribute)</summary>
+    <summary>📄 Submission snapshot — parsed source evidence (private bank, unreleased; do not redistribute)</summary>
     <div class="tabs">
-      <button class="tab active" data-target="annot-6">Annotated</button>
-      <button class="tab" data-target="snap-6">Snapshot</button>
-      <button class="tab" data-target="tex-6">Raw .tex</button>
+      <button class="tab active" data-target="annot-6">Statement (annotated)</button>
+      <button class="tab" data-target="oracle-6">Oracle</button>
+      <button class="tab" data-target="rubric-6">Rubric</button>
     </div>
     <div class="pane active" id="annot-6">
       <div class="statement annot-host">Consider a sample of $n$ iid copies of $O_i = (X_i, A_i, Y_i)$. Let the estimand be $\psi = \int \E(Y \mid A =1, X = x) dP(x)$. Suppose $r(x) = P(A = 1 \mid X = x)$ is H\&quot;{o}lder of order $s$ and $\mu_1(x) = \E(Y \mid A = 1, X = x)$ is H\&quot;{o}lder of order $s$. Let $b(x) := (b_1(x) \  \ldots \ b_k(x))$ denote a $k$ dimensional dictionary vector of basis functions satisfying, for some $\beta_\mu$ and $\beta_\pi$:
 \begin{align*}
     \int \{\mu_1(x) - b(x)^\top\beta_\mu\}^2 r(x) dP(x) \lesssim k^{-2s/d}, \qquad <span class="annot annot-nit" data-kind="nit" tabindex="0" data-comment="Notation mismatch: the dictionary is introduced &#x27;for some \beta_\mu and \beta_\pi&#x27; but this approximation condition uses \beta_r. Unify \beta_\pi / \beta_r.">\int \{r(x) - b(x)^\top\beta_r\}^2 r(x) dP(x) \lesssim k^{-2s/d}<span class="annot-bubble"><strong>nit:</strong> Notation mismatch: the dictionary is introduced &#x27;for some \beta_\mu and \beta_\pi&#x27; but this approximation condition uses \beta_r. Unify \beta_\pi / \beta_r.</span></span>.
 \end{align*}
-<span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="Cross-fitting/sample-splitting is implied (nuisances estimated on D^n, estimator evaluated conditionally), but it is not stated whether the same n observations are reused for the U-statistic sums i,j=1..n or a separate fold. The conditional-bias / conditional-variance claims rely on this. Clarify the splitting scheme.">Let $D^n$ denote a training sample of size $n$ used to estimate<span class="annot-bubble"><strong>ambiguity:</strong> Cross-fitting/sample-splitting is implied (nuisances estimated on D^n, estimator evaluated conditionally), but it is not stated whether the same n observations are reused for the U-statistic sums i,j=1..n or a separate fold. The conditional-bias / conditional-variance claims rely on this. Clarify the splitting scheme.</span></span> $r(x)$, $\mu_1(x)$ and to compute $<span class="annot annot-missing" data-kind="missing" tabindex="0" data-comment="The population target \Omega (appearing in \|\widehat\Omega - \Omega\|_op) is never defined. Presumably \Omega = E[A b(X) b(X)^\top] = \int b b^\top r dP, exactly the Gram matrix under the weighted inner product \|\cdot\|. State it so the bias bound is auditable.">\widehat\Omega = n^{-1} \sum_{i \in D^n} A_i b(X_i) b(X_i)^\top<span class="annot-bubble"><strong>missing:</strong> The population target \Omega (appearing in \|\widehat\Omega - \Omega\|_op) is never defined. Presumably \Omega = E[A b(X) b(X)^\top] = \int b b^\top r dP, exactly the Gram matrix under the weighted inner product \|\cdot\|. State it so the bias bound is auditable.</span></span>$. Consider estimating $\psi$ with a second-order estimator. 
+<span class="annot annot-ambiguity" data-kind="ambiguity" tabindex="0" data-comment="Cross-fitting/sample-splitting is implied (nuisances estimated on D^n, estimator evaluated conditionally), but it is not stated whether the same n observations are reused for the U-statistic sums i,j=1..n or a separate fold. The conditional-bias / conditional-variance claims rely on this. Clarify the splitting scheme.">Let $D^n$ denote a training sample of size $n$ used to estimate<span class="annot-bubble"><strong>ambiguity:</strong> Cross-fitting/sample-splitting is implied (nuisances estimated on D^n, estimator evaluated conditionally), but it is not stated whether the same n observations are reused for the U-statistic sums i,j=1..n or a separate fold. The conditional-bias / conditional-variance claims rely on this. Clarify the splitting scheme.</span></span> $r(x)$, $\mu_1(x)$ and to compute $<span class="annot annot-missing" data-kind="missing" tabindex="0" data-comment="The population target \Omega (appearing in \|\widehat\Omega - \Omega\|_op) is never defined. Presumably \Omega = E[A b(X) b(X)^\top] = \int b b^\top r dP, exactly the Gram matrix under the weighted inner product \|\cdot\|. State it so the bias bound is auditable.">\widehat\Omega = n^{-1} \sum_{i \in D^n} A_i b(X_i) b(X_i)^\top<span class="annot-bubble"><strong>missing:</strong> The population target \Omega (appearing in \|\widehat\Omega - \Omega\|_op) is never defined. Presumably \Omega = E[A b(X) b(X)^\top] = \int b b^\top r dP, exactly the Gram matrix under the weighted inner product \|\cdot\|. State it so the bias bound is auditable.</span></span>$. Consider estimating $\psi$ with a $m^{\rm th}$-order estimator. 
 \begin{align*}
     \widehat\psi = &amp; \frac{1}{n}\sum_{i = 1}^n \left[\frac{A_i\{Y_i - \widehat\mu_1(X_i)\}}{\widehat{r}(X_i)} + \widehat\mu_1(X_i) \right] \\
      &amp; - \frac{1}{n(n-1)} \mathop{\sum\sum}_{1 \leq i \neq j \leq n} \left\{\frac{A_i}{\widehat{r}(X_i)} - 1\right\} b(X_i)^\top \widehat\Omega^{-1} b(X_j) A_j\{Y_j - \widehat\mu_1(X_j)\}
@@ -1568,42 +1684,33 @@ Let $\|f\|^2 = \int f^2(x) r(x) dP(x)$. <span class="annot annot-ambiguity" data
 \end{itemize}</div>
       <p class="dim small">Hover (desktop) or tap (touch) a highlighted span for reviewer's comment. Kind: <span class="annot annot-strong">strong</span> <span class="annot annot-suggestion">suggestion</span> <span class="annot annot-ambiguity">ambiguity</span> <span class="annot annot-nit">nit</span> <span class="annot annot-missing">missing</span></p>
     </div>
-    <div class="pane" id="snap-6">
-      <div class="statement">Consider a sample of $n$ iid copies of $O_i = (X_i, A_i, Y_i)$. Let the estimand be $\psi = \int \E(Y \mid A =1, X = x) dP(x)$. Suppose $r(x) = P(A = 1 \mid X = x)$ is H\&quot;{o}lder of order $s$ and $\mu_1(x) = \E(Y \mid A = 1, X = x)$ is H\&quot;{o}lder of order $s$. Let $b(x) := (b_1(x) \  \ldots \ b_k(x))$ denote a $k$ dimensional dictionary vector of basis functions satisfying, for some $\beta_\mu$ and $\beta_\pi$:
-\begin{align*}
-    \int \{\mu_1(x) - b(x)^\top\beta_\mu\}^2 r(x) dP(x) \lesssim k^{-2s/d}, \qquad \int \{r(x) - b(x)^\top\beta_r\}^2 r(x) dP(x) \lesssim k^{-2s/d}.
-\end{align*}
-Let $D^n$ denote a training sample of size $n$ used to estimate $r(x)$, $\mu_1(x)$ and to compute $\widehat\Omega = n^{-1} \sum_{i \in D^n} A_i b(X_i) b(X_i)^\top$. Consider estimating $\psi$ with a second-order estimator. 
-\begin{align*}
-    \widehat\psi = &amp; \frac{1}{n}\sum_{i = 1}^n \left[\frac{A_i\{Y_i - \widehat\mu_1(X_i)\}}{\widehat{r}(X_i)} + \widehat\mu_1(X_i) \right] \\
-     &amp; - \frac{1}{n(n-1)} \mathop{\sum\sum}_{1 \leq i \neq j \leq n} \left\{\frac{A_i}{\widehat{r}(X_i)} - 1\right\} b(X_i)^\top \widehat\Omega^{-1} b(X_j) A_j\{Y_j - \widehat\mu_1(X_j)\}
-\end{align*}
-Let $\|f\|^2 = \int f^2(x) r(x) dP(x)$. Identify, if any, any issue with the reasoning below:
+    <div class="pane" id="oracle-6"><p class="dim small"><abbr class="term" data-tip="The `\begin{answerkey}` block of the .tex — the oracle solution + acceptable equivalent forms.">Oracle (answer key)</abbr> — the contributor's reference solution this review is checked against.</p><div class="statement oracle">Give the <abbr class="kw-subject term" data-tip="The author&#x27;s reference solution (the answer key) — it must itself pass the deterministic rubric; every model answer is graded against it.">oracle</abbr> solution here. If the problem has an exact or numerical answer, state it explicitly and list any acceptable equivalent forms. If the problem is proof-based or analysis-style, write the reference solution so that each <span class="kw-subject">rubric</span> <span class="kw-subject">criterion</span> below can be checked deterministically or audited line by line.</div></div>
+    <div class="pane" id="rubric-6"><p class="dim small"><abbr class="term" data-tip="The `\begin{gradingscheme}` block — the deterministic grading criterion (exact / tolerance / structural / rubric / programmatic / judge).">Rubric (grading scheme)</abbr> — how a verifier is meant to grade an answer.</p><div class="statement rubric">Delete the <span class="kw-subject">rubric</span> mode you are not using before submitting.
+
+\textbf{<abbr class="kw-section term" data-tip="Rubric template Mode A — the exact-answer grading mode: the response must reproduce the answer key&#x27;s value (exact / tolerance match).">Mode A</abbr>: multiple-choice / true-false / numerical answer}
 \begin{itemize}
-    \item The conditional $|\mathbb{E}(\widehat\psi - \psi \mid D^n)|$ can be upper bounded as
-    \begin{align*}
-       |\mathbb{E}(\widehat\psi - \psi \mid D^n)| \lesssim k^{-2s/d} + \|1/\widehat{r} - 1/r\| \|\widehat\mu_1 - \mu_1\| \|\widehat\Omega - \Omega\|_{\rm op}
-    \end{align*}
-    \item The variance is of order
-    \begin{align*}
-        \text{var}(\widehat\psi \mid D^n) \lesssim \frac{1}{n} + \frac{k}{n^2}
-    \end{align*}
-    \item Assuming the third-order term above is negligible, balancing squared truncation bias and the contribution of the quadratic term to the variance:
-    \begin{align*}
-        k^{-4s/d} \asymp \frac{k}{n^2} \iff k \asymp n^{\frac{2d}{4s + d}}
-    \end{align*}
-    leads to the rate $n^{-\frac{4s}{4s + d}}$ in the regime $s &lt; d/4$. When $s \geq d/4$, the rate would be $n^{-1/2}$. 
-\end{itemize}</div>
-    </div>
-    <div class="pane" id="tex-6">
-      <p class="dim small">Snapshot of the full .tex source at the time of review (<abbr class="term" data-tip="A 16-hex-char hash of `problemstatement + answerkey + gradingscheme`. The review is keyed on this so the same .tex content is reviewed exactly once.">content sha</abbr> <code>633dffd0</code>). This is what was reviewed — won't drift if you edit the file later.</p>
-      <pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
+\item Exact expected answer:
+\item Numerical <span class="kw-subject">tolerance</span>, if any:
+\item Acceptable equivalent forms, units, or rounding conventions:
+\item Deterministic <span class="kw-subject">verifier</span>:
+\end{itemize}
+
+\textbf{<abbr class="kw-section term" data-tip="Rubric template Mode B — the proof-checklist grading mode: the response is graded against an enumerated list of required proof steps / structural criteria.">Mode B</abbr>: proof / derivation / analysis}
+\begin{enumerate}[label=\arabic*.]
+\item <span class="kw-warn">TODO</span>: <span class="kw-subject">criterion</span> 1 that a correct response must satisfy.
+\item <span class="kw-warn">TODO</span>: <span class="kw-subject">criterion</span> 2 covering the central derivation, proof step, or logical dependency.
+\item <span class="kw-warn">TODO</span>: <span class="kw-subject">criterion</span> 3 covering the final conclusion, edge cases, and correctness conditions.
+\item <span class="kw-warn">TODO</span>: if using an agent-as-judge, state the pass/fail schema and the evidence the judge must cite.
+\end{enumerate}
+
+The <abbr class="kw-subject term" data-tip="The author&#x27;s reference solution (the answer key) — it must itself pass the deterministic rubric; every model answer is graded against it.">oracle</abbr> solution above must satisfy every <span class="kw-subject">criterion</span> that remains in the final <span class="kw-subject">rubric</span>. Do not rely on point totals or vibes-based grading.</div></div>
+    <details class="raw-tex"><summary>raw .tex source (provenance — verbatim, unparsed)</summary><p class="dim small">The full unparsed <code>.tex</code> as it was on master at review time (<abbr class="term" data-tip="A 16-hex-char hash of `problemstatement + answerkey + gradingscheme`. The review is keyed on this so the same .tex content is reviewed exactly once.">content sha</abbr> <code>633dffd0</code>) — kept for provenance only; the parsed blocks above are the evidence to read.</p><pre class="code tex-source"><code>\documentclass[../../../main.tex]{subfiles}
 \begin{document}
 
 % Keep this file in sync with the matching problem_06_review.md sidecar.
 
 \problemsetup
-  {Quadratic estimator of the treatment-specific mean functional}
+  {Quadratic Estimator of the Treatment-Specific Mean Functional}
   {Statistics}
   {Higher-order influence function theory}
   {Qualifying-exam-plus}
@@ -1622,7 +1729,7 @@ Consider a sample of $n$ iid copies of $O_i = (X_i, A_i, Y_i)$. Let the estimand
 \begin{align*}
     \int \{\mu_1(x) - b(x)^\top\beta_\mu\}^2 r(x) dP(x) \lesssim k^{-2s/d}, \qquad \int \{r(x) - b(x)^\top\beta_r\}^2 r(x) dP(x) \lesssim k^{-2s/d}.
 \end{align*}
-Let $D^n$ denote a training sample of size $n$ used to estimate $r(x)$, $\mu_1(x)$ and to compute $\widehat\Omega = n^{-1} \sum_{i \in D^n} A_i b(X_i) b(X_i)^\top$. Consider estimating $\psi$ with a second-order estimator. 
+Let $D^n$ denote a training sample of size $n$ used to estimate $r(x)$, $\mu_1(x)$ and to compute $\widehat\Omega = n^{-1} \sum_{i \in D^n} A_i b(X_i) b(X_i)^\top$. Consider estimating $\psi$ with a $m^{\rm th}$-order estimator. 
 \begin{align*}
     \widehat\psi = &amp; \frac{1}{n}\sum_{i = 1}^n \left[\frac{A_i\{Y_i - \widehat\mu_1(X_i)\}}{\widehat{r}(X_i)} + \widehat\mu_1(X_i) \right] \\
      &amp; - \frac{1}{n(n-1)} \mathop{\sum\sum}_{1 \leq i \neq j \leq n} \left\{\frac{A_i}{\widehat{r}(X_i)} - 1\right\} b(X_i)^\top \widehat\Omega^{-1} b(X_j) A_j\{Y_j - \widehat\mu_1(X_j)\}
@@ -1685,8 +1792,7 @@ Suggested checks:
 \end{msbproblem}
 
 \end{document}
-</code></pre>
-    </div>
+</code></pre></details>
   </details>
 
   
@@ -1706,7 +1812,7 @@ Suggested checks:
 
   
 
-  <details class="bench-block" id="problem-6-sidecar"><summary>🗒️ Contributor’s own notes / pasted responses — <span class="dim small">not yet provided</span></summary><p class="dim small">This is the slot for <strong>your own</strong> review sidecar (<code>problem_06_review.md</code> in Overleaf): the raw model responses you collected plus your own failure-mode summary. It’s currently the untouched template, so there’s nothing to show here yet — the model evidence below is the sweep’s, not yours. Pasting 5 raw responses (the sidecar template asks for 5–10, mixing at least two providers) + a short failure-mode note here is what lets a human confirm the hardness claim quickly.</p></details>
+  <details class="bench-block" id="problem-6-sidecar" open><summary>🗒️ Contributor’s own notes / pasted responses</summary><p class="dim small">Your <strong>own</strong> review sidecar — the responses you collected and your own failure-mode read. Shown verbatim, as <em>your</em> words (distinct from the bot review and the model sweep below).</p><p class="small" style="margin-top:.6em"><strong>Your failure-mode summary</strong>:</p><ul class="traj-list"><li><strong>Observed failure mode:</strong> ## Oracle and Verification Notes</li></ul><p class="dim small">Source: <code>origin/master:contributors/contributor_05/problems/problem_06_review.md</code>.</p></details>
 
   
 
@@ -1760,7 +1866,7 @@ Suggested checks:
 </div>
   <script type="application/json" class="p-versions">{"problem_num": 6, "title": "Quadratic estimator of the treatment-specific mean functional", "versions": [{"reviewed_at": "2026-06-07T00:36:48Z", "sha": "633dffd041a9434a", "verdict": "needs-revision", "model": "in-session review agent", "current": true}]}</script>
 </section>
-<section class="problem" id="problem-4" data-verdict="in-progress"><header class="p-head"><div class="p-title"><span class="p-num">#04</span><h2>draft detected — not yet reviewed</h2></div><div class="p-pills"><span class="pill v-progress">✎ draft detected</span></div></header><p class="dim">The problem statement has been edited, but the title/answer key are still the template, so no review ran yet. Fill them in and the next sync will pick it up.</p></section>
+
 
   <footer class="page-foot">
     <p>Generated by the AI4Stat/Math auto-reviewer · reviews drafted by <code>in-session review agent</code>, verifiers by <code>claude-sonnet-4-6</code>.
@@ -1771,7 +1877,7 @@ Suggested checks:
 
 <!-- ── timeline rail: hierarchical, dynamic, mobile thumb-friendly ─ -->
 <nav class="rail-tl" aria-label="problem timeline">
-  <div class="rail-tl-inner"><div class="rail-section rl-stub" data-target="problem-1">  <a href="#problem-1" class="rail-bullet">    <span class="rl-num">01</span>    <span class="rl-title">Minimax lower bounds for str</span>  </a>  <div class="rail-sub"><a href="#problem-1-text">Problem text</a><a href="#problem-1-fixes">Quick fixes</a><a href="#problem-1-working">What&#x27;s working</a><a href="#problem-1-considerations">Considerations</a><a href="#problem-1-next">Next steps</a><a href="#problem-1-verifier">Verifier</a></div></div><div class="rail-section rl-stub" data-target="problem-2">  <a href="#problem-2" class="rail-bullet">    <span class="rl-num">02</span>    <span class="rl-title">Estimation of the value func</span>  </a>  <div class="rail-sub"><a href="#problem-2-text">Problem text</a><a href="#problem-2-fixes">Quick fixes</a><a href="#problem-2-working">What&#x27;s working</a><a href="#problem-2-considerations">Considerations</a><a href="#problem-2-next">Next steps</a><a href="#problem-2-verifier">Verifier</a><a href="#problem-2-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-3">  <a href="#problem-3" class="rail-bullet">    <span class="rl-num">03</span>    <span class="rl-title">Time-varying causal inferenc</span>  </a>  <div class="rail-sub"><a href="#problem-3-text">Problem text</a><a href="#problem-3-fixes">Quick fixes</a><a href="#problem-3-working">What&#x27;s working</a><a href="#problem-3-considerations">Considerations</a><a href="#problem-3-next">Next steps</a><a href="#problem-3-verifier">Verifier</a></div></div><div class="rail-section rl-stub" data-target="problem-5">  <a href="#problem-5" class="rail-bullet">    <span class="rl-num">05</span>    <span class="rl-title">Efficient influence function</span>  </a>  <div class="rail-sub"><a href="#problem-5-text">Problem text</a><a href="#problem-5-fixes">Quick fixes</a><a href="#problem-5-working">What&#x27;s working</a><a href="#problem-5-considerations">Considerations</a><a href="#problem-5-next">Next steps</a><a href="#problem-5-verifier">Verifier</a><a href="#problem-5-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-6">  <a href="#problem-6" class="rail-bullet">    <span class="rl-num">06</span>    <span class="rl-title">Quadratic estimator of the t</span>  </a>  <div class="rail-sub"><a href="#problem-6-text">Problem text</a><a href="#problem-6-fixes">Quick fixes</a><a href="#problem-6-working">What&#x27;s working</a><a href="#problem-6-considerations">Considerations</a><a href="#problem-6-next">Next steps</a><a href="#problem-6-verifier">Verifier</a></div></div></div>
+  <div class="rail-tl-inner"><div class="rail-section rl-stub" data-target="problem-1">  <a href="#problem-1" class="rail-bullet">    <span class="rl-num">01</span>    <span class="rl-title">Minimax lower bounds for str</span>  </a>  <div class="rail-sub"><a href="#problem-1-text">Problem text</a><a href="#problem-1-fixes">Quick fixes</a><a href="#problem-1-working">What&#x27;s working</a><a href="#problem-1-considerations">Considerations</a><a href="#problem-1-next">Next steps</a><a href="#problem-1-verifier">Verifier</a></div></div><div class="rail-section rl-stub" data-target="problem-2">  <a href="#problem-2" class="rail-bullet">    <span class="rl-num">02</span>    <span class="rl-title">Estimation of the value func</span>  </a>  <div class="rail-sub"><a href="#problem-2-text">Problem text</a><a href="#problem-2-fixes">Quick fixes</a><a href="#problem-2-working">What&#x27;s working</a><a href="#problem-2-considerations">Considerations</a><a href="#problem-2-next">Next steps</a><a href="#problem-2-verifier">Verifier</a></div></div><div class="rail-section rl-stub" data-target="problem-3">  <a href="#problem-3" class="rail-bullet">    <span class="rl-num">03</span>    <span class="rl-title">Time-varying causal inferenc</span>  </a>  <div class="rail-sub"><a href="#problem-3-text">Problem text</a><a href="#problem-3-fixes">Quick fixes</a><a href="#problem-3-working">What&#x27;s working</a><a href="#problem-3-considerations">Considerations</a><a href="#problem-3-next">Next steps</a><a href="#problem-3-verifier">Verifier</a></div></div><div class="rail-section rl-stub" data-target="problem-5">  <a href="#problem-5" class="rail-bullet">    <span class="rl-num">05</span>    <span class="rl-title">Efficient influence function</span>  </a>  <div class="rail-sub"><a href="#problem-5-text">Problem text</a><a href="#problem-5-fixes">Quick fixes</a><a href="#problem-5-working">What&#x27;s working</a><a href="#problem-5-considerations">Considerations</a><a href="#problem-5-next">Next steps</a><a href="#problem-5-verifier">Verifier</a></div></div><div class="rail-section rl-stub" data-target="problem-6">  <a href="#problem-6" class="rail-bullet">    <span class="rl-num">06</span>    <span class="rl-title">Quadratic estimator of the t</span>  </a>  <div class="rail-sub"><a href="#problem-6-text">Problem text</a><a href="#problem-6-fixes">Quick fixes</a><a href="#problem-6-working">What&#x27;s working</a><a href="#problem-6-considerations">Considerations</a><a href="#problem-6-next">Next steps</a><a href="#problem-6-verifier">Verifier</a></div></div></div>
 </nav>
 
 <!-- ── chatbot (hidden until proxy live) ────────────────────── -->
@@ -1813,14 +1919,7 @@ Use ADHD-friendly formatting: bullets, sections, tables. Preserve full depth and
 
 Headline: Strong structure-agnostic minimax problem, but answerkey/rubric/editornotes are unfilled template boilerplate.
 Statement:
-Consider a sample of $n$ iid observations $O_i = (A_i, X_i)$, $1 \leq i \leq n$, where $X \in [0,1]^d$ and $A \in \{0, 1\}$. The density of one observation is $p(o) := p_X(x) r(x)^A\{1 - r(x)\}^{1-A}$, where $r(X) = P(A = 1 \mid X)$. Suppose the estimand is $\psi = \int r^2(x) dP(x)$. Given an estimator $\widehat{r}(x)$, consider the following ``structure-agnostic&#x27;&#x27; class of densities (see \url{https://arxiv.org/pdf/2305.04116}):
-\begin{align*}
-    \mathcal{P}(\epsilon_n) = \left\{p: P_X = \text{Uniform}([0,1]^d), \int \{\widehat{r}(x) - r(x)\}^2 dP(x) \leq \epsilon_n^2  \right\}.
-\end{align*}
-Prove that
-\begin{align*}
-    \inf_{\psi_n} \sup_{p \in \mathcal{P}(\epsilon_n)} E_p|\psi_n - \psi_p| \gtrsim \epsilon_n^2.
-\end{align*}
+Consider a sample of $n$ iid observations $O_i = (A_iY_i, A_i, X_i)$, $1 \leq i \leq n$, where $X \in [0,1]^d$, $A \in \{0, 1\}$ and $Y \in \{0, 1\}$. The density of one observation is $p(o) := p_X(x) / r(x) \{r(x) - 1\}^{1-A}\{b(x)^Y\{1 - b(x)\}^{1-Y}\}^A$, where $r(X) = 1/P(A = 1 \mid X)$ and $b(x) = P(Y = 1 | A = 1, X)$. Suppose the estimand is $\psi = \int b(x) dP(x)$. Given estimators $\widehat{r}(x)$ and $\widehat{b}(x)$, bounded away from 0 and 1, consider the following ``structure-agnostic&#x27;&#x27; class of densities (see \url{https://arxiv.org/pdf/2305.04116}): \begin{align*} \mathcal{P}(\epsilon_n) = \left\{p: \int \{\widehat{r}(x) - r(x)\}^2 dP(x) \leq \epsilon^2_n , \quad \int \{\widehat{b}(x) - b(x)\}^2 dP(x) \leq \epsilon^2_n \right\}. \end{align*} Prove that \begin{align*} \inf_{\psi_n} \sup_{p \in \mathcal{P}(\epsilon_n)} E_p|\psi_n - \psi_p| \gtrsim \epsilon_n^2. \end{align*}
 Strengths: Clean, self-contained statement of a genuine research-level minimax lower bound in the structure-agnostic paradigm (Balakrishnan-Kennedy-Wasserman, arXiv:2305.04116). | Estimand psi = integral r^2 dP and the nuisance-ball class P(epsilon_n) are precisely specified; the target inequality is explicit. | Difficulty is well-matched to the benchmark: requires constructing a two-point / Le Cam (or fuzzy-hypothesis) prior and tracking chi-square / Hellinger affinity, not a routine computation. | Low contamination risk: this exact one-nuisance quadratic-functional construction is not a standard textbook exercise.
 Considerations: answerkey is verbatim placeholder (&#x27;Give the oracle solution here...&#x27;) -- no oracle proof exists. | gradingscheme is the unedited Mode A/Mode B template with TODO criteria -- no deterministic rubric. | editornotes is the generic &#x27;Suggested checks&#x27; boilerplate -- not problem-specific. | A few notational/scope gaps in the statement (hat r as fixed vs estimated, the inf over psi_n, whether the lower bound should also be matched by an upper bound) should be pinned down.
 Next steps: Author must fill answerkey with the full Le Cam reference proof yielding the Omega(epsilon_n^2) bound. | Author must replace gradingscheme TODOs with concrete proof-checking criteria (construction, affinity bound, two-point reduction, conclusion). | PROPOSED (author to confirm): oracle result is that the structure-agnostic minimax risk for psi = integral r^2 dP is of order epsilon_n^2, i.e. inf sup E|psi_n - psi| asymptotically equals epsilon_n^2 (lower bound here, matched by the plug-in / one-step estimator&#x27;s squared bias). | Confirm whether hat r is an arbitrary fixed measurable function (the lower bound must hold for every such hat r) or data-dependent, and state it. | Attach the required review sidecar (five raw frontier-model responses + failure-mode summary) per editornotes.
@@ -1835,34 +1934,37 @@ Verifier: mode=not_auto_verifiable — awaiting the author&#x27;s oracle; the ag
 
 Headline: Author&#x27;s revision lands cleanly (typo, cross-fitting, random-variance caveat fixed); oracle answer and rubric still empty boilerplate.
 Statement:
-Consider a sample of $n$ iid observations $O_i = (Y_i, A_i, X_i)$, $1 \leq i \leq n$, where $X \in [0,1]^d$, $Y\in \mathcal{Y}$ and $A \in \{0,1\}$. For $\tau(X) = \mathbb E(Y\mid A=1,X)-\mathbb E(Y\mid A=0,X)$, consider the following estimand
-  \[
-    \psi=\mathbb E\{\tau(X)d(X)\},
-    \qquad
-    d(X)=I\{\tau(X)&gt;0\}.
-  \]
-  Consider the estimator
-  \[
-    \widehat\psi= \frac{1}{n} \sum_{i = 1}^n \widehat\varphi(O_i) \, I\{\widehat \tau(X_i)&gt;0\},
-  \]
-  where
-  \[
-    \varphi(O)=
-    \frac{A}{r(X)}\{Y-\mu_1(X)\}
-    -
-    \frac{1-A}{1-r(X)}\{Y-\mu_0(X)\}
-    +\mu_1(X)-\mu_0(X),
-  \]
-  where \(r(X)=P(A=1\mid X)\) and \(\mu_a(X)=\mathbb E(Y\mid A=a,X)\). Suppose the following margin condition holds
-  \begin{align*}
-       P\{0&lt;|\tau(X)|\le t\}\le ct
-  \end{align*}
-  for some $c \geq 0$ and all $t \in (0, t_0]$ for some $t_0$. Suppose $\widehat\mu_0(x)$, $\widehat\mu_1(x)$, $\widehat\tau(x)$, and $\widehat{r}(x)$ are computed on a separate, independent, training sample of size $n$. If
-  \begin{align*}
-      &amp; \int \{\widehat\varphi(o) - \varphi(o)\}^2 dP(o) = o_P(1), \qquad \sup_{x \in [0,1]^d}|\widehat\tau(x) - \tau(x)| = o_P(n^{-1/4}), \\
-      &amp; \int \{\widehat{r}(x) - r(x)\}^2 dP(x) \max_{a \in \{0,1\}} \int \{\widehat\mu_a(x) - \mu_a(x)\}^2 dP(x) = o_P(n^{-1}),
-  \end{align*}
-  does it hold that $\sqrt{n}(\widehat\psi - \psi) \stackrel{d}{\to} N(0, \sigma^2)$ for some $\sigma^2$ (possibly random)?
+\textcolor{red}{ChatGPT 5.5-High now solves this correctly, but Claude 4.8-High still does not.} % Consider a sample of $n$ iid observations $O_i = (Y_i, A_i, X_i)$, $1 \leq i \leq n$, where $X \in [0,1]^d$, $Y\in \mathcal{Y}$ and $A \in \{0,1\}$. For $\tau(X) = \mathbb E(Y\mid A=1,X)-\mathbb E(Y\mid A=0,X)$, consider the following estimand
+
+ %   \psi=\mathbb E\{\tau(X)d(X)\},
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Consider a sample of $n$ iid observations $O_i = (Y_i, A_i, X_i)$, $1 \leq i \leq n$, where $X \in [0,1]^d$, $Y\in \mathcal{Y}$ and $A \in \{0,1\}$. For $\tau(X) = \mathbb E(Y\mid A=1,X)-\mathbb E(Y\mid A=0,X)$, consider the following estimand \[ \psi=\mathbb E\{\tau(X)d(X)\}, \qquad d(X)=I\{\tau(X)&gt;0\}. \] Consider the estimator \[ \widehat\psi= \frac{1}{n} \sum_{i = 1}^n \widehat\varphi(O_i) \, I\{\widehat \tau(X_i)&gt;0\}, \] where \[ \varphi(O)= \frac{A}{r(X)}\{Y-\mu_1(X)\} - \frac{1-A}{1-r(X)}\{Y-\mu_0(X)\} +\mu_1(X)-\mu_0(X), \] where \(r(X)=P(A=1\mid X)\) and \(\mu_a(X)=\mathbb E(Y\mid A=a,X)\). Suppose the following margin condition holds \begin{align*} P\{0\leq|\tau(X)|\le t\}\le ct \end{align*} 
+for some $c \geq 0$ and all $t \in (0, t_0]$ for some $t_0$. Suppose $\widehat\mu_0(x)$, $\widehat\mu_1(x)$, $\widehat\tau(x)$, and $\widehat{r}(x)$ are computed on a separate, independent, training sample of size $n$. 
+If \begin{align*} &amp; \int \{\widehat\varphi(o) - \varphi(o)\}^2 dP(o) = o_P(1), \\ &amp; \int \{\widehat{r}(x) - r(x)\}^2 dP(x) \max_{a \in \{0,1\}} \int \{\widehat\mu_...
 Strengths: Crisp, self-contained semiparametric estimand (value at the optimal treatment rule) with the canonical AIPW/EIF estimator written out. | Includes the exact ingredients that make the problem subtle: margin condition, cross-fitting, uniform rule-consistency rate, and a product nuisance-rate condition. | Yes/no framing with a non-obvious answer that hinges on understanding why the non-smooth rule indicator does not break root-n inference. | High difficulty: requires recognizing the Luedtke-van der Laan non-exceptional-law / margin argument, not just plugging into a one-step formula. | Revision responsiveness: the 2026-06-09/10 Overleaf edits resolved three prior review items — the \widehat\mu_(x) typo, explicit per-nuisance cross-fitting on a size-n training sample, and &#x27;(possibly random)&#x27; on sigma^2, which squarely engages the exceptional-law subtlety.
 Considerations: answerkey, gradingscheme, editornotes, and tags.capability/verb/failure/grading remain unfilled template placeholders; the problem is still not gradable as-is. | Positivity/overlap (0&lt;r(X)&lt;1, ideally bounded away) is still never stated, yet r(X) and 1-r(X) appear in denominators. | Boundary convention at tau(X)=0 still unspecified (strict &#x27;&gt;&#x27;); with the margin condition the set {tau=0} may carry mass, which affects pathwise differentiability. | &#x27;(possibly random)&#x27; is a meaningful refinement, but the oracle must now COMMIT: under this margin condition (exponent 1) and a non-exceptional law, is the limit the fixed EIF variance Var(varphi(O)d(X)), or is the random-sigma^2 regime in scope? The rubric&#x27;s expected answer depends on it. | The margin exponent is fixed at 1 (P{0&lt;|tau|&lt;=t}&lt;=ct) — exactly the borderline case; the answer key must state what this exponent buys.
 Next steps: Fill answerkey with the oracle: PROPOSED (author to confirm): YES, sqrt(n)(psihat-psi) -&gt; N(0, sigma^2) with sigma^2 = Var(varphi(O)I{tau(X)&gt;0}) under non-exceptional laws; the indicator-estimation error is second-order via margin(1) x sup-rate o_P(n^{-1/4}). If exceptional laws are in scope, state the &#x27;(possibly random)&#x27; limit explicitly. | Replace Mode B TODOs with a deterministic rubric: (1) correct YES/NO with the committed regime, (2) EIF/AIPW remainder decomposition, (3) margin x uniform-rate argument bounding the misclassification term, (4) product-rate condition handling the doubly-robust remainder, (5) named limit variance. | State positivity (epsilon &lt;= r(X) &lt;= 1-epsilon) and the tau=0 boundary convention. | Fill tags.capability/verb/failure/grading; cross-check against Luedtke &amp; van der Laan (2016, Ann. Statist.) and the Hirano-Porter non-differentiability discussion. | Paste 5 sample model responses into the review sidecar (problem_02_review.md is still the empty template) so Stage-1 failure-mode analysis can run.
@@ -1878,7 +1980,7 @@ Verifier: mode=not_auto_verifiable — awaiting the author&#x27;s oracle; the ag
 
 Headline: Strong g-methods &#x27;why regression fails&#x27; question; oracle/rubric are unfilled template boilerplate.
 Statement:
-I have data from the temporal ordering $(A_1, I_1, A_2, I_2)$. Here \(A_1\) is a first measure intended to reduce Covid-19 contagion, \(I_1\) is the infection rate measured after \(A_1\), \(A_2\) is a second measure chosen after observing \((A_1,I_1)\), and \(I_2\) is the later infection rate. Suppose \(A_1\) is randomized, and \(A_2\) is randomized conditional on the observed history \((A_1,I_1)\). Suppose further that the linear model \[ I_2=\beta_0+\beta_1A_1+\beta_2I_1+\beta_3A_2+\epsilon \] is correctly specified, i.e., $E(\epsilon \mid A_1, I_1, A_2) = 0$, and assume consistency and positivity. In my data, \(\widehat\beta_1\) is estimated to be nonzero. Can I interpret this as saying that there is some effect of \(A_1\) on \(I_2\)?
+I have data $(A, X, Y)$, where $A$ is a treatment of interest that is completely randomized. From domain knowledge, the treatment is supposed to be beneficial and constant across the population from which the data is randomly sampled from. The sample consist $n$ iid observations of the triplet $O_i = (A_i,X_i, Y_i)$. I have fitted a linear regression model $Y_i = \beta A_i + \gamma X_i + \epsilon_i$ that I am fairly confident is correctly specified. The level-5\% test rejects the null hypothesis $\beta = 0$. Does this imply that the data provide statistically significant evidence that the effect is nonzero?
 Strengths: Crisp, well-motivated longitudinal causal-inference setup (time-varying treatment + time-varying confounding) that targets a textbook trap. | Sequential randomization is stated, so it sidesteps the usual unmeasured-confounding objection and forces the solver to confront the conditioning/over-adjustment issue directly. | Answer is a conceptual &#x27;no, you cannot&#x27; with a precise mechanistic reason, making a deterministic structural rubric feasible once written. | Low contamination risk: it is a reasoning question, not a lookup; the specific (A1,I1,A2,I2) framing is unlikely to be memorized verbatim.
 Considerations: answerkey, gradingscheme, and editornotes are verbatim template placeholders: there is NO oracle and NO rubric, so the problem is currently ungradable. | The estimand the contributor intends by &#x27;effect of A1 on I2&#x27; is not pinned down (total effect, controlled direct effect, or a g-formula contrast?). | Notation &#x27;(A1,I1,A2,I2)&#x27; temporal ordering is introduced but the formal positivity/consistency statements are gestured at, not written; sequential ignorability is implied by randomization but never named. | Tags (capability, verb, failure, grading) are still TODO; difficulty is plausible but unverified against the &#x27;frontier models fail&#x27; bar. | Whether GPT-5.5 / Opus 4.7 actually fail this is uncertain: the over-adjustment-bias explanation is well within strong-model reach, so the bar is at risk unless the rubric demands the full quantitative decomposition.
 Next steps: Fill the oracle. PROPOSED (author to confirm): the answer is NO; beta1 is a partial regression coefficient adjusting for I1, so it equals the controlled direct effect of A1 holding I1 fixed, not the total effect E[I2^{a1=1}]-E[I2^{a1=0}]; conditioning on the mediator I1 (a descendant of A1 and a time-varying confounder for A2) blocks the indirect path A1-&gt;I1-&gt;I2 and can induce collider bias, so beta1 != 0 neither establishes nor refutes a total effect, and a total effect can exist even if beta1=0 (and vice versa). | PROPOSED total-effect identification (g-formula): E[I2^{a1,a2}] = sum/integral over i1 of E[I2 | A1=a1,I1=i1,A2=a2] dP(I1=i1 | A1=a1); the total effect of A1 marginalizes over A2 and integrates I1 under its A1-induced distribution rather than conditioning on it. | Replace the rubric with a structural (Mode B) rubric keyed to: (1) answer NO, (2) name I1 as mediator + time-varying confounder, (3) identify over-adjustment / blocked-indirect-path, (4) give correct total-effect estimand / g-formula, (5) note beta1=0 does not imply no total effect. | State the assumptions explicitly: sequential ignorability/randomization, positivity (0&lt;P(A2|A1,I1)&lt;1, 0&lt;P(A1)&lt;1), consistency, and define the SWIG/counterfactual notation. | Pilot against GPT-5.5 and Opus 4.7; if they pass the conceptual &#x27;no&#x27;, raise the bar by requiring the explicit g-formula and a numerical/structural-equation counterexample where beta1 != total effect.
@@ -1894,7 +1996,7 @@ Verifier: mode=not_auto_verifiable — awaiting the author&#x27;s oracle; the ag
 
 Headline: Clean classic semiparametrics problem; oracle/rubric are unfilled boilerplate and frontier LLMs likely solve it.
 Statement:
-Consider a partially linear model
+\textcolor{red}{ChatGPT 5.5-High now solves this correctly, but Claude 4.8-High still does not.} Consider a partially linear model
   \[
     Y=\beta A+\omega(X)+\epsilon,
     \qquad
@@ -1920,7 +2022,7 @@ Consider a sample of $n$ iid copies of $O_i = (X_i, A_i, Y_i)$. Let the estimand
 \begin{align*}
     \int \{\mu_1(x) - b(x)^\top\beta_\mu\}^2 r(x) dP(x) \lesssim k^{-2s/d}, \qquad \int \{r(x) - b(x)^\top\beta_r\}^2 r(x) dP(x) \lesssim k^{-2s/d}.
 \end{align*}
-Let $D^n$ denote a training sample of size $n$ used to estimate $r(x)$, $\mu_1(x)$ and to compute $\widehat\Omega = n^{-1} \sum_{i \in D^n} A_i b(X_i) b(X_i)^\top$. Consider estimating $\psi$ with a second-order estimator. 
+Let $D^n$ denote a training sample of size $n$ used to estimate $r(x)$, $\mu_1(x)$ and to compute $\widehat\Omega = n^{-1} \sum_{i \in D^n} A_i b(X_i) b(X_i)^\top$. Consider estimating $\psi$ with a $m^{\rm th}$-order estimator. 
 \begin{align*}
     \widehat\psi = &amp; \frac{1}{n}\sum_{i = 1}^n \left[\frac{A_i\{Y_i - \widehat\mu_1(X_i)\}}{\widehat{r}(X_i)} + \widehat\mu_1(X_i) \right] \\
      &amp; - \frac{1}{n(n-1)} \mathop{\sum\sum}_{1 \leq i \neq j \leq n} \left\{\frac{A_i}{\widehat{r}(X_i)} - 1\right\} b(X_i)^\top \widehat\Omega^{-1} b(X_j) A_j\{Y_j - \widehat\mu_1(X_j)\}
@@ -1929,7 +2031,7 @@ Let $\|f\|^2 = \int f^2(x) r(x) dP(x)$. Identify, if any, any issue with the rea
 \begin{itemize}
     \item The conditional $|\mathbb{E}(\widehat\psi - \psi \mid D^n)|$ can be upper bounded as
     \begin{align*}
-       |\mathbb{E}(\widehat\psi - \psi \mid D^n)| \lesssim k^{-2s/d} + \|1/\widehat{r} - 1/r\| \|\wide...
+       |\mathbb{E}(\widehat\psi - \psi \mid D^n)| \lesssim k^{-2s/d} + \|1/\widehat{r} - 1/r\| \...
 Strengths: Genuinely hard: second-order influence function / quadratic U-statistic estimator for the treatment-specific mean — a real frontier of semiparametric theory. | Self-contained setup: estimand, nuisances, dictionary approximation conditions, and the quadratic estimator are all written explicitly. | &#x27;Diagnose the flaw in the reasoning&#x27; framing gives a deterministic correct/incorrect target if the intended error is pinned down. | Final stated rate matches the known HOIF minimax result, so a precise oracle is reachable for an expert author. | Low contamination risk: this exact worked diagnostic is unlikely to appear verbatim in training corpora.
 Considerations: answerkey, gradingscheme, and editornotes are identical unfilled template placeholders — there is NO oracle and NO rubric. | The prompt asks to identify &#x27;any issue, if any&#x27; but does not state whether exactly one planted error exists or the chain is correct — intended answer is ambiguous. | Notation/scope gaps: \Omega vs \widehat\Omega definition, third-order term never written, b(x)^\top\beta_r vs \beta_\pi mismatch, training/estimation sample split. | tags.capability, tags.failure, tags.grading are TODO/blank. | Whether the flaw is in the bias bound, the variance bound, or the rate-balancing must be disclosed for deterministic grading.
 Next steps: Author must fill the oracle: state precisely which line(s) of the reasoning are wrong (or affirm correctness) and the corrected statement. | PROPOSED (author to confirm): the suspect step is the conditional-bias bound — the \|\widehat\Omega-\Omega\|_op factor and the omission of the pure second-order product term \|1/\widehat r-1/r\|\|\widehat\mu_1-\mu_1\| in the balancing; the variance 1/n+k/n^2 and the final rate n^{-4s/(4s+d)} (s&lt;d/4), n^{-1/2} (s&gt;=d/4) appear correct. | Convert gradingscheme to Mode B with concrete criteria keyed to each bullet of the reasoning. | Run 5 frontier-model responses and attach a failure-mode summary per the editornotes checklist. | Fix notation (\beta_\pi vs \beta_r, define \Omega, write the third-order term explicitly).
@@ -2491,6 +2593,17 @@ Verifier: mode=not_auto_verifiable — awaiting the author&#x27;s oracle; the ag
 
   var idx = dates.length - 1;             // default = most recent
   var firstRender = true;
+  // The "baseline" sha per card = the version shown at the most-recent point
+  // (the page's default/current view). A card is flagged "changed" at a given
+  // step iff the version shown there differs from this baseline AND both are
+  // REAL reviewed versions — i.e. "this problem looked different back then."
+  // Appearing/disappearing (a not-yet-reviewed placeholder ⇄ a real version)
+  // is NOT a content change, so it never gets the chip.
+  var latestDate = dates[dates.length - 1];
+  cards.forEach(function(card){
+    var base = pickVersion(card, latestDate);
+    card.baseSha = base ? (base.sha || '') : null;
+  });
 
   function render(){
     var date = dates[idx];
@@ -2503,7 +2616,13 @@ Verifier: mode=not_auto_verifiable — awaiting the author&#x27;s oracle; the ag
     cards.forEach(function(card){
       var chosen = pickVersion(card, date);
       var newSha = chosen ? (chosen.sha || '') : null;
-      var changed = (!firstRender) && (newSha !== card.shownSha);
+      // "changed" = differs from the current/baseline version, and both ends
+      // are real reviewed versions (no placeholder transition). Stable across
+      // steps: the latest point flags nothing; older points flag the cards
+      // that genuinely differed then.
+      var changed = (!firstRender)
+                 && (newSha !== null) && (card.baseSha !== null)
+                 && (newSha !== card.baseSha);
 
       // First render: the server already painted the latest version (= the
       // default most-recent point) AND MathJax already typeset it. Don't
@@ -2527,6 +2646,11 @@ Verifier: mode=not_auto_verifiable — awaiting the author&#x27;s oracle; the ag
         card.section.classList.add('tm-empty');
       }
 
+      // Declarative cue: the innerHTML rewrite above already wiped any prior
+      // chip, so we set the chip + flash iff this version differs from the
+      // current/baseline. When unchanged (incl. back on the latest point or on
+      // a placeholder), we clear the class so no stale highlight lingers — this
+      // is what prevents chip/flash accumulation across steps.
       if (changed){
         // subtle, tasteful evolution cue — not colour-alone: a "changed" chip
         // is injected next to the verdict pill in addition to the flash.
@@ -2537,10 +2661,12 @@ Verifier: mode=not_auto_verifiable — awaiting the author&#x27;s oracle; the ag
         if (pills){
           var chip = document.createElement('span');
           chip.className = 'tm-changed-chip';
-          chip.textContent = '↻ changed';
-          chip.setAttribute('title', 'This problem changed at this timeline step.');
+          chip.textContent = '↻ differs from current';
+          chip.setAttribute('title', 'At this earlier timeline point this problem was a different version than the current one.');
           pills.appendChild(chip);
         }
+      } else {
+        card.section.classList.remove('tm-changed');
       }
       card.shownSha = newSha;
       if (chosen) mathNodes.push(card.body);
