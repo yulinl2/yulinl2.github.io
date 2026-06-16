@@ -427,7 +427,7 @@ const DS = [
     arxiv:'2410.03286', hf:'AI4StatMath/HARDMath',
     ans: r => r.native?.answer_val,
     sol: r => r.native?.solution_excerpt,
-    tags: r => [...tag(r.native?.question_type?.replace(/_/g,' '),''), ...tag(r.native?.subset!=='main'?r.native?.subset:null,'dm')],
+    tags: r => [...tag(r.native?.question_type?.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()),''), ...tag(r.native?.subset!=='main'?r.native?.subset:null,'dm')],
     filters: [{key:'question_type',label:'Type',get:r=>r.native?.question_type},{key:'subset',label:'Subset',get:r=>r.native?.subset}],
     filterDescriptions: {
       question_type: {
@@ -694,7 +694,7 @@ function renderFB(d,rows){
       <span class="flbl"><span class="filtip" title="${esc(orAndTip)}">ⓘ</span> ${esc(f.label)}:</span>`;
     vals.forEach(v=>{
       const sv=String(v);
-      const displaySv=sv.replace(/_/g,' ');
+      const displaySv=sv.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
       const cnt=rows.filter(r=>{const rv=f.get(r);return rv!=null&&String(rv)===sv}).length;
       const desc=d.filterDescriptions?.[f.key]?.[sv];
       const tip=desc?`<span class="filtip" style="pointer-events:none">ⓘ</span> `:'';
@@ -777,7 +777,7 @@ function metaPreviewText(row,d){
   return (d.metaPreview||[])
     .map(k=>n[k])
     .filter(v=>v!=null&&String(v).trim().length>0&&String(v).length<60)
-    .slice(0,2).map(v=>String(v).replace(/_/g,' ')).join(' · ');
+    .slice(0,2).map(v=>String(v).replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())).join(' · ');
 }
 
 function cardHTML(row,d,idx){
@@ -1032,15 +1032,15 @@ function renderNav(total,pages){
   if(total<=0){nav.style.display='none';return}
   nav.style.display='flex';
   nav.innerHTML=
-    `<button class="fnb" id="fnFirst" onclick="fnFirst()" title="First question (⤒)">⤒</button>`+
-    `<button class="fnb" id="fnPrev" onclick="fnPrevQ()" title="Prev question (k/↑)">↑</button>`+
+    `<button class="fnb" id="fnFirst" onclick="fnFirst()" title="First question (⤒)" aria-label="First question">⤒</button>`+
+    `<button class="fnb" id="fnPrev" onclick="fnPrevQ()" title="Prev question (k/↑)" aria-label="Previous question">↑</button>`+
     `<div class="fndiv"></div>`+
-    `<button class="fnb" id="fnPgPrev" onclick="goPage(${S.page-1})" ${S.page<=1?'disabled':''} title="Prev page (←)">‹</button>`+
+    `<button class="fnb" id="fnPgPrev" onclick="goPage(${S.page-1})" ${S.page<=1?'disabled':''} title="Prev page (←)" aria-label="Previous page">‹</button>`+
     `<span id="fnpi">${pages>1?S.page+'/'+pages:total}</span>`+
-    `<button class="fnb" id="fnPgNext" onclick="goPage(${S.page+1})" ${S.page>=pages?'disabled':''} title="Next page (→)">›</button>`+
+    `<button class="fnb" id="fnPgNext" onclick="goPage(${S.page+1})" ${S.page>=pages?'disabled':''} title="Next page (→)" aria-label="Next page">›</button>`+
     `<div class="fndiv"></div>`+
-    `<button class="fnb" id="fnNext" onclick="fnNextQ()" title="Next question (j/↓)">↓</button>`+
-    `<button class="fnb" id="fnLast" onclick="fnLast()" title="Last question (⤓)">⤓</button>`;
+    `<button class="fnb" id="fnNext" onclick="fnNextQ()" title="Next question (j/↓)" aria-label="Next question">↓</button>`+
+    `<button class="fnb" id="fnLast" onclick="fnLast()" title="Last question (⤓)" aria-label="Last question">⤓</button>`;
 }
 
 // ── SWIPE (bench switch) ──────────────────────────────────────────────────────
