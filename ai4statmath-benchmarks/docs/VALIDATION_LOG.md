@@ -202,3 +202,45 @@ All accuracy issues resolved. Zero dead filterDescriptions keys. Zero factually-
 ### Decision DL-12 — Dead filterDescriptions keys
 
 Dead keys (filterDescriptions entries with no matching chip) are actively misleading: if a tooltip appears in some future display mode, it would claim fields exist in the data that don't. The policy going forward: only include a filterDescriptions key when a corresponding chip *actually appears* in the current data. This is validated by the self-audit emulator run above.
+
+---
+
+## 10. S5 — ES module refactor (2026-06-17)
+
+> Trigger: user asked whether to refactor to React for maintainability/context
+> efficiency. Decision (DL-13): native ES modules instead — same modularity win,
+> zero build step, deployment workflow unchanged. SPEC-FIRST per process recipe:
+> see `MIGRATION_SPEC.md`.
+
+### 10a. What changed
+Monolith `index.html` (1133 lines) split into:
+- `css/{tokens,layout,cards}.css` (3) — tokens = portable layer per transfer notes
+- `js/{util,katex,registry,state,data,render,app}.js` (7) — `app.js` = entry
+- `index.html` → 70-line shell (head + markup + one module script)
+
+### 10b. Two gotchas (resolved)
+| ID | Gotcha | Fix | Verified |
+|----|--------|-----|---------|
+| G1 | Inline `onclick="fn()"` resolves against window; module top-level is module-scoped | Single `Object.assign(window,{…})` block in app.js lists all 19 inline-referenced handlers | `window.switchTab` true on live |
+| G2 | KaTeX `<head>` onload may fire before/after module exec (deferred-script race) | `window._flushKatex` assigned at module-eval; head onload guarded `&&`; renderK queues if `!_katexReady` | KaTeX renders on live |
+
+### 10c. Verification
+- `node --check` all 7 modules ✓
+- Local Playwright smoke (http.server, since file:// blocks modules) ✓
+- Live Playwright gate: `pass:true` — tabs=7, cards=30, hasApp=true, expand,
+  KaTeX render, filter 30→4, MathTrap context, 6 nav buttons, zero real errors.
+
+### Decision DL-13 — ESM over React
+React requires a bundler → either committed build artifacts or a CI pipeline,
+both new failure surfaces antithetical to the MCP static-push model. Native ESM
+delivers the same module boundaries (registry as the extension point, token
+layer portable) with no toolchain. `render.js` emits onclick strings rather than
+importing handlers, which keeps the import graph acyclic (render never imports
+app). Migrate to React only if/when multi-page growth (lit-review,
+per-contributor) justifies a real pipeline — that is the natural trigger.
+
+### Doc maintenance this pass
+- CLAUDE.md: added Source-layout section; rewrote deploy recipe BLOCK A/B for
+  multi-file git push; **fixed BLOCK C verify gate** (`typeof prepTex` →
+  `typeof window.switchTab`, since prepTex is no longer global) — the old gate
+  would have false-failed every future session.

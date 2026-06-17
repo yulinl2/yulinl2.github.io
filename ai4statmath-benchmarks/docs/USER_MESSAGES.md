@@ -305,3 +305,13 @@ No more waiting, complete all.
 ```
 (pasted GitHub auth callback URL to reconnect GitHub MCP)
 ```
+
+## Session 5 (2026-06-17) — modularity / React question
+
+S5·M1: Beautiful. And UI/UX experiences?
+
+S5·M2: You sure you don't need to refactor into React? Modularity not for the surface's sake, but for the future maintainability (and your context efficiency)
+
+S5·M3: Then couldn't we just modularize to remove the big-file debt?
+
+S5·M4: Go ahead until full completion. Thank you :)

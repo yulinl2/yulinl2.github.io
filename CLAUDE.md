@@ -6,36 +6,49 @@
 - Dev branch: claude/parquet-ndjson-export-nyz7ia
 - Design docs: ai4statmath-benchmarks/docs/ on dev branch
 
+## Source layout (MODULAR — native ES modules, still no build step)
+As of the ESM refactor, the page is split — edit the right file, don't reload the whole thing:
+- `ai4statmath-benchmarks/index.html` — shell only (~70 lines): head, markup, `<script type="module" src="./js/app.js">`
+- `css/tokens.css` (portable token layer) · `css/layout.css` · `css/cards.css`
+- `js/registry.js` — DS dataset registry = THE extension point (add a dataset here)
+- `js/util.js` · `js/katex.js` · `js/state.js` · `js/data.js` · `js/render.js`
+- `js/app.js` — ENTRY: events, wiring, init, and the single `Object.assign(window,{…})` block
+- Inline `onclick="fn()"` resolves against window → any such handler MUST be added to app.js's window-attach block (see docs/MIGRATION_SPEC.md G1)
+- Pre-refactor monolith preserved at `/home/user/benchmarks_page_v2.html` (rollback reference only — NOT the source of truth)
+
 ## Deployment recipe (CANONICAL — do not use sub-agents for push)
 
 **CRITICAL:** Sub-agent pushes truncate large files at ~5.6KB due to Bash output size caps.
 Always push via the Python bypass below — reads + sends in one process, no truncation.
 
 ### BLOCK A — EDIT + local verify
+Edit files in the git clone `/home/user/yulinl2.github.io/ai4statmath-benchmarks/`.
 ```bash
-node --check /tmp/check.js   # after: python3 -c "...extract JS..." > /tmp/check.js
+cd /home/user/yulinl2.github.io/ai4statmath-benchmarks
+for f in js/*.js; do node --check "$f" || echo "FAIL $f"; done
+# Real local smoke (modules need HTTP — file:// fails CORS):
+( python3 -m http.server 8731 >/tmp/httpd.log 2>&1 & ) ; sleep 1
+node /tmp/smoke_local.js   # Playwright vs http://localhost:8731/index.html
 ```
 
-### BLOCK B — PUSH (Python MCP bypass, both branches)
-```python
-import json, urllib.request
-SESSION_ID = 'cse_01ModprwH6NWvYzUceBo3pj8'  # from JWT: session_id field
-token = open('/home/claude/.claude/remote/.session_ingress_token').read().strip()
-content = open('/home/user/benchmarks_page_v2.html').read()
-url = f"https://api.anthropic.com/v2/ccr-sessions/{SESSION_ID}/github/mcp"
-hdrs = {'Authorization': f'Bearer {token}', 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01'}
-for branch in ['main', 'claude/parquet-ndjson-export-nyz7ia']:
-    body = json.dumps({"jsonrpc":"2.0","method":"tools/call","params":{"name":"push_files",
-        "arguments":{"owner":"yulinl2","repo":"yulinl2.github.io","branch":branch,
-        "files":[{"path":"ai4statmath-benchmarks/index.html","content":content}],
-        "message":"your message here"}},"id":1}).encode()
-    req = urllib.request.Request(url, data=body, headers=hdrs, method='POST')
-    with urllib.request.urlopen(req, timeout=60) as r:
-        resp = json.loads(r.read().split(b'data: ')[1])
-        sha = json.loads(resp['result']['content'][0]['text'])['object']['sha']
-        print(f"{branch}: {sha}")
+### BLOCK B — PUSH (git via local proxy — multi-file, atomic, both branches)
+The ESM split means MANY files per change, so push the whole directory via git
+(one atomic commit). This is the proven path; it sidesteps the sub-agent Bash
+truncation cap entirely (git streams the pack, not Bash output).
+```bash
+cd /home/user/yulinl2.github.io
+git fetch origin claude/parquet-ndjson-export-nyz7ia && git checkout -B push-fix-dev origin/claude/parquet-ndjson-export-nyz7ia
+# ...apply edits to ai4statmath-benchmarks/...
+git add -A ai4statmath-benchmarks/ && git commit -m "msg"
+git push origin push-fix-dev:claude/parquet-ndjson-export-nyz7ia
+# main = code only (docs/ stay dev-only):
+git fetch origin main && git checkout -B push-fix origin/main
+git checkout push-fix-dev -- ai4statmath-benchmarks/index.html ai4statmath-benchmarks/css ai4statmath-benchmarks/js
+git commit -m "msg" && git push origin push-fix:main
 ```
-- Payload ~67KB, well under 700KB limit. On HTTP 4xx, retry with exponential backoff.
+- On network error, retry push with exponential backoff (2/4/8/16s).
+- Python MCP `push_files` fallback still works — but its `files:[…]` array must
+  list EVERY changed file (index.html + css/*.css + js/*.js), not just index.html.
 
 ### BLOCK C — VERIFY (Playwright headless Chromium, run after every push)
 **Do NOT use WebFetch** — it only checks HTML source, not JS execution; it gave false-positives.
@@ -68,12 +81,16 @@ const { chromium } = require('/opt/node22/lib/node_modules/playwright');
   await page.waitForTimeout(3000);
   const tabs  = await page.$$eval('.tab', els => els.length);
   const cards = await page.$$eval('.card', els => els.length);
-  const hasPT = await page.evaluate(() => typeof prepTex === 'function');
-  console.log(JSON.stringify({ tabs, cards, hasPrepTex: hasPT, errors }, null, 2));
+  // POST-ESM: prepTex is module-scoped, NOT global. Check a window-attached
+  // handler instead (proves app.js ran AND the window-attach block executed).
+  const hasApp = await page.evaluate(() => typeof window.switchTab === 'function');
+  console.log(JSON.stringify({ tabs, cards, hasApp, errors }, null, 2));
   await browser.close();
 })().catch(e => { console.error(e.message); process.exit(1); });
 ```
-Expected: `tabs: 7, cards: 30, hasPrepTex: true, errors: []`
+Expected: `tabs: 7, cards: 30, hasApp: true, errors: []`
+(Ignore one harmless `net::ERR_ABORTED` for the deploy-timestamp HEAD self-fetch,
+and any favicon 404.) Full multi-interaction gate: `/tmp/verify_live_mod.js`.
 
 ### BLOCK D — DOCUMENT
 Append new user messages to `ai4sm-docs/USER_MESSAGES.md` verbatim.
@@ -107,6 +124,13 @@ The user's design process recipe — follow this for any major change:
 
 ## Key architectural decisions
 - Vanilla JS (no build step) — keeps MCP static-push deployment
+- Native ES modules (`<script type="module">`) — modular WITHOUT a bundler;
+  browser resolves imports, Pages serves static, push workflow unchanged.
+  Chose this over React: React needs a build pipeline; ESM gives the
+  maintainability/context-efficiency win with zero new failure surface.
+  Smaller files also dodge the ~5.6KB sub-agent Bash truncation cap.
+- `js/render.js` emits onclick STRINGS (no import of handlers) → acyclic graph;
+  handlers live in `app.js` and are bridged to inline onclick via window-attach
 - One `#sticky` wrapper for header + tabs + search → eliminates background-leak gap
 - Shared type ramp `.cbdy,.cstem` → no reflow on card expand/collapse
 - `metaPreview: [fields]` per dataset in DS registry → no heuristic guessing
