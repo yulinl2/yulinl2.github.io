@@ -676,95 +676,95 @@ button.nav-chat { display:none; }
 </style></head><body>
 
 <nav class="navbar">
-  <div class="nav-inner">
-    <div class="nav-brand">Auto-review hub <span class="sub">· AI4Stat/Math</span></div>
-    <div class="nav-chips" style="gap:4px">
-      <a class="chip" href="#contributors">Contributors</a>
-      <a class="chip" href="#sibling-audits">Sibling audits</a>
-    </div>
-    <a class="nav-chat" href="../ai4statmath-litreview/" style="text-decoration:none">← lit-review</a>
-  </div>
+ <div class="nav-inner">
+ <div class="nav-brand">Auto-review hub <span class="sub">· AI4Stat/Math</span></div>
+ <div class="nav-chips" style="gap:4px">
+ <a class="chip" href="#contributors">Contributors</a>
+ <a class="chip" href="#sibling-audits">Sibling audits</a>
+ </div>
+ <a class="nav-chat" href="../ai4statmath-litreview/" style="text-decoration:none">← lit-review</a>
+ </div>
 </nav>
 
 <div class="container">
 
 
 <section id="status-band" aria-label="Headline status">
-  <p class="dim small" style="margin:14px 0 0">📍 <strong>Headline status</strong> — the deadline-critical numbers, computed from the data at build time (hover any tile for its source). Information, not verdicts.</p>
-  <div class="hub-tiles">
-    <div class="hub-tile"><div class="num" style="font-size:1.1em">June 15, 2026</div><div class="lbl" title="GOALS.md R1 is the authoritative home of the deadline; this config mirrors it for page rendering.">submission deadline</div></div>
-    <div class="hub-tile"><div class="num">0</div><div class="lbl" title="Acceptance bar (.claude/GOALS.md): an oracle-validated verifier (data/verifier_drafts validation records — answer key passes AND every plausibly-wrong response is rejected) AND frontier-stumped in the latest sweep (data/eval/sweep-digest.json, sweep-20260603-170524: gate models gpt-5.5 + opus-4-7 both graded 0 passes, with the author oracle not itself disputed). Computed at build time.">meet both acceptance bars now</div></div>
-    <div class="hub-tile"><div class="num">0 of 10</div><div class="lbl" title="10 accepted problems ⇒ co-authorship (.claude/GOALS.md). Computed: the best-placed contributor currently has 0 problem(s) meeting both acceptance bars — every contributor is at 0 of the 10-accepted floor.">co-authorship floor — every contributor at 0</div></div>
-    <div class="hub-tile"><div class="num" style="font-size:1.1em">31 filled + 2 drafted</div><div class="lbl" title="Submission fill from submissions_sync.digest() off origin/master at build time — the SAME source (and the same definitions of filled/drafted) as the lit-review page&#x27;s hero line, so the two pages cannot disagree. filled = statement + title both edited; drafted = one of the two edited.">/ 375 slots · 6/25 active</div></div>
-    <div class="hub-tile t-revision"><div class="num">8</div><div class="lbl" title="Problems where the frontier-model consensus answer differs from the author oracle (consensus_vs_oracle in data/eval/sweep-digest.json, sweep-20260603-170524) — needs human adjudication; see each problem's 🔍 Resolved card.">oracle-disputed ⚖</div></div>
-    <div class="hub-tile t-ready"><div class="num">8/12</div><div class="lbl" title="SCREENING bar (working hypothesis — the primary record holds THREE conflicting formulations: D1 #048 OR / tracker-Doc AND / floor-email and-or; resolution is a human decision, #147 slot 0): problems failing AT LEAST ONE gate model across all its verifier-graded runs. 4/12 fail BOTH gate models (the model-side Stage-2 bar). Oracle status is a separate HUMAN axis, never a consensus-derived exclusion — convergent wrong answers are the predicted failure signature, not automatic oracle doubt. oracle adjudication (human axis): 1 confirmed correct · 5 wording-ambiguous · 2 flagged broken · 0 pending · 4 consensus-consistent. Source data/eval/sweep-digest.json, sweep-20260603-170524; models: gpt-5.4, gpt-5.5, haiku-4-5, opus-4-6, opus-4-7, sonnet-4-6. 12 of the 17 reviewed problems have sweep runs; contributor_05&#x27;s 5 are not yet swept. Coverage caveat: opus-4-7 evidence is no-thinking runs only — its 36 thinking runs all errored (harness bug; re-run pending); see docs/eval/DIGEST-AUDIT-2026-06-10.md.">pass screening bar — fail ≥1 gate model (sweep 2026-06-03 · gpt-5.4, gpt-5.5, haiku-4-5, opus-4-6, opus-4-7, sonnet-4-6)</div></div>
-  </div>
-  <p class="dim small" id="bottleneck-line" style="margin:2px 0 0">🧭 Path to the bar by <strong>June 15, 2026</strong>: adjudicate 8 disputed oracles (contributor_01) · supply 5 answer keys (contributor_05) · schedule the contributor_05 sweep.</p>
+ <p class="dim small" style="margin:14px 0 0">📍 <strong>Headline status</strong> — the deadline-critical numbers, computed from the data at build time (hover any tile for its source). Information, not verdicts.</p>
+ <div class="hub-tiles">
+ <div class="hub-tile"><div class="num" style="font-size:1.1em">June 15, 2026</div><div class="lbl" title="GOALS.md R1 is the authoritative home of the deadline; this config mirrors it for page rendering.">submission deadline</div></div>
+ <div class="hub-tile"><div class="num">0</div><div class="lbl" title="Acceptance bar: an oracle-validated verifier (data/verifier_drafts validation records — answer key passes AND every plausibly-wrong response is rejected) AND frontier-stumped in the latest sweep (data/eval/sweep-digest.json, sweep-20260603-170524: gate models gpt-5.5 + opus-4-7 both graded 0 passes, with the author oracle not itself disputed). Computed at build time.">meet both acceptance bars now</div></div>
+ <div class="hub-tile"><div class="num">0 of 10</div><div class="lbl" title="10 accepted problems ⇒ co-authorship. Computed: the best-placed contributor currently has 0 problem(s) meeting both acceptance bars — every contributor is at 0 of the 10-accepted floor.">co-authorship floor — every contributor at 0</div></div>
+ <div class="hub-tile"><div class="num" style="font-size:1.1em">46 filled + 2 drafted</div><div class="lbl" title="Submission fill from submissions_sync.digest off origin/master at build time — the SAME source (and the same definitions of filled/drafted) as the lit-review page&#x27;s hero line, so the two pages cannot disagree. filled = statement + title both edited; drafted = one of the two edited.">/ 375 slots · 7/25 active</div></div>
+ <div class="hub-tile t-revision"><div class="num">8</div><div class="lbl" title="Problems where the frontier-model consensus answer differs from the author oracle (consensus_vs_oracle in data/eval/sweep-digest.json, sweep-20260603-170524) — needs human adjudication; see each problem's 🔍 Resolved card.">oracle-disputed ⚖</div></div>
+ <div class="hub-tile t-ready"><div class="num">8/12</div><div class="lbl" title="SCREENING bar: problems failing AT LEAST ONE of the two gate models (GPT-5.5 or Opus 4.7) across all their verifier-graded runs. 4/12 fail BOTH gate models (the model-side Stage-2 bar). Oracle status is a separate HUMAN axis, never a consensus-derived exclusion — convergent wrong answers are the predicted failure signature, not automatic oracle doubt. oracle adjudication (human axis): 1 confirmed correct · 5 wording-ambiguous · 2 flagged broken · 0 pending · 4 consensus-consistent. Source data/eval/sweep-digest.json, sweep-20260603-170524; models: gpt-5.4, gpt-5.5, haiku-4-5, opus-4-6, opus-4-7, sonnet-4-6. 12 of the 47 reviewed problems have sweep runs; contributor_02&#x27;s 15 · contributor_05&#x27;s 6 · contributor_09&#x27;s 10 · contributor_10&#x27;s 4 are not yet swept. Coverage caveat: opus-4-7 evidence is no-thinking runs only — its 36 thinking runs all errored (harness bug; re-run pending); see docs/eval/DIGEST-AUDIT-2026-06-10.md.">pass screening bar — fail ≥1 gate model (sweep 2026-06-03 · gpt-5.4, gpt-5.5, haiku-4-5, opus-4-6, opus-4-7, sonnet-4-6)</div></div>
+ </div>
+ <p class="dim small" id="bottleneck-line" style="margin:2px 0 0">🧭 Path to the bar by <strong>June 15, 2026</strong>: adjudicate 8 disputed oracles (contributor_01) · supply 15 answer keys (contributor_02, contributor_05, contributor_10) · schedule the contributor_02 sweep · schedule the contributor_05 sweep · schedule the contributor_09 sweep · schedule the contributor_10 sweep.</p>
 </section>
 
 
 <header class="hero">
-  <h1>📚 Contributor auto-reviews</h1>
-  <table class="interp-table" style="margin:8px 0 0">
-    <tr><td class="il">What this is</td><td class="ir">Per-contributor LLM-drafted reviews of AI4Stat/Math problem submissions. Each page: ADHD-friendly dashboard, annotated problems, drafted verifiers, benchmark traces.</td></tr>
-    <tr><td class="il">Status</td><td class="ir"><strong>Draft-quality first pass.</strong> Lead does canonical review; this is the structured warm-up.</td></tr>
-    <tr><td class="il">Every contributor</td><td class="ir">Each contributor with a submission gets a live review page by default, kept in sync with their latest (even tentative) progress — it grows over time. <code>review-publish-opt-in.json</code> only marks whose link has been surfaced into their Overleaf (🔗): currently <strong>1</strong>.</td></tr>
-  </table>
+ <h1>📚 Contributor auto-reviews</h1>
+ <table class="interp-table" style="margin:8px 0 0">
+ <tr><td class="il">What this is</td><td class="ir">Per-contributor LLM-drafted reviews of AI4Stat/Math problem submissions. Each page: ADHD-friendly dashboard, annotated problems, drafted verifiers, benchmark traces.</td></tr>
+ <tr><td class="il">Status</td><td class="ir"><strong>Draft-quality first pass.</strong> A human reviewer does the canonical review; this is the structured warm-up.</td></tr>
+ <tr><td class="il">Every contributor</td><td class="ir">Each contributor with a submission gets a live review page by default, kept in sync with their latest (even tentative) progress — it grows over time. <code>review-publish-opt-in.json</code> only marks whose link has been surfaced into their Overleaf (🔗): currently <strong>1</strong>.</td></tr>
+ </table>
 </header>
 
 <section id="aggregate">
-  <h2 style="margin-top:20px;border-bottom:1px solid var(--border);padding-bottom:8px">📊 Aggregate</h2>
-  <p class="dim small" style="margin:2px 0 0">Pipeline-wide across <strong>all</strong> reviewed submissions (counts only; individual pages stay opt-in gated). Counts are <strong>information, not verdicts</strong>: reviewed problems, open action items (concrete next steps the auto-reviewer drafted for the authors), and gaps the agent filled — proposed tags and verifier drafts. Latest review activity: <strong>2026-06-10 21:42 UTC</strong>.</p>
-  <div class="hub-tiles">
-    <div class="hub-tile"><div class="num">17</div><div class="lbl" title="reviewed = has a Stage-1 review; 17 of the 33 filled+drafted submissions have one.">problems reviewed</div></div>
-    <div class="hub-tile t-info" title="Concrete next steps the auto-reviewer drafted across all submissions — information for the authors to act on, never accept/reject verdicts."><div class="num">67</div><div class="lbl">current action items ☑ <span class="dim">(70 surfaced · 3 superseded by re-review)</span></div></div>
-    <div class="hub-tile t-info" title="Counts only verifiers that genuinely validated against an author oracle: graded the answer key as pass AND rejected every plausibly-wrong response. Drafts in not_auto_verifiable mode await the author&#x27;s oracle — the agent never fabricates one. +5 awaiting the author&#x27;s oracle (not auto-verifiable — excluded from numerator AND denominator, not failures)."><div class="num">9/10</div><div class="lbl">auto-verifiable validated ✓</div><div class="lbl dim">+5 awaiting the author&#x27;s oracle</div></div>
-    <div class="hub-tile t-ready"><div class="num">8/12</div><div class="lbl" title="SCREENING bar (working-hypothesis OR; formulations conflict — #147 slot 0): fails at least one gate model across all its graded runs; 4/12 fail both (model-side Stage-2 bar). Oracle adjudication is a separate human axis (oracle adjudication (human axis): 1 confirmed correct · 5 wording-ambiguous · 2 flagged broken · 0 pending · 4 consensus-consistent). HIGHER is better — failing frontier models is the goal. Source: data/eval/sweep-digest.json, sweep-20260603-170524.">pass screening bar ✓ (sweep 2026-06-03 · gpt-5.4, gpt-5.5, haiku-4-5, opus-4-6, opus-4-7, sonnet-4-6)</div></div>
-    <div class="hub-tile t-info"><div class="num">17</div><div class="lbl" title="Agent-proposed structured tags (capability·domain·subtopic·difficulty) surfaced on the problem cards for the author to confirm.">tags proposed 🏷</div></div>
-  </div>
+ <h2 style="margin-top:20px;border-bottom:1px solid var(--border);padding-bottom:8px">📊 Aggregate</h2>
+ <p class="dim small" style="margin:2px 0 0">Pipeline-wide across <strong>all</strong> reviewed submissions (counts only; every contributor gets an individual page by default). Counts are <strong>information, not verdicts</strong>: reviewed problems, open action items (concrete next steps the auto-reviewer drafted for the authors), and gaps the agent filled — proposed tags and verifier drafts. Latest review activity: <strong>2026-06-17 10:05 UTC</strong>.</p>
+ <div class="hub-tiles">
+ <div class="hub-tile"><div class="num">47</div><div class="lbl" title="reviewed = has a Stage-1 review; 47 of the 48 filled+drafted submissions have one.">problems reviewed</div></div>
+ <div class="hub-tile t-info" title="Concrete next steps the auto-reviewer drafted across all submissions — information for the authors to act on, never accept/reject verdicts."><div class="num">146</div><div class="lbl">current action items ☑ <span class="dim">(146 surfaced · 0 superseded by re-review)</span></div></div>
+ <div class="hub-tile t-info" title="Counts only verifiers that genuinely validated against an author oracle: graded the answer key as pass AND rejected every plausibly-wrong response. Drafts in not_auto_verifiable mode await the author&#x27;s oracle — the agent never fabricates one. +15 awaiting the author&#x27;s oracle (not auto-verifiable — excluded from numerator AND denominator, not failures)."><div class="num">29/32</div><div class="lbl">auto-verifiable validated ✓</div><div class="lbl dim">+15 awaiting the author&#x27;s oracle</div></div>
+ <div class="hub-tile t-ready"><div class="num">8/12</div><div class="lbl" title="SCREENING bar: fails at least one of the two gate models across all its graded runs; 4/12 fail both (model-side Stage-2 bar). Oracle adjudication is a separate human axis (oracle adjudication (human axis): 1 confirmed correct · 5 wording-ambiguous · 2 flagged broken · 0 pending · 4 consensus-consistent). HIGHER is better — failing frontier models is the goal. Source: data/eval/sweep-digest.json, sweep-20260603-170524.">pass screening bar ✓ (sweep 2026-06-03 · gpt-5.4, gpt-5.5, haiku-4-5, opus-4-6, opus-4-7, sonnet-4-6)</div></div>
+ <div class="hub-tile t-info"><div class="num">17</div><div class="lbl" title="Agent-proposed structured tags (capability·domain·subtopic·difficulty) surfaced on the problem cards for the author to confirm.">tags proposed 🏷</div></div>
+ </div>
 </section>
 
 <section id="contributors">
-  <h2 style="margin-top:24px;border-bottom:1px solid var(--border);padding-bottom:8px">👥 Contributors</h2>
-  <table class="hub-table">
-    <thead><tr>
-      <th>contributor</th><th class="n">problems</th>
-      <th title="What the auto-reviewer surfaced for each contributor: open action items (next steps) and the gaps the agent filled (proposed tags, verifier drafts) — information, never verdicts.">next steps &amp; gap-fills</th><th class="n" title="Counts only verifiers that genuinely validated against an author oracle: graded the answer key as pass AND rejected every plausibly-wrong response. Drafts in not_auto_verifiable mode await the author&#x27;s oracle — the agent never fabricates one.">verifiers ✓</th><th class="n">LLM</th>
-      <th>last reviewed</th><th></th>
-    </tr></thead>
-    <tbody><tr><td><a href="contributor_01/index.html"><strong>Zhixian Zhang</strong></a><span class="pill" style="background:var(--bg-accent);color:var(--fg-muted);font-size:.68em;margin-left:6px" title="Review link surfaced into this contributor's Overleaf">🔗 link shared</span></td><td class="n">10</td><td class="pills-cell"><span class="pill v-progress" title="Concrete next steps the auto-reviewer drafted for the author — information to act on, never an accept/reject verdict.">☑ 35 open action items</span><span class="pill v-stub" title="Agent-proposed structured tags (capability · domain · subtopic · difficulty) for the author to confirm — gap-fill, not judgment.">🏷 10 tags proposed</span><span class="pill v-stub" title="Verifier drafts the agent wrote to fill the grading gap; the oracle-validated count is in the next column.">⚙ 10 verifier drafts</span></td><td class="n">9/10</td><td class="n">0/5 pass</td><td class="dim small">2026-06-01 04:55 UTC</td><td><a href="contributor_01/index.html">view →</a></td></tr><tr><td><a href="contributor_03/index.html"><strong>Zihan Dong</strong></a></td><td class="n">2</td><td class="pills-cell"><span class="pill v-progress" title="Concrete next steps the auto-reviewer drafted for the author — information to act on, never an accept/reject verdict.">☑ 8 open action items</span><span class="pill v-stub" title="Agent-proposed structured tags (capability · domain · subtopic · difficulty) for the author to confirm — gap-fill, not judgment.">🏷 2 tags proposed</span></td><td class="n">—</td><td class="n">—</td><td class="dim small">2026-06-01 04:55 UTC</td><td><a href="contributor_03/index.html">view →</a></td></tr><tr><td><a href="contributor_05/index.html"><strong>Matteo Bonvini</strong></a></td><td class="n">5</td><td class="pills-cell"><span class="pill v-progress" title="Concrete next steps the auto-reviewer drafted for the author — information to act on, never an accept/reject verdict.">☑ 24 open action items</span><span class="pill v-stub" title="Agent-proposed structured tags (capability · domain · subtopic · difficulty) for the author to confirm — gap-fill, not judgment.">🏷 5 tags proposed</span><span class="pill v-stub" title="Verifier drafts the agent wrote to fill the grading gap; the oracle-validated count is in the next column.">⚙ 5 verifier drafts</span></td><td class="n"><span title="All 5 of this contributor&#x27;s verifier drafts are not_auto_verifiable — awaiting the author&#x27;s oracle. Excluded from the validated rate (numerator AND denominator); not failures.">5 awaiting oracle</span></td><td class="n">—</td><td class="dim small">2026-06-10 21:42 UTC</td><td><a href="contributor_05/index.html">view →</a></td></tr></tbody>
-  </table>
+ <h2 style="margin-top:24px;border-bottom:1px solid var(--border);padding-bottom:8px">👥 Contributors</h2>
+ <table class="hub-table">
+ <thead><tr>
+ <th>contributor</th><th class="n">problems</th>
+ <th title="What the auto-reviewer surfaced for each contributor: open action items (next steps) and the gaps the agent filled (proposed tags, verifier drafts) — information, never verdicts.">next steps &amp; gap-fills</th><th class="n" title="Counts only verifiers that genuinely validated against an author oracle: graded the answer key as pass AND rejected every plausibly-wrong response. Drafts in not_auto_verifiable mode await the author&#x27;s oracle — the agent never fabricates one.">verifiers ✓</th><th class="n">LLM</th>
+ <th>last reviewed</th><th></th>
+ </tr></thead>
+ <tbody><tr><td><a href="contributor_01/index.html"><strong>Zhixian Zhang</strong></a><span class="pill" style="background:var(--bg-accent);color:var(--fg-muted);font-size:.68em;margin-left:6px" title="Review link surfaced into this contributor's Overleaf">🔗 link shared</span></td><td class="n">10</td><td class="pills-cell"><span class="pill v-progress" title="Concrete next steps the auto-reviewer drafted for the author — information to act on, never an accept/reject verdict.">☑ 34 open action items</span><span class="pill v-stub" title="Agent-proposed structured tags (capability · domain · subtopic · difficulty) for the author to confirm — gap-fill, not judgment.">🏷 10 tags proposed</span><span class="pill v-stub" title="Verifier drafts the agent wrote to fill the grading gap; the oracle-validated count is in the next column.">⚙ 10 verifier drafts</span></td><td class="n">9/10</td><td class="n">0/5 pass</td><td class="dim small">2026-06-17 09:52 UTC</td><td><a href="contributor_01/index.html">view →</a></td></tr><tr><td><a href="contributor_02/index.html"><strong>Contributor 02 (Dongyu Gong)</strong></a></td><td class="n">15</td><td class="pills-cell"><span class="pill v-progress" title="Concrete next steps the auto-reviewer drafted for the author — information to act on, never an accept/reject verdict.">☑ 30 open action items</span><span class="pill v-stub" title="Verifier drafts the agent wrote to fill the grading gap; the oracle-validated count is in the next column.">⚙ 15 verifier drafts</span></td><td class="n">8/8 <span class="dim small">(+7 awaiting oracle)</span></td><td class="n">—</td><td class="dim small">2026-06-17 09:57 UTC</td><td><a href="contributor_02/index.html">view →</a></td></tr><tr><td><a href="contributor_03/index.html"><strong>Zihan Dong</strong></a></td><td class="n">2</td><td class="pills-cell"><span class="pill v-progress" title="Concrete next steps the auto-reviewer drafted for the author — information to act on, never an accept/reject verdict.">☑ 8 open action items</span><span class="pill v-stub" title="Agent-proposed structured tags (capability · domain · subtopic · difficulty) for the author to confirm — gap-fill, not judgment.">🏷 2 tags proposed</span><span class="pill v-stub" title="Verifier drafts the agent wrote to fill the grading gap; the oracle-validated count is in the next column.">⚙ 2 verifier drafts</span></td><td class="n">2/2</td><td class="n">—</td><td class="dim small">2026-06-01 04:55 UTC</td><td><a href="contributor_03/index.html">view →</a></td></tr><tr><td><a href="contributor_05/index.html"><strong>Matteo Bonvini</strong></a></td><td class="n">6</td><td class="pills-cell"><span class="pill v-progress" title="Concrete next steps the auto-reviewer drafted for the author — information to act on, never an accept/reject verdict.">☑ 28 open action items</span><span class="pill v-stub" title="Agent-proposed structured tags (capability · domain · subtopic · difficulty) for the author to confirm — gap-fill, not judgment.">🏷 5 tags proposed</span><span class="pill v-stub" title="Verifier drafts the agent wrote to fill the grading gap; the oracle-validated count is in the next column.">⚙ 6 verifier drafts</span></td><td class="n">0/2 <span class="dim small">(+4 awaiting oracle)</span></td><td class="n">—</td><td class="dim small">2026-06-17 10:00 UTC</td><td><a href="contributor_05/index.html">view →</a></td></tr><tr><td><a href="contributor_09/index.html"><strong>Yihao Quan</strong></a></td><td class="n">10</td><td class="pills-cell"><span class="pill v-progress" title="Concrete next steps the auto-reviewer drafted for the author — information to act on, never an accept/reject verdict.">☑ 31 open action items</span><span class="pill v-stub" title="Verifier drafts the agent wrote to fill the grading gap; the oracle-validated count is in the next column.">⚙ 10 verifier drafts</span></td><td class="n">10/10</td><td class="n">—</td><td class="dim small">2026-06-17 10:03 UTC</td><td><a href="contributor_09/index.html">view →</a></td></tr><tr><td><a href="contributor_10/index.html"><strong>Contributor 10</strong></a></td><td class="n">4</td><td class="pills-cell"><span class="pill v-progress" title="Concrete next steps the auto-reviewer drafted for the author — information to act on, never an accept/reject verdict.">☑ 15 open action items</span><span class="pill v-stub" title="Verifier drafts the agent wrote to fill the grading gap; the oracle-validated count is in the next column.">⚙ 4 verifier drafts</span></td><td class="n"><span title="All 4 of this contributor&#x27;s verifier drafts are not_auto_verifiable — awaiting the author&#x27;s oracle. Excluded from the validated rate (numerator AND denominator); not failures.">4 awaiting oracle</span></td><td class="n">—</td><td class="dim small">2026-06-17 10:05 UTC</td><td><a href="contributor_10/index.html">view →</a></td></tr></tbody>
+ </table>
 </section>
 
 <section id="sibling-audits">
-  <h2 style="margin-top:24px;border-bottom:1px solid var(--border);padding-bottom:8px">🔗 Sibling audits</h2>
-  <p class="dim small">Other dashboards for inspecting the AI4Stat/Math pipeline:</p>
-  <div class="audit-grid">
-    <div class="audit-card">
-      <h3>📊 Main lit-review</h3>
-      <p>Tier-A precedents catalogue, dedup checklist, interactive UMAP, deep-dedup audit, decision log.</p>
-      <a href="../ai4statmath-litreview/">→ ai4statmath-litreview/</a>
-    </div>
-    <div class="audit-card">
-      <h3>🧪 Embedding shootout</h3>
-      <p>TF-IDF vs BGE vs OpenAI on the public Tier-A corpora — methodology audit for the dedup pipeline.</p>
-      <a href="../ai4statmath-litreview/experiments.html">→ experiments.html</a>
-    </div>
-    <div class="audit-card">
-      <h3>🤖 Agent audit</h3>
-      <p>Quality audit of the auto-reviewer (per-dim calibration), the verifier-writer (validation pass rate), and the benchmark harness (per-model accuracy).</p>
-      <a href="agent-audit/">→ agent-audit/</a>
-    </div>
-    <div class="audit-card">
-      <h3>🌲 Taxonomy</h3>
-      <p>Current canonical taxonomy (domains × subtopics, verb / capability tags) + LLM-drafted pending proposals (adds / renames / merges).</p>
-      <a href="taxonomy/">→ taxonomy/</a>
-    </div>
-  </div>
+ <h2 style="margin-top:24px;border-bottom:1px solid var(--border);padding-bottom:8px">🔗 Sibling audits</h2>
+ <p class="dim small">Other dashboards for inspecting the AI4Stat/Math pipeline:</p>
+ <div class="audit-grid">
+ <div class="audit-card">
+ <h3>📊 Main lit-review</h3>
+ <p>Tier-A precedents catalogue, dedup checklist, interactive UMAP, deep-dedup audit, decision log.</p>
+ <a href="../ai4statmath-litreview/">→ ai4statmath-litreview/</a>
+ </div>
+ <div class="audit-card">
+ <h3>🧪 Embedding shootout</h3>
+ <p>TF-IDF vs BGE vs OpenAI on the public Tier-A corpora — methodology audit for the dedup pipeline.</p>
+ <a href="../ai4statmath-litreview/experiments.html">→ experiments.html</a>
+ </div>
+ <div class="audit-card">
+ <h3>🤖 Agent audit</h3>
+ <p>Quality audit of the auto-reviewer (per-dim calibration), the verifier-writer (validation pass rate), and the benchmark harness (per-model accuracy).</p>
+ <a href="agent-audit/">→ agent-audit/</a>
+ </div>
+ <div class="audit-card">
+ <h3>🌲 Taxonomy</h3>
+ <p>Current canonical taxonomy (domains × subtopics, verb / capability tags) + LLM-drafted pending proposals (adds / renames / merges).</p>
+ <a href="taxonomy/">→ taxonomy/</a>
+ </div>
+ </div>
 </section>
 
 <footer class="page-foot" style="margin-top:36px">
-  <p>Generated by <code>agents/reviewer/build_contributor_html.py</code>.</p>
+ <p>Generated by <code>agents/reviewer/build_contributor_html.py</code>.</p>
 </footer>
 
 </div>
