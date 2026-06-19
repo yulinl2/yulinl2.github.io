@@ -25,6 +25,12 @@ exclude:
   - "Gemfile"
   - "Gemfile.lock"
   - "toolbox/scratch-papers/GPT"
+  # AI4StatMath public mirror — TAKEN DOWN 2026-06-19 (privacy: un-gated contributor
+  # PII + benchmark content; J-DOMAIN-MIGRATE step (d), overdue). The live origin is
+  # the Cloudflare-Access-gated open-priors site; this Pages mirror must not serve them.
+  - "ai4statmath-review"
+  - "ai4statmath-litreview"
+  - "ai4statmath-benchmarks"
 
 # Every themed markdown page gets the interior layout by default;
 # the front page opts into the rich home layout explicitly.
