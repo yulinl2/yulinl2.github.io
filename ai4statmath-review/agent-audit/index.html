@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>AI4Stat/Math — agent audit</title>
+<style>
+:root {
+  color-scheme: dark;
+  --fg:#e5e7eb; --fg-dim:#94a3b8; --fg-muted:#cbd5e1;
+  --bg:#0f172a; --bg-card:#1e293b; --bg-soft:#162033; --bg-accent:#334155;
+  --border:#334155; --primary:#60a5fa;
+  --c-ready:#34d399; --c-revision:#fbbf24; --c-rework:#f87171;
+  --c-stub:#9ca3af; --c-progress:#60a5fa;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; scroll-padding-top:74px; }
+body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+       background:var(--bg); color:var(--fg); line-height:1.55; font-size:15px; }
+.container { max-width:1180px; margin:0 auto; padding:24px 18px 80px; }
+.dim { color:var(--fg-dim); }
+.small { font-size:.84em; }
+code { font-family:"SF Mono",Consolas,monospace; color:var(--primary); }
+
+.navbar { position:sticky; top:0; z-index:50; background:rgba(15,23,42,.92);
+          backdrop-filter:saturate(160%) blur(10px); border-bottom:1px solid var(--border); }
+.nav-inner { max-width:1180px; margin:0 auto; padding:10px 18px;
+             display:flex; align-items:center; gap:14px; flex-wrap:nowrap; }
+.nav-brand { font-weight:700; font-size:.95em; white-space:nowrap;
+             display:flex; align-items:baseline; gap:8px; min-width:0; flex-shrink:1;
+             overflow:hidden; text-overflow:ellipsis; }
+.nav-brand .name { font-weight:700; }
+.nav-brand .sub { color:var(--fg-dim); font-weight:400; font-size:.86em; }
+.nav-links { display:flex; gap:4px; overflow-x:auto; flex:1; min-width:0;
+             scrollbar-width:thin; scrollbar-color:var(--bg-accent) transparent; }
+.nav-links::-webkit-scrollbar { height:4px; }
+.nav-links::-webkit-scrollbar-thumb { background:var(--bg-accent); border-radius:2px; }
+.nav-links a { display:inline-flex; align-items:center; min-height:32px;
+               padding:6px 11px; border-radius:6px;
+               font-size:.84em; color:var(--fg-muted); text-decoration:none;
+               white-space:nowrap; }
+.nav-links a:hover, .nav-links a.active { color:var(--fg); background:var(--bg-card); }
+.nav-back { flex:0 0 auto; background:var(--bg-card); color:var(--fg);
+            padding:5px 11px; border-radius:6px; text-decoration:none;
+            font-size:.84em; border:1px solid var(--border); white-space:nowrap; }
+.nav-back:hover { border-color:var(--primary); color:var(--primary); }
+@media (max-width:720px) {
+  .nav-inner { flex-wrap:wrap; }
+  .nav-back  { order:1; margin-left:auto; }
+  .nav-links { order:2; flex-basis:100%; margin-top:4px; padding-bottom:2px; }
+}
+
+abbr.term { text-decoration:none; border-bottom:1px dotted var(--fg-dim);
+            cursor:help; }
+abbr.term:hover { border-bottom-color:var(--primary); color:var(--primary); }
+#tt { position:absolute; display:none; max-width:340px;
+      background:var(--bg-card); color:var(--fg); border:1px solid var(--primary);
+      border-radius:8px; padding:10px 12px; font-size:.86em; line-height:1.45;
+      box-shadow:0 8px 24px rgba(0,0,0,.32); z-index:200; pointer-events:auto; }
+#tt.on { display:block; }
+
+.interp-table { width:100%; border-collapse:collapse; }
+.interp-table tr { border-bottom:1px solid var(--border); }
+.interp-table tr:last-child { border-bottom:none; }
+.interp-table td { padding:6px 10px; vertical-align:top; }
+.interp-table td.il { color:var(--fg-muted); font-size:.92em; width:30%;
+                       white-space:normal; }
+.interp-table td.ir { color:var(--fg); font-size:.94em; white-space:normal;
+                       overflow-wrap:anywhere; word-break:break-word; }
+.interp-table td.ir strong { color:var(--primary); }
+.interp-table td.ir a { color:var(--primary); text-decoration:none; }
+.interp-table td.ir a:hover { text-decoration:underline; }
+.interp-table td.ir code { font-size:.92em; overflow-wrap:anywhere;
+                            word-break:break-all; }
+@media (max-width:640px) {
+  .interp-table td.il { width:auto; }
+  .interp-table td { display:block; }
+  .interp-table td.il { padding-bottom:0; }
+  .interp-table td.ir { padding-top:2px; padding-left:18px; }
+}
+
+.table-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch;
+              border:1px solid var(--border); border-radius:8px;
+              background:var(--bg-card); }
+table { border-collapse:collapse; min-width:100%; font-size:.9em; }
+th, td { padding:7px 11px; text-align:left;
+         border-bottom:1px solid var(--border); vertical-align:top; }
+th { background:var(--bg-accent); font-weight:600; font-size:.84em;
+     color:var(--fg-muted); position:sticky; top:0; z-index:1;
+     white-space:nowrap; }
+td { word-break:break-word; overflow-wrap:anywhere; }
+td.n, th.n { text-align:right; font-variant-numeric:tabular-nums; }
+
+.tiles { display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
+         gap:10px; margin:14px 0; }
+.tile { background:var(--bg-card); border:1px solid var(--border);
+        border-radius:10px; padding:12px 16px; }
+.tile .num { font-size:1.5em; font-weight:700; line-height:1;
+             font-variant-numeric:tabular-nums; }
+.tile .lbl { font-size:.78em; color:var(--fg-dim); margin-top:3px; }
+.tile.t-ready    .num { color:var(--c-ready); }
+.tile.t-revision .num { color:var(--c-revision); }
+.tile.t-rework   .num { color:var(--c-rework); }
+.tile.t-progress .num { color:var(--c-progress); }
+.tile.t-stub     .num { color:var(--c-stub); }
+.tile.t-info     .num { color:var(--primary); }
+
+.pill { display:inline-block; padding:1px 8px; border-radius:5px;
+        font-size:.78em; font-weight:600; }
+.pill.v-ready    { background:#064e3b; color:#a7f3d0; }
+.pill.v-revision { background:#78350f; color:#fde68a; }
+.pill.v-rework   { background:#7f1d1d; color:#fecaca; }
+.pill.v-stub     { background:#374151; color:#d1d5db; }
+.pill.v-progress { background:#1e3a8a; color:#bfdbfe; }
+
+.hero { background:linear-gradient(135deg, var(--bg-card), var(--bg-soft));
+        border:1px solid var(--border); border-radius:14px;
+        padding:22px 26px; margin:14px 0 22px; }
+.hero h1 { margin:0 0 .35rem; font-size:1.5rem; color:var(--fg); }
+.hero-sub { color:var(--fg-dim); font-size:.94em; }
+h2 { font-size:1.25rem; margin-top:2rem; border-bottom:1px solid var(--border);
+     padding-bottom:.4rem; scroll-margin-top:80px; color:var(--fg); }
+h3 { margin-top:1.4rem; font-size:1rem; color:var(--fg-muted); }
+.section-lede { color:var(--fg-muted); font-size:.92em; margin:.2rem 0 1rem; }
+
+footer.page-foot { margin-top:40px; padding-top:22px; border-top:1px solid var(--border);
+                   color:var(--fg-dim); font-size:.85em; text-align:center; }
+footer.page-foot a { color:var(--primary); }
+
+/* agent-audit specific: histogram cells inside the dimension table */
+.dim-table th.hist-h { width:40px; text-align:center; }
+.hist-cell { width:40px; padding:6px 4px; position:relative; height:32px; }
+.hist-bar { position:absolute; bottom:8px; left:50%; transform:translateX(-50%);
+            height:6px; min-width:2px; border-radius:2px; }
+.hist-n { display:block; text-align:center; font-size:.78em; color:var(--fg-muted);
+          font-variant-numeric:tabular-nums; }
+.pill { margin:1px; }  /* small override: spacing between pills in a list */
+.pill .n { color:var(--fg-dim); font-weight:600; margin-left:2px; }
+/* (round-3b fix 10: footer.page-foot rules removed here — FULL_CHROME_CSS
+   already ships the identical block; the page carried it twice.) */
+</style></head><body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <div class="nav-brand">Agent audit <span class="sub">· AI4Stat/Math</span></div>
+    <div class="nav-links">
+      <a href="#tldr">TL;DR</a>
+      <a href="#reviewer">Reviewer</a>
+      <a href="#verifier">Verifier</a>
+      <a href="#harness">Benchmark</a>
+      <a href="#taxonomy">Taxonomy</a>
+      <a href="#sibling">Sibling</a>
+    </div>
+    <a class="nav-back" href="../">← hub</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<header class="hero">
+  <h1>🤖 Agent audit</h1>
+  <table class="interp-table" style="margin:8px 0 0">
+    <tr><td class="il">Scope</td><td class="ir">Information audit of the 4-agent stack: <abbr class="term" data-tip="agents/reviewer/ — drafts a ReviewJSON per problem (annotations + actions + digest + dedup findings). SYSTEM.md is the prompt.">reviewer</abbr> (surfaces annotations, action items + dedup findings per submission) · <abbr class="term" data-tip="agents/verifier_writer/ — drafts a Python grader per problem with answer key. Output gated on validation (oracle + N bad-responses).">verifier-writer</abbr> (LLM emits Python that auto-checks the claimed answer) · <abbr class="term" data-tip="agents/benchmark_harness/ — zero-shot runner. Reads a problem, asks an LLM, runs the validated verifier, records pass/fail + trace.">benchmark-harness</abbr> (runs LLMs as solvers to surface problems that stump them) · <abbr class="term" data-tip="agents/taxonomy_curator/ — proposes deltas to data/taxonomy/canonical.yaml against current contributor tag usage.">taxonomy-curator</abbr> (proposes adds/renames to  the working-hypothesis tag set)</td></tr>
+    <tr><td class="il">Question</td><td class="ir">What information has the agent stack surfaced for the human authors so far — and at what cost?</td></tr>
+    <tr><td class="il">Data</td><td class="ir">47 review records · 47 verifier drafts · 2 benchmark runs · 1 taxonomy proposals</td></tr>
+    <tr><td class="il">Generated</td><td class="ir">data as of 2026-06-17 10:05 UTC · built 2026-06-18 05:43 UTC · total LLM cost across the stack so far: <strong>$6.01</strong> <span class="dim small">($5.94 reviewer · $0.00 verifier · $0.07 benchmark · $0.01 taxonomy)</span></td></tr>
+  </table>
+</header>
+
+<section id="tldr">
+  <h2>📖 TL;DR</h2>
+  <table class="interp-table">
+    <tr><td class="il">Reviewer — information surfaced</td><td class="ir"><strong>47</strong> review passes over <strong>47</strong> problems · <strong>146</strong> action items surfaced (146 current — latest pass per problem; 0 superseded by re-review) · <strong>206</strong> annotations attached · <strong>7</strong> dedup flags raised<br><span class="dim small">dedup signals are produced by the lit-review engine (18 flagged pairs as of the last build) — see <a href="https://yulinl2.github.io/ai4statmath-litreview/#dp-deep-audit">the main page's deep-dedup section</a>; the reviewer's own <code>dedup_flags</code> field is unused</span></td></tr>
+    <tr><td class="il">Reviewer avg cost / latency</td><td class="ir">$0.156 · 23s per review</td></tr>
+    <tr><td class="il">Verifier <abbr class="term" data-tip="A verifier is `validated` iff (a) it grades the answer key as pass AND (b) it rejects every plausibly-wrong response the LLM was asked to generate (≥3, all must be rejected). Failure → flagged for human review.">validated</abbr> rate</td><td class="ir"><strong>29/32</strong> auto-verifiable verifiers validated <span class="dim small">[76–97% CI, n=32]</span> · <strong>15</strong> awaiting the author's oracle (<abbr class="term" data-tip="Verifier-writer mode for problems whose answer key cannot yet be checked deterministically — the draft awaits the author&#x27;s oracle, so neither the oracle test nor the bad-response checks can run. Excluded from the validated rate entirely (numerator AND denominator); not counted as a pass.">not_auto_verifiable</abbr> — excluded, not counted as passes) — 29/32 auto-verifiable pass the <abbr class="term" data-tip="The answer-key text itself. Used to test that the verifier accepts the correct answer.">oracle</abbr> test (the LLM-generated verifier returns the right result on the answer key)</td></tr>
+    <tr><td class="il">Benchmark harness — solver pass rate</td><td class="ir">June-03 frontier sweep: <strong>1056</strong> total runs (985 in the per-problem table; 71 runs errored out and are excluded from the graded per-problem trajectories; 36 of them are Opus-4.7 thinking-mode runs that failed to complete, so the Opus gate-model evidence shown here is from its no-thinking runs only.) over <strong>12</strong> problems · 6 model families (<code>gpt-5.4</code> · <code>gpt-5.5</code> · <code>haiku-4-5</code> · <code>opus-4-6</code> · <code>opus-4-7</code> · <code>sonnet-4-6</code>) · <strong>8</strong> frontier-stumped · <strong>8</strong> disputed · <strong>1</strong> solved · <strong>3</strong> matched-ungraded — the acceptance bar needs frontier-stumped problems; disputed oracles need the AUTHOR, not more runs (same definition as the hub)</td></tr>
+    <tr><td class="il">Taxonomy proposals</td><td class="ir">1 proposal run · 3 tags proposed, awaiting curation</td></tr>
+  </table>
+</section>
+
+<div class="tiles">
+  <div class="tile"><div class="num">47</div><div class="lbl">review passes (47 problems)</div></div>
+  <div class="tile t-info"><div class="num">146</div><div class="lbl">action items</div></div>
+  <div class="tile t-info"><div class="num">206</div><div class="lbl">annotations</div></div>
+  <div class="tile t-info"><div class="num">7</div><div class="lbl">reviewer dedup flags</div></div>
+  <div class="tile t-info"><div class="num">3</div><div class="lbl">tags proposed</div></div>
+  <div class="tile t-info"><div class="num">29/32</div><div class="lbl">auto-verifiable verifiers ✓</div></div>
+  <div class="tile t-info"><div class="num">15</div><div class="lbl">awaiting author oracle</div></div>
+  <div class="tile"><div class="num">1056</div><div class="lbl">frontier sweep runs</div></div>
+  <div class="tile"><div class="num">$6.01</div><div class="lbl">cumulative cost</div></div>
+</div>
+
+<section id="reviewer">
+  <h2>📝 Reviewer — information surfaced per problem</h2>
+  <p class="section-lede">Per review pass: how many annotations were attached, action items surfaced, and dedup flags raised across all 47 review passes (47 distinct problems — re-reviewed problems appear once per pass). The reviewer fills gaps the human authors didn't have the energy to cover — it does not judge.</p>
+  <div class="table-wrap"><table class="hub-table"><thead><tr><th>contributor</th><th class="n">#</th><th class="n">annotations</th><th class="n">action items</th><th class="n">dedup flags</th><th>reviewed</th></tr></thead><tbody><tr><td>contributor_01</td><td class="n">1</td><td class="n">4</td><td class="n">4</td><td class="n">0</td><td class="dim small">2026-06-01 04:55 UTC</td></tr><tr><td>contributor_01</td><td class="n">2</td><td class="n">4</td><td class="n">3</td><td class="n">0</td><td class="dim small">2026-05-28 10:16 UTC</td></tr><tr><td>contributor_01</td><td class="n">3</td><td class="n">3</td><td class="n">2</td><td class="n">0</td><td class="dim small">2026-05-28 10:16 UTC</td></tr><tr><td>contributor_01</td><td class="n">4</td><td class="n">4</td><td class="n">4</td><td class="n">0</td><td class="dim small">2026-06-01 04:55 UTC</td></tr><tr><td>contributor_01</td><td class="n">5</td><td class="n">4</td><td class="n">4</td><td class="n">0</td><td class="dim small">2026-06-01 04:55 UTC</td></tr><tr><td>contributor_01</td><td class="n">6</td><td class="n">4</td><td class="n">3</td><td class="n">0</td><td class="dim small">2026-06-01 04:55 UTC</td></tr><tr><td>contributor_01</td><td class="n">7</td><td class="n">6</td><td class="n">3</td><td class="n">1</td><td class="dim small">2026-06-17 09:52 UTC</td></tr><tr><td>contributor_01</td><td class="n">8</td><td class="n">4</td><td class="n">4</td><td class="n">0</td><td class="dim small">2026-06-01 04:55 UTC</td></tr><tr><td>contributor_01</td><td class="n">9</td><td class="n">3</td><td class="n">3</td><td class="n">0</td><td class="dim small">2026-06-01 04:55 UTC</td></tr><tr><td>contributor_01</td><td class="n">10</td><td class="n">4</td><td class="n">4</td><td class="n">0</td><td class="dim small">2026-06-01 04:55 UTC</td></tr><tr><td>contributor_02</td><td class="n">1</td><td class="n">4</td><td class="n">2</td><td class="n">0</td><td class="dim small">2026-06-17 09:50 UTC</td></tr><tr><td>contributor_02</td><td class="n">2</td><td class="n">3</td><td class="n">1</td><td class="n">0</td><td class="dim small">2026-06-17 09:52 UTC</td></tr><tr><td>contributor_02</td><td class="n">3</td><td class="n">5</td><td class="n">3</td><td class="n">0</td><td class="dim small">2026-06-17 09:53 UTC</td></tr><tr><td>contributor_02</td><td class="n">4</td><td class="n">3</td><td class="n">3</td><td class="n">0</td><td class="dim small">2026-06-17 09:53 UTC</td></tr><tr><td>contributor_02</td><td class="n">5</td><td class="n">5</td><td class="n">2</td><td class="n">0</td><td class="dim small">2026-06-17 09:53 UTC</td></tr><tr><td>contributor_02</td><td class="n">6</td><td class="n">4</td><td class="n">2</td><td class="n">0</td><td class="dim small">2026-06-17 09:54 UTC</td></tr><tr><td>contributor_02</td><td class="n">7</td><td class="n">4</td><td class="n">2</td><td class="n">0</td><td class="dim small">2026-06-17 09:54 UTC</td></tr><tr><td>contributor_02</td><td class="n">8</td><td class="n">4</td><td class="n">1</td><td class="n">0</td><td class="dim small">2026-06-17 09:54 UTC</td></tr><tr><td>contributor_02</td><td class="n">9</td><td class="n">4</td><td class="n">1</td><td class="n">0</td><td class="dim small">2026-06-17 09:55 UTC</td></tr><tr><td>contributor_02</td><td class="n">10</td><td class="n">3</td><td class="n">3</td><td class="n">0</td><td class="dim small">2026-06-17 09:55 UTC</td></tr><tr><td>contributor_02</td><td class="n">11</td><td class="n">4</td><td class="n">2</td><td class="n">0</td><td class="dim small">2026-06-17 09:55 UTC</td></tr><tr><td>contributor_02</td><td class="n">12</td><td class="n">4</td><td class="n">2</td><td class="n">0</td><td class="dim small">2026-06-17 09:56 UTC</td></tr><tr><td>contributor_02</td><td class="n">13</td><td class="n">4</td><td class="n">2</td><td class="n">0</td><td class="dim small">2026-06-17 09:56 UTC</td></tr><tr><td>contributor_02</td><td class="n">14</td><td class="n">3</td><td class="n">2</td><td class="n">0</td><td class="dim small">2026-06-17 09:56 UTC</td></tr><tr><td>contributor_02</td><td class="n">15</td><td class="n">4</td><td class="n">2</td><td class="n">0</td><td class="dim small">2026-06-17 09:57 UTC</td></tr><tr><td>contributor_03</td><td class="n">1</td><td class="n">4</td><td class="n">4</td><td class="n">0</td><td class="dim small">2026-06-01 04:55 UTC</td></tr><tr><td>contributor_03</td><td class="n">2</td><td class="n">4</td><td class="n">4</td><td class="n">0</td><td class="dim small">2026-06-01 04:55 UTC</td></tr><tr><td>contributor_05</td><td class="n">1</td><td class="n">6</td><td class="n">4</td><td class="n">1</td><td class="dim small">2026-06-17 09:57 UTC</td></tr><tr><td>contributor_05</td><td class="n">2</td><td class="n">6</td><td class="n">5</td><td class="n">1</td><td class="dim small">2026-06-17 09:58 UTC</td></tr><tr><td>contributor_05</td><td class="n">3</td><td class="n">6</td><td class="n">5</td><td class="n">1</td><td class="dim small">2026-06-17 09:59 UTC</td></tr><tr><td>contributor_05</td><td class="n">4</td><td class="n">6</td><td class="n">5</td><td class="n">1</td><td class="dim small">2026-06-17 09:59 UTC</td></tr><tr><td>contributor_05</td><td class="n">5</td><td class="n">6</td><td class="n">5</td><td class="n">1</td><td class="dim small">2026-06-17 10:00 UTC</td></tr><tr><td>contributor_05</td><td class="n">6</td><td class="n">6</td><td class="n">4</td><td class="n">1</td><td class="dim small">2026-06-17 10:00 UTC</td></tr><tr><td>contributor_09</td><td class="n">1</td><td class="n">4</td><td class="n">3</td><td class="n">0</td><td class="dim small">2026-06-17 10:00 UTC</td></tr><tr><td>contributor_09</td><td class="n">2</td><td class="n">5</td><td class="n">3</td><td class="n">0</td><td class="dim small">2026-06-17 10:01 UTC</td></tr><tr><td>contributor_09</td><td class="n">3</td><td class="n">5</td><td class="n">4</td><td class="n">0</td><td class="dim small">2026-06-17 10:01 UTC</td></tr><tr><td>contributor_09</td><td class="n">4</td><td class="n">5</td><td class="n">4</td><td class="n">0</td><td class="dim small">2026-06-17 10:02 UTC</td></tr><tr><td>contributor_09</td><td class="n">5</td><td class="n">4</td><td class="n">4</td><td class="n">0</td><td class="dim small">2026-06-17 10:02 UTC</td></tr><tr><td>contributor_09</td><td class="n">6</td><td class="n">4</td><td class="n">2</td><td class="n">0</td><td class="dim small">2026-06-17 10:02 UTC</td></tr><tr><td>contributor_09</td><td class="n">7</td><td class="n">4</td><td class="n">3</td><td class="n">0</td><td class="dim small">2026-06-17 10:02 UTC</td></tr><tr><td>contributor_09</td><td class="n">8</td><td class="n">3</td><td class="n">2</td><td class="n">0</td><td class="dim small">2026-06-17 10:03 UTC</td></tr><tr><td>contributor_09</td><td class="n">9</td><td class="n">3</td><td class="n">3</td><td class="n">0</td><td class="dim small">2026-06-17 10:03 UTC</td></tr><tr><td>contributor_09</td><td class="n">10</td><td class="n">4</td><td class="n">3</td><td class="n">0</td><td class="dim small">2026-06-17 10:03 UTC</td></tr><tr><td>contributor_10</td><td class="n">1</td><td class="n">6</td><td class="n">3</td><td class="n">0</td><td class="dim small">2026-06-17 10:04 UTC</td></tr><tr><td>contributor_10</td><td class="n">2</td><td class="n">5</td><td class="n">4</td><td class="n">0</td><td class="dim small">2026-06-17 10:04 UTC</td></tr><tr><td>contributor_10</td><td class="n">3</td><td class="n">6</td><td class="n">3</td><td class="n">0</td><td class="dim small">2026-06-17 10:04 UTC</td></tr><tr><td>contributor_10</td><td class="n">4</td><td class="n">6</td><td class="n">5</td><td class="n">0</td><td class="dim small">2026-06-17 10:05 UTC</td></tr></tbody></table></div>
+</section>
+
+<section id="screening">
+  <h2>🔭 Screening signals — cross-problem patterns (info, not verdicts)</h2>
+  <p class="section-lede">Aggregated from the reviewers' a-priori considerations over the 47 problems with a current review — patterns to <em>weigh against the frontier-sweep results</em>, never a ruling. Regenerate: <code>python3 tools/review_digest.py</code>.</p>
+  <ul>
+    <li><strong>Review status</strong> (rubric stage-1 state, not an answer judgement): ready: 20 · needs-revision: 20 · needs-major-rework: 4 · in-progress: 3</li>
+    <li><strong>Recall-risk</strong> — 10 problem(s) whose considerations flag a known-formula / verbatim / pattern-match concern (a recallable problem measures recall, not reasoning — the qualifying bar): <code>contributor_01/problem_07</code>, <code>contributor_01/problem_09</code>, <code>contributor_02/problem_01</code>, <code>contributor_02/problem_03</code>, <code>contributor_02/problem_04</code>, <code>contributor_02/problem_08</code>, <code>contributor_02/problem_10</code>, <code>contributor_02/problem_12</code>, <code>contributor_02/problem_14</code>, <code>contributor_03/problem_02</code>
+      <ul><li><em>vs frontier sweep:</em> 2 CONFIRMED solved by the models (consensus matched the oracle — the flag holds): <code>contributor_01/problem_07</code>, <code>contributor_03/problem_02</code> · 1 model↔oracle dispute (for the team): <code>contributor_01/problem_09</code> · 7 await frontier-sweep coverage</li></ul></li>
+    <li><strong>Dedup / precedent</strong> — 24 carry precedent notes; 7 raised a structured dedup flag: <code>contributor_01/problem_07</code>, <code>contributor_05/problem_01</code>, <code>contributor_05/problem_02</code>, <code>contributor_05/problem_03</code>, <code>contributor_05/problem_04</code>, <code>contributor_05/problem_05</code>, <code>contributor_05/problem_06</code></li>
+    <li><strong>Difficulty-label concern</strong> — 6: <code>contributor_02/problem_01</code>, <code>contributor_02/problem_07</code>, <code>contributor_02/problem_10</code>, <code>contributor_02/problem_13</code>, <code>contributor_09/problem_07</code>, <code>contributor_09/problem_10</code></li>
+    <li><strong>Free Opus-proxy screening</strong> (the 35 sweep-uncovered problems, $0; 2026-06-17) — likely-qualify (fail the Opus leg → fail ≥1 gate model): <strong>consistent Opus-fails</strong> <code>c09/p8</code>, <code>c09/p9</code>, <code>c09/p10</code> (item-nonresponse omits unit-nonresponse — verifier-confirmed wrong-denominator, every run) and <code>c05/p3</code> (collider adjustment); <strong>borderline</strong> <code>c09/p1</code> (cross-run INCONSISTENT — Opus gave 0.52 correct in the 2026-06-16 sweep but 0.16 wrong in the 2026-06-17 probe, so NOT wrong in all 3 runs → a dispute to surface, not a clean qualify). The rest solved/matched (need the GPT-5.5 leg). Screening hints, not the gate — details in <code>data/eval/recall-risk-probe-2026-06-17.md</code> + the verifier re-grade <code>data/eval/verifier-regrade-20260616-solversweep.md</code> (corrected 5 sweep mis-grades).</li>
+  </ul>
+</section>
+
+<section id="verifier">
+  <h2>🧪 Verifier writer — pass rates + modes</h2>
+  <h3>Mode distribution</h3>
+  <div class="table-wrap"><table class="hub-table">
+    <thead><tr><th>mode</th><th class="n">count</th></tr></thead>
+    <tbody><tr><td><code>not_auto_verifiable</code></td><td class="n">15</td></tr><tr><td><code>exact_rational</code></td><td class="n">8</td></tr><tr><td><code>exact_final_match</code></td><td class="n">7</td></tr><tr><td><code>exact</code></td><td class="n">5</td></tr><tr><td><code>rate</code></td><td class="n">4</td></tr><tr><td><code>exact_integer</code></td><td class="n">2</td></tr><tr><td><code>exact_or_structural (TBD)</code></td><td class="n">2</td></tr><tr><td><code>structural_disjunctive</code></td><td class="n">1</td></tr><tr><td><code>lean</code></td><td class="n">1</td></tr><tr><td><code>structural_refusal</code></td><td class="n">1</td></tr><tr><td><code>vector</code></td><td class="n">1</td></tr></tbody>
+  </table></div>
+  <h3>Per-verifier validation trace</h3>
+  <p class="dim small">cost/latency columns suppressed — the verifier-writer instrumentation recorded no values (all zero).</p><div class="table-wrap"><table class="hub-table"><thead><tr><th>contributor</th><th class="n">#</th><th>mode</th><th><abbr class="term" data-tip="The answer-key text itself. Used to test that the verifier accepts the correct answer.">oracle</abbr></th><th class="n"><abbr class="term" data-tip="Plausibly-wrong responses the LLM lists when drafting the verifier. The validator runs the grader on each and demands ALL be rejected.">self_checks</abbr> rej</th><th><abbr class="term" data-tip="A verifier is `validated` iff (a) it grades the answer key as pass AND (b) it rejects every plausibly-wrong response the LLM was asked to generate (≥3, all must be rejected). Failure → flagged for human review.">validated</abbr></th></tr></thead><tbody><tr><td>contributor_01</td><td class="n">1</td><td><code>exact_final_match</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_01</td><td class="n">2</td><td><code>exact_final_match</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_01</td><td class="n">3</td><td><code>exact_final_match</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_01</td><td class="n">4</td><td><code>exact_final_match</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_01</td><td class="n">5</td><td><code>structural_disjunctive</code></td><td>✓</td><td class="n">5/5</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_01</td><td class="n">6</td><td><code>exact_final_match</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_01</td><td class="n">7</td><td><code>lean</code></td><td>✗</td><td class="n">0/3</td><td><span class="pill v-revision">△ not validated</span></td></tr><tr><td>contributor_01</td><td class="n">8</td><td><code>exact_final_match</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_01</td><td class="n">9</td><td><code>exact_final_match</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_01</td><td class="n">10</td><td><code>structural_refusal</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_02</td><td class="n">1</td><td><code>exact_rational</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_02</td><td class="n">2</td><td><code>exact_rational</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_02</td><td class="n">3</td><td><code>exact_rational</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_02</td><td class="n">4</td><td><code>not_auto_verifiable</code></td><td>✗</td><td class="n">0/0</td><td><span class="pill v-revision">⏳ awaiting author oracle (excluded)</span></td></tr><tr><td>contributor_02</td><td class="n">5</td><td><code>not_auto_verifiable</code></td><td>✗</td><td class="n">0/0</td><td><span class="pill v-revision">⏳ awaiting author oracle (excluded)</span></td></tr><tr><td>contributor_02</td><td class="n">6</td><td><code>not_auto_verifiable</code></td><td>✗</td><td class="n">0/0</td><td><span class="pill v-revision">⏳ awaiting author oracle (excluded)</span></td></tr><tr><td>contributor_02</td><td class="n">7</td><td><code>exact_rational</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_02</td><td class="n">8</td><td><code>exact_rational</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_02</td><td class="n">9</td><td><code>exact_rational</code></td><td>✓</td><td class="n">5/5</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_02</td><td class="n">10</td><td><code>not_auto_verifiable</code></td><td>✗</td><td class="n">0/0</td><td><span class="pill v-revision">⏳ awaiting author oracle (excluded)</span></td></tr><tr><td>contributor_02</td><td class="n">11</td><td><code>not_auto_verifiable</code></td><td>✗</td><td class="n">0/0</td><td><span class="pill v-revision">⏳ awaiting author oracle (excluded)</span></td></tr><tr><td>contributor_02</td><td class="n">12</td><td><code>not_auto_verifiable</code></td><td>✗</td><td class="n">0/0</td><td><span class="pill v-revision">⏳ awaiting author oracle (excluded)</span></td></tr><tr><td>contributor_02</td><td class="n">13</td><td><code>exact_rational</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_02</td><td class="n">14</td><td><code>exact_rational</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_02</td><td class="n">15</td><td><code>not_auto_verifiable</code></td><td>✗</td><td class="n">0/0</td><td><span class="pill v-revision">⏳ awaiting author oracle (excluded)</span></td></tr><tr><td>contributor_03</td><td class="n">1</td><td><code>exact_integer</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_03</td><td class="n">2</td><td><code>exact_integer</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_05</td><td class="n">1</td><td><code>exact_or_structural (TBD)</code></td><td>✗</td><td class="n">0/0</td><td><span class="pill v-revision">△ not validated</span></td></tr><tr><td>contributor_05</td><td class="n">2</td><td><code>not_auto_verifiable</code></td><td>✗</td><td class="n">0/0</td><td><span class="pill v-revision">⏳ awaiting author oracle (excluded)</span></td></tr><tr><td>contributor_05</td><td class="n">3</td><td><code>exact_or_structural (TBD)</code></td><td>✗</td><td class="n">0/0</td><td><span class="pill v-revision">△ not validated</span></td></tr><tr><td>contributor_05</td><td class="n">4</td><td><code>not_auto_verifiable</code></td><td>✗</td><td class="n">0/0</td><td><span class="pill v-revision">⏳ awaiting author oracle (excluded)</span></td></tr><tr><td>contributor_05</td><td class="n">5</td><td><code>not_auto_verifiable</code></td><td>✗</td><td class="n">0/0</td><td><span class="pill v-revision">⏳ awaiting author oracle (excluded)</span></td></tr><tr><td>contributor_05</td><td class="n">6</td><td><code>not_auto_verifiable</code></td><td>✗</td><td class="n">0/0</td><td><span class="pill v-revision">⏳ awaiting author oracle (excluded)</span></td></tr><tr><td>contributor_09</td><td class="n">1</td><td><code>rate</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_09</td><td class="n">2</td><td><code>exact</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_09</td><td class="n">3</td><td><code>exact</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_09</td><td class="n">4</td><td><code>vector</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_09</td><td class="n">5</td><td><code>exact</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_09</td><td class="n">6</td><td><code>exact</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_09</td><td class="n">7</td><td><code>exact</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_09</td><td class="n">8</td><td><code>rate</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_09</td><td class="n">9</td><td><code>rate</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_09</td><td class="n">10</td><td><code>rate</code></td><td>✓</td><td class="n">4/4</td><td><span class="pill v-ready">✓ validated</span></td></tr><tr><td>contributor_10</td><td class="n">1</td><td><code>not_auto_verifiable</code></td><td>✗</td><td class="n">0/0</td><td><span class="pill v-revision">⏳ awaiting author oracle (excluded)</span></td></tr><tr><td>contributor_10</td><td class="n">2</td><td><code>not_auto_verifiable</code></td><td>✗</td><td class="n">0/0</td><td><span class="pill v-revision">⏳ awaiting author oracle (excluded)</span></td></tr><tr><td>contributor_10</td><td class="n">3</td><td><code>not_auto_verifiable</code></td><td>✗</td><td class="n">0/0</td><td><span class="pill v-revision">⏳ awaiting author oracle (excluded)</span></td></tr><tr><td>contributor_10</td><td class="n">4</td><td><code>not_auto_verifiable</code></td><td>✗</td><td class="n">0/0</td><td><span class="pill v-revision">⏳ awaiting author oracle (excluded)</span></td></tr></tbody></table></div>
+</section>
+
+<section id="harness">
+  <h2>🤖 Benchmark harness</h2>
+  <p class="section-lede"><strong>Reading direction inverted:</strong> goal is to STUMP frontier models. Higher fail-rate = better signal that AI4Stat/Math is on-target for hard.</p>
+  <h3>Frontier sweep — primary</h3><table class="interp-table"><tr><td class="il">Sweep</td><td class="ir"><code>sweep-20260603-170524</code> (<code>data/eval/sweep-digest.json</code>, generated 2026-06-06 21:18 UTC) — this is the data the contributor pages use</td></tr><tr><td class="il">Volume</td><td class="ir"><strong>1056</strong> total runs (985 in the per-problem table; 71 runs errored out and are excluded from the graded per-problem trajectories; 36 of them are Opus-4.7 thinking-mode runs that failed to complete, so the Opus gate-model evidence shown here is from its no-thinking runs only.) over <strong>12</strong> problems · 6 model families: <code>gpt-5.4</code> · <code>gpt-5.5</code> · <code>haiku-4-5</code> · <code>opus-4-6</code> · <code>opus-4-7</code> · <code>sonnet-4-6</code></td></tr><tr><td class="il">Outcome</td><td class="ir"><strong>8</strong> frontier-stumped (gate models gpt-5.5 + opus-4-7 at 0 passes, oracle undisputed) · <strong>8</strong> disputed (oracle ≠ consensus on record; a 0-pass grade against a disputed oracle is dispute evidence, not stumping) · <strong>1</strong> solved · <strong>3</strong> consensus-matched without gate-model grades — same definition as the review hub</td></tr></table><div class="table-wrap"><table class="hub-table"><thead><tr><th>problem</th><th>title</th><th class="n">runs</th><th class="n">oracle hits</th><th>consensus vs oracle</th><th>status</th></tr></thead><tbody><tr><td><code>contributor_01/p1</code></td><td>Marginal Profit of a Media Empire</td><td class="n">85</td><td class="n">15/85 (18%)</td><td>models→225000 vs oracle→373000</td><td><span class="pill v-revision">fails ≥1 gate model (screening bar)</span> <span class="dim small">· oracle axis: consensus≠oracle (human adjudication, not an exclusion)</span></td></tr><tr><td><code>contributor_01/p10</code></td><td>Daily Cold Brew Consumption Estimation</td><td class="n">85</td><td class="n">0/85 (0%)</td><td>models→2 vs oracle→16</td><td><span class="pill v-revision">fails BOTH gate models (model-side Stage-2 bar)</span> <span class="dim small">· oracle axis: consensus≠oracle (human adjudication, not an exclusion)</span></td></tr><tr><td><code>contributor_01/p2</code></td><td>Smallest Terminating Decimal with Digit 9</td><td class="n">85</td><td class="n">52/85 (61%)</td><td>MATCH</td><td><span class="pill v-ready">gate models pass (does not meet the hardness bar)</span></td></tr><tr><td><code>contributor_01/p3</code></td><td>Relative Speed and Time Word Problem</td><td class="n">85</td><td class="n">10/85 (12%)</td><td>models→36 vs oracle→48</td><td><span class="pill v-revision">fails BOTH gate models (model-side Stage-2 bar)</span> <span class="dim small">· oracle axis: consensus≠oracle (human adjudication, not an exclusion)</span></td></tr><tr><td><code>contributor_01/p4</code></td><td>Dog Shelter Toys Problem</td><td class="n">85</td><td class="n">15/85 (18%)</td><td>models→21 vs oracle→33</td><td><span class="pill v-revision">fails ≥1 gate model (screening bar)</span> <span class="dim small">· oracle axis: consensus≠oracle (human adjudication, not an exclusion)</span></td></tr><tr><td><code>contributor_01/p5</code></td><td>Weekly Bike Ride Problem</td><td class="n">85</td><td class="n">0/85 (0%)</td><td>models→54 vs oracle→12</td><td><span class="pill v-revision">fails BOTH gate models (model-side Stage-2 bar)</span> <span class="dim small">· oracle axis: consensus≠oracle (human adjudication, not an exclusion)</span></td></tr><tr><td><code>contributor_01/p6</code></td><td>Total Cost with Rebate Deductions</td><td class="n">85</td><td class="n">30/85 (35%)</td><td>models→412 vs oracle→329</td><td><span class="pill v-revision">fails ≥1 gate model (screening bar)</span> <span class="dim small">· oracle axis: consensus≠oracle (human adjudication, not an exclusion)</span></td></tr><tr><td><code>contributor_01/p7</code></td><td>(untitled — draft in progress)</td><td class="n">62</td><td class="n">45/62 (73%)</td><td>MATCH</td><td><span class="pill">no gate-model grades yet</span> <span class="dim small">⚠ weakest record: unvalidated Lean-only verifier, 26/88 runs errored, responses truncated at export — MATCH rests on harness extraction</span></td></tr><tr><td><code>contributor_01/p8</code></td><td>Travel Budget Problem</td><td class="n">85</td><td class="n">9/85 (11%)</td><td>models→1800 vs oracle→3000</td><td><span class="pill v-revision">fails ≥1 gate model (screening bar)</span> <span class="dim small">· oracle axis: consensus≠oracle (human adjudication, not an exclusion)</span></td></tr><tr><td><code>contributor_01/p9</code></td><td>Parallel Task Resource Allocation</td><td class="n">85</td><td class="n">7/85 (8%)</td><td>models→28 vs oracle→10</td><td><span class="pill v-revision">fails BOTH gate models (model-side Stage-2 bar)</span> <span class="dim small">· oracle axis: consensus≠oracle (human adjudication, not an exclusion)</span></td></tr><tr><td><code>contributor_03/p1</code></td><td>Laughable Performance in Math Competition</td><td class="n">85</td><td class="n">54/85 (64%)</td><td>MATCH</td><td><span class="pill">no gate-model grades yet</span></td></tr><tr><td><code>contributor_03/p2</code></td><td>Tenuous Function Minimal Value</td><td class="n">73</td><td class="n">22/73 (30%)</td><td>MATCH</td><td><span class="pill">no gate-model grades yet</span></td></tr></tbody></table></div>
+  <h3>Historical smoke runs — per-model (2026-05-28/29 haiku only; superseded by the frontier sweep above)</h3>
+  <div class="table-wrap"><table class="hub-table"><thead><tr><th>model</th><th class="n">pass</th><th class="n">fail</th><th class="n">error</th><th class="n">accuracy</th><th class="n">cost</th></tr></thead><tbody><tr><td><code>claude-haiku-4-5-20251001</code></td><td class="n">6</td><td class="n">12</td><td class="n">0</td><td class="n">33%</td><td class="n dim">$0.073</td></tr></tbody></table></div>
+  <h3>Historical smoke runs — per-run</h3>
+  <div class="table-wrap"><table class="hub-table"><thead><tr><th>run id</th><th>model</th><th>started</th><th class="n">N</th><th class="n">pass</th><th class="n">fail</th><th class="n">accuracy</th><th class="n">cost</th></tr></thead><tbody><tr><td><code>2026-05-28-k3-smoke</code></td><td><code>claude-haiku-4-5-20251001</code></td><td class="dim small">2026-05-29 01:56 UTC</td><td class="n">1</td><td class="n">2</td><td class="n">1</td><td class="n">67%</td><td class="n dim">$0.027</td></tr><tr><td><code>2026-05-28-haiku-k3</code></td><td><code>claude-haiku-4-5-20251001</code></td><td class="dim small">2026-05-29 01:57 UTC</td><td class="n">5</td><td class="n">4</td><td class="n">11</td><td class="n">27%</td><td class="n dim">$0.046</td></tr></tbody></table></div>
+</section>
+
+<section id="taxonomy">
+  <h2>🌲 Taxonomy curator — pending proposals</h2>
+  <p class="section-lede">Each row = one LLM-drafted proposal. Status = pending review (no auto-merge).</p>
+  <div class="table-wrap"><table class="hub-table"><thead><tr><th>proposed</th><th>vs</th><th>deltas</th><th>summary</th><th class="n">cost</th><th>status</th></tr></thead><tbody><tr><td class="dim small">2026-05-28 06:37 UTC</td><td><code>0.1.0</code></td><td>+1 subtopic · ~1 rename · ⊕1 merge · +2 cap</td><td>Minimal proposal: add 3 missing subtopics (Arithmetic, Asymptotic/perturbation methods already canonical but not yet use…</td><td class="n dim">$0.009</td><td><span class="pill v-revision">pending review</span></td></tr></tbody></table></div>
+</section>
+
+<section id="sibling">
+  <h2>🔗 Sibling audits</h2>
+  <table class="interp-table">
+    <tr><td class="il">Contributor reviews</td><td class="ir"><a href="../">↗ Auto-review hub</a> — per-contributor pages, drafted verifiers, benchmark traces inline</td></tr>
+    <tr><td class="il">Taxonomy</td><td class="ir"><a href="../taxonomy/">↗ Taxonomy</a> — current canonical taxonomy + LLM-drafted proposals (panel R1 librarian P2: completes the audit↔taxonomy cross-link)</td></tr>
+    <tr><td class="il">Embedding shootout</td><td class="ir"><a href="../../ai4statmath-litreview/experiments.html">↗ experiments.html</a> — TF-IDF vs BGE vs OpenAI on the public Tier-A corpora</td></tr>
+    <tr><td class="il">Main lit-review</td><td class="ir"><a href="../../ai4statmath-litreview/">↗ lit-review</a> — precedents, deep-dedup audit, decision log</td></tr>
+  </table>
+</section>
+
+<footer class="page-foot">
+  <p>Generated by <code>agents/_audit/build_agent_audit.py</code> · last built 2026-06-18 05:43 UTC</p>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var tt = document.createElement('div'); tt.id = 'tt';
+  document.body.appendChild(tt);
+  function show(el) {
+    var txt = el.getAttribute('data-tip') || '';
+    if (!txt) return;
+    tt.textContent = txt;
+    tt.classList.add('on');
+    var r = el.getBoundingClientRect();
+    var ttR = tt.getBoundingClientRect();
+    var x = r.left + window.scrollX + (r.width - ttR.width) / 2;
+    var y = r.bottom + window.scrollY + 6;
+    x = Math.max(8, Math.min(x, window.innerWidth - ttR.width - 8));
+    if (y + ttR.height > window.scrollY + window.innerHeight - 8)
+      y = r.top + window.scrollY - ttR.height - 6;
+    tt.style.left = x + 'px'; tt.style.top = y + 'px';
+  }
+  function hide() { tt.classList.remove('on'); }
+  document.addEventListener('mouseover', function(e){
+    var el = e.target.closest && e.target.closest('abbr.term');
+    if (el) show(el);
+  });
+  document.addEventListener('mouseout', function(e){
+    var el = e.target.closest && e.target.closest('abbr.term');
+    if (el && (!e.relatedTarget || !el.contains(e.relatedTarget))) hide();
+  });
+  document.addEventListener('click', function(e){
+    var el = e.target.closest && e.target.closest('abbr.term');
+    if (el) { show(el); return; }
+    if (tt.classList.contains('on') && !tt.contains(e.target)) hide();
+  });
+  // Keyboard + screen-reader access (panel round 1, engineer P1): focusable
+  // terms, tooltip on focus, dismiss on blur/Escape.
+  document.querySelectorAll('abbr.term').forEach(function(el){
+    if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+    if (!el.hasAttribute('role')) el.setAttribute('role', 'button');
+    el.setAttribute('aria-label', (el.textContent || '') + ': ' + (el.getAttribute('data-tip') || ''));
+  });
+  document.addEventListener('focusin', function(e){
+    var el = e.target.closest && e.target.closest('abbr.term');
+    if (el) show(el);
+  });
+  document.addEventListener('focusout', function(e){
+    var el = e.target.closest && e.target.closest('abbr.term');
+    if (el) hide();
+  });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') hide(); });
+})();
+
+(function(){
+  var links = {};
+  document.querySelectorAll('.nav-links a').forEach(function(a){
+    var h = a.getAttribute('href');
+    if (h && h.charAt(0) === '#') links[h.slice(1)] = a;
+  });
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(en){
+      if (en.isIntersecting && links[en.target.id]) {
+        Object.values(links).forEach(function(l){ l.classList.remove('active'); });
+        links[en.target.id].classList.add('active');
+      }
+    });
+  }, {rootMargin:'-25% 0px -65% 0px'});
+  document.querySelectorAll('section[id], h2[id]').forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body></html>
