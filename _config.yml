@@ -30,7 +30,6 @@ exclude:
   # the Cloudflare-Access-gated open-priors site; this Pages mirror must not serve them.
   - "ai4statmath-review"
   - "ai4statmath-litreview"
-  - "ai4statmath-benchmarks"
 
 # Every themed markdown page gets the interior layout by default;
 # the front page opts into the rich home layout explicitly.
