@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Browse 14,873 QA problems from 6 public math and statistics benchmarks — CMT-Benchmark, HARDMath, MathTrap, PRBench, StatEval, StatQA — with LaTeX rendering and rich filtering.">
+<meta property="og:title" content="AI4StatMath Benchmark Explorer">
+<meta property="og:description" content="Browse 14,873 QA problems from 6 public math/stats benchmarks with LaTeX, filters, bookmarks, and ADHD-friendly design.">
+<meta property="og:type" content="website">
+<link rel="canonical" href="https://yulinl2.github.io/ai4statmath-benchmarks/">
+<title>AI4StatMath Benchmark Explorer</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous" onload="window._katexReady=true;window._flushKatex&&window._flushKatex()"></script>
+<!-- Modular CSS: tokens (portable layer) → layout → cards. Cascade order matters. -->
+<link rel="stylesheet" href="./css/tokens.css">
+<link rel="stylesheet" href="./css/layout.css">
+<link rel="stylesheet" href="./css/cards.css">
+</head>
+<body>
+
+<!-- ONE sticky unit — eliminates the background-leak gap -->
+<div id="sticky">
+  <header id="hdr">
+    <div id="logo">AI4StatMath <em>· Benchmarks</em></div>
+    <button class="ibtn" id="rbtn" title="Random problem (R)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+    </button>
+    <button class="ibtn" id="tbtn" title="Toggle theme">
+      <svg id="ti" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </header>
+  <div id="tabw"><div id="tabs"></div></div>
+  <div id="sb">
+    <div id="sw">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input id="si" type="search" placeholder="Search problems…" autocomplete="off">
+    </div>
+    <div id="sl"></div>
+  </div>
+</div>
+
+<div id="bnr"></div>
+<main id="main">
+  <div id="fb"></div>
+  <div id="cc"></div>
+  <div id="pg"></div>
+</main>
+
+<div id="mo" role="dialog" aria-modal="true">
+  <div id="mb"><button id="mclose" title="Close (Esc)">✕</button><div id="mc"></div></div>
+</div>
+<div id="fnav"></div>
+
+<footer>
+  Data from <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank" target="_blank" rel="noopener">yulinl2/AI4StatMath-Problem-Bank</a>
+  · <a href="https://github.com/yulinl2/AI4StatMath-Problem-Bank/tree/claude/parquet-ndjson-export-nyz7ia/data/ndjson" target="_blank" rel="noopener">Source NDJSON ↗</a>
+  · Rendered with <a href="https://katex.org" target="_blank" rel="noopener">KaTeX</a>
+  <br><span id="build-ts" style="font-size:.65rem;opacity:.45;letter-spacing:.02em">Deployed: —</span>
+</footer>
+<!-- Native ES modules — no build step. Entry pulls the whole graph (see js/). -->
+<script type="module" src="./js/app.js"></script>
+</body>
+</html>
