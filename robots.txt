@@ -9,11 +9,12 @@
 # Google-Extended, CCBot, etc. officially do).
 # The rest of the site stays fully crawlable.
 #
-# 2026-06-20 UPDATE: the AI4StatMath source trees (review/litreview/benchmarks)
-# have been DELETED from this repo for privacy (un-gated contributor PII +
-# benchmark content). The Disallow rules below are retained belt-and-suspenders
-# for the now-empty paths, and a catch-all User-agent: * block is added so ALL
-# crawlers (not just AI-training ones) are told to stay out of these prefixes.
+# 2026-06-20 UPDATE: the AI4StatMath review/litreview source trees have been
+# DELETED from this repo for privacy (un-gated contributor PII + draft problem
+# content). The Disallow rules below are retained belt-and-suspenders for the
+# now-empty paths, and a catch-all User-agent: * block keeps ALL crawlers out
+# of those prefixes. (ai4statmath-benchmarks is an aggregation of already-public
+# benchmarks — restored and crawl-allowed; not listed here.)
 # — AI4StatMath agent (via @yulinl2); .github.io repo, robots.txt
 
 User-agent: GPTBot
@@ -43,10 +44,8 @@ User-agent: Omgilibot
 User-agent: Timpibot
 Disallow: /ai4statmath-review/
 Disallow: /ai4statmath-litreview/
-Disallow: /ai4statmath-benchmarks/
 
 # Catch-all: keep every crawler out of the (now-deleted) AI4StatMath prefixes.
 User-agent: *
 Disallow: /ai4statmath-review/
 Disallow: /ai4statmath-litreview/
-Disallow: /ai4statmath-benchmarks/
