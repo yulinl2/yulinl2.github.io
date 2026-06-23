@@ -48,7 +48,6 @@ nav:
   - { name: "Research",  url: "/docs/" }
   - { name: "Library",   url: "/reading/" }
   - { name: "Projects",  url: "/projects/" }
-  - { name: "Toolbox",   url: "/toolbox/" }
 
 social:
   github: "yulinl2"
