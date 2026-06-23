@@ -1,3 +1,12 @@
+> ## ⚠️ FORK-TREE WARNING — DO NOT NEGLECT ⚠️
+>
+> The official StatsUpAI source repo **`Statsup-AI/statsupai.github.io` is NOT
+> the upstream / root of its fork tree — it is itself a fork.** This
+> `statsupai-revamp/` directory is a **downstream personal mirror** in
+> `yulinl2/yulinl2.github.io`. Do not treat any "parent" repo as canonical
+> without explicitly re-verifying the fork lineage first. See the repo-root
+> `CLAUDE.md` for the full caveat and consequences.
+
 # StatsUpAI — Deep Design Audit & Revamp
 
 Audit of the StatsUpAI site as found in the `yulinl2/statsupai.github.io` mirror
