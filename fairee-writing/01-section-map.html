@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guide 1 — Section map &amp; integration order</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#5b6cab">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="./">FaiREE<span class="brand-sub">· writing guide</span></a>
+    <div class="crumbs">
+      <a href="./">writing</a> · 1. section map
+    </div>
+  </nav>
+</header>
+
+<main id="main"><div class="wrap">
+  <h1>1 · Section map &amp; integration order</h1>
+  <p class="lede">
+    Every <code>.tex</code> in <code>Manuscript/_drafts/</code>, what
+    it contains, where it goes in the final paper, and the residual
+    forward-references to resolve before compile.
+  </p>
+  <p class="meta">
+    Reference: <code>_drafts/outline.tex</code> already
+    <code>\input{}</code>'s all the drafts in the integration order
+    below.
+  </p>
+
+  <h2>Main-body integration order</h2>
+  <table>
+    <thead>
+      <tr><th>§</th><th>Draft file</th><th>Content</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td><code>motivation.tex</code></td><td>Applied problem; gap in prior work; case for post-processing.</td><td>Honest-accounting paragraph already cross-references the DR variant + sec:w2 closure.</td></tr>
+      <tr><td>2</td><td><code>related_work.tex</code></td><td>10-paper comparison; positioning matrix; FairBayes shrinkage P-10 note (done).</td><td>22 <code>\cite{}</code> calls; all resolve.</td></tr>
+      <tr><td>3</td><td><code>notations.tex</code></td><td>Unified symbol table (paper / R-code / Python-code).</td><td></td></tr>
+      <tr><td>4</td><td>(existing <code>main.tex</code> stub)</td><td>Problem setup.</td><td>See Guide 2 for the merge approach.</td></tr>
+      <tr><td>5</td><td><code>methodology.tex</code></td><td>FaiREE-missing algorithm in 6 steps.</td><td>Cross-refs <code>sec:syn</code>, <code>sec:adult</code>.</td></tr>
+      <tr><td>6</td><td><code>theory.tex</code></td><td>Assumptions M1–M3 + finite-sample EOO Theorem 1.</td><td>Remark points forward to <code>sec:w1_constants</code> for explicit <code>c_0</code>.</td></tr>
+      <tr><td>6.5</td><td><code>correction_self_censoring.tex</code></td><td>Corrigendum: code implements Li 2023 self-censoring, not Sadinle NSC.</td><td>Defines <code>eq:sc</code>.</td></tr>
+      <tr><td>6.6</td><td><code>assumptions_audit.tex</code></td><td>Per-assumption failure mode + audit-tool check.</td><td>Aliases <code>sec:audit-tool</code>, <code>sec:dr-diagnostic</code>, <code>sec:sensitivity</code>.</td></tr>
+      <tr><td>6.7</td><td><code>budget_vs_empirical.tex</code></td><td>Population vs empirical EOO; sampling error analysis.</td><td>Motivates <code>generalization_buffer</code>.</td></tr>
+      <tr><td>7</td><td><code>experiments.tex</code></td><td>Synthetic + Adult Census + COMPAS baselines.</td><td>Defines <code>sec:syn</code> = <code>sec:data-gen</code>, <code>sec:adult</code>, <code>fig:adult</code>.</td></tr>
+      <tr><td>7.5</td><td><code>shrinkage_validation.tex</code></td><td>P-10 done: 3–16× speedup empirics.</td><td></td></tr>
+      <tr><td>7.6</td><td><code>w_clip_ablation.tex</code></td><td>IPW weight-clipping sensitivity.</td><td></td></tr>
+      <tr><td>7.7</td><td><code>bootstrap_admission.tex</code></td><td>W-1 closure: Praestgaard-Wellner multiplier bootstrap.</td><td></td></tr>
+      <tr><td>7.8</td><td><code>final_comparison_table.tex</code></td><td>5-method × 3-α α-budget compliance table.</td><td></td></tr>
+      <tr><td>7.9</td><td><code>headline_table.tex</code></td><td><strong>The main table.</strong> 8 methods × 3 α × strong-MNAR.</td><td>Labels <code>tab:headline</code> = <code>tab:sim-headline</code> = <code>tab:adult</code>.</td></tr>
+      <tr><td>7.10</td><td><code>methods_table.tex</code></td><td>Methods × guarantees × empirical summary.</td><td></td></tr>
+      <tr><td>7.11</td><td><code>method_choice.tex</code></td><td>6-step practitioner flowchart (= recommender logic).</td><td></td></tr>
+      <tr><td>7.12</td><td><code>multigroup_extension.tex</code></td><td>K-group extension; Bonferroni-Beta admission.</td><td></td></tr>
+      <tr><td>7.13</td><td><code>dp_extension.tex</code></td><td><strong>DEC-1 closure</strong>: DP variant of FaiREE.</td><td>Defines <code>sec:dp_extension</code>, <code>tab:dp_vs_eoo_ci</code>.</td></tr>
+      <tr><td>8</td><td><code>findings_summary.tex</code></td><td>Single-page quantitative headline. Decision-board status pin.</td><td></td></tr>
+      <tr><td>9</td><td><code>limitations.tex</code></td><td>Closed-vs-open split; reproducibility statement.</td><td>Cites <code>sec:limitations</code>.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Appendix integration order</h2>
+  <table>
+    <thead><tr><th>App.</th><th>Draft file</th><th>Content</th></tr></thead>
+    <tbody>
+      <tr><td>A</td><td><code>appendix_nsc.tex</code></td><td>NSC GMM estimator implementation details.</td></tr>
+      <tr><td>B</td><td><code>proof_sketch.tex</code></td><td>Theorem 1 proof sketch + <strong>W-1 closure</strong> (<code>sec:w1_constants</code>) + Bernstein-Var tightening.</td></tr>
+      <tr><td>C</td><td><code>dr_bootstrap_sketch.tex</code></td><td><strong>W-2 closure</strong>: IF-bootstrap for DR admission. Donsker covering bound (<code>sec:w2_donsker</code>) + uniform-in-B bound (<code>sec:w2_uniform_B</code>) + end-to-end empirical validation (<code>sec:w2_e2e</code>).</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Standalone (not in <code>outline.tex</code>)</h2>
+  <ul>
+    <li><code>_one_pager.tex</code> — 5-min reviewer summary. Compiles on its own with the same preamble. Useful as an arXiv-abstract companion or a one-page intro for non-fairness reviewers.</li>
+  </ul>
+
+  <h2>Residual forward-references (5 sites)</h2>
+  <p>
+    Each of these is a <code>\ref{}</code> in the drafts pointing at a
+    target not yet present. They need resolution before
+    <code>outline.tex</code> compiles cleanly (a missing label only
+    yields a "?" in the PDF, not a compile error — but reviewers will
+    catch them).
+  </p>
+
+  <h3><code>prop:pessimistic</code> — referenced by <code>theory.tex:98</code></h3>
+  <div class="box">
+    <strong>Context:</strong> theory.tex's "Why pessimistic prediction with missing A" paragraph cites <em>Proposition prop:pessimistic in Appendix app:proofs</em> for the EOO-conservativeness of the high-threshold rule.
+    <br><br>
+    <strong>Resolution:</strong> add a Proposition stub to <code>proof_sketch.tex</code> stating: "If <code>A_i</code> is missing, predicting with <code>max(t^0, t^1)</code> instead of <code>t^{A_i}</code> can only decrease TPR for the true (unknown) group, hence cannot increase |DEOO|."
+    The proof is two lines (monotonicity of <code>1{f ≥ t}</code>).
+  </div>
+
+  <h3><code>sec:discussion</code> — referenced by <code>methodology.tex</code></h3>
+  <div class="box">
+    Lives in Overleaf §9. Either pull the Overleaf discussion into a new <code>_drafts/discussion.tex</code> or change the in-repo cite to <code>limitations.tex</code> which covers the same material.
+  </div>
+
+  <h3><code>sec:dr-ablation</code> — referenced by <code>experiments.tex</code></h3>
+  <div class="box">
+    Could be satisfied by aliasing <code>dr_bootstrap_sketch.tex sec:w2_e2e</code> (which contains the end-to-end DR-ablation empirics) — add <code>\label{sec:dr-ablation}</code> next to the existing <code>\label{sec:w2_e2e}</code>.
+  </div>
+
+  <h3><code>sec:shift-ablation</code> — referenced by <code>findings_summary.tex</code></h3>
+  <div class="box">
+    Could be satisfied by aliasing <code>w_clip_ablation.tex</code> or writing a brief shift-sensitivity ablation subsection from the <code>exp/results/shift_high/</code> + <code>exp/results/shift_sensitivity/</code> CSVs.
+  </div>
+
+  <h3>How to verify after resolution</h3>
+  <pre><code>cd "Fairness with missing/Manuscript/_drafts"
+grep -hoP '\\label\{\K[^}]+' *.tex | sort -u &gt; /tmp/labels.txt
+grep -hoP '\\(ref|eqref|cref|autoref)\{\K[^}]+' *.tex | sort -u &gt; /tmp/refs.txt
+comm -23 /tmp/refs.txt /tmp/labels.txt    # should be empty after fixing
+</code></pre>
+
+  <h2>What's NOT in the drafts (needs decision)</h2>
+  <ul>
+    <li><strong>Abstract</strong>: <code>_one_pager.tex</code> contains a 5-minute reviewer summary that can be condensed to a 200-word abstract.</li>
+    <li><strong>Acknowledgments</strong>: standard.</li>
+    <li><strong>Author info / affiliations</strong>: human author's call.</li>
+    <li><strong>Final intro framing for DEC-2 (synthesis vs IPW) and DEC-3 (block vs NSC)</strong>: marked <code>decided</code> on the board with recommendations; the prose for §1 + §6 is the human author's call.</li>
+  </ul>
+
+  <div class="footer">
+    <a href="./">← back to writing guide</a> · next: <a href="02-compile-checklist.html">2. compile checklist →</a>
+  </div>
+</div></main>
+</body>
+</html>
