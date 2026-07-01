@@ -641,10 +641,10 @@ button.nav-chat { display:none; }
  <summary>How to read this page — goal &amp; status glyphs</summary>
  <table class="purpose-table">
  <tr><td class="pl">🎯 The goal</td><td class="pr">Problems that current frontier models <strong>cannot solve</strong>. A model <em>solving</em> a problem (⚠) is a weakness; a model being <em>stumped</em> (✓) is the win — that inverts the usual intuition.</td></tr>
- <tr><td class="pl">🔤 What each problem shows</td><td class="pr">Objective information, <em>not</em> accept/reject verdicts: the <strong>snapshot</strong> → reviewer gap-fill info (verifier triage · proposed tags) → <strong>your own pasted notes</strong> → dedup. <strong>No benchmark sweep has run for this set yet</strong> — the model-evidence sections (results matrix · trajectory analysis) appear here once it does.</td></tr>
+ <tr><td class="pl">🔤 What each problem shows</td><td class="pr">Objective information, <em>not</em> accept/reject verdicts: the <strong>snapshot</strong> → <strong>how the frontier models do</strong> (results matrix: each model&#x27;s answers per thinking setup vs the author oracle · oracle-vs-consensus) → <strong>failure/success-mode synthesis</strong> → <strong>trajectory analysis</strong> → <strong>your own pasted notes</strong> → dedup. Signals: <span class="pill v-ready">✓ models stumped</span> <span class="pill v-rework">⚠ models solve</span> <span class="pill v-revision">⚖ oracle-disputed</span></td></tr>
  </table>
  </details>
- <div class="timestamp">⏱ data as of <strong>2026-06-27 UTC</strong> · total LLM cost: <strong>$1.30</strong> · <span id="first-visit-note"></span></div>
+ <div class="timestamp">⏱ data as of <strong>2026-07-01 10:57 UTC</strong> · total LLM cost: <strong>$1.30</strong> · <span id="first-visit-note"></span></div>
  <div class="uc-banner">🚧 <strong>Auto-generated draft.</strong> AI-written; a human reviewer confirms or overrides.</div>
  </div>
  <script>
@@ -691,7 +691,7 @@ button.nav-chat { display:none; }
  <h2>Minimax Lower Bounds for Structure-Agnostic Functional Estimation</h2>
  </div>
  <div class="p-pills">
- <abbr class="term pill v-stub" data-tip="No benchmark-sweep runs for this problem yet — the model-evidence sections (results matrix · trajectory analysis) appear here once it is swept.">⏳ sweep pending</abbr>
+ 
  </div>
  </header>
 
@@ -937,10 +937,19 @@ Suggested checks:
 
 
  
+<details class="bench-block" open id="problem-1-sweep">
+ <summary>📊 How the frontier models do — verifier-graded across models × thinking setups</summary>
+ <p class="dim small">Sweep <code>sweep-20260603-170524</code> · objective signal — information for humans to adjudicate.</p>
+ <p class="dim small">Each <em>model × thinking-setup</em> cell ran <strong>k independent samples</strong> (shown as ✓/✗ × n). The per-model k differs by cost: the gate models (GPT-5.5 / Opus-4.7) run at <strong>k=3</strong> — matching the screening definition (<em>a model "fails" iff wrong in all 3 of its runs</em>); cheaper models (e.g. Haiku) run at higher k for tighter Wilson CIs. A "✗ ×3" on a gate model is the fail signal; hover a cell's tooltip for the per-N confidence note.</p>
+ 
+ <div class="table-wrap"><table><thead><tr><th>model · setup</th><th class="n">verifier pass</th></tr></thead><tbody><tr><td>opus-4-8·S0</td><td class="n">1/1</td></tr><tr><td>sonnet-4-6·S0</td><td class="n">1/1</td></tr></tbody></table></div>
+ <p class="small">answers given: <code>inf-sup risk &gt;= c*eps_n^2 (LeCam two-point/fuzzy + Hellinger; doubly-robust 2nd-order bias)</code>×2</p>
+ 
+</details>
 
  <p class="dim small" style="margin:4px 0">🧬 <strong>Similar stems</strong> (within our corpus, BM25 wording-overlap recall flagged for review — <em>not</em> a duplicate verdict): <code>p2</code> <span class="dim">(0.68)</span>, <code>p6</code> <span class="dim">(0.60)</span>, <code>p4</code> <span class="dim">(0.49)</span></p>
 
- 
+ <details class="bench-block" id="problem-1-failmode" open><summary>🧩 Failure / success-mode synthesis — how the models miss (and where they don’t)</summary><p class="dim small">Synthesized from the sweep (0 runs) + captured traces. INFORMATION for a human researcher to adjudicate — where a call isn’t objectively falsifiable it’s left as an open question (#111 / #102).</p><ul class="traj-list"><li><strong>Common wrong answers:</strong> <code>inf-sup risk &gt;= c*eps_n^2 (LeCam two-point/fuzzy + Hellinger; doubly-robust 2nd-order bias)</code>×2. The most-given non-oracle answer is <code>inf-sup risk &gt;= c*eps_n^2 (LeCam two-point/fuzzy + Hellinger; doubly-robust 2nd-order bias)</code> (2 runs) — a clustered wrong answer usually means one shared misstep, not random error.</li></ul></details>
 
  
 
@@ -1266,7 +1275,7 @@ Suggested checks:
  <h2>Time-Varying Causal Inference</h2>
  </div>
  <div class="p-pills">
- <abbr class="term pill v-stub" data-tip="No benchmark-sweep runs for this problem yet — the model-evidence sections (results matrix · trajectory analysis) appear here once it is swept.">⏳ sweep pending</abbr>
+ 
  </div>
  </header>
 
@@ -1381,10 +1390,19 @@ Suggested checks:
 
 
  
+<details class="bench-block" open id="problem-3-sweep">
+ <summary>📊 How the frontier models do — verifier-graded across models × thinking setups</summary>
+ <p class="dim small">Sweep <code>sweep-20260603-170524</code> · objective signal — information for humans to adjudicate.</p>
+ <p class="dim small">Each <em>model × thinking-setup</em> cell ran <strong>k independent samples</strong> (shown as ✓/✗ × n). The per-model k differs by cost: the gate models (GPT-5.5 / Opus-4.7) run at <strong>k=3</strong> — matching the screening definition (<em>a model "fails" iff wrong in all 3 of its runs</em>); cheaper models (e.g. Haiku) run at higher k for tighter Wilson CIs. A "✗ ×3" on a gate model is the fail signal; hover a cell's tooltip for the per-N confidence note.</p>
+ 
+ <div class="table-wrap"><table><thead><tr><th>model · setup</th><th class="n">verifier pass</th></tr></thead><tbody><tr><td>opus-4-8·S0</td><td class="n">1/1</td></tr><tr><td>sonnet-4-6·S0</td><td class="n">1/1</td></tr></tbody></table></div>
+ <p class="small">answers given: <code>Not necessarily — X may be a post-treatment collider; conditioning opens A-&gt;X&lt;-U-&gt;Y</code>×2</p>
+ 
+</details>
 
  <p class="dim small" style="margin:4px 0">🧬 <strong>Similar stems</strong> (within our corpus, BM25 wording-overlap recall flagged for review — <em>not</em> a duplicate verdict): <code>p5</code> <span class="dim">(0.36)</span>, <code>p2</code> <span class="dim">(0.30)</span>, <code>p4</code> <span class="dim">(0.28)</span></p>
 
- 
+ <details class="bench-block" id="problem-3-failmode" open><summary>🧩 Failure / success-mode synthesis — how the models miss (and where they don’t)</summary><p class="dim small">Synthesized from the sweep (0 runs) + captured traces. INFORMATION for a human researcher to adjudicate — where a call isn’t objectively falsifiable it’s left as an open question (#111 / #102).</p><ul class="traj-list"><li><strong>Common wrong answers:</strong> <code>Not necessarily — X may be a post-treatment collider; conditioning opens A-&gt;X&lt;-U-&gt;Y</code>×2. The most-given non-oracle answer is <code>Not necessarily — X may be a post-treatment collider; conditioning opens A-&gt;X&lt;-U-&gt;Y</code> (2 runs) — a clustered wrong answer usually means one shared misstep, not random error.</li></ul></details>
 
  
 
@@ -2203,7 +2221,7 @@ Suggested checks:
 
 <!-- ── timeline rail: hierarchical, dynamic, mobile thumb-friendly ─ -->
 <nav class="rail-tl" aria-label="problem timeline">
- <div class="rail-tl-inner"><div class="rail-section rl-stub" data-target="problem-1"> <a href="#problem-1" class="rail-bullet"> <span class="rl-num">01</span> <span class="rl-title">Minimax Lower Bounds for Str</span> </a> <div class="rail-sub"><a href="#problem-1-text">Problem text</a><a href="#problem-1-fixes">Quick fixes</a><a href="#problem-1-working">What&#x27;s working</a><a href="#problem-1-considerations">Considerations</a><a href="#problem-1-next">Next steps</a><a href="#problem-1-verifier">Verifier</a></div></div><div class="rail-section rl-stub" data-target="problem-2"> <a href="#problem-2" class="rail-bullet"> <span class="rl-num">02</span> <span class="rl-title">Estimation of the Value Func</span> </a> <div class="rail-sub"><a href="#problem-2-text">Problem text</a><a href="#problem-2-fixes">Quick fixes</a><a href="#problem-2-working">What&#x27;s working</a><a href="#problem-2-considerations">Considerations</a><a href="#problem-2-next">Next steps</a><a href="#problem-2-verifier">Verifier</a></div></div><div class="rail-section rl-stub" data-target="problem-3"> <a href="#problem-3" class="rail-bullet"> <span class="rl-num">03</span> <span class="rl-title">Time-Varying Causal Inferenc</span> </a> <div class="rail-sub"><a href="#problem-3-text">Problem text</a><a href="#problem-3-fixes">Quick fixes</a><a href="#problem-3-working">What&#x27;s working</a><a href="#problem-3-considerations">Considerations</a><a href="#problem-3-next">Next steps</a><a href="#problem-3-verifier">Verifier</a><a href="#problem-3-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-4"> <a href="#problem-4" class="rail-bullet"> <span class="rl-num">04</span> <span class="rl-title">ATT Estimation Under One-Sid</span> </a> <div class="rail-sub"><a href="#problem-4-text">Problem text</a><a href="#problem-4-fixes">Quick fixes</a><a href="#problem-4-working">What&#x27;s working</a><a href="#problem-4-considerations">Considerations</a><a href="#problem-4-next">Next steps</a><a href="#problem-4-verifier">Verifier</a><a href="#problem-4-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-5"> <a href="#problem-5" class="rail-bullet"> <span class="rl-num">05</span> <span class="rl-title">Efficient Influence Function</span> </a> <div class="rail-sub"><a href="#problem-5-text">Problem text</a><a href="#problem-5-fixes">Quick fixes</a><a href="#problem-5-working">What&#x27;s working</a><a href="#problem-5-considerations">Considerations</a><a href="#problem-5-next">Next steps</a><a href="#problem-5-verifier">Verifier</a><a href="#problem-5-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-6"> <a href="#problem-6" class="rail-bullet"> <span class="rl-num">06</span> <span class="rl-title">Quadratic Estimator of the T</span> </a> <div class="rail-sub"><a href="#problem-6-text">Problem text</a><a href="#problem-6-fixes">Quick fixes</a><a href="#problem-6-working">What&#x27;s working</a><a href="#problem-6-considerations">Considerations</a><a href="#problem-6-next">Next steps</a><a href="#problem-6-verifier">Verifier</a><a href="#problem-6-dedup">Cross-benchmark matches</a></div></div></div>
+ <div class="rail-tl-inner"><div class="rail-section rl-stub" data-target="problem-1"> <a href="#problem-1" class="rail-bullet"> <span class="rl-num">01</span> <span class="rl-title">Minimax Lower Bounds for Str</span> </a> <div class="rail-sub"><a href="#problem-1-text">Problem text</a><a href="#problem-1-sweep">Models</a><a href="#problem-1-failmode">Failure modes</a><a href="#problem-1-trajectory">Trajectory</a><a href="#problem-1-fixes">Quick fixes</a><a href="#problem-1-working">What&#x27;s working</a><a href="#problem-1-considerations">Considerations</a><a href="#problem-1-next">Next steps</a><a href="#problem-1-verifier">Verifier</a></div></div><div class="rail-section rl-stub" data-target="problem-2"> <a href="#problem-2" class="rail-bullet"> <span class="rl-num">02</span> <span class="rl-title">Estimation of the Value Func</span> </a> <div class="rail-sub"><a href="#problem-2-text">Problem text</a><a href="#problem-2-fixes">Quick fixes</a><a href="#problem-2-working">What&#x27;s working</a><a href="#problem-2-considerations">Considerations</a><a href="#problem-2-next">Next steps</a><a href="#problem-2-verifier">Verifier</a></div></div><div class="rail-section rl-stub" data-target="problem-3"> <a href="#problem-3" class="rail-bullet"> <span class="rl-num">03</span> <span class="rl-title">Time-Varying Causal Inferenc</span> </a> <div class="rail-sub"><a href="#problem-3-text">Problem text</a><a href="#problem-3-sweep">Models</a><a href="#problem-3-failmode">Failure modes</a><a href="#problem-3-trajectory">Trajectory</a><a href="#problem-3-fixes">Quick fixes</a><a href="#problem-3-working">What&#x27;s working</a><a href="#problem-3-considerations">Considerations</a><a href="#problem-3-next">Next steps</a><a href="#problem-3-verifier">Verifier</a><a href="#problem-3-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-4"> <a href="#problem-4" class="rail-bullet"> <span class="rl-num">04</span> <span class="rl-title">ATT Estimation Under One-Sid</span> </a> <div class="rail-sub"><a href="#problem-4-text">Problem text</a><a href="#problem-4-fixes">Quick fixes</a><a href="#problem-4-working">What&#x27;s working</a><a href="#problem-4-considerations">Considerations</a><a href="#problem-4-next">Next steps</a><a href="#problem-4-verifier">Verifier</a><a href="#problem-4-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-5"> <a href="#problem-5" class="rail-bullet"> <span class="rl-num">05</span> <span class="rl-title">Efficient Influence Function</span> </a> <div class="rail-sub"><a href="#problem-5-text">Problem text</a><a href="#problem-5-fixes">Quick fixes</a><a href="#problem-5-working">What&#x27;s working</a><a href="#problem-5-considerations">Considerations</a><a href="#problem-5-next">Next steps</a><a href="#problem-5-verifier">Verifier</a><a href="#problem-5-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-6"> <a href="#problem-6" class="rail-bullet"> <span class="rl-num">06</span> <span class="rl-title">Quadratic Estimator of the T</span> </a> <div class="rail-sub"><a href="#problem-6-text">Problem text</a><a href="#problem-6-fixes">Quick fixes</a><a href="#problem-6-working">What&#x27;s working</a><a href="#problem-6-considerations">Considerations</a><a href="#problem-6-next">Next steps</a><a href="#problem-6-verifier">Verifier</a><a href="#problem-6-dedup">Cross-benchmark matches</a></div></div></div>
 </nav>
 
 <!-- ── chatbot (hidden until proxy live) ────────────────────── -->
