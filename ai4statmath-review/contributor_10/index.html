@@ -644,7 +644,7 @@ button.nav-chat { display:none; }
  <tr><td class="pl">🔤 What each problem shows</td><td class="pr">Objective information, <em>not</em> accept/reject verdicts: the <strong>snapshot</strong> → reviewer gap-fill info (verifier triage · proposed tags) → <strong>your own pasted notes</strong> → dedup. <strong>No benchmark sweep has run for this set yet</strong> — the model-evidence sections (results matrix · trajectory analysis) appear here once it does.</td></tr>
  </table>
  </details>
- <div class="timestamp">⏱ data as of <strong>2026-06-17 10:05 UTC</strong> · total LLM cost: <strong>$0.89</strong> · <span id="first-visit-note"></span></div>
+ <div class="timestamp">⏱ data as of <strong>2026-06-28 UTC</strong> · total LLM cost: <strong>$0.89</strong> · <span id="first-visit-note"></span></div>
  <div class="uc-banner">🚧 <strong>Auto-generated draft.</strong> AI-written; a human reviewer confirms or overrides.</div>
  </div>
  <script>
@@ -1145,8 +1145,17 @@ Suggested checks:
  </details>
 
  
+<details class="d-block proposed-tags-block" id="problem-1-proposed-tags">
+ <summary>🏷 Proposed tags <span class="dim small">(agent — author to confirm)</span></summary>
+ <p class="dim small">These are <strong>agent-proposed</strong> tags (suggestions, not verdicts) to help the author — the human author / co-PI confirms or overrides. Grounded in the problem statement on master; <strong>not</strong> written into your <code>.tex</code> scaffold. Vocabulary from the working-hypothesis taxonomy (the seed taxonomy). Proposed 2026-06-28.</p>
+ <table class="pt-table"><tbody><tr><td class="pt-dim">Capability</td><td class="pt-val">prove</td></tr><tr><td class="pt-dim">Domain</td><td class="pt-val">Mathematics</td></tr><tr><td class="pt-dim">Subtopic</td><td class="pt-val">Optimization (deterministic)</td></tr><tr><td class="pt-dim">Technique</td><td class="pt-val">DC decomposition characterization via one-sided gradient inner-product inequality (weak convexity equivalence); constructive bidirectional proof using Cauchy-Schwarz, gradient monotonicity, and mean-value Taylor expansion</td></tr><tr><td class="pt-dim">Difficulty</td><td class="pt-val"><span class="kw-level lv-advanced">Advanced</span></td></tr><tr><td class="pt-dim">Challenged capability</td><td class="pt-val">abstract reasoning, symbolic manipulation, trap recognition</td></tr><tr><td class="pt-dim">Grading mode</td><td class="pt-val">structural</td></tr><tr><td class="pt-dim">Observed failure mode</td><td class="pt-val">Contributor-reported: &quot;Collapsing &#x27;differentiable convex&#x27; to &#x27;smooth convex&#x27; and misidentifying the class as C^{1,1}; invoking a Hessian argument despite the absence of a C^2 assumption.&quot; (Info note: the <span class="kw-subject">grading scheme</span> makes both <span class="kw-subject">failure modes</span> mandatory-reject conditions — the C^{1,1} misidentification rejects Direction 1, and the unsupported Hessian argument rejects Direction 2; these are structurally distinct traps targeting the same underlying conflation of one-sided vs. two-sided gradient bounds.)</td></tr></tbody></table>
+ <p class="dim small">Agent-proposed structured tags (author/co-PI to confirm). Suggestions, not verdicts. Grounded first-hand in the problem statement + answer key + contributor tags on master; NOT written into the contributor&#x27;s.tex scaffold. Vocabulary from the project&#x27;s seed taxonomy.</p>
+</details>
+
 
  
+
+ <p class="dim small" style="margin:4px 0">🧬 <strong>Similar stems</strong> (within our corpus, BM25 wording-overlap recall flagged for review — <em>not</em> a duplicate verdict): <code>p2</code> <span class="dim">(0.56)</span>, <code>contributor_03/p2</code> <span class="dim">(0.32 · x-contrib)</span>, <code>contributor_05/p2</code> <span class="dim">(0.31 · x-contrib)</span></p>
 
  
 
@@ -1160,6 +1169,7 @@ Suggested checks:
 <details class="d-block dedup-block" id="problem-1-dedup">
  <summary>🔍 Cross-benchmark matches <span class="dim small">(3 total)</span></summary>
  <div class="dedup-headline"><span class="pill v-revision">△ 3 adjacent matches (topical, not duplicate)</span></div>
+ 
  <p class="dim small">BGE recall (on the problem <em>statement</em>) × Claude method-judge vs the The nine precedent benchmarks judged most likely to collide …. </p>
  <p class="dim small">⚠ <code>cos</code> is <strong>surface similarity</strong> (a recall signal on wording), <em>not</em> a duplicate measure — dense embeddings cluster by vocabulary, so they over-flag surface-similar stems and miss method-equivalent ones (see <code>research/dedup-methodology-deep-research.md</code>). The duplicate call is the <strong>method-judge verdict</strong>, not <code>cos</code>. Method-level dedup is being upgraded to embed the <em>solution trajectory</em> + judge.</p>
  <div class="table-wrap"><table class="dedup-table"><thead><tr>
@@ -1701,8 +1711,17 @@ Suggested checks:
  </details>
 
  
+<details class="d-block proposed-tags-block" id="problem-2-proposed-tags">
+ <summary>🏷 Proposed tags <span class="dim small">(agent — author to confirm)</span></summary>
+ <p class="dim small">These are <strong>agent-proposed</strong> tags (suggestions, not verdicts) to help the author — the human author / co-PI confirms or overrides. Grounded in the problem statement on master; <strong>not</strong> written into your <code>.tex</code> scaffold. Vocabulary from the working-hypothesis taxonomy (the seed taxonomy). Proposed 2026-06-28.</p>
+ <table class="pt-table"><tbody><tr><td class="pt-dim">Capability</td><td class="pt-val">prove</td></tr><tr><td class="pt-dim">Domain</td><td class="pt-val">Mathematics</td></tr><tr><td class="pt-dim">Subtopic</td><td class="pt-val">Optimization (deterministic)</td></tr><tr><td class="pt-dim">Technique</td><td class="pt-val">DC decomposition analysis — defining effective smoothness M*_f as an infimum over valid g-h decompositions, applying the descent lemma to the optimally-decomposed smooth part, and establishing tightness via divergence at α &gt; 2/M*_f</td></tr><tr><td class="pt-dim">Difficulty</td><td class="pt-val"><span class="kw-level lv-research">Qualifying-exam-plus</span></td></tr><tr><td class="pt-dim">Challenged capability</td><td class="pt-val">abstract reasoning, trap recognition, symbolic manipulation</td></tr><tr><td class="pt-dim">Grading mode</td><td class="pt-val">structural</td></tr><tr><td class="pt-dim">Observed failure mode</td><td class="pt-val">Using 1/L from the given decomposition without recognizing non-uniqueness; treating smoothness of h as relevant; referencing external results; omitting backtracking; attempting exact tightness at 1/M*_f via divergence, which fails for α ∈ (1/M*_f, 2/M*_f). [Info, not <span class="kw-subject">verdict</span>: the <span class="kw-subject">grading scheme</span> lists five mandatory binary <span class="kw-subject">criteria</span>, each mapping to a distinct step in the proof; the tightness <span class="kw-subject">criterion</span> explicitly flags the off-by-factor-of-2 <span class="kw-warn">error</span> as the most subtle trap.]</td></tr></tbody></table>
+ <p class="dim small">Agent-proposed structured tags (author/co-PI to confirm). Suggestions, not verdicts. Grounded first-hand in the problem statement + answer key + contributor tags on master; NOT written into the contributor&#x27;s.tex scaffold. Vocabulary from the project&#x27;s seed taxonomy.</p>
+</details>
+
 
  
+
+ <p class="dim small" style="margin:4px 0">🧬 <strong>Similar stems</strong> (within our corpus, BM25 wording-overlap recall flagged for review — <em>not</em> a duplicate verdict): <code>p1</code> <span class="dim">(0.56)</span>, <code>contributor_03/p2</code> <span class="dim">(0.21 · x-contrib)</span>, <code>contributor_01/p7</code> <span class="dim">(0.17 · x-contrib)</span></p>
 
  
 
@@ -1716,6 +1735,7 @@ Suggested checks:
 <details class="d-block dedup-block" open id="problem-2-dedup">
  <summary>🔍 Cross-benchmark matches <span class="dim small">(7 total)</span></summary>
  <div class="dedup-headline"><span class="pill v-rework">✗ 1 SAME match in Tier-A pool</span></div>
+ <p class="dim small" style="border-left:3px solid #16a34a;padding-left:8px;margin-top:6px">✓ <strong>Objective re-check: likely a FALSE POSITIVE.</strong> Your statement vs the matched <code>StatEval-public</code> stem is only <strong>2%</strong> string-similar — same field, different problem. The judge keyed on shared statistics vocabulary, not a real overlap. Information, not a ruling — for the team to confirm.</p>
  <p class="dim small">BGE recall (on the problem <em>statement</em>) × Claude method-judge vs the The nine precedent benchmarks judged most likely to collide …. Top 5 of 7 by cos.</p>
  <p class="dim small">⚠ <code>cos</code> is <strong>surface similarity</strong> (a recall signal on wording), <em>not</em> a duplicate measure — dense embeddings cluster by vocabulary, so they over-flag surface-similar stems and miss method-equivalent ones (see <code>research/dedup-methodology-deep-research.md</code>). The duplicate call is the <strong>method-judge verdict</strong>, not <code>cos</code>. Method-level dedup is being upgraded to embed the <em>solution trajectory</em> + judge.</p>
  <div class="table-wrap"><table class="dedup-table"><thead><tr>
@@ -2217,8 +2237,17 @@ Suggested checks:
  </details>
 
  
+<details class="d-block proposed-tags-block" id="problem-3-proposed-tags">
+ <summary>🏷 Proposed tags <span class="dim small">(agent — author to confirm)</span></summary>
+ <p class="dim small">These are <strong>agent-proposed</strong> tags (suggestions, not verdicts) to help the author — the human author / co-PI confirms or overrides. Grounded in the problem statement on master; <strong>not</strong> written into your <code>.tex</code> scaffold. Vocabulary from the working-hypothesis taxonomy (the seed taxonomy). Proposed 2026-06-28.</p>
+ <table class="pt-table"><tbody><tr><td class="pt-dim">Capability</td><td class="pt-val">prove</td></tr><tr><td class="pt-dim">Domain</td><td class="pt-val">Statistics</td></tr><tr><td class="pt-dim">Subtopic</td><td class="pt-val">Decision theory</td></tr><tr><td class="pt-dim">Technique</td><td class="pt-val">Sandwich/contradiction argument from UCB inequality at last-pull time, conditioned on a good concentration event; distinguishing distributional symmetry from path-wise equality</td></tr><tr><td class="pt-dim">Difficulty</td><td class="pt-val"><span class="kw-level lv-research">Qualifying-exam-plus</span></td></tr><tr><td class="pt-dim">Challenged capability</td><td class="pt-val">abstract reasoning, probabilistic reasoning, trap recognition</td></tr><tr><td class="pt-dim">Grading mode</td><td class="pt-val"><span class="kw-subject">rubric</span></td></tr><tr><td class="pt-dim">Observed failure mode</td><td class="pt-val">Contributor-observed (verbatim): &quot;Claiming &#x27;true by symmetry&#x27; for Part (1) without analytic proof; importing the time-varying log t bonus rate for Part (2); asserting N_1(T) = T/2 exactly in Part (3).&quot; — These map to three distinct trap layers: (1) conflating exchangeability with an analytic proof of concentration, (2) transferring a martingale rate result valid for the time-varying UCB bonus to the fixed-horizon bonus where it does not hold, and (3) confusing E[N_1(T)] = T/2 (distributional) with N_1(T) = T/2 almost surely (path-wise).</td></tr></tbody></table>
+ <p class="dim small">Agent-proposed structured tags (author/co-PI to confirm). Suggestions, not verdicts. Grounded first-hand in the problem statement + answer key + contributor tags on master; NOT written into the contributor&#x27;s.tex scaffold. Vocabulary from the project&#x27;s seed taxonomy.</p>
+</details>
+
 
  
+
+ <p class="dim small" style="margin:4px 0">🧬 <strong>Similar stems</strong> (within our corpus, BM25 wording-overlap recall flagged for review — <em>not</em> a duplicate verdict): <code>p4</code> <span class="dim">(0.74)</span>, <code>contributor_05/p2</code> <span class="dim">(0.42 · x-contrib)</span>, <code>contributor_05/p4</code> <span class="dim">(0.37 · x-contrib)</span></p>
 
  
 
@@ -2841,8 +2870,17 @@ Suggested checks:
  </details>
 
  
+<details class="d-block proposed-tags-block" id="problem-4-proposed-tags">
+ <summary>🏷 Proposed tags <span class="dim small">(agent — author to confirm)</span></summary>
+ <p class="dim small">These are <strong>agent-proposed</strong> tags (suggestions, not verdicts) to help the author — the human author / co-PI confirms or overrides. Grounded in the problem statement on master; <strong>not</strong> written into your <code>.tex</code> scaffold. Vocabulary from the working-hypothesis taxonomy (the seed taxonomy). Proposed 2026-06-28.</p>
+ <table class="pt-table"><tbody><tr><td class="pt-dim">Capability</td><td class="pt-val">prove, diagnose</td></tr><tr><td class="pt-dim">Domain</td><td class="pt-val">Statistics</td></tr><tr><td class="pt-dim">Subtopic</td><td class="pt-val">Stochastic processes</td></tr><tr><td class="pt-dim">Technique</td><td class="pt-val">UCB sandwich argument with sub-Gaussian concentration (LIL-based good event); implicit characteristic equation derived by comparing normalized UCB inequalities at last arm-pull times; three-regime asymptotic analysis uniform in delta</td></tr><tr><td class="pt-dim">Difficulty</td><td class="pt-val"><span class="kw-level lv-research">Qualifying-exam-plus</span></td></tr><tr><td class="pt-dim">Challenged capability</td><td class="pt-val">abstract reasoning — prove a tight two-sided (upper + lower) bound on N_2(T) via separate UCB arguments at T_2 and T_1, symbolic manipulation — derive and solve the implicit characteristic equation uniformly over all delta satisfying the scaling condition, probabilistic reasoning — construct the sub-Gaussian LIL good event E_T and bound its complement probability, trap recognition — resist the temptation to use general bandit theorems or restrict to fixed delta &gt; 0; identify the phase transition at delta* = sqrt(log T / T), long-context reasoning — track rho = N_2(T)/T, rho^omega, kappa, and the three-regime summary in a multi-part proof</td></tr><tr><td class="pt-dim">Grading mode</td><td class="pt-val">structural / <span class="kw-subject">rubric</span>-based</td></tr><tr><td class="pt-dim">Observed failure mode</td><td class="pt-val">Contributor&#x27;s observed <span class="kw-subject">failure modes</span> (verbatim): &quot;Giving only the O(log T / delta^2) bound for fixed delta &gt; 0 without a uniform-in-delta characterization; applying the time-varying log t bonus analysis instead of the fixed log T bonus; <span class="kw-warn">missing</span> the near-optimal regime where N_2(T) ~ T/2; omitting the lower bound.&quot; Info note: the edit notes corroborate these as the primary traps — models tend to give regime-by-regime bounds rather than a single unifying equation, use log t instead of log T, and omit the Part (2) lower-bound argument at the last pull of arm 1.</td></tr></tbody></table>
+ <p class="dim small">Agent-proposed structured tags (author/co-PI to confirm). Suggestions, not verdicts. Grounded first-hand in the problem statement + answer key + contributor tags on master; NOT written into the contributor&#x27;s.tex scaffold. Vocabulary from the project&#x27;s seed taxonomy.</p>
+</details>
+
 
  
+
+ <p class="dim small" style="margin:4px 0">🧬 <strong>Similar stems</strong> (within our corpus, BM25 wording-overlap recall flagged for review — <em>not</em> a duplicate verdict): <code>p3</code> <span class="dim">(0.74)</span>, <code>contributor_05/p2</code> <span class="dim">(0.38 · x-contrib)</span>, <code>contributor_05/p6</code> <span class="dim">(0.36 · x-contrib)</span></p>
 
  
 

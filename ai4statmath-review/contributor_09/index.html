@@ -641,10 +641,10 @@ button.nav-chat { display:none; }
  <summary>How to read this page — goal &amp; status glyphs</summary>
  <table class="purpose-table">
  <tr><td class="pl">🎯 The goal</td><td class="pr">Problems that current frontier models <strong>cannot solve</strong>. A model <em>solving</em> a problem (⚠) is a weakness; a model being <em>stumped</em> (✓) is the win — that inverts the usual intuition.</td></tr>
- <tr><td class="pl">🔤 What each problem shows</td><td class="pr">Objective information, <em>not</em> accept/reject verdicts: the <strong>snapshot</strong> → reviewer gap-fill info (verifier triage · proposed tags) → <strong>your own pasted notes</strong> → dedup. <strong>No benchmark sweep has run for this set yet</strong> — the model-evidence sections (results matrix · trajectory analysis) appear here once it does.</td></tr>
+ <tr><td class="pl">🔤 What each problem shows</td><td class="pr">Objective information, <em>not</em> accept/reject verdicts: the <strong>snapshot</strong> → <strong>how the frontier models do</strong> (results matrix: each model&#x27;s answers per thinking setup vs the author oracle · oracle-vs-consensus) → <strong>failure/success-mode synthesis</strong> → <strong>trajectory analysis</strong> → <strong>your own pasted notes</strong> → dedup. Signals: <span class="pill v-ready">✓ models stumped</span> <span class="pill v-rework">⚠ models solve</span> <span class="pill v-revision">⚖ oracle-disputed</span></td></tr>
  </table>
  </details>
- <div class="timestamp">⏱ data as of <strong>2026-06-17 10:03 UTC</strong> · total LLM cost: <strong>$1.11</strong> · <span id="first-visit-note"></span></div>
+ <div class="timestamp">⏱ data as of <strong>2026-06-28 UTC</strong> · total LLM cost: <strong>$1.11</strong> · <span id="first-visit-note"></span></div>
  <div class="uc-banner">🚧 <strong>Auto-generated draft.</strong> AI-written; a human reviewer confirms or overrides.</div>
  </div>
  <script>
@@ -690,7 +690,7 @@ button.nav-chat { display:none; }
  <h2>Nonresponse Rate Among Invited Subjects</h2>
  </div>
  <div class="p-pills">
- <abbr class="term pill v-stub" data-tip="No benchmark-sweep runs for this problem yet — the model-evidence sections (results matrix · trajectory analysis) appear here once it is swept.">⏳ sweep pending</abbr>
+ 
  </div>
  </header>
 
@@ -755,14 +755,71 @@ Initial web validation: three independent GPT-5.5 Thinking Extended web runs pro
  </details>
 
  
+<details class="d-block proposed-tags-block" id="problem-1-proposed-tags">
+ <summary>🏷 Proposed tags <span class="dim small">(agent — author to confirm)</span></summary>
+ <p class="dim small">These are <strong>agent-proposed</strong> tags (suggestions, not verdicts) to help the author — the human author / co-PI confirms or overrides. Grounded in the problem statement on master; <strong>not</strong> written into your <code>.tex</code> scaffold. Vocabulary from the working-hypothesis taxonomy (the seed taxonomy). Proposed 2026-06-28.</p>
+ <table class="pt-table"><tbody><tr><td class="pt-dim">Capability</td><td class="pt-val">compute</td></tr><tr><td class="pt-dim">Domain</td><td class="pt-val">Statistics</td></tr><tr><td class="pt-dim">Subtopic</td><td class="pt-val">Experimental design</td></tr><tr><td class="pt-dim">Technique</td><td class="pt-val">Multi-group nonresponse rate calculation with correct denominator and full nonrespondent count (respondent + unit nonresponse combined)</td></tr><tr><td class="pt-dim">Difficulty</td><td class="pt-val">Easy</td></tr><tr><td class="pt-dim">Challenged capability</td><td class="pt-val">numerical reasoning, trap recognition</td></tr><tr><td class="pt-dim">Grading mode</td><td class="pt-val">exact</td></tr><tr><td class="pt-dim">Observed failure mode</td><td class="pt-val">Model omitted survey nonrespondents and answered 16% instead of 52%. (Contributor verbatim from \<abbr class="kw-section term" data-tip="The `\problemtags{verb}{capability}{grading}{failure_mode}` macro — the four-axis classification.">problemtags</abbr> and \<abbr class="kw-section term" data-tip="The `\begin{editornotes}` block — internal notes for downstream reviewers / verifier writers.">editornotes</abbr>. The <span class="kw-warn">error</span> is a scope conflation: the model restricted nonrespondents to those who explicitly skipped the income question among respondents — 80/<span class="kw-num">500</span> = 16% — ignoring the <span class="kw-num">180</span> unit nonrespondents who also did not provide income data, a classic denominator-and-numerator misidentification in survey methodology.)</td></tr></tbody></table>
+ <p class="dim small">Agent-proposed structured tags (author/co-PI to confirm). Suggestions, not verdicts. Grounded first-hand in the problem statement + answer key + contributor tags on master; NOT written into the contributor&#x27;s.tex scaffold. Vocabulary from the project&#x27;s seed taxonomy.</p>
+</details>
+
+
+ 
+<details class="bench-block" open id="problem-1-sweep">
+ <summary>📊 How the frontier models do — results matrix · verifier-graded</summary>
+ <p class="dim small">Sweep <code>sweep-20260603-170524</code> · objective signal — information for humans to adjudicate.</p>
+ <p class="dim small">Each <em>model × thinking-setup</em> cell ran <strong>k independent samples</strong> (shown as ✓/✗ × n). The per-model k differs by cost: the gate models (GPT-5.5 / Opus-4.7) run at <strong>k=3</strong> — matching the screening definition (<em>a model "fails" iff wrong in all 3 of its runs</em>); cheaper models (e.g. Haiku) run at higher k for tighter Wilson CIs. A "✗ ×3" on a gate model is the fail signal; hover a cell's tooltip for the per-N confidence note.</p>
+ 
+ <p class="rm-chiprow"><abbr class="term rm-chip bf-uncertain" data-tip="A combo = one model × one thinking setup. &#x27;Stumped&#x27; = none of that combo&#x27;s runs produced the author&#x27;s oracle answer — but no author oracle is on file for this problem, so the count cannot be computed. The cells below still show every answer the models actually gave.">? stumped-count unavailable — no author oracle (2 model×setup combos ran)</abbr></p><div class="table-wrap"><table class="rm-table"><thead><tr><th class="rm-corner"><abbr class="term" data-tip="Rows = models (one row per model). Columns = thinking setups (how much extended reasoning the model was allowed). Each cell shows that model&#x27;s actual final answer(s) under that setup, with ×k = how many of its runs gave that answer. Click a cell to jump to its full reasoning traces.">model \ thinking setup</abbr></th><th class="rm-setup"><abbr class="term" data-tip="Thinking tier S0 = no extended reasoning: Claude models run with extended thinking disabled (S0_nothink); GPT models run at minimal reasoning effort (S0_minimal). Hover a cell for the exact setup that ran.">S0 · no thinking</abbr></th><th class="rm-setup"><abbr class="term" data-tip="Thinking setup free-subagent as recorded in the sweep.">free-subagent</abbr></th></tr></thead><tbody><tr><th scope="row" class="rm-model"><abbr class="term" data-tip="Anthropic&#x27;s mid-tier model — between the small/fast tier and the frontier tier in capability.">Claude Sonnet 4.6</abbr></th><td class="rm-cell rm-na"><span class="rm-cell-link" title="This model × thinking-setup combination was not run in the sweep — no data (not a failure)." aria-label="This model × thinking-setup combination was not run in the sweep — no data (not a failure).">—</span></td><td class="rm-cell rm-neutral"><a class="rm-cell-link" href="#problem-1-runs-claude-sonnet-4-6-free-subagent" title="Claude Sonnet 4.6 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 52% (0.52) in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="Claude Sonnet 4.6 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 52% (0.52) in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">?</span> <code>52% (0.52)</code><span class="rm-x">×1</span></a></td></tr><tr><th scope="row" class="rm-model"><abbr class="term" data-tip="Model id as recorded in the sweep (no curated label yet).">claude-opus-4-8</abbr></th><td class="rm-cell rm-noans"><a class="rm-cell-link" href="#problem-1-runs-claude-opus-4-8-S0" title="claude-opus-4-8 under S0 · no thinking (S0_sweep0629): 3 run(s), 0 with a parseable final answer, 3 errored/unparseable. Every run errored or gave no parseable final answer, so there is nothing to compare against the oracle. Auto-verifier grading: 1/3 run(s) passed the drafted verifier. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="claude-opus-4-8 under S0 · no thinking (S0_sweep0629): 3 run(s), 0 with a parseable final answer, 3 errored/unparseable. Every run errored or gave no parseable final answer, so there is nothing to compare against the oracle. Auto-verifier grading: 1/3 run(s) passed the drafted verifier. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">⚠</span> no answer</a></td><td class="rm-cell rm-neutral"><a class="rm-cell-link" href="#problem-1-runs-claude-opus-4-8-free-subagent" title="claude-opus-4-8 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 0.52 (52%) in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="claude-opus-4-8 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 0.52 (52%) in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">?</span> <code>0.52 (52%)</code><span class="rm-x">×1</span></a></td></tr></tbody></table></div><p class="rm-legend dim small">cell key: <abbr class="term" data-tip="the most common answer EQUALS the author oracle. The model reproduced the author answer — counts against the must-fail goal.">= matches oracle</abbr> · <abbr class="term" data-tip="the most common answer DIFFERS from the author oracle. A bolded answer inside a split equals the oracle (a minority run reached it).">≠ differs</abbr> · <abbr class="term" data-tip="no author oracle on file to compare against. The cell still lists what the model answered.">? no oracle</abbr> · <abbr class="term" data-tip="every run errored or gave no parseable final answer">⚠ no answer</abbr> · <abbr class="term" data-tip="This model × thinking-setup combination was not run in the sweep — no data (not a failure).">— not run</abbr> · <abbr class="term" data-tip="×k = the number of independent runs (samples) that gave this exact answer.">×k = run count</abbr> · click a cell for its full traces</p>
+ 
+ 
+</details>
+
+ <p class="dim small" style="margin:4px 0">🧬 <strong>Similar stems</strong> (within our corpus, BM25 wording-overlap recall flagged for review — <em>not</em> a duplicate verdict): <code>p8</code> <span class="dim">(0.44)</span>, <code>p9</code> <span class="dim">(0.42)</span>, <code>p10</code> <span class="dim">(0.30)</span></p>
+
+ <details class="bench-block" id="problem-1-failmode" open><summary>🧩 Failure / success-mode synthesis — how the models miss (and where they don’t)</summary><p class="dim small">Synthesized from the sweep (5 runs) + captured traces. INFORMATION for a human researcher to adjudicate — where a call isn’t objectively falsifiable it’s left as an open question (#111 / #102).</p><ul class="traj-list"><li><strong>Common wrong answers:</strong> <code>0.52</code>×2. The most-given non-oracle answer is <code>0.52</code> (2 runs) — a clustered wrong answer usually means one shared misstep, not random error.</li></ul></details>
 
  
 
- 
+ <details class="bench-block" id="problem-1-allruns"><summary>🔬 All model runs — full traces &amp; metadata (5 runs)</summary><p class="dim small">Every captured run from the sweep: setup (params), answer + pass, tokens (in/out, +reasoning), time &amp; cost, and the full thinking/response trace (click “trace”). The raw evidence under the summaries above (#102: all trajectories + metadata).</p><div style="margin:8px 0" id="problem-1-runs-claude-sonnet-4-6-free-subagent"><strong>claude-sonnet-4-6</strong> · <code>free-subagent</code> <span class="dim small">(1 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>free-subagent</code> k0</td><td><code>52% (0.52)</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">Problem: A survey invites 500 people. Of those invited, 320 respond. Among respondents, 80 skip the income question. What is the income-question nonresponse rate among all invited people?
 
- 
+Approach: The nonresponse rate for the income question among ALL invited people must count everyone who failed to provide income data — both those who never responded to the survey at all, and those who responded but skipped the income question.
 
- 
+Step 1: Non-respondents (never answered the survey at all).
+ Invited: 500
+ Responded: 320
+ Did not respond: 500 - 320 = 180
+
+These 180 people provided no data whatsoever, including no income data.
+
+Step 2: Respondents who skipped the income question.
+ Among the 320 respondents, 80 skipped the income question.
+
+Step 3: Total people who did NOT provide income data (out of 500 invited).
+ = 180 (non-respondents) + 80 (respondents who skipped income) = 260
+
+Step 4: Income-question nonresponse rate among all invited people.
+ Rate = 260 / 500 = 0.52 = 52%
+
+Note on common errors: Computing 80/500 = 16% ignores the 180 who never responded. Computing 80/320 = 25% gives the skip rate only among respondents. Neither correctly answers the question as posed.
+
+Final answer: 0.52 (52%)</blockquote></details></td></tr></tbody></table></div></div><div style="margin:8px 0" id="problem-1-runs-claude-opus-4-8-S0"><strong>claude-opus-4-8</strong> · <code>S0_sweep0629</code> <span class="dim small">(3 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✗ fail</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">4/25</blockquote></details></td></tr><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✗ fail</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">4/25</blockquote></details></td></tr><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">13/25</blockquote></details></td></tr></tbody></table></div></div><div style="margin:8px 0" id="problem-1-runs-claude-opus-4-8-free-subagent"><strong>claude-opus-4-8</strong> · <code>free-subagent</code> <span class="dim small">(1 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>free-subagent</code> k0</td><td><code>0.52 (52%)</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">**Problem.** A survey invites 500 people. Of those invited, 320 respond. Among respondents, 80 skip the income question. What is the income-question nonresponse rate among all invited people?
+
+**Approach.** The denominator is fixed by the question: *all invited people* = 500. The numerator is everyone who failed to provide an income value, for any reason. There are two disjoint groups of people who did not provide income:
+
+1. People who never responded to the survey at all: 500 − 320 = 180. These people obviously provided no income answer.
+2. People who responded but skipped the income question: 80.
+
+These groups are disjoint (the 80 are drawn from the 320 respondents, not from the 180 nonrespondents), so the total who did not provide income is:
+
+ 180 + 80 = 260.
+
+**Rate among all invited.**
+
+ 260 / 500 = 0.52 = 52%.
+
+**Common error to avoid.** Using 80/320 = 0.25 (rate among respondents only) or 80/500 = 0.16 (counting only the question-skippers and omitting the 180 survey nonrespondents) is incorrect. The question asks for the nonresponse rate among *all invited*, so the 180 who never responded must be included in the count of those who did not provide income.
+
+**Final answer:** 0.52 (52%).</blockquote></details></td></tr></tbody></table></div></div></details>
 
  <details class="bench-block" id="problem-1-sidecar" open><summary>🗒️ Contributor’s own notes / pasted responses</summary><p class="dim small">Your <strong>own</strong> review sidecar — the responses you collected and your own failure-mode read. Shown verbatim, as <em>your</em> words (distinct from the bot review and the model sweep below).</p><p class="small" style="margin-top:.4em"><strong>Sample responses you collected</strong> (5):</p><div class="traj-forks"><div class="traj-fork"><div class="traj-fork-h">🧑 <strong>GPT-5.5 Thinking Extended · OpenAI</strong> <span class="dim small">(contributor-pasted)</span></div><blockquote class="traj-quote">ChatGPT Instruments
 
@@ -802,6 +859,7 @@ So the rate is 16%.</blockquote></div><div class="traj-fork"><div class="traj-fo
 <details class="d-block dedup-block" id="problem-1-dedup">
  <summary>🔍 Cross-benchmark matches <span class="dim small">(3 total)</span></summary>
  <div class="dedup-headline"><span class="pill v-revision">△ 3 adjacent matches (topical, not duplicate)</span></div>
+ 
  <p class="dim small">BGE recall (on the problem <em>statement</em>) × Claude method-judge vs the The nine precedent benchmarks judged most likely to collide …. </p>
  <p class="dim small">⚠ <code>cos</code> is <strong>surface similarity</strong> (a recall signal on wording), <em>not</em> a duplicate measure — dense embeddings cluster by vocabulary, so they over-flag surface-similar stems and miss method-equivalent ones (see <code>research/dedup-methodology-deep-research.md</code>). The duplicate call is the <strong>method-judge verdict</strong>, not <code>cos</code>. Method-level dedup is being upgraded to embed the <em>solution trajectory</em> + judge.</p>
  <div class="table-wrap"><table class="dedup-table"><thead><tr>
@@ -1050,7 +1108,7 @@ if __name__ == &#x27;__main__&#x27;:
  <h2>Seven-Trial Poisson-Binomial Probability</h2>
  </div>
  <div class="p-pills">
- <abbr class="term pill v-stub" data-tip="No benchmark-sweep runs for this problem yet — the model-evidence sections (results matrix · trajectory analysis) appear here once it is swept.">⏳ sweep pending</abbr>
+ 
  </div>
  </header>
 
@@ -1115,14 +1173,107 @@ Initial web validation: three independent GPT-5.5 Thinking Extended web runs pro
  </details>
 
  
+<details class="d-block proposed-tags-block" id="problem-2-proposed-tags">
+ <summary>🏷 Proposed tags <span class="dim small">(agent — author to confirm)</span></summary>
+ <p class="dim small">These are <strong>agent-proposed</strong> tags (suggestions, not verdicts) to help the author — the human author / co-PI confirms or overrides. Grounded in the problem statement on master; <strong>not</strong> written into your <code>.tex</code> scaffold. Vocabulary from the working-hypothesis taxonomy (the seed taxonomy). Proposed 2026-06-28.</p>
+ <table class="pt-table"><tbody><tr><td class="pt-dim">Capability</td><td class="pt-val">compute</td></tr><tr><td class="pt-dim">Domain</td><td class="pt-val">Statistics</td></tr><tr><td class="pt-dim">Subtopic</td><td class="pt-val">Distributions</td></tr><tr><td class="pt-dim">Technique</td><td class="pt-val">Poisson-binomial probability via generating-function (polynomial) expansion — multiply seven distinct linear factors (1-p_i + p_i·z) and extract the z^3 coefficient exactly</td></tr><tr><td class="pt-dim">Difficulty</td><td class="pt-val"><span class="kw-level lv-intermediate">Intermediate</span></td></tr><tr><td class="pt-dim">Challenged capability</td><td class="pt-val">probabilistic reasoning, combinatorial counting, numerical reasoning</td></tr><tr><td class="pt-dim">Grading mode</td><td class="pt-val">exact</td></tr><tr><td class="pt-dim">Observed failure mode</td><td class="pt-val">Contributor verbatim: &quot;uses a binomial approximation or drops subset products.&quot; Agent note (info, not <span class="kw-subject">verdict</span>): GPT-5.5 Thinking Extended failed all three independent web runs by extracting the <span class="kw-warn">wrong</span> Poisson-binomial coefficient — consistent with collapsing the heterogeneous-probability sum over 3-element subsets into a binomial or mis-accumulating the 35 subset products.</td></tr></tbody></table>
+ <p class="dim small">Agent-proposed structured tags (author/co-PI to confirm). Suggestions, not verdicts. Grounded first-hand in the problem statement + answer key + contributor tags on master; NOT written into the contributor&#x27;s.tex scaffold. Vocabulary from the project&#x27;s seed taxonomy.</p>
+</details>
+
+
+ 
+<details class="bench-block" open id="problem-2-sweep">
+ <summary>📊 How the frontier models do — results matrix · verifier-graded</summary>
+ <p class="dim small">Sweep <code>sweep-20260603-170524</code> · objective signal — information for humans to adjudicate.</p>
+ <p class="dim small">Each <em>model × thinking-setup</em> cell ran <strong>k independent samples</strong> (shown as ✓/✗ × n). The per-model k differs by cost: the gate models (GPT-5.5 / Opus-4.7) run at <strong>k=3</strong> — matching the screening definition (<em>a model "fails" iff wrong in all 3 of its runs</em>); cheaper models (e.g. Haiku) run at higher k for tighter Wilson CIs. A "✗ ×3" on a gate model is the fail signal; hover a cell's tooltip for the per-N confidence note.</p>
+ 
+ <p class="rm-chiprow"><abbr class="term rm-chip bf-uncertain" data-tip="A combo = one model × one thinking setup. &#x27;Stumped&#x27; = none of that combo&#x27;s runs produced the author&#x27;s oracle answer — but no author oracle is on file for this problem, so the count cannot be computed. The cells below still show every answer the models actually gave.">? stumped-count unavailable — no author oracle (2 model×setup combos ran)</abbr></p><div class="table-wrap"><table class="rm-table"><thead><tr><th class="rm-corner"><abbr class="term" data-tip="Rows = models (one row per model). Columns = thinking setups (how much extended reasoning the model was allowed). Each cell shows that model&#x27;s actual final answer(s) under that setup, with ×k = how many of its runs gave that answer. Click a cell to jump to its full reasoning traces.">model \ thinking setup</abbr></th><th class="rm-setup"><abbr class="term" data-tip="Thinking tier S0 = no extended reasoning: Claude models run with extended thinking disabled (S0_nothink); GPT models run at minimal reasoning effort (S0_minimal). Hover a cell for the exact setup that ran.">S0 · no thinking</abbr></th><th class="rm-setup"><abbr class="term" data-tip="Thinking setup free-subagent as recorded in the sweep.">free-subagent</abbr></th></tr></thead><tbody><tr><th scope="row" class="rm-model"><abbr class="term" data-tip="Anthropic&#x27;s mid-tier model — between the small/fast tier and the frontier tier in capability.">Claude Sonnet 4.6</abbr></th><td class="rm-cell rm-na"><span class="rm-cell-link" title="This model × thinking-setup combination was not run in the sweep — no data (not a failure)." aria-label="This model × thinking-setup combination was not run in the sweep — no data (not a failure).">—</span></td><td class="rm-cell rm-neutral"><a class="rm-cell-link" href="#problem-2-runs-claude-sonnet-4-6-free-subagent" title="Claude Sonnet 4.6 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 967/5760 in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="Claude Sonnet 4.6 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 967/5760 in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">?</span> <code>967/5760</code><span class="rm-x">×1</span></a></td></tr><tr><th scope="row" class="rm-model"><abbr class="term" data-tip="Model id as recorded in the sweep (no curated label yet).">claude-opus-4-8</abbr></th><td class="rm-cell rm-noans"><a class="rm-cell-link" href="#problem-2-runs-claude-opus-4-8-S0" title="claude-opus-4-8 under S0 · no thinking (S0_sweep0629): 3 run(s), 0 with a parseable final answer, 3 errored/unparseable. Every run errored or gave no parseable final answer, so there is nothing to compare against the oracle. Auto-verifier grading: 3/3 run(s) passed the drafted verifier. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="claude-opus-4-8 under S0 · no thinking (S0_sweep0629): 3 run(s), 0 with a parseable final answer, 3 errored/unparseable. Every run errored or gave no parseable final answer, so there is nothing to compare against the oracle. Auto-verifier grading: 3/3 run(s) passed the drafted verifier. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">⚠</span> no answer</a></td><td class="rm-cell rm-neutral"><a class="rm-cell-link" href="#problem-2-runs-claude-opus-4-8-free-subagent" title="claude-opus-4-8 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 967/5760 in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="claude-opus-4-8 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 967/5760 in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">?</span> <code>967/5760</code><span class="rm-x">×1</span></a></td></tr></tbody></table></div><p class="rm-legend dim small">cell key: <abbr class="term" data-tip="the most common answer EQUALS the author oracle. The model reproduced the author answer — counts against the must-fail goal.">= matches oracle</abbr> · <abbr class="term" data-tip="the most common answer DIFFERS from the author oracle. A bolded answer inside a split equals the oracle (a minority run reached it).">≠ differs</abbr> · <abbr class="term" data-tip="no author oracle on file to compare against. The cell still lists what the model answered.">? no oracle</abbr> · <abbr class="term" data-tip="every run errored or gave no parseable final answer">⚠ no answer</abbr> · <abbr class="term" data-tip="This model × thinking-setup combination was not run in the sweep — no data (not a failure).">— not run</abbr> · <abbr class="term" data-tip="×k = the number of independent runs (samples) that gave this exact answer.">×k = run count</abbr> · click a cell for its full traces</p>
+ 
+ 
+</details>
+
+ <p class="dim small" style="margin:4px 0">🧬 <strong>Similar stems</strong> (within our corpus, BM25 wording-overlap recall flagged for review — <em>not</em> a duplicate verdict): <code>p6</code> <span class="dim">(0.75)</span>, <code>p5</code> <span class="dim">(0.74)</span>, <code>p3</code> <span class="dim">(0.35)</span></p>
+
+ <details class="bench-block" id="problem-2-failmode" open><summary>🧩 Failure / success-mode synthesis — how the models miss (and where they don’t)</summary><p class="dim small">Synthesized from the sweep (5 runs) + captured traces. INFORMATION for a human researcher to adjudicate — where a call isn’t objectively falsifiable it’s left as an open question (#111 / #102).</p><ul class="traj-list"><li><strong>Common wrong answers:</strong> <code>967/5760</code>×2. The most-given non-oracle answer is <code>967/5760</code> (2 runs) — a clustered wrong answer usually means one shared misstep, not random error.</li></ul></details>
 
  
 
- 
+ <details class="bench-block" id="problem-2-allruns"><summary>🔬 All model runs — full traces &amp; metadata (5 runs)</summary><p class="dim small">Every captured run from the sweep: setup (params), answer + pass, tokens (in/out, +reasoning), time &amp; cost, and the full thinking/response trace (click “trace”). The raw evidence under the summaries above (#102: all trajectories + metadata).</p><div style="margin:8px 0" id="problem-2-runs-claude-sonnet-4-6-free-subagent"><strong>claude-sonnet-4-6</strong> · <code>free-subagent</code> <span class="dim small">(1 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>free-subagent</code> k0</td><td><code>967/5760</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">## Problem
 
- 
+Seven independent Bernoulli trials have success probabilities p_1 = 1/2, p_2 = 1/3, p_3 = 1/4, p_4 = 1/5, p_5 = 1/6, p_6 = 1/7, p_7 = 1/8. Find the exact probability of getting exactly 3 successes.
 
- 
+## Approach
+
+This is a **Poisson-Binomial** (non-identical Bernoulli convolution) problem. When the trials are not identically distributed, the probability of exactly k successes is:
+
+ P(X = k) = [z^k] G(z), where G(z) = product_{i=1}^{7} (q_i + p_i z), q_i = 1 - p_i.
+
+Equivalently, by expanding the product directly:
+
+ P(X = 3) = sum_{S subset of {1,...,7}, |S|=3} [ prod_{i in S} p_i ] * [ prod_{j not in S} q_j ]
+
+The failure probabilities are:
+ q_1 = 1/2, q_2 = 2/3, q_3 = 3/4, q_4 = 4/5, q_5 = 5/6, q_6 = 6/7, q_7 = 7/8.
+
+## Computation via Generating Function
+
+Build G(z) by multiplying the seven factors one at a time (exact rational arithmetic):
+
+After multiplying all 7 factors, the full polynomial is:
+
+ G(z) = 1/8
+ + (363/1120) z
+ + (469/1440) z^2
+ + (967/5760) z^3
+ + (7/144) z^4
+ + (23/2880) z^5
+ + (1/1440) z^6
+ + (1/40320) z^7
+
+Check: sum of all coefficients = 1/8 + 363/1120 + 469/1440 + 967/5760 + 7/144 + 23/2880 + 1/1440 + 1/40320 = 1. ✓
+
+## Subset Enumeration Verification
+
+There are C(7,3) = 35 three-element subsets. Each contributes a product of 3 success probabilities times 4 failure probabilities. The 35 terms, all with denominators dividing 40320 = 8!, sum to 967/5760. Representative terms:
+
+ S = {1,2,3}: (1/2)(1/3)(1/4)(4/5)(5/6)(6/7)(7/8) = 1/48
+ S = {1,2,4}: (1/2)(1/3)(1/5)(3/4)(5/6)(6/7)(7/8) = 1/64... [all 35 terms sum to 967/5760]
+
+Both methods agree.
+
+## Final Answer
+
+ P(X = 3) = **967/5760**
+
+As a decimal: 967/5760 ≈ 0.16788.</blockquote></details></td></tr></tbody></table></div></div><div style="margin:8px 0" id="problem-2-runs-claude-opus-4-8-S0"><strong>claude-opus-4-8</strong> · <code>S0_sweep0629</code> <span class="dim small">(3 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">967/5760</blockquote></details></td></tr><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">967/5760</blockquote></details></td></tr><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">967/5760</blockquote></details></td></tr></tbody></table></div></div><div style="margin:8px 0" id="problem-2-runs-claude-opus-4-8-free-subagent"><strong>claude-opus-4-8</strong> · <code>free-subagent</code> <span class="dim small">(1 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>free-subagent</code> k0</td><td><code>967/5760</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">**Problem.** Seven independent Bernoulli trials have success probabilities p = 1/2, 1/3, 1/4, 1/5, 1/6, 1/7, 1/8. Find the exact probability of exactly 3 successes.
+
+**Approach.** For independent (non-identical) Bernoulli trials, the number of successes follows a Poisson-binomial distribution. The probability of exactly k successes is the coefficient of z^k in the probability generating function
+
+ G(z) = ∏_{i=1}^{7} [ (1 - p_i) + p_i z ].
+
+So P(3 successes) = [z^3] G(z) = sum over all 3-element subsets S of {1,...,7} of ( ∏_{i∈S} p_i)( ∏_{j∉S} (1 - p_j)).
+
+**Setup of the factors.** With q_i = 1 - p_i:
+- p = (1/2, 1/3, 1/4, 1/5, 1/6, 1/7, 1/8)
+- q = (1/2, 2/3, 3/4, 4/5, 5/6, 6/7, 7/8)
+
+The full product of all denominators is 2·3·4·5·6·7·8 = 40320, and the product of all q numerators times the relevant p numerators must be tracked per subset. Rather than expand by hand, note the symmetry that makes this clean: define elementary symmetric-style sums on the ratios r_i = p_i/q_i, since G(z) = (∏ q_i) ∏ (1 + r_i z), giving [z^3]G = (∏ q_i)·e_3(r), where e_3 is the 3rd elementary symmetric polynomial of the r_i.
+
+Here r_i = p_i/(1-p_i) = (1/n)/((n-1)/n) = 1/(n-1) for p_i = 1/n. With n = 2,...,8 we get r = (1, 1/2, 1/3, 1/4, 1/5, 1/6, 1/7).
+
+∏ q_i = (1/2)(2/3)(3/4)(4/5)(5/6)(6/7)(7/8) = 1/8 (telescoping).
+
+So P(3) = (1/8)·e_3(1, 1/2, 1/3, 1/4, 1/5, 1/6, 1/7).
+
+**Computing the coefficient.** Summing the products of p over each 3-subset times the complementary q&#x27;s (equivalently (1/8)·e_3 of the ratios) gives, by exact rational arithmetic over the 3-element subsets of the seven trials,
+
+ P(exactly 3 successes) = 967/5760.
+
+This is fully reduced (5760 = 2^7·3^2·5; 967 is prime).
+
+**Verification.** Direct enumeration of all C(7,3) = 35 subsets with exact Fraction arithmetic yields exactly 967/5760, confirming the result.
+
+**Final answer:** 967/5760.</blockquote></details></td></tr></tbody></table></div></div></details>
 
  <details class="bench-block" id="problem-2-sidecar" open><summary>🗒️ Contributor’s own notes / pasted responses</summary><p class="dim small">Your <strong>own</strong> review sidecar — the responses you collected and your own failure-mode read. Shown verbatim, as <em>your</em> words (distinct from the bot review and the model sweep below).</p><p class="small" style="margin-top:.4em"><strong>Sample responses you collected</strong> (5):</p><div class="traj-forks"><div class="traj-fork"><div class="traj-fork-h">🧑 <strong>GPT-5.5 Thinking Extended · OpenAI</strong> <span class="dim small">(contributor-pasted)</span></div><blockquote class="traj-quote">The probability is the coefficient of x
 3
@@ -1309,6 +1460,7 @@ Pr(exactly 3 successes)=
 <details class="d-block dedup-block" id="problem-2-dedup">
  <summary>🔍 Cross-benchmark matches <span class="dim small">(3 total)</span></summary>
  <div class="dedup-headline"><span class="pill v-revision">△ 3 adjacent matches (topical, not duplicate)</span></div>
+ 
  <p class="dim small">BGE recall (on the problem <em>statement</em>) × Claude method-judge vs the The nine precedent benchmarks judged most likely to collide …. </p>
  <p class="dim small">⚠ <code>cos</code> is <strong>surface similarity</strong> (a recall signal on wording), <em>not</em> a duplicate measure — dense embeddings cluster by vocabulary, so they over-flag surface-similar stems and miss method-equivalent ones (see <code>research/dedup-methodology-deep-research.md</code>). The duplicate call is the <strong>method-judge verdict</strong>, not <code>cos</code>. Method-level dedup is being upgraded to embed the <em>solution trajectory</em> + judge.</p>
  <div class="table-wrap"><table class="dedup-table"><thead><tr>
@@ -1557,7 +1709,7 @@ if __name__ == &#x27;__main__&#x27;:
  <h2>Four-by-Four Determinant IV</h2>
  </div>
  <div class="p-pills">
- <abbr class="term pill v-stub" data-tip="No benchmark-sweep runs for this problem yet — the model-evidence sections (results matrix · trajectory analysis) appear here once it is swept.">⏳ sweep pending</abbr>
+ 
  </div>
  </header>
 
@@ -1630,14 +1782,139 @@ Initial web validation: three independent GPT-5.5 Thinking Extended web runs pro
  </details>
 
  
+<details class="d-block proposed-tags-block" id="problem-3-proposed-tags">
+ <summary>🏷 Proposed tags <span class="dim small">(agent — author to confirm)</span></summary>
+ <p class="dim small">These are <strong>agent-proposed</strong> tags (suggestions, not verdicts) to help the author — the human author / co-PI confirms or overrides. Grounded in the problem statement on master; <strong>not</strong> written into your <code>.tex</code> scaffold. Vocabulary from the working-hypothesis taxonomy (the seed taxonomy). Proposed 2026-06-28.</p>
+ <table class="pt-table"><tbody><tr><td class="pt-dim">Capability</td><td class="pt-val">compute</td></tr><tr><td class="pt-dim">Domain</td><td class="pt-val">Mathematics</td></tr><tr><td class="pt-dim">Subtopic</td><td class="pt-val">Linear algebra</td></tr><tr><td class="pt-dim">Technique</td><td class="pt-val">Fraction-preserving Gaussian elimination (row reduction to upper triangular form, then product of diagonal pivots)</td></tr><tr><td class="pt-dim">Difficulty</td><td class="pt-val"><span class="kw-level lv-intermediate">Medium</span></td></tr><tr><td class="pt-dim">Challenged capability</td><td class="pt-val">exact symbolic/numeric computation — multi-step fraction-preserving row elimination on a 4×4 integer matrix without accumulating rounding errors</td></tr><tr><td class="pt-dim">Grading mode</td><td class="pt-val">exact</td></tr><tr><td class="pt-dim">Observed failure mode</td><td class="pt-val">arithmetic <span class="kw-warn">error</span> in determinant elimination — model returned determinant 53 instead of <span class="kw-num">105</span> across three independent GPT-5.5 Thinking Extended web runs (contributor verbatim: &quot;arithmetic <span class="kw-warn">error</span> in determinant elimination&quot;; <span class="kw-subject">editor notes</span> confirm answer 53 vs correct <span class="kw-num">105</span>)</td></tr></tbody></table>
+ <p class="dim small">Agent-proposed structured tags (author/co-PI to confirm). Suggestions, not verdicts. Grounded first-hand in the problem statement + answer key + contributor tags on master; NOT written into the contributor&#x27;s.tex scaffold. Vocabulary from the project&#x27;s seed taxonomy.</p>
+</details>
+
+
+ 
+<details class="bench-block" open id="problem-3-sweep">
+ <summary>📊 How the frontier models do — results matrix · verifier-graded</summary>
+ <p class="dim small">Sweep <code>sweep-20260603-170524</code> · objective signal — information for humans to adjudicate.</p>
+ <p class="dim small">Each <em>model × thinking-setup</em> cell ran <strong>k independent samples</strong> (shown as ✓/✗ × n). The per-model k differs by cost: the gate models (GPT-5.5 / Opus-4.7) run at <strong>k=3</strong> — matching the screening definition (<em>a model "fails" iff wrong in all 3 of its runs</em>); cheaper models (e.g. Haiku) run at higher k for tighter Wilson CIs. A "✗ ×3" on a gate model is the fail signal; hover a cell's tooltip for the per-N confidence note.</p>
+ 
+ <p class="rm-chiprow"><abbr class="term rm-chip bf-uncertain" data-tip="A combo = one model × one thinking setup. &#x27;Stumped&#x27; = none of that combo&#x27;s runs produced the author&#x27;s oracle answer — but no author oracle is on file for this problem, so the count cannot be computed. The cells below still show every answer the models actually gave.">? stumped-count unavailable — no author oracle (2 model×setup combos ran)</abbr></p><div class="table-wrap"><table class="rm-table"><thead><tr><th class="rm-corner"><abbr class="term" data-tip="Rows = models (one row per model). Columns = thinking setups (how much extended reasoning the model was allowed). Each cell shows that model&#x27;s actual final answer(s) under that setup, with ×k = how many of its runs gave that answer. Click a cell to jump to its full reasoning traces.">model \ thinking setup</abbr></th><th class="rm-setup"><abbr class="term" data-tip="Thinking tier S0 = no extended reasoning: Claude models run with extended thinking disabled (S0_nothink); GPT models run at minimal reasoning effort (S0_minimal). Hover a cell for the exact setup that ran.">S0 · no thinking</abbr></th><th class="rm-setup"><abbr class="term" data-tip="Thinking setup free-subagent as recorded in the sweep.">free-subagent</abbr></th></tr></thead><tbody><tr><th scope="row" class="rm-model"><abbr class="term" data-tip="Anthropic&#x27;s mid-tier model — between the small/fast tier and the frontier tier in capability.">Claude Sonnet 4.6</abbr></th><td class="rm-cell rm-na"><span class="rm-cell-link" title="This model × thinking-setup combination was not run in the sweep — no data (not a failure)." aria-label="This model × thinking-setup combination was not run in the sweep — no data (not a failure).">—</span></td><td class="rm-cell rm-neutral"><a class="rm-cell-link" href="#problem-3-runs-claude-sonnet-4-6-free-subagent" title="Claude Sonnet 4.6 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 105 in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="Claude Sonnet 4.6 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 105 in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">?</span> <code>105</code><span class="rm-x">×1</span></a></td></tr><tr><th scope="row" class="rm-model"><abbr class="term" data-tip="Model id as recorded in the sweep (no curated label yet).">claude-opus-4-8</abbr></th><td class="rm-cell rm-noans"><a class="rm-cell-link" href="#problem-3-runs-claude-opus-4-8-S0" title="claude-opus-4-8 under S0 · no thinking (S0_sweep0629): 3 run(s), 0 with a parseable final answer, 3 errored/unparseable. Every run errored or gave no parseable final answer, so there is nothing to compare against the oracle. Auto-verifier grading: 3/3 run(s) passed the drafted verifier. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="claude-opus-4-8 under S0 · no thinking (S0_sweep0629): 3 run(s), 0 with a parseable final answer, 3 errored/unparseable. Every run errored or gave no parseable final answer, so there is nothing to compare against the oracle. Auto-verifier grading: 3/3 run(s) passed the drafted verifier. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">⚠</span> no answer</a></td><td class="rm-cell rm-neutral"><a class="rm-cell-link" href="#problem-3-runs-claude-opus-4-8-free-subagent" title="claude-opus-4-8 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 105 in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="claude-opus-4-8 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 105 in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">?</span> <code>105</code><span class="rm-x">×1</span></a></td></tr></tbody></table></div><p class="rm-legend dim small">cell key: <abbr class="term" data-tip="the most common answer EQUALS the author oracle. The model reproduced the author answer — counts against the must-fail goal.">= matches oracle</abbr> · <abbr class="term" data-tip="the most common answer DIFFERS from the author oracle. A bolded answer inside a split equals the oracle (a minority run reached it).">≠ differs</abbr> · <abbr class="term" data-tip="no author oracle on file to compare against. The cell still lists what the model answered.">? no oracle</abbr> · <abbr class="term" data-tip="every run errored or gave no parseable final answer">⚠ no answer</abbr> · <abbr class="term" data-tip="This model × thinking-setup combination was not run in the sweep — no data (not a failure).">— not run</abbr> · <abbr class="term" data-tip="×k = the number of independent runs (samples) that gave this exact answer.">×k = run count</abbr> · click a cell for its full traces</p>
+ 
+ 
+</details>
+
+ <p class="dim small" style="margin:4px 0">🧬 <strong>Similar stems</strong> (within our corpus, BM25 wording-overlap recall flagged for review — <em>not</em> a duplicate verdict): <code>p4</code> <span class="dim">(0.70)</span>, <code>p2</code> <span class="dim">(0.35)</span>, <code>p6</code> <span class="dim">(0.28)</span></p>
+
+ <details class="bench-block" id="problem-3-failmode" open><summary>🧩 Failure / success-mode synthesis — how the models miss (and where they don’t)</summary><p class="dim small">Synthesized from the sweep (5 runs) + captured traces. INFORMATION for a human researcher to adjudicate — where a call isn’t objectively falsifiable it’s left as an open question (#111 / #102).</p><ul class="traj-list"><li><strong>Common wrong answers:</strong> <code>105</code>×2. The most-given non-oracle answer is <code>105</code> (2 runs) — a clustered wrong answer usually means one shared misstep, not random error.</li></ul></details>
 
  
 
- 
+ <details class="bench-block" id="problem-3-allruns"><summary>🔬 All model runs — full traces &amp; metadata (5 runs)</summary><p class="dim small">Every captured run from the sweep: setup (params), answer + pass, tokens (in/out, +reasoning), time &amp; cost, and the full thinking/response trace (click “trace”). The raw evidence under the summaries above (#102: all trajectories + metadata).</p><div style="margin:8px 0" id="problem-3-runs-claude-sonnet-4-6-free-subagent"><strong>claude-sonnet-4-6</strong> · <code>free-subagent</code> <span class="dim small">(1 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>free-subagent</code> k0</td><td><code>105</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">## Problem
 
- 
+Compute the exact determinant of:
+ A = [[5, 1, 0, -2],
+ [2, 3, 1, 4],
+ [0,-1, 4, 2],
+ [3, 2,-2, 1]]
 
- 
+## Approach
+
+Cofactor expansion along Row 1 (the row with a zero entry, minimizing work).
+
+det(A) = 5·C₁₁ + 1·C₁₂ + 0·C₁₃ + (-2)·C₁₄
+
+where Cᵢⱼ = (-1)^(i+j) · Mᵢⱼ, and Mᵢⱼ is the minor.
+
+det(A) = 5·M₁₁ - 1·M₁₂ + 0 + 2·M₁₄
+
+## Computing the 3×3 Minors
+
+**M₁₁** (delete row 1, col 1):
+| 3 1 4 |
+|-1 4 2 |
+| 2 -2 1 |
+
+= 3·(4·1 - 2·(-2)) - 1·((-1)·1 - 2·2) + 4·((-1)·(-2) - 4·2)
+= 3·(4 + 4) - 1·(-1 - 4) + 4·(2 - 8)
+= 3·8 - 1·(-5) + 4·(-6)
+= 24 + 5 - 24
+= **5**
+
+**M₁₂** (delete row 1, col 2):
+| 2 1 4 |
+| 0 4 2 |
+| 3 -2 1 |
+
+= 2·(4·1 - 2·(-2)) - 1·(0·1 - 2·3) + 4·(0·(-2) - 4·3)
+= 2·(4 + 4) - 1·(0 - 6) + 4·(0 - 12)
+= 2·8 - 1·(-6) + 4·(-12)
+= 16 + 6 - 48
+= **-26**
+
+**M₁₄** (delete row 1, col 4):
+| 2 3 1 |
+| 0 -1 4 |
+| 3 2 -2 |
+
+= 2·((-1)(-2) - 4·2) - 3·(0·(-2) - 4·3) + 1·(0·2 - (-1)·3)
+= 2·(2 - 8) - 3·(0 - 12) + 1·(0 + 3)
+= 2·(-6) - 3·(-12) + 3
+= -12 + 36 + 3
+= **27**
+
+## Assembly
+
+det(A) = 5·(5) - 1·(-26) + 0 + 2·(27)
+ = 25 + 26 + 0 + 54
+ = **105**
+
+## Verification
+
+Numerical check with NumPy: np.linalg.det(A) ≈ 105.000000 ✓
+
+## Final Answer
+
+det(A) = **105**</blockquote></details></td></tr></tbody></table></div></div><div style="margin:8px 0" id="problem-3-runs-claude-opus-4-8-S0"><strong>claude-opus-4-8</strong> · <code>S0_sweep0629</code> <span class="dim small">(3 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">105</blockquote></details></td></tr><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">105</blockquote></details></td></tr><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">105</blockquote></details></td></tr></tbody></table></div></div><div style="margin:8px 0" id="problem-3-runs-claude-opus-4-8-free-subagent"><strong>claude-opus-4-8</strong> · <code>free-subagent</code> <span class="dim small">(1 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>free-subagent</code> k0</td><td><code>105</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">**Problem.** Compute the exact determinant of
+A =
+[[5, 1, 0, -2],
+ [2, 3, 1, 4],
+ [0, -1, 4, 2],
+ [3, 2, -2, 1]].
+
+**Approach.** Cofactor (Laplace) expansion along the first column, since it has a zero in row 3. The first-column entries are 5, 2, 0, 3.
+
+det(A) = 5·C11 + 2·C21 + 0·C31 + 3·C41, with signs (+,-,+,-) for column 1.
+
+**Minor M11** (delete row 1, col 1):
+| 3 1 4 |
+|-1 4 2 |
+| 2 -2 1 |
+= 3(4·1 - 2·(-2)) - 1((-1)·1 - 2·2) + 4((-1)·(-2) - 4·2)
+= 3(4+4) - 1(-1-4) + 4(2-8)
+= 24 + 5 - 24 = 5.
+
+**Minor M21** (delete row 2, col 1):
+| 1 0 -2 |
+|-1 4 2 |
+| 2 -2 1 |
+= 1(4·1 - 2·(-2)) - 0 + (-2)((-1)·(-2) - 4·2)
+= 1(4+4) + (-2)(2-8) = 8 + 12 = 20.
+
+**Minor M41** (delete row 4, col 1):
+| 1 0 -2 |
+| 3 1 4 |
+|-1 4 2 |
+= 1(1·2 - 4·4) - 0 + (-2)(3·4 - 1·(-1))
+= 1(2-16) + (-2)(12+1) = -14 - 26 = -40.
+
+**Combine with cofactor signs:**
+det(A) = 5·(+M11) + 2·(-M21) + 3·(-M41)
+= 5·(5) - 2·(20) - 3·(-40)
+= 25 - 40 + 120 = 105.
+
+**Cross-check.** The full Leibniz permutation sum (24 signed terms) computed exactly also yields 105.
+
+**Final answer: 105.**
+
+(Note: a common wrong answer is 53, arising from a sign/arithmetic slip in elimination; the correct value is 105.)</blockquote></details></td></tr></tbody></table></div></div></details>
 
  <details class="bench-block" id="problem-3-sidecar" open><summary>🗒️ Contributor’s own notes / pasted responses</summary><p class="dim small">Your <strong>own</strong> review sidecar — the responses you collected and your own failure-mode read. Shown verbatim, as <em>your</em> words (distinct from the bot review and the model sweep below).</p><p class="small" style="margin-top:.4em"><strong>Sample responses you collected</strong> (5):</p><div class="traj-forks"><div class="traj-fork"><div class="traj-fork-h">🧑 <strong>GPT-5.5 Thinking Extended · OpenAI</strong> <span class="dim small">(contributor-pasted)</span></div><blockquote class="traj-quote">The exact determinant is
 
@@ -1952,7 +2229,7 @@ if __name__ == &#x27;__main__&#x27;:
  <h2>Five-Equation Linear System</h2>
  </div>
  <div class="p-pills">
- <abbr class="term pill v-stub" data-tip="No benchmark-sweep runs for this problem yet — the model-evidence sections (results matrix · trajectory analysis) appear here once it is swept.">⏳ sweep pending</abbr>
+ 
  </div>
  </header>
 
@@ -2029,14 +2306,138 @@ Initial web validation: three independent GPT-5.5 Thinking Extended web runs pro
  </details>
 
  
+<details class="d-block proposed-tags-block" id="problem-4-proposed-tags">
+ <summary>🏷 Proposed tags <span class="dim small">(agent — author to confirm)</span></summary>
+ <p class="dim small">These are <strong>agent-proposed</strong> tags (suggestions, not verdicts) to help the author — the human author / co-PI confirms or overrides. Grounded in the problem statement on master; <strong>not</strong> written into your <code>.tex</code> scaffold. Vocabulary from the working-hypothesis taxonomy (the seed taxonomy). Proposed 2026-06-28.</p>
+ <table class="pt-table"><tbody><tr><td class="pt-dim">Capability</td><td class="pt-val">compute</td></tr><tr><td class="pt-dim">Domain</td><td class="pt-val">Mathematics</td></tr><tr><td class="pt-dim">Subtopic</td><td class="pt-val">Linear algebra</td></tr><tr><td class="pt-dim">Technique</td><td class="pt-val">Gaussian elimination (exact rational arithmetic over a 5x5 integer-entry system)</td></tr><tr><td class="pt-dim">Difficulty</td><td class="pt-val"><span class="kw-level lv-intermediate">Medium</span></td></tr><tr><td class="pt-dim">Challenged capability</td><td class="pt-val">exact symbolic/numeric computation, numerical reasoning</td></tr><tr><td class="pt-dim">Grading mode</td><td class="pt-val">exact</td></tr><tr><td class="pt-dim">Observed failure mode</td><td class="pt-val">arithmetic <span class="kw-warn">error</span> in solving simultaneous equations — contributor reports three independent GPT-5.5 Thinking Extended web runs returned an incorrect solution vector; the <span class="kw-subject">grading scheme</span> further specifies that rounded-only answers are insufficient, so loss of exactness (fraction collapse to decimals) is a distinct failure path beyond pure arithmetic slip</td></tr></tbody></table>
+ <p class="dim small">Agent-proposed structured tags (author/co-PI to confirm). Suggestions, not verdicts. Grounded first-hand in the problem statement + answer key + contributor tags on master; NOT written into the contributor&#x27;s.tex scaffold. Vocabulary from the project&#x27;s seed taxonomy.</p>
+</details>
+
+
+ 
+<details class="bench-block" open id="problem-4-sweep">
+ <summary>📊 How the frontier models do — results matrix · verifier-graded</summary>
+ <p class="dim small">Sweep <code>sweep-20260603-170524</code> · objective signal — information for humans to adjudicate.</p>
+ <p class="dim small">Each <em>model × thinking-setup</em> cell ran <strong>k independent samples</strong> (shown as ✓/✗ × n). The per-model k differs by cost: the gate models (GPT-5.5 / Opus-4.7) run at <strong>k=3</strong> — matching the screening definition (<em>a model "fails" iff wrong in all 3 of its runs</em>); cheaper models (e.g. Haiku) run at higher k for tighter Wilson CIs. A "✗ ×3" on a gate model is the fail signal; hover a cell's tooltip for the per-N confidence note.</p>
+ 
+ <p class="rm-chiprow"><abbr class="term rm-chip bf-uncertain" data-tip="A combo = one model × one thinking setup. &#x27;Stumped&#x27; = none of that combo&#x27;s runs produced the author&#x27;s oracle answer — but no author oracle is on file for this problem, so the count cannot be computed. The cells below still show every answer the models actually gave.">? stumped-count unavailable — no author oracle (2 model×setup combos ran)</abbr></p><div class="table-wrap"><table class="rm-table"><thead><tr><th class="rm-corner"><abbr class="term" data-tip="Rows = models (one row per model). Columns = thinking setups (how much extended reasoning the model was allowed). Each cell shows that model&#x27;s actual final answer(s) under that setup, with ×k = how many of its runs gave that answer. Click a cell to jump to its full reasoning traces.">model \ thinking setup</abbr></th><th class="rm-setup"><abbr class="term" data-tip="Thinking tier S0 = no extended reasoning: Claude models run with extended thinking disabled (S0_nothink); GPT models run at minimal reasoning effort (S0_minimal). Hover a cell for the exact setup that ran.">S0 · no thinking</abbr></th><th class="rm-setup"><abbr class="term" data-tip="Thinking setup free-subagent as recorded in the sweep.">free-subagent</abbr></th></tr></thead><tbody><tr><th scope="row" class="rm-model"><abbr class="term" data-tip="Anthropic&#x27;s mid-tier model — between the small/fast tier and the frontier tier in capability.">Claude Sonnet 4.6</abbr></th><td class="rm-cell rm-na"><span class="rm-cell-link" title="This model × thinking-setup combination was not run in the sweep — no data (not a failure)." aria-label="This model × thinking-setup combination was not run in the sweep — no data (not a failure).">—</span></td><td class="rm-cell rm-neutral"><a class="rm-cell-link" href="#problem-4-runs-claude-sonnet-4-6-free-subagent" title="Claude Sonnet 4.6 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: x = (4455/1907, -2650/1907, 379/1907, 1438/1907, 1039/1907) in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="Claude Sonnet 4.6 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: x = (4455/1907, -2650/1907, 379/1907, 1438/1907, 1039/1907) in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">?</span> <code>x = (4455/1907, -2650/1907, 379/1907, 1438/1907, 1039/1907)</code><span class="rm-x">×1</span></a></td></tr><tr><th scope="row" class="rm-model"><abbr class="term" data-tip="Model id as recorded in the sweep (no curated label yet).">claude-opus-4-8</abbr></th><td class="rm-cell rm-noans"><a class="rm-cell-link" href="#problem-4-runs-claude-opus-4-8-S0" title="claude-opus-4-8 under S0 · no thinking (S0_sweep0629): 3 run(s), 0 with a parseable final answer, 3 errored/unparseable. Every run errored or gave no parseable final answer, so there is nothing to compare against the oracle. Auto-verifier grading: 3/3 run(s) passed the drafted verifier. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="claude-opus-4-8 under S0 · no thinking (S0_sweep0629): 3 run(s), 0 with a parseable final answer, 3 errored/unparseable. Every run errored or gave no parseable final answer, so there is nothing to compare against the oracle. Auto-verifier grading: 3/3 run(s) passed the drafted verifier. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">⚠</span> no answer</a></td><td class="rm-cell rm-neutral"><a class="rm-cell-link" href="#problem-4-runs-claude-opus-4-8-free-subagent" title="claude-opus-4-8 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: x = (4455/1907, -2650/1907, 379/1907, 1438/1907, 1039/1907) in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="claude-opus-4-8 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: x = (4455/1907, -2650/1907, 379/1907, 1438/1907, 1039/1907) in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">?</span> <code>x = (4455/1907, -2650/1907, 379/1907, 1438/1907, 1039/1907)</code><span class="rm-x">×1</span></a></td></tr></tbody></table></div><p class="rm-legend dim small">cell key: <abbr class="term" data-tip="the most common answer EQUALS the author oracle. The model reproduced the author answer — counts against the must-fail goal.">= matches oracle</abbr> · <abbr class="term" data-tip="the most common answer DIFFERS from the author oracle. A bolded answer inside a split equals the oracle (a minority run reached it).">≠ differs</abbr> · <abbr class="term" data-tip="no author oracle on file to compare against. The cell still lists what the model answered.">? no oracle</abbr> · <abbr class="term" data-tip="every run errored or gave no parseable final answer">⚠ no answer</abbr> · <abbr class="term" data-tip="This model × thinking-setup combination was not run in the sweep — no data (not a failure).">— not run</abbr> · <abbr class="term" data-tip="×k = the number of independent runs (samples) that gave this exact answer.">×k = run count</abbr> · click a cell for its full traces</p>
+ 
+ 
+</details>
+
+ <p class="dim small" style="margin:4px 0">🧬 <strong>Similar stems</strong> (within our corpus, BM25 wording-overlap recall flagged for review — <em>not</em> a duplicate verdict): <code>p3</code> <span class="dim">(0.70)</span>, <code>p2</code> <span class="dim">(0.34)</span>, <code>p6</code> <span class="dim">(0.27)</span></p>
+
+ <details class="bench-block" id="problem-4-failmode" open><summary>🧩 Failure / success-mode synthesis — how the models miss (and where they don’t)</summary><p class="dim small">Synthesized from the sweep (5 runs) + captured traces. INFORMATION for a human researcher to adjudicate — where a call isn’t objectively falsifiable it’s left as an open question (#111 / #102).</p><ul class="traj-list"><li><strong>Common wrong answers:</strong> <code>x = (4455/1907, -2650/1907, 379/1907, 1438/1907, 1039/1907)</code>×1 · <code>4455/1907; -2650/1907; 379/1907; 1438/1907; 1039/1907</code>×1. The most-given non-oracle answer is <code>x = (4455/1907, -2650/1907, 379/1907, 1438/1907, 1039/1907)</code> (1 runs) — a clustered wrong answer usually means one shared misstep, not random error.</li></ul></details>
 
  
 
- 
+ <details class="bench-block" id="problem-4-allruns"><summary>🔬 All model runs — full traces &amp; metadata (5 runs)</summary><p class="dim small">Every captured run from the sweep: setup (params), answer + pass, tokens (in/out, +reasoning), time &amp; cost, and the full thinking/response trace (click “trace”). The raw evidence under the summaries above (#102: all trajectories + metadata).</p><div style="margin:8px 0" id="problem-4-runs-claude-sonnet-4-6-free-subagent"><strong>claude-sonnet-4-6</strong> · <code>free-subagent</code> <span class="dim small">(1 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>free-subagent</code> k0</td><td><code>x = (4455/1907, -2650/1907, 379/1907, 1438/1907, 1039/1907)</code> ✗ fail</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">## Problem
 
- 
+Solve Ax = b exactly where
 
+A = [[2, 1, 0, 3, -1],
+ [1, -2, 4, 0, 2],
+ [0, 3, 1, -1, 5],
+ [4, 0, -2, 2, 1],
+ [3, 1, 2, -4, 0]]
+
+b = [5, 7, -2, 11, 3]^T
+
+## Approach
+
+Gaussian elimination with exact rational arithmetic (using Python&#x27;s `fractions.Fraction` to avoid any floating-point error). Partial pivoting is used where needed to avoid zero pivots.
+
+## Augmented Matrix Setup
+
+[A | b] (all entries exact integers/fractions throughout):
+
+Row 1: [2, 1, 0, 3, -1 | 5]
+Row 2: [1, -2, 4, 0, 2 | 7]
+Row 3: [0, 3, 1, -1, 5 | -2]
+Row 4: [4, 0, -2, 2, 1 | 11]
+Row 5: [3, 1, 2, -4, 0 | 3]
+
+## Forward Elimination
+
+**Column 1 (pivot = 2 in row 1):**
+
+R2 ← R2 - (1/2)R1: [0, -5/2, 4, -3/2, 5/2 | 9/2]
+R3 unchanged: [0, 3, 1, -1, 5 | -2]
+R4 ← R4 - 2·R1: [0, -2, -2, -4, 3 | 1]
+R5 ← R5 - (3/2)R1: [0, -1/2, 2, -17/2, 3/2 | -9/2]
+
+**Column 2 (pivot = -5/2 in row 2):**
+
+R3 ← R3 - (3/(-5/2))R2 = R3 + (6/5)R2: [0, 0, 29/5, -14/5, 8 | 17/5]
+R4 ← R4 - (-2/(-5/2))R2 = R4 - (4/5)R2: [0, 0, -26/5, -14/5, 1 | -13/5]
+R5 ← R5 - (-1/2/(-5/2))R2 = R5 - (1/5)R2: [0, 0, 6/5, -41/5, 1 | -27/5]
+
+**Column 3 (pivot = 29/5 in row 3):**
+
+R4 ← R4 - (-26/5)/(29/5) · R3 = R4 + (26/29)R3: [0, 0, 0, -154/29, 237/29 | 13/29]
+R5 ← R5 - (6/5)/(29/5) · R3 = R5 - (6/29)R3: [0, 0, 0, -221/29, -19/29 | -177/29]
+
+**Column 4 (pivot = -154/29 in row 4):**
+
+R5 ← R5 - (-221/29)/(-154/29) · R4 = R5 - (221/154)R4:
+ x4-coeff: -221/29 - (221/154)·(-154/29) = -221/29 + 221/29 = 0 ✓
+ x5-coeff: -19/29 - (221/154)·(237/29) = -19/29 - 52377/4466
+ = -2926/4466 - 52377/4466 = -55303/4466 = wait, let me restate from computation:
  
+ After exact arithmetic: row 5 becomes [0, 0, 0, 0, -1907/154 | -1039/154]
+
+Upper triangular form achieved.
+
+## Back Substitution
+
+**x5:** -1907/154 · x5 = -1039/154 → x5 = 1039/1907
+
+**x4:** -154/29 · x4 + (237/29)·(1039/1907) = 13/29
+ -154/29 · x4 = 13/29 - 237·1039/(29·1907)
+ After exact computation: x4 = 1438/1907
+
+**x3:** 29/5 · x3 - 14/5 · x4 + 8·x5 = 17/5
+ 29/5 · x3 = 17/5 + 14/5·(1438/1907) - 8·(1039/1907)
+ After exact computation: x3 = 379/1907
+
+**x2:** -5/2 · x2 + 4·x3 - 3/2·x4 + 5/2·x5 = 9/2
+ After exact computation: x2 = -2650/1907
+
+**x1:** 2·x1 + x2 + 0·x3 + 3·x4 - x5 = 5
+ After exact computation: x1 = 4455/1907
+
+## Verification
+
+Substituting back into Ax = b gives exactly [5, 7, -2, 11, 3]^T — all five rows match exactly.
+
+## Final Answer
+
+x = (4455/1907, -2650/1907, 379/1907, 1438/1907, 1039/1907)
+
+All five components share denominator 1907. The numerators are: 4455, -2650, 379, 1438, 1039.</blockquote></details></td></tr></tbody></table></div></div><div style="margin:8px 0" id="problem-4-runs-claude-opus-4-8-S0"><strong>claude-opus-4-8</strong> · <code>S0_sweep0629</code> <span class="dim small">(3 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">x1 = 4455/1907, x2 = -2650/1907, x3 = 379/1907, x4 = 1438/1907, x5 = 1039/1907</blockquote></details></td></tr><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">x1 = 4455/1907, x2 = -2650/1907, x3 = 379/1907, x4 = 1438/1907, x5 = 1039/1907</blockquote></details></td></tr><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">x = [4455/1907, -2650/1907, 379/1907, 1438/1907, 1039/1907]</blockquote></details></td></tr></tbody></table></div></div><div style="margin:8px 0" id="problem-4-runs-claude-opus-4-8-free-subagent"><strong>claude-opus-4-8</strong> · <code>free-subagent</code> <span class="dim small">(1 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>free-subagent</code> k0</td><td><code>x = (4455/1907, -2650/1907, 379/1907, 1438/1907, 1039/1907)</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">Problem: Solve Ax=b exactly, with
+A = [[2,1,0,3,-1],[1,-2,4,0,2],[0,3,1,-1,5],[4,0,-2,2,1],[3,1,2,-4,0]],
+b = [5,7,-2,11,3]^T.
+
+Approach: Perform Gaussian elimination over the rationals (exact arithmetic with Fraction), with partial pivoting only to avoid zero pivots, reducing the augmented matrix [A|b] to reduced row echelon form. Because A is nonsingular, the unique solution is read off the last column. The common denominator turns out to be det-related, giving 1907 in all components.
+
+Reduced augmented matrix yields:
+x1 = 4455/1907
+x2 = -2650/1907
+x3 = 379/1907
+x4 = 1438/1907
+x5 = 1039/1907
+
+Verification (substitute back into each row of A):
+Row 1: 2*x1 + x2 + 0 + 3*x4 - x5 = 5 ✓
+Row 2: x1 - 2*x2 + 4*x3 + 0 + 2*x5 = 7 ✓
+Row 3: 0 + 3*x2 + x3 - x4 + 5*x5 = -2 ✓
+Row 4: 4*x1 + 0 - 2*x3 + 2*x4 + x5 = 11 ✓
+Row 5: 3*x1 + x2 + 2*x3 - 4*x4 + 0 = 3 ✓
+
+All five equations are satisfied exactly, confirming the solution.
+
+Final answer:
+x = (4455/1907, -2650/1907, 379/1907, 1438/1907, 1039/1907).</blockquote></details></td></tr></tbody></table></div></div></details>
 
  <details class="bench-block" id="problem-4-sidecar" open><summary>🗒️ Contributor’s own notes / pasted responses</summary><p class="dim small">Your <strong>own</strong> review sidecar — the responses you collected and your own failure-mode read. Shown verbatim, as <em>your</em> words (distinct from the bot review and the model sweep below).</p><p class="small" style="margin-top:.4em"><strong>Sample responses you collected</strong> (5):</p><div class="traj-forks"><div class="traj-fork"><div class="traj-fork-h">🧑 <strong>GPT-5.5 Thinking Extended · OpenAI</strong> <span class="dim small">(contributor-pasted)</span></div><blockquote class="traj-quote">The exact solution is
 
@@ -2208,6 +2609,7 @@ So the five components are
 <details class="d-block dedup-block" id="problem-4-dedup">
  <summary>🔍 Cross-benchmark matches <span class="dim small">(1 total)</span></summary>
  <div class="dedup-headline"><span class="pill v-revision">△ 1 adjacent match (topical, not duplicate)</span></div>
+ 
  <p class="dim small">BGE recall (on the problem <em>statement</em>) × Claude method-judge vs the The nine precedent benchmarks judged most likely to collide …. </p>
  <p class="dim small">⚠ <code>cos</code> is <strong>surface similarity</strong> (a recall signal on wording), <em>not</em> a duplicate measure — dense embeddings cluster by vocabulary, so they over-flag surface-similar stems and miss method-equivalent ones (see <code>research/dedup-methodology-deep-research.md</code>). The duplicate call is the <strong>method-judge verdict</strong>, not <code>cos</code>. Method-level dedup is being upgraded to embed the <em>solution trajectory</em> + judge.</p>
  <div class="table-wrap"><table class="dedup-table"><thead><tr>
@@ -2456,7 +2858,7 @@ if __name__ == &#x27;__main__&#x27;:
  <h2>Ten-Trial Poisson-Binomial Probability I</h2>
  </div>
  <div class="p-pills">
- <abbr class="term pill v-stub" data-tip="No benchmark-sweep runs for this problem yet — the model-evidence sections (results matrix · trajectory analysis) appear here once it is swept.">⏳ sweep pending</abbr>
+ 
  </div>
  </header>
 
@@ -2521,14 +2923,105 @@ Initial web validation: three independent GPT-5.5 Thinking Extended web runs pro
  </details>
 
  
+<details class="d-block proposed-tags-block" id="problem-5-proposed-tags">
+ <summary>🏷 Proposed tags <span class="dim small">(agent — author to confirm)</span></summary>
+ <p class="dim small">These are <strong>agent-proposed</strong> tags (suggestions, not verdicts) to help the author — the human author / co-PI confirms or overrides. Grounded in the problem statement on master; <strong>not</strong> written into your <code>.tex</code> scaffold. Vocabulary from the working-hypothesis taxonomy (the seed taxonomy). Proposed 2026-06-28.</p>
+ <table class="pt-table"><tbody><tr><td class="pt-dim">Capability</td><td class="pt-val">compute</td></tr><tr><td class="pt-dim">Domain</td><td class="pt-val">Statistics</td></tr><tr><td class="pt-dim">Subtopic</td><td class="pt-val">Distributions</td></tr><tr><td class="pt-dim">Technique</td><td class="pt-val">Poisson-Binomial probability via generating function (polynomial expansion to extract exact coefficient)</td></tr><tr><td class="pt-dim">Difficulty</td><td class="pt-val"><span class="kw-level lv-intermediate">Medium</span></td></tr><tr><td class="pt-dim">Challenged capability</td><td class="pt-val">exact symbolic/numeric computation, combinatorial counting, numerical reasoning</td></tr><tr><td class="pt-dim">Grading mode</td><td class="pt-val">exact</td></tr><tr><td class="pt-dim">Observed failure mode</td><td class="pt-val">uses a binomial approximation or <span class="kw-warn">wrong</span> coefficient — contributor reports three independent GPT-5.5 Thinking Extended web runs all produced incorrect answers with this failure pattern. (Info, not <span class="kw-subject">verdict</span>: the <span class="kw-warn">error</span> aligns with conflating the Poisson-Binomial generating function expansion with a standard binomial coefficient, likely because the model approximates all p_k as equal or mis-identifies which elementary symmetric polynomial term to sum.)</td></tr></tbody></table>
+ <p class="dim small">Agent-proposed structured tags (author/co-PI to confirm). Suggestions, not verdicts. Grounded first-hand in the problem statement + answer key + contributor tags on master; NOT written into the contributor&#x27;s.tex scaffold. Vocabulary from the project&#x27;s seed taxonomy.</p>
+</details>
+
+
+ 
+<details class="bench-block" open id="problem-5-sweep">
+ <summary>📊 How the frontier models do — results matrix · verifier-graded</summary>
+ <p class="dim small">Sweep <code>sweep-20260603-170524</code> · objective signal — information for humans to adjudicate.</p>
+ <p class="dim small">Each <em>model × thinking-setup</em> cell ran <strong>k independent samples</strong> (shown as ✓/✗ × n). The per-model k differs by cost: the gate models (GPT-5.5 / Opus-4.7) run at <strong>k=3</strong> — matching the screening definition (<em>a model "fails" iff wrong in all 3 of its runs</em>); cheaper models (e.g. Haiku) run at higher k for tighter Wilson CIs. A "✗ ×3" on a gate model is the fail signal; hover a cell's tooltip for the per-N confidence note.</p>
+ 
+ <p class="rm-chiprow"><abbr class="term rm-chip bf-uncertain" data-tip="A combo = one model × one thinking setup. &#x27;Stumped&#x27; = none of that combo&#x27;s runs produced the author&#x27;s oracle answer — but no author oracle is on file for this problem, so the count cannot be computed. The cells below still show every answer the models actually gave.">? stumped-count unavailable — no author oracle (2 model×setup combos ran)</abbr></p><div class="table-wrap"><table class="rm-table"><thead><tr><th class="rm-corner"><abbr class="term" data-tip="Rows = models (one row per model). Columns = thinking setups (how much extended reasoning the model was allowed). Each cell shows that model&#x27;s actual final answer(s) under that setup, with ×k = how many of its runs gave that answer. Click a cell to jump to its full reasoning traces.">model \ thinking setup</abbr></th><th class="rm-setup"><abbr class="term" data-tip="Thinking tier S0 = no extended reasoning: Claude models run with extended thinking disabled (S0_nothink); GPT models run at minimal reasoning effort (S0_minimal). Hover a cell for the exact setup that ran.">S0 · no thinking</abbr></th><th class="rm-setup"><abbr class="term" data-tip="Thinking setup free-subagent as recorded in the sweep.">free-subagent</abbr></th></tr></thead><tbody><tr><th scope="row" class="rm-model"><abbr class="term" data-tip="Anthropic&#x27;s mid-tier model — between the small/fast tier and the frontier tier in capability.">Claude Sonnet 4.6</abbr></th><td class="rm-cell rm-na"><span class="rm-cell-link" title="This model × thinking-setup combination was not run in the sweep — no data (not a failure)." aria-label="This model × thinking-setup combination was not run in the sweep — no data (not a failure).">—</span></td><td class="rm-cell rm-neutral"><a class="rm-cell-link" href="#problem-5-runs-claude-sonnet-4-6-free-subagent" title="Claude Sonnet 4.6 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 7645/36288 in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="Claude Sonnet 4.6 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 7645/36288 in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">?</span> <code>7645/36288</code><span class="rm-x">×1</span></a></td></tr><tr><th scope="row" class="rm-model"><abbr class="term" data-tip="Model id as recorded in the sweep (no curated label yet).">claude-opus-4-8</abbr></th><td class="rm-cell rm-noans"><a class="rm-cell-link" href="#problem-5-runs-claude-opus-4-8-S0" title="claude-opus-4-8 under S0 · no thinking (S0_sweep0629): 3 run(s), 0 with a parseable final answer, 3 errored/unparseable. Every run errored or gave no parseable final answer, so there is nothing to compare against the oracle. Auto-verifier grading: 3/3 run(s) passed the drafted verifier. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="claude-opus-4-8 under S0 · no thinking (S0_sweep0629): 3 run(s), 0 with a parseable final answer, 3 errored/unparseable. Every run errored or gave no parseable final answer, so there is nothing to compare against the oracle. Auto-verifier grading: 3/3 run(s) passed the drafted verifier. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">⚠</span> no answer</a></td><td class="rm-cell rm-neutral"><a class="rm-cell-link" href="#problem-5-runs-claude-opus-4-8-free-subagent" title="claude-opus-4-8 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 7645/36288 in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="claude-opus-4-8 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 7645/36288 in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">?</span> <code>7645/36288</code><span class="rm-x">×1</span></a></td></tr></tbody></table></div><p class="rm-legend dim small">cell key: <abbr class="term" data-tip="the most common answer EQUALS the author oracle. The model reproduced the author answer — counts against the must-fail goal.">= matches oracle</abbr> · <abbr class="term" data-tip="the most common answer DIFFERS from the author oracle. A bolded answer inside a split equals the oracle (a minority run reached it).">≠ differs</abbr> · <abbr class="term" data-tip="no author oracle on file to compare against. The cell still lists what the model answered.">? no oracle</abbr> · <abbr class="term" data-tip="every run errored or gave no parseable final answer">⚠ no answer</abbr> · <abbr class="term" data-tip="This model × thinking-setup combination was not run in the sweep — no data (not a failure).">— not run</abbr> · <abbr class="term" data-tip="×k = the number of independent runs (samples) that gave this exact answer.">×k = run count</abbr> · click a cell for its full traces</p>
+ 
+ 
+</details>
+
+ <p class="dim small" style="margin:4px 0">🧬 <strong>Similar stems</strong> (within our corpus, BM25 wording-overlap recall flagged for review — <em>not</em> a duplicate verdict): <code>p6</code> <span class="dim">(0.98)</span>, <code>p2</code> <span class="dim">(0.74)</span>, <code>p3</code> <span class="dim">(0.28)</span></p>
+
+ <details class="bench-block" id="problem-5-failmode" open><summary>🧩 Failure / success-mode synthesis — how the models miss (and where they don’t)</summary><p class="dim small">Synthesized from the sweep (5 runs) + captured traces. INFORMATION for a human researcher to adjudicate — where a call isn’t objectively falsifiable it’s left as an open question (#111 / #102).</p><ul class="traj-list"><li><strong>Common wrong answers:</strong> <code>7645/36288</code>×2. The most-given non-oracle answer is <code>7645/36288</code> (2 runs) — a clustered wrong answer usually means one shared misstep, not random error.</li></ul></details>
 
  
 
- 
+ <details class="bench-block" id="problem-5-allruns"><summary>🔬 All model runs — full traces &amp; metadata (5 runs)</summary><p class="dim small">Every captured run from the sweep: setup (params), answer + pass, tokens (in/out, +reasoning), time &amp; cost, and the full thinking/response trace (click “trace”). The raw evidence under the summaries above (#102: all trajectories + metadata).</p><div style="margin:8px 0" id="problem-5-runs-claude-sonnet-4-6-free-subagent"><strong>claude-sonnet-4-6</strong> · <code>free-subagent</code> <span class="dim small">(1 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>free-subagent</code> k0</td><td><code>7645/36288</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">## Problem
 
- 
+Ten independent Bernoulli trials have success probabilities 1/2, 1/3, 1/4,..., 1/11. Find the exact probability of exactly 3 successes.
 
- 
+## Approach
+
+This is a Poisson-Binomial distribution problem. The trials are independent with distinct success probabilities p_k = 1/k for k = 2, 3,..., 11 (and failure probabilities q_k = 1 - 1/k = (k-1)/k).
+
+The probability generating function for the sum of these independent indicators is:
+
+P(z) = product_{k=2}^{11} [q_k + p_k * z] = product_{k=2}^{11} [(k-1)/k + (1/k)*z]
+
+The exact probability of exactly 3 successes is the coefficient of z^3 in P(z).
+
+## Key Steps
+
+**Setting up the generating function:**
+
+Each factor for trial k is:
+ [(k-1)/k + (1/k)z]
+
+For k = 2: [1/2 + (1/2)z]
+For k = 3: [2/3 + (1/3)z]
+For k = 4: [3/4 + (1/4)z]...
+For k = 11: [10/11 + (1/11)z]
+
+**Computing the coefficient of z^3 via exact polynomial multiplication:**
+
+Starting with polynomial [1], we multiply sequentially by each factor [(k-1)/k + (1/k)z], keeping track of coefficients as exact fractions.
+
+The full probability distribution over 0 through 10 successes is:
+- P(X=0) = 1/11
+- P(X=1) = 671/2520
+- P(X=2) = 16103/50400
+- P(X=3) = 7645/36288
+- P(X=4) = 31063/362880
+- P(X=5) = 781/34560
+- P(X=6) = 683/172800
+- P(X=7) = 11/24192
+- P(X=8) = 1/30240
+- P(X=9) = 1/725760
+- P(X=10) = 1/39916800
+
+**Verification:** The sum of all probabilities equals 1 (confirmed by exact arithmetic).
+
+**Note on the fraction:** gcd(7645, 36288) = 1, so 7645/36288 is already fully reduced.
+
+As a decimal: 7645/36288 ≈ 0.2107
+
+## Final Answer
+
+P(exactly 3 successes) = **7645/36288**</blockquote></details></td></tr></tbody></table></div></div><div style="margin:8px 0" id="problem-5-runs-claude-opus-4-8-S0"><strong>claude-opus-4-8</strong> · <code>S0_sweep0629</code> <span class="dim small">(3 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">7645/36288</blockquote></details></td></tr><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">7645/36288</blockquote></details></td></tr><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">7645/36288</blockquote></details></td></tr></tbody></table></div></div><div style="margin:8px 0" id="problem-5-runs-claude-opus-4-8-free-subagent"><strong>claude-opus-4-8</strong> · <code>free-subagent</code> <span class="dim small">(1 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>free-subagent</code> k0</td><td><code>7645/36288</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">**Problem.** Ten independent Bernoulli trials have success probabilities 1/2, 1/3,..., 1/11. Find the exact probability of exactly 3 successes.
+
+**Approach.** The trials have success probabilities p_k = 1/k for k = 2, 3,..., 11 (ten trials total). This is a Poisson-binomial distribution. The probability of exactly m successes is the coefficient of z^m in the probability generating function
+
+ G(z) = ∏_{k=2}^{11} [ (1 - 1/k) + (1/k) z ].
+
+We need the coefficient of z^3.
+
+**Setup.** Note 1 - 1/k = (k-1)/k, so
+
+ G(z) = ∏_{k=2}^{11} [ (k-1)/k + z/k ] = (1/11!) · ∏_{k=2}^{11} [ (k-1) + z ],
+
+since the product of denominators k = 2·3·...·11 = 11!/1! = 11!/1 = 39916800... more precisely ∏_{k=2}^{11} k = 11! / 1! = 39916800. The numerator product is ∏_{j=1}^{10} (j + z) (substituting j = k-1, running j = 1..10).
+
+So G(z) = (1/39916800) · ∏_{j=1}^{10} (z + j). The coefficient of z^3 in ∏_{j=1}^{10}(z+j) is the elementary symmetric polynomial e_7 of {1,2,...,10} (choosing the constant j from 7 of the factors and z from the other 3), i.e. e_7(1,...,10). These are the unsigned Stirling numbers of the first kind.
+
+**Exact computation.** Building the coefficient list of ∏_{k=2}^{11}[(1-1/k)+(1/k)z] term by term with exact rational arithmetic:
+
+ coefficient of z^3 = 7645/36288.
+
+Sanity check: the full coefficient list sums to 1 (valid probability distribution). The denominator 36288 = 39916800 / 1100... in lowest terms the reduced fraction is 7645/36288, and gcd(7645, 36288) = 1 (7645 = 5·11·139; 36288 = 2^6·3^4·7, sharing no common factor).
+
+**Final answer.** 7645/36288 ≈ 0.21066.</blockquote></details></td></tr></tbody></table></div></div></details>
 
  <details class="bench-block" id="problem-5-sidecar" open><summary>🗒️ Contributor’s own notes / pasted responses</summary><p class="dim small">Your <strong>own</strong> review sidecar — the responses you collected and your own failure-mode read. Shown verbatim, as <em>your</em> words (distinct from the bot review and the model sweep below).</p><p class="small" style="margin-top:.4em"><strong>Sample responses you collected</strong> (5):</p><div class="traj-forks"><div class="traj-fork"><div class="traj-fork-h">🧑 <strong>GPT-5.5 Thinking Extended · OpenAI</strong> <span class="dim small">(contributor-pasted)</span></div><blockquote class="traj-quote">The probability is the coefficient of x
 3
@@ -2738,6 +3231,7 @@ Is this conversation helpful so far?</blockquote></div><div class="traj-fork"><d
 <details class="d-block dedup-block" id="problem-5-dedup">
  <summary>🔍 Cross-benchmark matches <span class="dim small">(5 total)</span></summary>
  <div class="dedup-headline"><span class="pill v-revision">△ 5 adjacent matches (topical, not duplicate)</span></div>
+ 
  <p class="dim small">BGE recall (on the problem <em>statement</em>) × Claude method-judge vs the The nine precedent benchmarks judged most likely to collide …. </p>
  <p class="dim small">⚠ <code>cos</code> is <strong>surface similarity</strong> (a recall signal on wording), <em>not</em> a duplicate measure — dense embeddings cluster by vocabulary, so they over-flag surface-similar stems and miss method-equivalent ones (see <code>research/dedup-methodology-deep-research.md</code>). The duplicate call is the <strong>method-judge verdict</strong>, not <code>cos</code>. Method-level dedup is being upgraded to embed the <em>solution trajectory</em> + judge.</p>
  <div class="table-wrap"><table class="dedup-table"><thead><tr>
@@ -2987,7 +3481,7 @@ if __name__ == &#x27;__main__&#x27;:
  <h2>Ten-Trial Poisson-Binomial Probability III</h2>
  </div>
  <div class="p-pills">
- <abbr class="term pill v-stub" data-tip="No benchmark-sweep runs for this problem yet — the model-evidence sections (results matrix · trajectory analysis) appear here once it is swept.">⏳ sweep pending</abbr>
+ 
  </div>
  </header>
 
@@ -3052,14 +3546,105 @@ Initial web validation: three independent GPT-5.5 Thinking Extended web runs pro
  </details>
 
  
+<details class="d-block proposed-tags-block" id="problem-6-proposed-tags">
+ <summary>🏷 Proposed tags <span class="dim small">(agent — author to confirm)</span></summary>
+ <p class="dim small">These are <strong>agent-proposed</strong> tags (suggestions, not verdicts) to help the author — the human author / co-PI confirms or overrides. Grounded in the problem statement on master; <strong>not</strong> written into your <code>.tex</code> scaffold. Vocabulary from the working-hypothesis taxonomy (the seed taxonomy). Proposed 2026-06-28.</p>
+ <table class="pt-table"><tbody><tr><td class="pt-dim">Capability</td><td class="pt-val">compute</td></tr><tr><td class="pt-dim">Domain</td><td class="pt-val">Statistics</td></tr><tr><td class="pt-dim">Subtopic</td><td class="pt-val">Distributions</td></tr><tr><td class="pt-dim">Technique</td><td class="pt-val">Poisson-binomial probability via polynomial generating function — extract coefficient of z^5 in the product of ten linear factors (1 - 1/k) + (1/k)z for k = 2..11</td></tr><tr><td class="pt-dim">Difficulty</td><td class="pt-val"><span class="kw-level lv-intermediate">Medium</span></td></tr><tr><td class="pt-dim">Challenged capability</td><td class="pt-val">exact symbolic/numeric computation, combinatorial counting</td></tr><tr><td class="pt-dim">Grading mode</td><td class="pt-val">exact</td></tr><tr><td class="pt-dim">Observed failure mode</td><td class="pt-val">uses a binomial approximation or <span class="kw-warn">wrong</span> coefficient — contributor confirmed across three independent GPT-5.5 Thinking Extended web runs; the model extracted the <span class="kw-warn">wrong</span> Poisson-binomial coefficient (<span class="kw-subject">editor notes</span>: &quot;model extracted the <span class="kw-warn">wrong</span> Poisson-binomial coefficient&quot). Info-not-<span class="kw-subject">verdict</span> note: the two <span class="kw-subject">failure modes</span> (binomial approximation vs. <span class="kw-warn">wrong</span> coefficient extraction) are subtly distinct — approximation conflates heterogeneous-p trials with equal-p, while <span class="kw-warn">wrong</span>-coefficient extraction implies the generating function expansion itself was carried out incorrectly; both collapse to a non-exact numeric answer and are caught by the <span class="kw-subject">exact-match</span> grader.</td></tr></tbody></table>
+ <p class="dim small">Agent-proposed structured tags (author/co-PI to confirm). Suggestions, not verdicts. Grounded first-hand in the problem statement + answer key + contributor tags on master; NOT written into the contributor&#x27;s.tex scaffold. Vocabulary from the project&#x27;s seed taxonomy.</p>
+</details>
+
+
+ 
+<details class="bench-block" open id="problem-6-sweep">
+ <summary>📊 How the frontier models do — results matrix · verifier-graded</summary>
+ <p class="dim small">Sweep <code>sweep-20260603-170524</code> · objective signal — information for humans to adjudicate.</p>
+ <p class="dim small">Each <em>model × thinking-setup</em> cell ran <strong>k independent samples</strong> (shown as ✓/✗ × n). The per-model k differs by cost: the gate models (GPT-5.5 / Opus-4.7) run at <strong>k=3</strong> — matching the screening definition (<em>a model "fails" iff wrong in all 3 of its runs</em>); cheaper models (e.g. Haiku) run at higher k for tighter Wilson CIs. A "✗ ×3" on a gate model is the fail signal; hover a cell's tooltip for the per-N confidence note.</p>
+ 
+ <p class="rm-chiprow"><abbr class="term rm-chip bf-uncertain" data-tip="A combo = one model × one thinking setup. &#x27;Stumped&#x27; = none of that combo&#x27;s runs produced the author&#x27;s oracle answer — but no author oracle is on file for this problem, so the count cannot be computed. The cells below still show every answer the models actually gave.">? stumped-count unavailable — no author oracle (2 model×setup combos ran)</abbr></p><div class="table-wrap"><table class="rm-table"><thead><tr><th class="rm-corner"><abbr class="term" data-tip="Rows = models (one row per model). Columns = thinking setups (how much extended reasoning the model was allowed). Each cell shows that model&#x27;s actual final answer(s) under that setup, with ×k = how many of its runs gave that answer. Click a cell to jump to its full reasoning traces.">model \ thinking setup</abbr></th><th class="rm-setup"><abbr class="term" data-tip="Thinking tier S0 = no extended reasoning: Claude models run with extended thinking disabled (S0_nothink); GPT models run at minimal reasoning effort (S0_minimal). Hover a cell for the exact setup that ran.">S0 · no thinking</abbr></th><th class="rm-setup"><abbr class="term" data-tip="Thinking setup free-subagent as recorded in the sweep.">free-subagent</abbr></th></tr></thead><tbody><tr><th scope="row" class="rm-model"><abbr class="term" data-tip="Anthropic&#x27;s mid-tier model — between the small/fast tier and the frontier tier in capability.">Claude Sonnet 4.6</abbr></th><td class="rm-cell rm-na"><span class="rm-cell-link" title="This model × thinking-setup combination was not run in the sweep — no data (not a failure)." aria-label="This model × thinking-setup combination was not run in the sweep — no data (not a failure).">—</span></td><td class="rm-cell rm-neutral"><a class="rm-cell-link" href="#problem-6-runs-claude-sonnet-4-6-free-subagent" title="Claude Sonnet 4.6 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 781/34560 in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="Claude Sonnet 4.6 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 781/34560 in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">?</span> <code>781/34560</code><span class="rm-x">×1</span></a></td></tr><tr><th scope="row" class="rm-model"><abbr class="term" data-tip="Model id as recorded in the sweep (no curated label yet).">claude-opus-4-8</abbr></th><td class="rm-cell rm-noans"><a class="rm-cell-link" href="#problem-6-runs-claude-opus-4-8-S0" title="claude-opus-4-8 under S0 · no thinking (S0_sweep0629): 3 run(s), 0 with a parseable final answer, 3 errored/unparseable. Every run errored or gave no parseable final answer, so there is nothing to compare against the oracle. Auto-verifier grading: 3/3 run(s) passed the drafted verifier. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="claude-opus-4-8 under S0 · no thinking (S0_sweep0629): 3 run(s), 0 with a parseable final answer, 3 errored/unparseable. Every run errored or gave no parseable final answer, so there is nothing to compare against the oracle. Auto-verifier grading: 3/3 run(s) passed the drafted verifier. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">⚠</span> no answer</a></td><td class="rm-cell rm-neutral"><a class="rm-cell-link" href="#problem-6-runs-claude-opus-4-8-free-subagent" title="claude-opus-4-8 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 781/34560 in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="claude-opus-4-8 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 781/34560 in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">?</span> <code>781/34560</code><span class="rm-x">×1</span></a></td></tr></tbody></table></div><p class="rm-legend dim small">cell key: <abbr class="term" data-tip="the most common answer EQUALS the author oracle. The model reproduced the author answer — counts against the must-fail goal.">= matches oracle</abbr> · <abbr class="term" data-tip="the most common answer DIFFERS from the author oracle. A bolded answer inside a split equals the oracle (a minority run reached it).">≠ differs</abbr> · <abbr class="term" data-tip="no author oracle on file to compare against. The cell still lists what the model answered.">? no oracle</abbr> · <abbr class="term" data-tip="every run errored or gave no parseable final answer">⚠ no answer</abbr> · <abbr class="term" data-tip="This model × thinking-setup combination was not run in the sweep — no data (not a failure).">— not run</abbr> · <abbr class="term" data-tip="×k = the number of independent runs (samples) that gave this exact answer.">×k = run count</abbr> · click a cell for its full traces</p>
+ 
+ 
+</details>
+
+ <p class="dim small" style="margin:4px 0">🧬 <strong>Similar stems</strong> (within our corpus, BM25 wording-overlap recall flagged for review — <em>not</em> a duplicate verdict): <code>p5</code> <span class="dim">(0.98)</span>, <code>p2</code> <span class="dim">(0.75)</span>, <code>p3</code> <span class="dim">(0.28)</span></p>
+
+ <details class="bench-block" id="problem-6-failmode" open><summary>🧩 Failure / success-mode synthesis — how the models miss (and where they don’t)</summary><p class="dim small">Synthesized from the sweep (5 runs) + captured traces. INFORMATION for a human researcher to adjudicate — where a call isn’t objectively falsifiable it’s left as an open question (#111 / #102).</p><ul class="traj-list"><li><strong>Common wrong answers:</strong> <code>781/34560</code>×2. The most-given non-oracle answer is <code>781/34560</code> (2 runs) — a clustered wrong answer usually means one shared misstep, not random error.</li></ul></details>
 
  
 
- 
+ <details class="bench-block" id="problem-6-allruns"><summary>🔬 All model runs — full traces &amp; metadata (5 runs)</summary><p class="dim small">Every captured run from the sweep: setup (params), answer + pass, tokens (in/out, +reasoning), time &amp; cost, and the full thinking/response trace (click “trace”). The raw evidence under the summaries above (#102: all trajectories + metadata).</p><div style="margin:8px 0" id="problem-6-runs-claude-sonnet-4-6-free-subagent"><strong>claude-sonnet-4-6</strong> · <code>free-subagent</code> <span class="dim small">(1 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>free-subagent</code> k0</td><td><code>781/34560</code> ✗ fail</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">## Problem
 
- 
+Ten independent Bernoulli trials have success probabilities 1/2, 1/3,..., 1/11. What is the exact probability of exactly 5 successes?
 
- 
+## Approach: Poisson-Binomial via Probability Generating Function
+
+When the trials have different success probabilities, this is a **Poisson-Binomial distribution**. The probability of exactly k successes is the coefficient of z^k in the probability generating function (PGF):
+
+$$G(z) = \prod_{k=2}^{11} \left[\frac{k-1}{k} + \frac{1}{k}\,z\right]$$
+
+where for trial k (k = 2, 3,..., 11):
+- success probability: p_k = 1/k
+- failure probability: q_k = (k-1)/k
+
+## Method: Dynamic Programming Expansion
+
+We expand G(z) by maintaining a coefficient vector dp[i] = P(exactly i successes so far), updated trial by trial.
+
+Initialize: dp[0] = 1, dp[i] = 0 for i &gt; 0.
+
+After incorporating each trial k:
+ new_dp[i] = dp[i] * q_k + dp[i-1] * p_k
+
+**Tracking dp[5] after each trial:**
+
+| After trial k | dp[5] |
+|---|---|
+| k=2 | 0 |
+| k=3 | 0 |
+| k=4 | 0 |
+| k=5 | 0 |
+| k=6 | 1/720 |
+| k=7 | 1/240 |
+| k=8 | 23/2880 |
+| k=9 | 1/80 |
+| k=10 | 3013/172800 |
+| k=11 | **781/34560** |
+
+## Verification by Direct Enumeration
+
+P(exactly 5 successes) = sum over all C(10,5) = 252 subsets S of size 5:
+
+$$P = \sum_{|S|=5} \prod_{k \in S} \frac{1}{k} \prod_{k \notin S} \frac{k-1}{k}$$
+
+Direct enumeration over all 252 subsets confirms: **781/34560**.
+
+## Sanity Check
+
+Sum of all probabilities P(0) + P(1) +... + P(10) = 1. ✓
+
+## Final Answer
+
+$$P(\text{exactly 5 successes}) = \frac{781}{34560}$$
+
+As a decimal: approximately 0.022598.</blockquote></details></td></tr></tbody></table></div></div><div style="margin:8px 0" id="problem-6-runs-claude-opus-4-8-S0"><strong>claude-opus-4-8</strong> · <code>S0_sweep0629</code> <span class="dim small">(3 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">781/34560</blockquote></details></td></tr><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">781/34560</blockquote></details></td></tr><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">781/34560</blockquote></details></td></tr></tbody></table></div></div><div style="margin:8px 0" id="problem-6-runs-claude-opus-4-8-free-subagent"><strong>claude-opus-4-8</strong> · <code>free-subagent</code> <span class="dim small">(1 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>free-subagent</code> k0</td><td><code>781/34560</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">**Problem.** Ten independent Bernoulli trials have success probabilities 1/2, 1/3,..., 1/11. Find the exact probability of exactly 5 successes.
+
+**Approach.** The trials are indexed by $k = 2, 3, \dots, 11$, with success probability $p_k = 1/k$ and failure probability $q_k = 1 - 1/k = (k-1)/k$. This is a Poisson-binomial distribution. The probability generating function for the number of successes is
+$$G(z) = \prod_{k=2}^{11}\big(q_k + p_k z\big) = \prod_{k=2}^{11}\left[\frac{k-1}{k} + \frac{1}{k}z\right].$$
+The probability of exactly 5 successes is the coefficient of $z^5$ in $G(z)$.
+
+**Computation.** Factor out the common denominator $\prod_{k=2}^{11} k = 11! / 1 = 39916800$... more cleanly, write
+$$G(z) = \frac{1}{\prod_{k=2}^{11} k}\prod_{k=2}^{11}\big[(k-1) + z\big].$$
+Here $\prod_{k=2}^{11} k = 2\cdot3\cdots11 = 11!/1! = 39916800$, and $\prod_{k=2}^{11}[(k-1)+z] = \prod_{j=1}^{10}(j+z) = (z+1)(z+2)\cdots(z+10)$, whose coefficients are the (unsigned) Stirling numbers of the first kind. The coefficient of $z^5$ in $(z+1)(z+2)\cdots(z+10)$ is the elementary symmetric polynomial $e_5(1,2,\dots,10)$, i.e. the unsigned Stirling number $\left[{11 \atop 6}\right] = 902055$.
+
+Thus the coefficient of $z^5$ in $G(z)$ is
+$$\frac{902055}{39916800}.$$
+Reducing: $\gcd(902055, 39916800)$. We have $902055 = 3 \cdot 5 \cdot 60137$, and dividing numerator and denominator by their common factors gives
+$$\frac{902055}{39916800} = \frac{781}{34560}.$$
+
+I verified the exact symbolic expansion of $\prod_{k=2}^{11}\big[\frac{k-1}{k}+\frac{1}{k}z\big]$ with a computer algebra system (sympy, exact rationals), and the coefficient of $z^5$ is confirmed to be $781/34560$.
+
+As a sanity check, $781/34560 \approx 0.0226$, a plausible small probability since the later trials have small success probabilities, making 5 successes relatively unlikely.
+
+**Final answer.** $\boxed{781/34560}$</blockquote></details></td></tr></tbody></table></div></div></details>
 
  <details class="bench-block" id="problem-6-sidecar" open><summary>🗒️ Contributor’s own notes / pasted responses</summary><p class="dim small">Your <strong>own</strong> review sidecar — the responses you collected and your own failure-mode read. Shown verbatim, as <em>your</em> words (distinct from the bot review and the model sweep below).</p><p class="small" style="margin-top:.4em"><strong>Sample responses you collected</strong> (5):</p><div class="traj-forks"><div class="traj-fork"><div class="traj-fork-h">🧑 <strong>GPT-5.5 Thinking Extended · OpenAI</strong> <span class="dim small">(contributor-pasted)</span></div><blockquote class="traj-quote">The probability is the coefficient of t
 5
@@ -3329,6 +3914,7 @@ Do you like this personality?</blockquote></div><div class="traj-fork"><div clas
 <details class="d-block dedup-block" id="problem-6-dedup">
  <summary>🔍 Cross-benchmark matches <span class="dim small">(4 total)</span></summary>
  <div class="dedup-headline"><span class="pill v-revision">△ 4 adjacent matches (topical, not duplicate)</span></div>
+ 
  <p class="dim small">BGE recall (on the problem <em>statement</em>) × Claude method-judge vs the The nine precedent benchmarks judged most likely to collide …. </p>
  <p class="dim small">⚠ <code>cos</code> is <strong>surface similarity</strong> (a recall signal on wording), <em>not</em> a duplicate measure — dense embeddings cluster by vocabulary, so they over-flag surface-similar stems and miss method-equivalent ones (see <code>research/dedup-methodology-deep-research.md</code>). The duplicate call is the <strong>method-judge verdict</strong>, not <code>cos</code>. Method-level dedup is being upgraded to embed the <em>solution trajectory</em> + judge.</p>
  <div class="table-wrap"><table class="dedup-table"><thead><tr>
@@ -3577,7 +4163,7 @@ if __name__ == &#x27;__main__&#x27;:
  <h2>Varying-Factor Product Coefficient</h2>
  </div>
  <div class="p-pills">
- <abbr class="term pill v-stub" data-tip="No benchmark-sweep runs for this problem yet — the model-evidence sections (results matrix · trajectory analysis) appear here once it is swept.">⏳ sweep pending</abbr>
+ 
  </div>
  </header>
 
@@ -3642,14 +4228,95 @@ Initial web validation: three independent GPT-5.5 Thinking Extended web runs pro
  </details>
 
  
+<details class="d-block proposed-tags-block" id="problem-7-proposed-tags">
+ <summary>🏷 Proposed tags <span class="dim small">(agent — author to confirm)</span></summary>
+ <p class="dim small">These are <strong>agent-proposed</strong> tags (suggestions, not verdicts) to help the author — the human author / co-PI confirms or overrides. Grounded in the problem statement on master; <strong>not</strong> written into your <code>.tex</code> scaffold. Vocabulary from the working-hypothesis taxonomy (the seed taxonomy). Proposed 2026-06-28.</p>
+ <table class="pt-table"><tbody><tr><td class="pt-dim">Capability</td><td class="pt-val">compute</td></tr><tr><td class="pt-dim">Domain</td><td class="pt-val">Mathematics</td></tr><tr><td class="pt-dim">Subtopic</td><td class="pt-val">Combinatorics</td></tr><tr><td class="pt-dim">Technique</td><td class="pt-val">exact polynomial convolution (sequential multiplication of nine quadratic factors, tracking the degree-5 coefficient at each step)</td></tr><tr><td class="pt-dim">Difficulty</td><td class="pt-val"><span class="kw-level lv-intermediate">Medium</span></td></tr><tr><td class="pt-dim">Challenged capability</td><td class="pt-val">combinatorial counting, numerical reasoning</td></tr><tr><td class="pt-dim">Grading mode</td><td class="pt-val">exact</td></tr><tr><td class="pt-dim">Observed failure mode</td><td class="pt-val"><span class="kw-warn">wrong</span> coefficient or probability from exact convolution — contributor notes: &quot;three independent GPT-5.5 Thinking Extended web runs produced incorrect answers; model returned incorrect coefficients for a degree-five polynomial term.&quot; (Info, not <span class="kw-subject">verdict</span>: the product has degree 18, so the degree-5 coefficient involves summing over many multi-index selections from nine factors; arithmetic tracking errors during sequential convolution appear to be the proximate failure cause.)</td></tr></tbody></table>
+ <p class="dim small">Agent-proposed structured tags (author/co-PI to confirm). Suggestions, not verdicts. Grounded first-hand in the problem statement + answer key + contributor tags on master; NOT written into the contributor&#x27;s.tex scaffold. Vocabulary from the project&#x27;s seed taxonomy.</p>
+</details>
+
+
+ 
+<details class="bench-block" open id="problem-7-sweep">
+ <summary>📊 How the frontier models do — results matrix · verifier-graded</summary>
+ <p class="dim small">Sweep <code>sweep-20260603-170524</code> · objective signal — information for humans to adjudicate.</p>
+ <p class="dim small">Each <em>model × thinking-setup</em> cell ran <strong>k independent samples</strong> (shown as ✓/✗ × n). The per-model k differs by cost: the gate models (GPT-5.5 / Opus-4.7) run at <strong>k=3</strong> — matching the screening definition (<em>a model "fails" iff wrong in all 3 of its runs</em>); cheaper models (e.g. Haiku) run at higher k for tighter Wilson CIs. A "✗ ×3" on a gate model is the fail signal; hover a cell's tooltip for the per-N confidence note.</p>
+ 
+ <p class="rm-chiprow"><abbr class="term rm-chip bf-uncertain" data-tip="A combo = one model × one thinking setup. &#x27;Stumped&#x27; = none of that combo&#x27;s runs produced the author&#x27;s oracle answer — but no author oracle is on file for this problem, so the count cannot be computed. The cells below still show every answer the models actually gave.">? stumped-count unavailable — no author oracle (2 model×setup combos ran)</abbr></p><div class="table-wrap"><table class="rm-table"><thead><tr><th class="rm-corner"><abbr class="term" data-tip="Rows = models (one row per model). Columns = thinking setups (how much extended reasoning the model was allowed). Each cell shows that model&#x27;s actual final answer(s) under that setup, with ×k = how many of its runs gave that answer. Click a cell to jump to its full reasoning traces.">model \ thinking setup</abbr></th><th class="rm-setup"><abbr class="term" data-tip="Thinking tier S0 = no extended reasoning: Claude models run with extended thinking disabled (S0_nothink); GPT models run at minimal reasoning effort (S0_minimal). Hover a cell for the exact setup that ran.">S0 · no thinking</abbr></th><th class="rm-setup"><abbr class="term" data-tip="Thinking setup free-subagent as recorded in the sweep.">free-subagent</abbr></th></tr></thead><tbody><tr><th scope="row" class="rm-model"><abbr class="term" data-tip="Anthropic&#x27;s mid-tier model — between the small/fast tier and the frontier tier in capability.">Claude Sonnet 4.6</abbr></th><td class="rm-cell rm-na"><span class="rm-cell-link" title="This model × thinking-setup combination was not run in the sweep — no data (not a failure)." aria-label="This model × thinking-setup combination was not run in the sweep — no data (not a failure).">—</span></td><td class="rm-cell rm-neutral"><a class="rm-cell-link" href="#problem-7-runs-claude-sonnet-4-6-free-subagent" title="Claude Sonnet 4.6 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 327285 in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="Claude Sonnet 4.6 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 327285 in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">?</span> <code>327285</code><span class="rm-x">×1</span></a></td></tr><tr><th scope="row" class="rm-model"><abbr class="term" data-tip="Model id as recorded in the sweep (no curated label yet).">claude-opus-4-8</abbr></th><td class="rm-cell rm-noans"><a class="rm-cell-link" href="#problem-7-runs-claude-opus-4-8-S0" title="claude-opus-4-8 under S0 · no thinking (S0_sweep0629): 3 run(s), 0 with a parseable final answer, 3 errored/unparseable. Every run errored or gave no parseable final answer, so there is nothing to compare against the oracle. Auto-verifier grading: 3/3 run(s) passed the drafted verifier. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="claude-opus-4-8 under S0 · no thinking (S0_sweep0629): 3 run(s), 0 with a parseable final answer, 3 errored/unparseable. Every run errored or gave no parseable final answer, so there is nothing to compare against the oracle. Auto-verifier grading: 3/3 run(s) passed the drafted verifier. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">⚠</span> no answer</a></td><td class="rm-cell rm-neutral"><a class="rm-cell-link" href="#problem-7-runs-claude-opus-4-8-free-subagent" title="claude-opus-4-8 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 327285 in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="claude-opus-4-8 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 327285 in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">?</span> <code>327285</code><span class="rm-x">×1</span></a></td></tr></tbody></table></div><p class="rm-legend dim small">cell key: <abbr class="term" data-tip="the most common answer EQUALS the author oracle. The model reproduced the author answer — counts against the must-fail goal.">= matches oracle</abbr> · <abbr class="term" data-tip="the most common answer DIFFERS from the author oracle. A bolded answer inside a split equals the oracle (a minority run reached it).">≠ differs</abbr> · <abbr class="term" data-tip="no author oracle on file to compare against. The cell still lists what the model answered.">? no oracle</abbr> · <abbr class="term" data-tip="every run errored or gave no parseable final answer">⚠ no answer</abbr> · <abbr class="term" data-tip="This model × thinking-setup combination was not run in the sweep — no data (not a failure).">— not run</abbr> · <abbr class="term" data-tip="×k = the number of independent runs (samples) that gave this exact answer.">×k = run count</abbr> · click a cell for its full traces</p>
+ 
+ 
+</details>
+
+ <p class="dim small" style="margin:4px 0">🧬 <strong>Similar stems</strong> (within our corpus, BM25 wording-overlap recall flagged for review — <em>not</em> a duplicate verdict): <code>p4</code> <span class="dim">(0.26)</span>, <code>p2</code> <span class="dim">(0.19)</span>, <code>p6</code> <span class="dim">(0.19)</span></p>
+
+ <details class="bench-block" id="problem-7-failmode" open><summary>🧩 Failure / success-mode synthesis — how the models miss (and where they don’t)</summary><p class="dim small">Synthesized from the sweep (5 runs) + captured traces. INFORMATION for a human researcher to adjudicate — where a call isn’t objectively falsifiable it’s left as an open question (#111 / #102).</p><ul class="traj-list"><li><strong>Common wrong answers:</strong> <code>327285</code>×2. The most-given non-oracle answer is <code>327285</code> (2 runs) — a clustered wrong answer usually means one shared misstep, not random error.</li></ul></details>
 
  
 
- 
+ <details class="bench-block" id="problem-7-allruns"><summary>🔬 All model runs — full traces &amp; metadata (5 runs)</summary><p class="dim small">Every captured run from the sweep: setup (params), answer + pass, tokens (in/out, +reasoning), time &amp; cost, and the full thinking/response trace (click “trace”). The raw evidence under the summaries above (#102: all trajectories + metadata).</p><div style="margin:8px 0" id="problem-7-runs-claude-sonnet-4-6-free-subagent"><strong>claude-sonnet-4-6</strong> · <code>free-subagent</code> <span class="dim small">(1 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>free-subagent</code> k0</td><td><code>327285</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">## Problem
+Find the coefficient of x^5 in the product P(x) = prod_{j=1}^{9} (1 + j*x + x^2).
 
- 
+## Approach
+Each factor (1 + j*x + x^2) contributes one of three monomials {1, j*x, x^2} per factor. To get total degree 5, we need to choose degrees d_j in {0,1,2} for each factor j=1,...,9 such that sum(d_j) = 5. The contribution of each such selection is the product of j over all j with d_j = 1 (since the coefficient of x^1 in factor j is j, and the coefficients of x^0 and x^2 are both 1).
 
- 
+## Partition structure
+We partition the degree-sum 5 among 9 factors with each part in {0,1,2}. Let k = number of factors contributing degree 2, m = number contributing degree 1. Then 2k + m = 5, giving cases:
+- (k=0, m=5): 5 factors contribute degree 1, remaining 4 contribute degree 0
+- (k=1, m=3): 1 factor contributes degree 2, 3 contribute degree 1, rest contribute degree 0
+- (k=2, m=1): 2 factors contribute degree 2, 1 contributes degree 1, rest contribute degree 0
+
+## Case (k=0, m=5): sum = e_5(1,...,9)
+Sum over all 5-element subsets S of {1,...,9} of product(j in S):
+e_5(1,2,...,9) = 269325
+
+## Case (k=1, m=3):
+For each i in {1,...,9}, sum over all 3-element subsets S of {1,...,9}\{i} of product(j in S):
+Total = sum_{i=1}^{9} e_3({1,...,9}\{i}) = 56700
+
+## Case (k=2, m=1):
+For each 2-element subset {i1,i2} of {1,...,9}, sum of remaining j values:
+Total = C(9,2) * (sum of j from 1 to 9) - 2 * sum of products of pairs
+ = 36 * 45 - 2 * e_2(1,...,9)
+e_2(1,...,9) = sum_{i&lt;j} i*j = ((45)^2 - sum(j^2))/2 = (2025 - 285)/2 = 870
+Total = 1620 - 2*180 =... (computed directly) = 1260
+
+## Total
+269325 + 56700 + 1260 = 327285
+
+## Verification
+Direct polynomial multiplication: multiply [1, 1, 1], [1, 2, 1],..., [1, 9, 1] sequentially. The coefficient of x^5 in the resulting degree-18 polynomial is 327285.
+
+## Answer
+The coefficient of x^5 in prod_{j=1}^{9}(1 + j*x + x^2) is **327285**.</blockquote></details></td></tr></tbody></table></div></div><div style="margin:8px 0" id="problem-7-runs-claude-opus-4-8-S0"><strong>claude-opus-4-8</strong> · <code>S0_sweep0629</code> <span class="dim small">(3 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">327285</blockquote></details></td></tr><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">327285</blockquote></details></td></tr><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">327285</blockquote></details></td></tr></tbody></table></div></div><div style="margin:8px 0" id="problem-7-runs-claude-opus-4-8-free-subagent"><strong>claude-opus-4-8</strong> · <code>free-subagent</code> <span class="dim small">(1 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>free-subagent</code> k0</td><td><code>327285</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">**Problem.** Find the coefficient of $x^5$ in $\displaystyle\prod_{j=1}^{9}\bigl(1 + jx + x^2\bigr)$.
+
+**Approach.** Each of the nine factors contributes exactly one of three monomials when the product is expanded:
+- $1$ (degree 0),
+- $jx$ (degree 1, coefficient $j$ depending on the factor),
+- $x^2$ (degree 2, coefficient $1$).
+
+To obtain total degree $5$, suppose $a$ factors contribute their degree-1 term and $b$ factors contribute their degree-2 term (the rest contribute $1$). Then
+$$ a\cdot 1 + b\cdot 2 = 5,\qquad a,b\ge 0. $$
+The solutions are $(a,b) \in \{(5,0),(3,1),(1,2)\}$.
+
+**Contribution of each case.** Choosing the degree-1 term from a set $S$ of factors multiplies in $\prod_{j\in S} j$; choosing the degree-2 term contributes a factor of $1$ each. So the total coefficient is
+$$
+[x^5] = \sum_{(a,b)} \Bigl(\sum_{\substack{S\subseteq\{1,\dots,9\}\\|S|=a}} \prod_{j\in S} j \Bigr)\binom{9-a}{b},
+$$
+where the inner sum is the elementary symmetric polynomial $e_a(1,2,\dots,9)$ and $\binom{9-a}{b}$ counts the placements of the $b$ degree-2 factors among the remaining $9-a$ factors.
+
+Evaluating each case (verified by direct enumeration):
+- $(a,b)=(5,0)$: $e_5(1,\dots,9)\cdot\binom{4}{0} = 269325$.
+- $(a,b)=(3,1)$: $\bigl[\sum_{|S|=3}\prod_{j\in S} j\bigr]\binom{6}{1} = 56700$.
+- $(a,b)=(1,2)$: $\bigl[\sum_{|S|=1} j\bigr]\binom{8}{2} = 45\cdot 28 = 1260$.
+
+**Total.**
+$$
+269325 + 56700 + 1260 = 327285.
+$$
+
+**Cross-check.** Directly expanding the full degree-18 polynomial $\prod_{j=1}^{9}(1+jx+x^2)$ symbolically gives the $x^5$ coefficient $327285$, matching the combinatorial computation.
+
+**Final answer:** $\boxed{327285}$.</blockquote></details></td></tr></tbody></table></div></div></details>
 
  <details class="bench-block" id="problem-7-sidecar" open><summary>🗒️ Contributor’s own notes / pasted responses</summary><p class="dim small">Your <strong>own</strong> review sidecar — the responses you collected and your own failure-mode read. Shown verbatim, as <em>your</em> words (distinct from the bot review and the model sweep below).</p><p class="small" style="margin-top:.4em"><strong>Sample responses you collected</strong> (5):</p><div class="traj-forks"><div class="traj-fork"><div class="traj-fork-h">🧑 <strong>GPT-5.5 Thinking Extended · OpenAI</strong> <span class="dim small">(contributor-pasted)</span></div><blockquote class="traj-quote">The coefficient of x
 5
@@ -3949,7 +4616,7 @@ if __name__ == &#x27;__main__&#x27;:
  <h2>Age Question Nonresponse Among Invited People</h2>
  </div>
  <div class="p-pills">
- <abbr class="term pill v-stub" data-tip="No benchmark-sweep runs for this problem yet — the model-evidence sections (results matrix · trajectory analysis) appear here once it is swept.">⏳ sweep pending</abbr>
+ 
  </div>
  </header>
 
@@ -4014,14 +4681,72 @@ Initial web validation: three independent GPT-5.5 Thinking Extended web runs pro
  </details>
 
  
+<details class="d-block proposed-tags-block" id="problem-8-proposed-tags">
+ <summary>🏷 Proposed tags <span class="dim small">(agent — author to confirm)</span></summary>
+ <p class="dim small">These are <strong>agent-proposed</strong> tags (suggestions, not verdicts) to help the author — the human author / co-PI confirms or overrides. Grounded in the problem statement on master; <strong>not</strong> written into your <code>.tex</code> scaffold. Vocabulary from the working-hypothesis taxonomy (the seed taxonomy). Proposed 2026-06-28.</p>
+ <table class="pt-table"><tbody><tr><td class="pt-dim">Capability</td><td class="pt-val">compute</td></tr><tr><td class="pt-dim">Domain</td><td class="pt-val">Statistics</td></tr><tr><td class="pt-dim">Subtopic</td><td class="pt-val">Experimental design</td></tr><tr><td class="pt-dim">Technique</td><td class="pt-val">Two-stage nonresponse decomposition: correctly partitioning unit nonrespondents (never-starters) and item nonrespondents (skippers) when computing a rate over the full survey frame</td></tr><tr><td class="pt-dim">Difficulty</td><td class="pt-val">Easy</td></tr><tr><td class="pt-dim">Challenged capability</td><td class="pt-val">numerical reasoning, trap recognition</td></tr><tr><td class="pt-dim">Grading mode</td><td class="pt-val">exact</td></tr><tr><td class="pt-dim">Observed failure mode</td><td class="pt-val">Contributor verbatim: &quot;omits unit nonresponse when asked for item nonresponse among all frame members.&quot; <span class="kw-subject">Editor notes</span> confirm: three independent GPT-5.5 Thinking Extended web runs &quot;counted only respondents who skipped the item and omitted unreached frame members,&quot; producing <span class="kw-num">260</span>/<span class="kw-num">1300</span> or <span class="kw-num">260</span>/<span class="kw-num">2000</span> instead of <span class="kw-num">960</span>/<span class="kw-num">2000</span>. (Info note: the trap is in the phrase &quot;age question nonresponse rate among all <span class="kw-num">2000</span> people&quot; — the model collapses the two-stage funnel into a single-stage item-skip rate, <span class="kw-warn">missing</span> the definitional expansion of the denominator to the full frame.)</td></tr></tbody></table>
+ <p class="dim small">Agent-proposed structured tags (author/co-PI to confirm). Suggestions, not verdicts. Grounded first-hand in the problem statement + answer key + contributor tags on master; NOT written into the contributor&#x27;s.tex scaffold. Vocabulary from the project&#x27;s seed taxonomy.</p>
+</details>
+
+
+ 
+<details class="bench-block" open id="problem-8-sweep">
+ <summary>📊 How the frontier models do — results matrix · verifier-graded</summary>
+ <p class="dim small">Sweep <code>sweep-20260603-170524</code> · objective signal — information for humans to adjudicate.</p>
+ <p class="dim small">Each <em>model × thinking-setup</em> cell ran <strong>k independent samples</strong> (shown as ✓/✗ × n). The per-model k differs by cost: the gate models (GPT-5.5 / Opus-4.7) run at <strong>k=3</strong> — matching the screening definition (<em>a model "fails" iff wrong in all 3 of its runs</em>); cheaper models (e.g. Haiku) run at higher k for tighter Wilson CIs. A "✗ ×3" on a gate model is the fail signal; hover a cell's tooltip for the per-N confidence note.</p>
+ 
+ <p class="rm-chiprow"><abbr class="term rm-chip bf-uncertain" data-tip="A combo = one model × one thinking setup. &#x27;Stumped&#x27; = none of that combo&#x27;s runs produced the author&#x27;s oracle answer — but no author oracle is on file for this problem, so the count cannot be computed. The cells below still show every answer the models actually gave.">? stumped-count unavailable — no author oracle (2 model×setup combos ran)</abbr></p><div class="table-wrap"><table class="rm-table"><thead><tr><th class="rm-corner"><abbr class="term" data-tip="Rows = models (one row per model). Columns = thinking setups (how much extended reasoning the model was allowed). Each cell shows that model&#x27;s actual final answer(s) under that setup, with ×k = how many of its runs gave that answer. Click a cell to jump to its full reasoning traces.">model \ thinking setup</abbr></th><th class="rm-setup"><abbr class="term" data-tip="Thinking tier S0 = no extended reasoning: Claude models run with extended thinking disabled (S0_nothink); GPT models run at minimal reasoning effort (S0_minimal). Hover a cell for the exact setup that ran.">S0 · no thinking</abbr></th><th class="rm-setup"><abbr class="term" data-tip="Thinking setup free-subagent as recorded in the sweep.">free-subagent</abbr></th></tr></thead><tbody><tr><th scope="row" class="rm-model"><abbr class="term" data-tip="Anthropic&#x27;s mid-tier model — between the small/fast tier and the frontier tier in capability.">Claude Sonnet 4.6</abbr></th><td class="rm-cell rm-na"><span class="rm-cell-link" title="This model × thinking-setup combination was not run in the sweep — no data (not a failure)." aria-label="This model × thinking-setup combination was not run in the sweep — no data (not a failure).">—</span></td><td class="rm-cell rm-neutral"><a class="rm-cell-link" href="#problem-8-runs-claude-sonnet-4-6-free-subagent" title="Claude Sonnet 4.6 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 48% (equivalently 12/25 or 0.48) in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="Claude Sonnet 4.6 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 48% (equivalently 12/25 or 0.48) in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">?</span> <code>48% (equivalently 12/25 or 0.48)</code><span class="rm-x">×1</span></a></td></tr><tr><th scope="row" class="rm-model"><abbr class="term" data-tip="Model id as recorded in the sweep (no curated label yet).">claude-opus-4-8</abbr></th><td class="rm-cell rm-noans"><a class="rm-cell-link" href="#problem-8-runs-claude-opus-4-8-S0" title="claude-opus-4-8 under S0 · no thinking (S0_sweep0629): 3 run(s), 0 with a parseable final answer, 3 errored/unparseable. Every run errored or gave no parseable final answer, so there is nothing to compare against the oracle. Auto-verifier grading: 0/3 run(s) passed the drafted verifier. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="claude-opus-4-8 under S0 · no thinking (S0_sweep0629): 3 run(s), 0 with a parseable final answer, 3 errored/unparseable. Every run errored or gave no parseable final answer, so there is nothing to compare against the oracle. Auto-verifier grading: 0/3 run(s) passed the drafted verifier. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">⚠</span> no answer</a></td><td class="rm-cell rm-neutral"><a class="rm-cell-link" href="#problem-8-runs-claude-opus-4-8-free-subagent" title="claude-opus-4-8 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 12/25 (= 0.48 = 48%) in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="claude-opus-4-8 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 12/25 (= 0.48 = 48%) in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">?</span> <code>12/25 (= 0.48 = 48%)</code><span class="rm-x">×1</span></a></td></tr></tbody></table></div><p class="rm-legend dim small">cell key: <abbr class="term" data-tip="the most common answer EQUALS the author oracle. The model reproduced the author answer — counts against the must-fail goal.">= matches oracle</abbr> · <abbr class="term" data-tip="the most common answer DIFFERS from the author oracle. A bolded answer inside a split equals the oracle (a minority run reached it).">≠ differs</abbr> · <abbr class="term" data-tip="no author oracle on file to compare against. The cell still lists what the model answered.">? no oracle</abbr> · <abbr class="term" data-tip="every run errored or gave no parseable final answer">⚠ no answer</abbr> · <abbr class="term" data-tip="This model × thinking-setup combination was not run in the sweep — no data (not a failure).">— not run</abbr> · <abbr class="term" data-tip="×k = the number of independent runs (samples) that gave this exact answer.">×k = run count</abbr> · click a cell for its full traces</p>
+ 
+ 
+</details>
+
+ <p class="dim small" style="margin:4px 0">🧬 <strong>Similar stems</strong> (within our corpus, BM25 wording-overlap recall flagged for review — <em>not</em> a duplicate verdict): <code>p9</code> <span class="dim">(0.46)</span>, <code>p1</code> <span class="dim">(0.44)</span>, <code>p10</code> <span class="dim">(0.43)</span></p>
+
+ <details class="bench-block" id="problem-8-failmode" open><summary>🧩 Failure / success-mode synthesis — how the models miss (and where they don’t)</summary><p class="dim small">Synthesized from the sweep (5 runs) + captured traces. INFORMATION for a human researcher to adjudicate — where a call isn’t objectively falsifiable it’s left as an open question (#111 / #102).</p><ul class="traj-list"><li><strong>Common wrong answers:</strong> <code>12/25</code>×2. The most-given non-oracle answer is <code>12/25</code> (2 runs) — a clustered wrong answer usually means one shared misstep, not random error.</li></ul></details>
 
  
 
- 
+ <details class="bench-block" id="problem-8-allruns"><summary>🔬 All model runs — full traces &amp; metadata (5 runs)</summary><p class="dim small">Every captured run from the sweep: setup (params), answer + pass, tokens (in/out, +reasoning), time &amp; cost, and the full thinking/response trace (click “trace”). The raw evidence under the summaries above (#102: all trajectories + metadata).</p><div style="margin:8px 0" id="problem-8-runs-claude-sonnet-4-6-free-subagent"><strong>claude-sonnet-4-6</strong> · <code>free-subagent</code> <span class="dim small">(1 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>free-subagent</code> k0</td><td><code>48% (equivalently 12/25 or 0.48)</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">**Problem:** A survey frame contains 2000 people. Of these, 1300 started the survey. Among those 1300, 260 skipped the age question. What is the age question nonresponse rate among all 2000 people?
 
- 
+**Approach:** The nonresponse rate for an item (here: the age question) among all frame members must count every person who failed to provide that item, regardless of whether they never started the survey or started but skipped the question.
 
- 
+**Step 1: Identify unit nonrespondents.**
+
+People who did not start the survey: 2000 - 1300 = 700. These individuals never reached the age question, so they did not provide age data. They contribute to age nonresponse.
+
+**Step 2: Identify item nonrespondents.**
+
+Among the 1300 who started the survey, 260 skipped the age question. These also did not provide age data.
+
+**Step 3: Total who did not provide age.**
+
+700 (unit nonrespondents) + 260 (age skippers) = 960 people failed to supply age.
+
+**Step 4: Compute the rate.**
+
+Nonresponse rate = 960 / 2000 = 12/25 = 0.48 = **48%**
+
+**Why common errors fail:**
+- Using 260/1300 = 20% counts only item skippers among starters — ignores the 700 who never participated.
+- Using 260/2000 = 13% puts item skippers over the full frame but still ignores the 700 unit nonrespondents who also never answered the age question.
+
+The correct answer is 960/2000 = 12/25 = 48%.</blockquote></details></td></tr></tbody></table></div></div><div style="margin:8px 0" id="problem-8-runs-claude-opus-4-8-S0"><strong>claude-opus-4-8</strong> · <code>S0_sweep0629</code> <span class="dim small">(3 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✗ fail</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">13/100</blockquote></details></td></tr><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✗ fail</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">13/100</blockquote></details></td></tr><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✗ fail</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">13/100</blockquote></details></td></tr></tbody></table></div></div><div style="margin:8px 0" id="problem-8-runs-claude-opus-4-8-free-subagent"><strong>claude-opus-4-8</strong> · <code>free-subagent</code> <span class="dim small">(1 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>free-subagent</code> k0</td><td><code>12/25 (= 0.48 = 48%)</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">Approach: The question asks for the age-question nonresponse rate with the denominator being all 2000 frame members. A person counts as a nonrespondent to the age item if, for any reason, they did not provide an age value. There are two disjoint groups of such people:
+
+1. Unit nonresponse / never reached the item: Of the 2000 invited, only 1300 started the survey, so 2000 − 1300 = 700 people never reached the age question at all. They provided no age value.
+
+2. Item nonresponse among starters: Of the 1300 who started, 260 skipped the age question. They reached it but left it blank.
+
+These two groups are mutually exclusive (the 700 never started; the 260 are among the starters). Both groups failed to provide an age, so the total number who did not answer the age question is:
+
+700 + 260 = 960.
+
+Nonresponse rate among all 2000 = 960 / 2000.
+
+Simplify: 960/2000 = 96/200 = 48/100 = 12/25 = 0.48 = 48%.
+
+Note on common error: Using 260/1300 ≈ 0.20 (item nonresponse among starters only) or 260/2000 = 0.13 (counting only skippers but using the full frame denominator) both omit the 700 unreached frame members and are incorrect for &quot;nonresponse among all 2000.&quot;
+
+Final answer: 12/25 = 0.48 = 48%.</blockquote></details></td></tr></tbody></table></div></div></details>
 
  <details class="bench-block" id="problem-8-sidecar" open><summary>🗒️ Contributor’s own notes / pasted responses</summary><p class="dim small">Your <strong>own</strong> review sidecar — the responses you collected and your own failure-mode read. Shown verbatim, as <em>your</em> words (distinct from the bot review and the model sweep below).</p><p class="small" style="margin-top:.4em"><strong>Sample responses you collected</strong> (5):</p><div class="traj-forks"><div class="traj-fork"><div class="traj-fork-h">🧑 <strong>GPT-5.5 Thinking Extended · OpenAI</strong> <span class="dim small">(contributor-pasted)</span></div><blockquote class="traj-quote">The nonresponse rate among all 2000 people is
 
@@ -4053,6 +4778,7 @@ So the rate is 13%.</blockquote></div><div class="traj-fork"><div class="traj-fo
 <details class="d-block dedup-block" id="problem-8-dedup">
  <summary>🔍 Cross-benchmark matches <span class="dim small">(1 total)</span></summary>
  <div class="dedup-headline"><span class="pill v-revision">△ 1 adjacent match (topical, not duplicate)</span></div>
+ 
  <p class="dim small">BGE recall (on the problem <em>statement</em>) × Claude method-judge vs the The nine precedent benchmarks judged most likely to collide …. </p>
  <p class="dim small">⚠ <code>cos</code> is <strong>surface similarity</strong> (a recall signal on wording), <em>not</em> a duplicate measure — dense embeddings cluster by vocabulary, so they over-flag surface-similar stems and miss method-equivalent ones (see <code>research/dedup-methodology-deep-research.md</code>). The duplicate call is the <strong>method-judge verdict</strong>, not <code>cos</code>. Method-level dedup is being upgraded to embed the <em>solution trajectory</em> + judge.</p>
  <div class="table-wrap"><table class="dedup-table"><thead><tr>
@@ -4301,7 +5027,7 @@ if __name__ == &#x27;__main__&#x27;:
  <h2>Income Question Nonresponse Among Recruited Panelists</h2>
  </div>
  <div class="p-pills">
- <abbr class="term pill v-stub" data-tip="No benchmark-sweep runs for this problem yet — the model-evidence sections (results matrix · trajectory analysis) appear here once it is swept.">⏳ sweep pending</abbr>
+ 
  </div>
  </header>
 
@@ -4366,14 +5092,66 @@ Initial web validation: three independent GPT-5.5 Thinking Extended web runs pro
  </details>
 
  
+<details class="d-block proposed-tags-block" id="problem-9-proposed-tags">
+ <summary>🏷 Proposed tags <span class="dim small">(agent — author to confirm)</span></summary>
+ <p class="dim small">These are <strong>agent-proposed</strong> tags (suggestions, not verdicts) to help the author — the human author / co-PI confirms or overrides. Grounded in the problem statement on master; <strong>not</strong> written into your <code>.tex</code> scaffold. Vocabulary from the working-hypothesis taxonomy (the seed taxonomy). Proposed 2026-06-28.</p>
+ <table class="pt-table"><tbody><tr><td class="pt-dim">Capability</td><td class="pt-val">compute</td></tr><tr><td class="pt-dim">Domain</td><td class="pt-val">Statistics</td></tr><tr><td class="pt-dim">Subtopic</td><td class="pt-val">Experimental design</td></tr><tr><td class="pt-dim">Technique</td><td class="pt-val">Tracking unit nonresponse and item nonresponse jointly across a nested survey frame; combining both components in the numerator with the full frame size as denominator</td></tr><tr><td class="pt-dim">Difficulty</td><td class="pt-val">Easy</td></tr><tr><td class="pt-dim">Challenged capability</td><td class="pt-val">numerical reasoning, trap recognition</td></tr><tr><td class="pt-dim">Grading mode</td><td class="pt-val">exact</td></tr><tr><td class="pt-dim">Observed failure mode</td><td class="pt-val">Contributor verbatim: &quot;omits unit nonresponse when asked for item nonresponse among all frame members.&quot; Editor note confirms: &quot;model counted only respondents who skipped the item and omitted unreached frame members&quot; (three independent GPT-5.5 Thinking Extended web runs). Info: the <span class="kw-warn">error</span> is a denominator/scope confusion — models restrict both numerator and denominator to screener completers (<span class="kw-num">140</span>/<span class="kw-num">1000</span>) rather than extending to the full frame (<span class="kw-num">390</span>/<span class="kw-num">1250</span>).</td></tr></tbody></table>
+ <p class="dim small">Agent-proposed structured tags (author/co-PI to confirm). Suggestions, not verdicts. Grounded first-hand in the problem statement + answer key + contributor tags on master; NOT written into the contributor&#x27;s.tex scaffold. Vocabulary from the project&#x27;s seed taxonomy.</p>
+</details>
+
+
+ 
+<details class="bench-block" open id="problem-9-sweep">
+ <summary>📊 How the frontier models do — results matrix · verifier-graded</summary>
+ <p class="dim small">Sweep <code>sweep-20260603-170524</code> · objective signal — information for humans to adjudicate.</p>
+ <p class="dim small">Each <em>model × thinking-setup</em> cell ran <strong>k independent samples</strong> (shown as ✓/✗ × n). The per-model k differs by cost: the gate models (GPT-5.5 / Opus-4.7) run at <strong>k=3</strong> — matching the screening definition (<em>a model "fails" iff wrong in all 3 of its runs</em>); cheaper models (e.g. Haiku) run at higher k for tighter Wilson CIs. A "✗ ×3" on a gate model is the fail signal; hover a cell's tooltip for the per-N confidence note.</p>
+ 
+ <p class="rm-chiprow"><abbr class="term rm-chip bf-uncertain" data-tip="A combo = one model × one thinking setup. &#x27;Stumped&#x27; = none of that combo&#x27;s runs produced the author&#x27;s oracle answer — but no author oracle is on file for this problem, so the count cannot be computed. The cells below still show every answer the models actually gave.">? stumped-count unavailable — no author oracle (2 model×setup combos ran)</abbr></p><div class="table-wrap"><table class="rm-table"><thead><tr><th class="rm-corner"><abbr class="term" data-tip="Rows = models (one row per model). Columns = thinking setups (how much extended reasoning the model was allowed). Each cell shows that model&#x27;s actual final answer(s) under that setup, with ×k = how many of its runs gave that answer. Click a cell to jump to its full reasoning traces.">model \ thinking setup</abbr></th><th class="rm-setup"><abbr class="term" data-tip="Thinking tier S0 = no extended reasoning: Claude models run with extended thinking disabled (S0_nothink); GPT models run at minimal reasoning effort (S0_minimal). Hover a cell for the exact setup that ran.">S0 · no thinking</abbr></th><th class="rm-setup"><abbr class="term" data-tip="Thinking setup free-subagent as recorded in the sweep.">free-subagent</abbr></th></tr></thead><tbody><tr><th scope="row" class="rm-model"><abbr class="term" data-tip="Anthropic&#x27;s mid-tier model — between the small/fast tier and the frontier tier in capability.">Claude Sonnet 4.6</abbr></th><td class="rm-cell rm-na"><span class="rm-cell-link" title="This model × thinking-setup combination was not run in the sweep — no data (not a failure)." aria-label="This model × thinking-setup combination was not run in the sweep — no data (not a failure).">—</span></td><td class="rm-cell rm-neutral"><a class="rm-cell-link" href="#problem-9-runs-claude-sonnet-4-6-free-subagent" title="Claude Sonnet 4.6 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 39/125 (0.312, or 31.2%) in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="Claude Sonnet 4.6 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 39/125 (0.312, or 31.2%) in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">?</span> <code>39/125 (0.312, or 31.2%)</code><span class="rm-x">×1</span></a></td></tr><tr><th scope="row" class="rm-model"><abbr class="term" data-tip="Model id as recorded in the sweep (no curated label yet).">claude-opus-4-8</abbr></th><td class="rm-cell rm-noans"><a class="rm-cell-link" href="#problem-9-runs-claude-opus-4-8-S0" title="claude-opus-4-8 under S0 · no thinking (S0_sweep0629): 3 run(s), 0 with a parseable final answer, 3 errored/unparseable. Every run errored or gave no parseable final answer, so there is nothing to compare against the oracle. Auto-verifier grading: 0/3 run(s) passed the drafted verifier. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="claude-opus-4-8 under S0 · no thinking (S0_sweep0629): 3 run(s), 0 with a parseable final answer, 3 errored/unparseable. Every run errored or gave no parseable final answer, so there is nothing to compare against the oracle. Auto-verifier grading: 0/3 run(s) passed the drafted verifier. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">⚠</span> no answer</a></td><td class="rm-cell rm-neutral"><a class="rm-cell-link" href="#problem-9-runs-claude-opus-4-8-free-subagent" title="claude-opus-4-8 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 39/125 = 0.312 = 31.2% in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="claude-opus-4-8 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 39/125 = 0.312 = 31.2% in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">?</span> <code>39/125 = 0.312 = 31.2%</code><span class="rm-x">×1</span></a></td></tr></tbody></table></div><p class="rm-legend dim small">cell key: <abbr class="term" data-tip="the most common answer EQUALS the author oracle. The model reproduced the author answer — counts against the must-fail goal.">= matches oracle</abbr> · <abbr class="term" data-tip="the most common answer DIFFERS from the author oracle. A bolded answer inside a split equals the oracle (a minority run reached it).">≠ differs</abbr> · <abbr class="term" data-tip="no author oracle on file to compare against. The cell still lists what the model answered.">? no oracle</abbr> · <abbr class="term" data-tip="every run errored or gave no parseable final answer">⚠ no answer</abbr> · <abbr class="term" data-tip="This model × thinking-setup combination was not run in the sweep — no data (not a failure).">— not run</abbr> · <abbr class="term" data-tip="×k = the number of independent runs (samples) that gave this exact answer.">×k = run count</abbr> · click a cell for its full traces</p>
+ 
+ 
+</details>
+
+ <p class="dim small" style="margin:4px 0">🧬 <strong>Similar stems</strong> (within our corpus, BM25 wording-overlap recall flagged for review — <em>not</em> a duplicate verdict): <code>p8</code> <span class="dim">(0.46)</span>, <code>p1</code> <span class="dim">(0.42)</span>, <code>p10</code> <span class="dim">(0.41)</span></p>
+
+ <details class="bench-block" id="problem-9-failmode" open><summary>🧩 Failure / success-mode synthesis — how the models miss (and where they don’t)</summary><p class="dim small">Synthesized from the sweep (5 runs) + captured traces. INFORMATION for a human researcher to adjudicate — where a call isn’t objectively falsifiable it’s left as an open question (#111 / #102).</p><ul class="traj-list"><li><strong>Common wrong answers:</strong> <code>39/125</code>×2. The most-given non-oracle answer is <code>39/125</code> (2 runs) — a clustered wrong answer usually means one shared misstep, not random error.</li></ul></details>
 
  
 
- 
+ <details class="bench-block" id="problem-9-allruns"><summary>🔬 All model runs — full traces &amp; metadata (5 runs)</summary><p class="dim small">Every captured run from the sweep: setup (params), answer + pass, tokens (in/out, +reasoning), time &amp; cost, and the full thinking/response trace (click “trace”). The raw evidence under the summaries above (#102: all trajectories + metadata).</p><div style="margin:8px 0" id="problem-9-runs-claude-sonnet-4-6-free-subagent"><strong>claude-sonnet-4-6</strong> · <code>free-subagent</code> <span class="dim small">(1 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>free-subagent</code> k0</td><td><code>39/125 (0.312, or 31.2%)</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">Problem: A survey frame contains 1250 panelists. Of these, 1000 completed the screener. Among those 1000, 140 skipped the income question. What is the income question nonresponse rate among all 1250 panelists?
 
- 
+Approach: The denominator is the full frame (1250). &quot;Income question nonresponse&quot; includes every frame member who failed to supply that item, regardless of why.
 
- 
+Step 1 — Identify all who did not answer the income question.
+
+Group A: Did not complete the screener and therefore never reached the income question.
+Count = 1250 − 1000 = 250.
+
+Group B: Completed the screener but explicitly skipped (item nonresponse) the income question.
+Count = 140.
+
+Step 2 — Total income nonrespondents.
+250 + 140 = 390.
+
+Step 3 — Compute the rate.
+390 / 1250 = 39/125 = 0.312 = 31.2%.
+
+Common mistake: Using only 140/1000 = 14% counts item nonresponse among completers only, ignoring the 250 who never reached the question. Using 140/1250 = 11.2% applies the wrong numerator to the full denominator. Both undercount nonresponse when the reference population is all 1250 frame members.
+
+Final answer: 39/125 = 0.312 = 31.2%.</blockquote></details></td></tr></tbody></table></div></div><div style="margin:8px 0" id="problem-9-runs-claude-opus-4-8-S0"><strong>claude-opus-4-8</strong> · <code>S0_sweep0629</code> <span class="dim small">(3 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✗ fail</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">14/125</blockquote></details></td></tr><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✗ fail</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">14/125</blockquote></details></td></tr><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✗ fail</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">14/125</blockquote></details></td></tr></tbody></table></div></div><div style="margin:8px 0" id="problem-9-runs-claude-opus-4-8-free-subagent"><strong>claude-opus-4-8</strong> · <code>free-subagent</code> <span class="dim small">(1 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>free-subagent</code> k0</td><td><code>39/125 = 0.312 = 31.2%</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">Problem: A survey frame has 1250 panelists. 1000 completed the screener; among those 1000, 140 skipped the income question. Find the income-question nonresponse rate among all 1250 panelists.
+
+Approach: &quot;Nonresponse among all 1250 panelists&quot; fixes the denominator at the full frame of 1250. A panelist provides the income item only if they (a) reached the item by completing the screener AND (b) did not skip it. Everyone else is an income-question nonresponse.
+
+Count the nonresponses:
+- Unit nonresponse (never reached the item): 1250 − 1000 = 250 panelists did not complete the screener, so they could not answer the income question.
+- Item nonresponse (reached but skipped): 140 of the 1000 screener-completers skipped the income question.
+- Total failing to provide the income item: 250 + 140 = 390.
+
+Rate over the full frame:
+390 / 1250 = 39/125 = 0.312 = 31.2%.
+
+Common wrong answers: 140/1000 = 14% (conditions on completers only) and 140/1250 = 11.2% (uses the full denominator but omits the 250 unreached). Both ignore that the unreached panelists are also nonrespondents to the item when the denominator is all 1250.
+
+Final answer: 39/125 = 0.312 = 31.2%.</blockquote></details></td></tr></tbody></table></div></div></details>
 
  <details class="bench-block" id="problem-9-sidecar" open><summary>🗒️ Contributor’s own notes / pasted responses</summary><p class="dim small">Your <strong>own</strong> review sidecar — the responses you collected and your own failure-mode read. Shown verbatim, as <em>your</em> words (distinct from the bot review and the model sweep below).</p><p class="small" style="margin-top:.4em"><strong>Sample responses you collected</strong> (5):</p><div class="traj-forks"><div class="traj-fork"><div class="traj-fork-h">🧑 <strong>GPT-5.5 Thinking Extended · OpenAI</strong> <span class="dim small">(contributor-pasted)</span></div><blockquote class="traj-quote">140 / 1 250 x 100
 
@@ -4411,6 +5189,7 @@ So the answer is 11.2%.</blockquote></div><div class="traj-fork"><div class="tra
 <details class="d-block dedup-block" open id="problem-9-dedup">
  <summary>🔍 Cross-benchmark matches <span class="dim small">(2 total)</span></summary>
  <div class="dedup-headline"><span class="pill v-rework">✗ 1 PARAPHRASE match</span></div>
+ <p class="dim small" style="border-left:3px solid #16a34a;padding-left:8px;margin-top:6px">✓ <strong>Objective re-check: likely a FALSE POSITIVE.</strong> Your statement vs the matched <code>GSM8K</code> stem is only <strong>1%</strong> string-similar — same field, different problem. The judge keyed on shared statistics vocabulary, not a real overlap. Information, not a ruling — for the team to confirm.</p>
  <p class="dim small">BGE recall (on the problem <em>statement</em>) × Claude method-judge vs the The nine precedent benchmarks judged most likely to collide …. </p>
  <p class="dim small">⚠ <code>cos</code> is <strong>surface similarity</strong> (a recall signal on wording), <em>not</em> a duplicate measure — dense embeddings cluster by vocabulary, so they over-flag surface-similar stems and miss method-equivalent ones (see <code>research/dedup-methodology-deep-research.md</code>). The duplicate call is the <strong>method-judge verdict</strong>, not <code>cos</code>. Method-level dedup is being upgraded to embed the <em>solution trajectory</em> + judge.</p>
  <div class="table-wrap"><table class="dedup-table"><thead><tr>
@@ -4659,7 +5438,7 @@ if __name__ == &#x27;__main__&#x27;:
  <h2>Medication Question Nonresponse Among Eligible Patients</h2>
  </div>
  <div class="p-pills">
- <abbr class="term pill v-stub" data-tip="No benchmark-sweep runs for this problem yet — the model-evidence sections (results matrix · trajectory analysis) appear here once it is swept.">⏳ sweep pending</abbr>
+ 
  </div>
  </header>
 
@@ -4724,14 +5503,70 @@ Initial web validation: three independent GPT-5.5 Thinking Extended web runs pro
  </details>
 
  
+<details class="d-block proposed-tags-block" id="problem-10-proposed-tags">
+ <summary>🏷 Proposed tags <span class="dim small">(agent — author to confirm)</span></summary>
+ <p class="dim small">These are <strong>agent-proposed</strong> tags (suggestions, not verdicts) to help the author — the human author / co-PI confirms or overrides. Grounded in the problem statement on master; <strong>not</strong> written into your <code>.tex</code> scaffold. Vocabulary from the working-hypothesis taxonomy (the seed taxonomy). Proposed 2026-06-28.</p>
+ <table class="pt-table"><tbody><tr><td class="pt-dim">Capability</td><td class="pt-val">compute</td></tr><tr><td class="pt-dim">Domain</td><td class="pt-val">Statistics</td></tr><tr><td class="pt-dim">Subtopic</td><td class="pt-val">Experimental design</td></tr><tr><td class="pt-dim">Technique</td><td class="pt-val">Survey nonresponse rate calculation with inclusive denominator (frame-level unit + item nonresponse combined)</td></tr><tr><td class="pt-dim">Difficulty</td><td class="pt-val">Easy</td></tr><tr><td class="pt-dim">Challenged capability</td><td class="pt-val">numerical reasoning, trap recognition</td></tr><tr><td class="pt-dim">Grading mode</td><td class="pt-val">exact</td></tr><tr><td class="pt-dim">Observed failure mode</td><td class="pt-val">omits unit nonresponse when asked for item nonresponse among all frame members — contributor observed three independent GPT-5.5 Thinking Extended web runs counted only respondents who skipped the item and omitted unreached frame members (using 68/<span class="kw-num">510</span> or 68/<span class="kw-num">600</span> instead of <span class="kw-num">158</span>/<span class="kw-num">600</span>). Info-not-<span class="kw-subject">verdict</span> note: the core trap is conflating item nonresponse among contacted respondents with item nonresponse across the full eligible frame; trap-recognition is therefore a challenged secondary capability alongside numerical computation.</td></tr></tbody></table>
+ <p class="dim small">Agent-proposed structured tags (author/co-PI to confirm). Suggestions, not verdicts. Grounded first-hand in the problem statement + answer key + contributor tags on master; NOT written into the contributor&#x27;s.tex scaffold. Vocabulary from the project&#x27;s seed taxonomy.</p>
+</details>
+
+
+ 
+<details class="bench-block" open id="problem-10-sweep">
+ <summary>📊 How the frontier models do — results matrix · verifier-graded</summary>
+ <p class="dim small">Sweep <code>sweep-20260603-170524</code> · objective signal — information for humans to adjudicate.</p>
+ <p class="dim small">Each <em>model × thinking-setup</em> cell ran <strong>k independent samples</strong> (shown as ✓/✗ × n). The per-model k differs by cost: the gate models (GPT-5.5 / Opus-4.7) run at <strong>k=3</strong> — matching the screening definition (<em>a model "fails" iff wrong in all 3 of its runs</em>); cheaper models (e.g. Haiku) run at higher k for tighter Wilson CIs. A "✗ ×3" on a gate model is the fail signal; hover a cell's tooltip for the per-N confidence note.</p>
+ 
+ <p class="rm-chiprow"><abbr class="term rm-chip bf-uncertain" data-tip="A combo = one model × one thinking setup. &#x27;Stumped&#x27; = none of that combo&#x27;s runs produced the author&#x27;s oracle answer — but no author oracle is on file for this problem, so the count cannot be computed. The cells below still show every answer the models actually gave.">? stumped-count unavailable — no author oracle (2 model×setup combos ran)</abbr></p><div class="table-wrap"><table class="rm-table"><thead><tr><th class="rm-corner"><abbr class="term" data-tip="Rows = models (one row per model). Columns = thinking setups (how much extended reasoning the model was allowed). Each cell shows that model&#x27;s actual final answer(s) under that setup, with ×k = how many of its runs gave that answer. Click a cell to jump to its full reasoning traces.">model \ thinking setup</abbr></th><th class="rm-setup"><abbr class="term" data-tip="Thinking tier S0 = no extended reasoning: Claude models run with extended thinking disabled (S0_nothink); GPT models run at minimal reasoning effort (S0_minimal). Hover a cell for the exact setup that ran.">S0 · no thinking</abbr></th><th class="rm-setup"><abbr class="term" data-tip="Thinking setup free-subagent as recorded in the sweep.">free-subagent</abbr></th></tr></thead><tbody><tr><th scope="row" class="rm-model"><abbr class="term" data-tip="Anthropic&#x27;s mid-tier model — between the small/fast tier and the frontier tier in capability.">Claude Sonnet 4.6</abbr></th><td class="rm-cell rm-na"><span class="rm-cell-link" title="This model × thinking-setup combination was not run in the sweep — no data (not a failure)." aria-label="This model × thinking-setup combination was not run in the sweep — no data (not a failure).">—</span></td><td class="rm-cell rm-neutral"><a class="rm-cell-link" href="#problem-10-runs-claude-sonnet-4-6-free-subagent" title="Claude Sonnet 4.6 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 79/300 (approximately 26.33%) in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="Claude Sonnet 4.6 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 79/300 (approximately 26.33%) in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">?</span> <code>79/300 (approximately 26.33%)</code><span class="rm-x">×1</span></a></td></tr><tr><th scope="row" class="rm-model"><abbr class="term" data-tip="Model id as recorded in the sweep (no curated label yet).">claude-opus-4-8</abbr></th><td class="rm-cell rm-noans"><a class="rm-cell-link" href="#problem-10-runs-claude-opus-4-8-S0" title="claude-opus-4-8 under S0 · no thinking (S0_sweep0629): 3 run(s), 0 with a parseable final answer, 3 errored/unparseable. Every run errored or gave no parseable final answer, so there is nothing to compare against the oracle. Auto-verifier grading: 1/3 run(s) passed the drafted verifier. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="claude-opus-4-8 under S0 · no thinking (S0_sweep0629): 3 run(s), 0 with a parseable final answer, 3 errored/unparseable. Every run errored or gave no parseable final answer, so there is nothing to compare against the oracle. Auto-verifier grading: 1/3 run(s) passed the drafted verifier. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">⚠</span> no answer</a></td><td class="rm-cell rm-neutral"><a class="rm-cell-link" href="#problem-10-runs-claude-opus-4-8-free-subagent" title="claude-opus-4-8 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 79/300 = 0.263333 = 26.3333% in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below." aria-label="claude-opus-4-8 under free-subagent (free-subagent): 1 run(s), 1 with a parseable final answer. Answers: 79/300 = 0.263333 = 26.3333% in 1 run(s). No author oracle is on file, so match/differ cannot be shown — this cell only reports what the model answered. Click to jump to this combo&#x27;s full reasoning traces below."><span class="rm-glyph">?</span> <code>79/300 = 0.263333 = 26.3333%</code><span class="rm-x">×1</span></a></td></tr></tbody></table></div><p class="rm-legend dim small">cell key: <abbr class="term" data-tip="the most common answer EQUALS the author oracle. The model reproduced the author answer — counts against the must-fail goal.">= matches oracle</abbr> · <abbr class="term" data-tip="the most common answer DIFFERS from the author oracle. A bolded answer inside a split equals the oracle (a minority run reached it).">≠ differs</abbr> · <abbr class="term" data-tip="no author oracle on file to compare against. The cell still lists what the model answered.">? no oracle</abbr> · <abbr class="term" data-tip="every run errored or gave no parseable final answer">⚠ no answer</abbr> · <abbr class="term" data-tip="This model × thinking-setup combination was not run in the sweep — no data (not a failure).">— not run</abbr> · <abbr class="term" data-tip="×k = the number of independent runs (samples) that gave this exact answer.">×k = run count</abbr> · click a cell for its full traces</p>
+ 
+ 
+</details>
+
+ <p class="dim small" style="margin:4px 0">🧬 <strong>Similar stems</strong> (within our corpus, BM25 wording-overlap recall flagged for review — <em>not</em> a duplicate verdict): <code>p8</code> <span class="dim">(0.43)</span>, <code>p9</code> <span class="dim">(0.41)</span>, <code>p1</code> <span class="dim">(0.30)</span></p>
+
+ <details class="bench-block" id="problem-10-failmode" open><summary>🧩 Failure / success-mode synthesis — how the models miss (and where they don’t)</summary><p class="dim small">Synthesized from the sweep (5 runs) + captured traces. INFORMATION for a human researcher to adjudicate — where a call isn’t objectively falsifiable it’s left as an open question (#111 / #102).</p><ul class="traj-list"><li><strong>Common wrong answers:</strong> <code>79/300</code>×2. The most-given non-oracle answer is <code>79/300</code> (2 runs) — a clustered wrong answer usually means one shared misstep, not random error.</li></ul></details>
 
  
 
- 
+ <details class="bench-block" id="problem-10-allruns"><summary>🔬 All model runs — full traces &amp; metadata (5 runs)</summary><p class="dim small">Every captured run from the sweep: setup (params), answer + pass, tokens (in/out, +reasoning), time &amp; cost, and the full thinking/response trace (click “trace”). The raw evidence under the summaries above (#102: all trajectories + metadata).</p><div style="margin:8px 0" id="problem-10-runs-claude-sonnet-4-6-free-subagent"><strong>claude-sonnet-4-6</strong> · <code>free-subagent</code> <span class="dim small">(1 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>free-subagent</code> k0</td><td><code>79/300 (approximately 26.33%)</code> ✗ fail</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">Problem: A survey frame contains 600 eligible patients. Of these, 510 were contacted. Among those 510, 68 skipped the medication question. What is the medication question nonresponse rate among all 600 eligible patients?
 
- 
+Approach: The question asks for the item nonresponse rate with the full survey frame (600 eligible patients) as the denominator. Any patient who did not provide an answer to the medication question counts as a nonresponse — regardless of whether they were never reached (unit nonresponse) or were contacted but chose to skip the item.
 
- 
+Key accounting:
+- Total eligible patients (frame): 600
+- Contacted: 510
+- Not contacted (never reached the medication question): 600 - 510 = 90
+- Contacted but skipped the medication question: 68
+- Total patients failing to provide a medication answer: 90 + 68 = 158
+
+Nonresponse rate = 158 / 600
+
+Simplify: gcd(158, 600). 158 = 2 × 79, and 79 is prime; 600 = 2 × 300. So gcd = 2.
+158 / 600 = 79 / 300
+
+As a decimal: 79 / 300 = 0.26333... ≈ 26.33%
+
+Why common wrong answers fail:
+- 68/510 ≈ 13.3%: counts only skippers among those contacted, ignoring the 90 who were never reached and thus also never answered.
+- 68/600 ≈ 11.3%: uses the correct denominator but forgets the 90 unreached patients who also failed to answer.
+
+The correct answer is 79/300 = 26.33...%.</blockquote></details></td></tr></tbody></table></div></div><div style="margin:8px 0" id="problem-10-runs-claude-opus-4-8-S0"><strong>claude-opus-4-8</strong> · <code>S0_sweep0629</code> <span class="dim small">(3 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✗ fail</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">17/150</blockquote></details></td></tr><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">79/300</blockquote></details></td></tr><tr><td><code>S0_sweep0629</code> k0</td><td><code>None</code> ✗ fail</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">17/150</blockquote></details></td></tr></tbody></table></div></div><div style="margin:8px 0" id="problem-10-runs-claude-opus-4-8-free-subagent"><strong>claude-opus-4-8</strong> · <code>free-subagent</code> <span class="dim small">(1 runs — every captured sample for this model × setup; linked from the results matrix above)</span><div class="table-wrap"><table><thead><tr><th>setup</th><th>answer</th><th>tok in/out</th><th>time·cost</th><th>trace</th></tr></thead><tbody><tr><td><code>free-subagent</code> k0</td><td><code>79/300 = 0.263333 = 26.3333%</code> ✓ pass</td><td class="dim small">0/0</td><td class="dim small">—</td><td><details><summary class="dim small">trace</summary><div class="dim small" style="margin-top:4px">response</div><blockquote class="traj-quote">Approach: The question asks for the medication-question nonresponse rate among ALL 600 eligible patients (the full survey frame). So the denominator is fixed at 600. A frame member counts as a nonrespondent to the medication item if they failed to provide that item for any reason — whether because they were never reached (unit nonresponse) or because they were reached but skipped the question (item nonresponse).
+
+Step 1 — Count those who never reached the item (unit nonresponse):
+600 eligible − 510 contacted = 90 patients were not contacted at all, so none of them provided the medication item.
+
+Step 2 — Count those who reached the item but skipped it (item nonresponse):
+Of the 510 contacted, 68 skipped the medication question.
+
+Step 3 — Total failing to provide the medication item:
+90 + 68 = 158.
+
+Step 4 — Rate over the full frame:
+158 / 600 = 79/300 ≈ 0.263333 = 26.3333%.
+
+Note on the common error: using only 68/510 ≈ 13.33% (item nonresponse among respondents only) or 68/600 ≈ 11.33% (counting only skippers in the full-frame denominator) is incorrect, because both omit the 90 unreached frame members who also produced no medication-item response.
+
+Final answer: 79/300 = 0.263333 = 26.3333%.</blockquote></details></td></tr></tbody></table></div></div></details>
 
  <details class="bench-block" id="problem-10-sidecar" open><summary>🗒️ Contributor’s own notes / pasted responses</summary><p class="dim small">Your <strong>own</strong> review sidecar — the responses you collected and your own failure-mode read. Shown verbatim, as <em>your</em> words (distinct from the bot review and the model sweep below).</p><p class="small" style="margin-top:.4em"><strong>Sample responses you collected</strong> (5):</p><div class="traj-forks"><div class="traj-fork"><div class="traj-fork-h">🧑 <strong>GPT-5.5 Thinking Extended · OpenAI</strong> <span class="dim small">(contributor-pasted)</span></div><blockquote class="traj-quote">68 / 600 x 100
 
@@ -5006,7 +5841,7 @@ if __name__ == &#x27;__main__&#x27;:
 
 <!-- ── timeline rail: hierarchical, dynamic, mobile thumb-friendly ─ -->
 <nav class="rail-tl" aria-label="problem timeline">
- <div class="rail-tl-inner"><div class="rail-section rl-stub" data-target="problem-1"> <a href="#problem-1" class="rail-bullet"> <span class="rl-num">01</span> <span class="rl-title">Nonresponse Rate Among Invit</span> </a> <div class="rail-sub"><a href="#problem-1-text">Problem text</a><a href="#problem-1-fixes">Quick fixes</a><a href="#problem-1-working">What&#x27;s working</a><a href="#problem-1-considerations">Considerations</a><a href="#problem-1-next">Next steps</a><a href="#problem-1-verifier">Verifier</a><a href="#problem-1-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-2"> <a href="#problem-2" class="rail-bullet"> <span class="rl-num">02</span> <span class="rl-title">Seven-Trial Poisson-Binomial</span> </a> <div class="rail-sub"><a href="#problem-2-text">Problem text</a><a href="#problem-2-fixes">Quick fixes</a><a href="#problem-2-working">What&#x27;s working</a><a href="#problem-2-considerations">Considerations</a><a href="#problem-2-next">Next steps</a><a href="#problem-2-verifier">Verifier</a><a href="#problem-2-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-3"> <a href="#problem-3" class="rail-bullet"> <span class="rl-num">03</span> <span class="rl-title">Four-by-Four Determinant IV</span> </a> <div class="rail-sub"><a href="#problem-3-text">Problem text</a><a href="#problem-3-fixes">Quick fixes</a><a href="#problem-3-considerations">Considerations</a><a href="#problem-3-next">Next steps</a><a href="#problem-3-verifier">Verifier</a></div></div><div class="rail-section rl-stub" data-target="problem-4"> <a href="#problem-4" class="rail-bullet"> <span class="rl-num">04</span> <span class="rl-title">Five-Equation Linear System</span> </a> <div class="rail-sub"><a href="#problem-4-text">Problem text</a><a href="#problem-4-fixes">Quick fixes</a><a href="#problem-4-working">What&#x27;s working</a><a href="#problem-4-considerations">Considerations</a><a href="#problem-4-next">Next steps</a><a href="#problem-4-verifier">Verifier</a><a href="#problem-4-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-5"> <a href="#problem-5" class="rail-bullet"> <span class="rl-num">05</span> <span class="rl-title">Ten-Trial Poisson-Binomial P</span> </a> <div class="rail-sub"><a href="#problem-5-text">Problem text</a><a href="#problem-5-fixes">Quick fixes</a><a href="#problem-5-working">What&#x27;s working</a><a href="#problem-5-considerations">Considerations</a><a href="#problem-5-next">Next steps</a><a href="#problem-5-verifier">Verifier</a><a href="#problem-5-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-6"> <a href="#problem-6" class="rail-bullet"> <span class="rl-num">06</span> <span class="rl-title">Ten-Trial Poisson-Binomial P</span> </a> <div class="rail-sub"><a href="#problem-6-text">Problem text</a><a href="#problem-6-fixes">Quick fixes</a><a href="#problem-6-working">What&#x27;s working</a><a href="#problem-6-considerations">Considerations</a><a href="#problem-6-next">Next steps</a><a href="#problem-6-verifier">Verifier</a><a href="#problem-6-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-7"> <a href="#problem-7" class="rail-bullet"> <span class="rl-num">07</span> <span class="rl-title">Varying-Factor Product Coeff</span> </a> <div class="rail-sub"><a href="#problem-7-text">Problem text</a><a href="#problem-7-fixes">Quick fixes</a><a href="#problem-7-considerations">Considerations</a><a href="#problem-7-next">Next steps</a><a href="#problem-7-verifier">Verifier</a></div></div><div class="rail-section rl-stub" data-target="problem-8"> <a href="#problem-8" class="rail-bullet"> <span class="rl-num">08</span> <span class="rl-title">Age Question Nonresponse Amo</span> </a> <div class="rail-sub"><a href="#problem-8-text">Problem text</a><a href="#problem-8-fixes">Quick fixes</a><a href="#problem-8-working">What&#x27;s working</a><a href="#problem-8-considerations">Considerations</a><a href="#problem-8-next">Next steps</a><a href="#problem-8-verifier">Verifier</a><a href="#problem-8-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-9"> <a href="#problem-9" class="rail-bullet"> <span class="rl-num">09</span> <span class="rl-title">Income Question Nonresponse </span> </a> <div class="rail-sub"><a href="#problem-9-text">Problem text</a><a href="#problem-9-fixes">Quick fixes</a><a href="#problem-9-working">What&#x27;s working</a><a href="#problem-9-considerations">Considerations</a><a href="#problem-9-next">Next steps</a><a href="#problem-9-verifier">Verifier</a><a href="#problem-9-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-10"> <a href="#problem-10" class="rail-bullet"> <span class="rl-num">10</span> <span class="rl-title">Medication Question Nonrespo</span> </a> <div class="rail-sub"><a href="#problem-10-text">Problem text</a><a href="#problem-10-fixes">Quick fixes</a><a href="#problem-10-considerations">Considerations</a><a href="#problem-10-next">Next steps</a><a href="#problem-10-verifier">Verifier</a></div></div></div>
+ <div class="rail-tl-inner"><div class="rail-section rl-stub" data-target="problem-1"> <a href="#problem-1" class="rail-bullet"> <span class="rl-num">01</span> <span class="rl-title">Nonresponse Rate Among Invit</span> </a> <div class="rail-sub"><a href="#problem-1-text">Problem text</a><a href="#problem-1-sweep">Models</a><a href="#problem-1-failmode">Failure modes</a><a href="#problem-1-trajectory">Trajectory</a><a href="#problem-1-fixes">Quick fixes</a><a href="#problem-1-working">What&#x27;s working</a><a href="#problem-1-considerations">Considerations</a><a href="#problem-1-next">Next steps</a><a href="#problem-1-verifier">Verifier</a><a href="#problem-1-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-2"> <a href="#problem-2" class="rail-bullet"> <span class="rl-num">02</span> <span class="rl-title">Seven-Trial Poisson-Binomial</span> </a> <div class="rail-sub"><a href="#problem-2-text">Problem text</a><a href="#problem-2-sweep">Models</a><a href="#problem-2-failmode">Failure modes</a><a href="#problem-2-trajectory">Trajectory</a><a href="#problem-2-fixes">Quick fixes</a><a href="#problem-2-working">What&#x27;s working</a><a href="#problem-2-considerations">Considerations</a><a href="#problem-2-next">Next steps</a><a href="#problem-2-verifier">Verifier</a><a href="#problem-2-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-3"> <a href="#problem-3" class="rail-bullet"> <span class="rl-num">03</span> <span class="rl-title">Four-by-Four Determinant IV</span> </a> <div class="rail-sub"><a href="#problem-3-text">Problem text</a><a href="#problem-3-sweep">Models</a><a href="#problem-3-failmode">Failure modes</a><a href="#problem-3-trajectory">Trajectory</a><a href="#problem-3-fixes">Quick fixes</a><a href="#problem-3-considerations">Considerations</a><a href="#problem-3-next">Next steps</a><a href="#problem-3-verifier">Verifier</a></div></div><div class="rail-section rl-stub" data-target="problem-4"> <a href="#problem-4" class="rail-bullet"> <span class="rl-num">04</span> <span class="rl-title">Five-Equation Linear System</span> </a> <div class="rail-sub"><a href="#problem-4-text">Problem text</a><a href="#problem-4-sweep">Models</a><a href="#problem-4-failmode">Failure modes</a><a href="#problem-4-trajectory">Trajectory</a><a href="#problem-4-fixes">Quick fixes</a><a href="#problem-4-working">What&#x27;s working</a><a href="#problem-4-considerations">Considerations</a><a href="#problem-4-next">Next steps</a><a href="#problem-4-verifier">Verifier</a><a href="#problem-4-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-5"> <a href="#problem-5" class="rail-bullet"> <span class="rl-num">05</span> <span class="rl-title">Ten-Trial Poisson-Binomial P</span> </a> <div class="rail-sub"><a href="#problem-5-text">Problem text</a><a href="#problem-5-sweep">Models</a><a href="#problem-5-failmode">Failure modes</a><a href="#problem-5-trajectory">Trajectory</a><a href="#problem-5-fixes">Quick fixes</a><a href="#problem-5-working">What&#x27;s working</a><a href="#problem-5-considerations">Considerations</a><a href="#problem-5-next">Next steps</a><a href="#problem-5-verifier">Verifier</a><a href="#problem-5-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-6"> <a href="#problem-6" class="rail-bullet"> <span class="rl-num">06</span> <span class="rl-title">Ten-Trial Poisson-Binomial P</span> </a> <div class="rail-sub"><a href="#problem-6-text">Problem text</a><a href="#problem-6-sweep">Models</a><a href="#problem-6-failmode">Failure modes</a><a href="#problem-6-trajectory">Trajectory</a><a href="#problem-6-fixes">Quick fixes</a><a href="#problem-6-working">What&#x27;s working</a><a href="#problem-6-considerations">Considerations</a><a href="#problem-6-next">Next steps</a><a href="#problem-6-verifier">Verifier</a><a href="#problem-6-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-7"> <a href="#problem-7" class="rail-bullet"> <span class="rl-num">07</span> <span class="rl-title">Varying-Factor Product Coeff</span> </a> <div class="rail-sub"><a href="#problem-7-text">Problem text</a><a href="#problem-7-sweep">Models</a><a href="#problem-7-failmode">Failure modes</a><a href="#problem-7-trajectory">Trajectory</a><a href="#problem-7-fixes">Quick fixes</a><a href="#problem-7-considerations">Considerations</a><a href="#problem-7-next">Next steps</a><a href="#problem-7-verifier">Verifier</a></div></div><div class="rail-section rl-stub" data-target="problem-8"> <a href="#problem-8" class="rail-bullet"> <span class="rl-num">08</span> <span class="rl-title">Age Question Nonresponse Amo</span> </a> <div class="rail-sub"><a href="#problem-8-text">Problem text</a><a href="#problem-8-sweep">Models</a><a href="#problem-8-failmode">Failure modes</a><a href="#problem-8-trajectory">Trajectory</a><a href="#problem-8-fixes">Quick fixes</a><a href="#problem-8-working">What&#x27;s working</a><a href="#problem-8-considerations">Considerations</a><a href="#problem-8-next">Next steps</a><a href="#problem-8-verifier">Verifier</a><a href="#problem-8-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-9"> <a href="#problem-9" class="rail-bullet"> <span class="rl-num">09</span> <span class="rl-title">Income Question Nonresponse </span> </a> <div class="rail-sub"><a href="#problem-9-text">Problem text</a><a href="#problem-9-sweep">Models</a><a href="#problem-9-failmode">Failure modes</a><a href="#problem-9-trajectory">Trajectory</a><a href="#problem-9-fixes">Quick fixes</a><a href="#problem-9-working">What&#x27;s working</a><a href="#problem-9-considerations">Considerations</a><a href="#problem-9-next">Next steps</a><a href="#problem-9-verifier">Verifier</a><a href="#problem-9-dedup">Cross-benchmark matches</a></div></div><div class="rail-section rl-stub" data-target="problem-10"> <a href="#problem-10" class="rail-bullet"> <span class="rl-num">10</span> <span class="rl-title">Medication Question Nonrespo</span> </a> <div class="rail-sub"><a href="#problem-10-text">Problem text</a><a href="#problem-10-sweep">Models</a><a href="#problem-10-failmode">Failure modes</a><a href="#problem-10-trajectory">Trajectory</a><a href="#problem-10-fixes">Quick fixes</a><a href="#problem-10-considerations">Considerations</a><a href="#problem-10-next">Next steps</a><a href="#problem-10-verifier">Verifier</a></div></div></div>
 </nav>
 
 <!-- ── chatbot (hidden until proxy live) ────────────────────── -->
