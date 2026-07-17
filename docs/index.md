@@ -24,5 +24,5 @@ keep.
 
 ## Related
 
-- The **[Reference Library](../reading/)** — annotated paper notes and reading roadmaps.
+- The **[AI Reference Library](../reading/)** — curated literature collections on LLMs, AI safety, and agents.
 - The **[AI × Stat/Math Lit Review](../ai4statmath-litreview/)** — a living literature map.

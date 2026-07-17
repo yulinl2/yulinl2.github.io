@@ -27,11 +27,11 @@ cards:
     tags: ["Statistics", "Machine Learning"]
     cta: "Read the notes"
   - icon: "❑"
-    title: "Reference Library"
-    body: "An annotated record of papers I&rsquo;ve read — key insights, open questions, and reading roadmaps."
+    title: "AI Reference Library"
+    body: "Curated, annotated literature collections on large language models, AI safety &amp; fairness, and AGI &amp; agents."
     url: "/reading/"
-    tags: ["Papers", "Roadmaps"]
-    cta: "Browse the library"
+    tags: ["LLMs", "AI Safety", "Agents"]
+    cta: "Browse the collections"
   - icon: "◇"
     title: "AI × Stat/Math Lit Review"
     body: "A living literature map tracking the conversation between modern AI and the statistical & mathematical foundations it leans on."
@@ -50,12 +50,6 @@ cards:
     url: "/cvocaloid-observatory/"
     tags: ["Data", "Music"]
     cta: "Visit the dashboard"
-  - icon: "⌥"
-    title: "Toolbox"
-    body: "Prompts, workflows, and scratch notes — the working scaffolding behind everything else here."
-    url: "/toolbox/"
-    tags: ["Workflow", "Notes"]
-    cta: "Open the toolbox"
 
 teaching:
   - when: "Fall 2024 · Rutgers"
