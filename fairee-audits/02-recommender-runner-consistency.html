@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Audit 2 — Recommender ↔ runner consistency</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#5b6cab">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="./">FaiREE<span class="brand-sub">· audits</span></a>
+    <div class="crumbs">
+      <a href="./">audits</a> · 2. recommender ↔ runner
+    </div>
+  </nav>
+</header>
+
+<main id="main"><div class="wrap">
+  <h1>Audit 2 · Recommender ↔ runner consistency</h1>
+  <p class="lede">
+    Systematically enumerated every (notion × miss_pattern × n_cal)
+    combination the recommender can output, then verified that the runner
+    actually dispatches what the recommender promises.
+  </p>
+  <p class="meta">
+    Method: 8-cell audit grid (2 notions × 4 patterns × 2 n_cal regimes)
+    + diff between <code>recommender.recommend_method()</code> output and
+    <code>runner.run_once()</code> diag. Found two real silent-downgrade
+    bugs; both fixed and locked in with regression tests.
+  </p>
+
+  <h2>Bug 1 (EOO side): <code>fairee_nsc</code> ignored <code>test='bootstrap'</code></h2>
+  <p>
+    <span class="tag tag-fail">FAIL</span> Silent admission-test downgrade.
+  </p>
+  <h3>Reproduce (pre-fix)</h3>
+  <pre><code>from fairee.algo.method_recommender import recommend_method
+r = recommend_method(notion='EOO', n_cal=800, n_test=600, miss_pattern='mild_mnar')
+# Pre-fix: r = {method: 'fairee_nsc', test: 'bootstrap', ...}
+# Runner dispatch on method='fairee_nsc' ignored cfg['test']
+# and silently used Beta admission.
+</code></pre>
+  <h3>Why it matters</h3>
+  <p>
+    A practitioner reading the recommender's <code>test='bootstrap'</code>
+    would believe they had finite-sample multiplier-bootstrap admission
+    (the W-1 closure for IPW-reweighted cells). They were actually running
+    Beta-quantile admission, which is only asymptotically valid under IPW
+    weights — the W-1 issue the bootstrap was supposed to close.
+  </p>
+  <h3>Fix</h3>
+  <p>
+    Mapped the recommender's output: when <code>n_cal ≤ 1000</code> and the
+    candidate method is <code>fairee_nsc</code> / <code>fairee_missing</code>,
+    return <code>fairee_bootstrap</code> instead (which the runner DOES dispatch
+    with NSC weights + bootstrap admission via
+    <code>runner.py</code> L198-L200).
+  </p>
+  <h3>Regression test</h3>
+  <pre><code>tests/test_method_recommender.py::
+test_recommend_small_n_eoo_routes_to_fairee_bootstrap
+</code></pre>
+  <p>Commit: <code>fix(recommender): map fairee_nsc -> fairee_bootstrap at small n_cal</code></p>
+
+  <h2>Bug 2 (DP side): <code>fairee_dp_nsc</code> ignored <code>test='bootstrap'</code></h2>
+  <p>
+    <span class="tag tag-fail">FAIL</span> Same bug, mirrored on the DP side.
+  </p>
+  <h3>Reproduce (pre-fix)</h3>
+  <pre><code>from engine.pipelines.runner import run_once
+cfg = {"method": "auto", "notion": "DP", "miss_pattern": "mild_mnar",
+       "alpha": 0.10, "delta": 0.10, "n": 800, "seed": 0, ...}
+r = run_once(cfg)
+# Pre-fix: r['diag']['admission_test'] would be 'beta'
+# despite the recommender suggesting bootstrap.
+</code></pre>
+  <h3>Fix</h3>
+  <p>Two changes in <code>runner.py</code>:</p>
+  <ol>
+    <li>The <code>fairee_dp_nsc</code> dispatch now reads <code>cfg['test']</code> and passes it through to <code>FaiREEDPMissing(test=...)</code> (which already accepted the kwarg).</li>
+    <li>The <code>'auto'</code> path now bubbles the recommender's <code>test</code> choice into <code>cfg</code>, alongside the existing <code>buffer</code> bubble.</li>
+  </ol>
+  <h3>Regression test</h3>
+  <pre><code>tests/test_method_recommender.py::
+test_runner_auto_honors_recommender_bootstrap_for_dp_nsc
+</code></pre>
+  <p>Commit: <code>fix(runner): honor cfg['test']='bootstrap' for fairee_dp_nsc dispatch</code></p>
+
+  <h2>Post-fix recommender output matrix</h2>
+  <table>
+    <thead><tr><th>notion</th><th>miss_pattern</th><th>n_cal &gt; 1000</th><th>method dispatched</th><th>admission_test</th></tr></thead>
+    <tbody>
+      <tr><td>EOO</td><td>MCAR</td><td>yes</td><td><code>complete_case_eoo</code></td><td>beta</td></tr>
+      <tr><td>EOO</td><td>mild_mnar</td><td>yes</td><td><code>fairee_nsc</code></td><td>beta</td></tr>
+      <tr><td>EOO</td><td>mild_mnar</td><td>no</td><td><code>fairee_bootstrap</code> ✓</td><td>bootstrap</td></tr>
+      <tr><td>EOO</td><td>heavy_mnar</td><td>any</td><td><code>fairee_dr_if_bootstrap</code></td><td>if_bootstrap</td></tr>
+      <tr><td>DP</td><td>MCAR / MAR</td><td>no</td><td><code>fairee_dp_bootstrap</code></td><td>bootstrap</td></tr>
+      <tr><td>DP</td><td>mild_mnar</td><td>no</td><td><code>fairee_dp_nsc</code> + <code>test='bootstrap'</code> ✓</td><td>bootstrap</td></tr>
+      <tr><td>DP</td><td>heavy_mnar</td><td>any</td><td><code>fairee_dp_nsc</code></td><td>beta/bootstrap per n_cal</td></tr>
+      <tr><td>both</td><td>any</td><td>any</td><td>DP family (primary)</td><td>per branch above</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Why this went undetected</h2>
+  <p>
+    Both code paths were exercised by tests (the dispatch parametrize and the
+    recommender-level tests both passed) — but each test only checked one
+    layer in isolation. Neither verified that the <code>test</code> field
+    output by the recommender survived the runner dispatch. Lesson learned:
+    end-to-end integration tests for the full <code>auto → cfg → run_once → diag</code>
+    pipeline are now in place for both EOO and DP families.
+  </p>
+
+  <div class="footer">
+    <a href="./">← back to audits</a>
+  </div>
+</div></main>
+</body>
+</html>

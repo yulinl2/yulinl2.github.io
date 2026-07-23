@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guide 2 — Compile checklist</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#5b6cab">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="./">FaiREE<span class="brand-sub">· writing guide</span></a>
+    <div class="crumbs">
+      <a href="./">writing</a> · 2. compile checklist
+    </div>
+  </nav>
+</header>
+
+<main id="main"><div class="wrap">
+  <h1>2 · Compile checklist</h1>
+  <p class="lede">
+    Go from the 27 draft .tex files in <code>_drafts/</code> to a
+    single submission-ready PDF. Covers required packages, common
+    LaTeX errors, the existing <code>main.tex</code> stub merge, and
+    the short-vs-long flag pattern.
+  </p>
+  <p class="meta">Reading time ≈ 5 min · Reproduce time ≈ 2 min (single PDF build).</p>
+
+  <h2>One-shot build</h2>
+  <pre><code>cd "FaiREE_Missing_Data/Fairness with missing/Manuscript/"
+pdflatex _drafts/outline.tex                  # 1st pass — collect labels
+bibtex _drafts/outline                        # resolve \cite
+pdflatex _drafts/outline.tex                  # 2nd pass — fill refs
+pdflatex _drafts/outline.tex                  # 3rd pass — settle pagination
+# Output: _drafts/outline.pdf
+</code></pre>
+  <p>The 3-pass cycle is needed because BibTeX runs after the first pdflatex pass; the 2nd pass picks up the .bbl, the 3rd settles pagination cross-references.</p>
+
+  <div class="box warn">
+    <strong>Heads up:</strong> the <code>_drafts/</code> path inside
+    <code>outline.tex</code>'s <code>\input{}</code> calls assumes
+    <strong>cwd = <code>Manuscript/</code></strong>. Running from a
+    different cwd silently breaks. Use the explicit <code>cd</code>
+    above.
+  </div>
+
+  <h2>Required LaTeX packages</h2>
+  <p>The <code>outline.tex</code> preamble loads:</p>
+  <pre><code>\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{algorithm, algpseudocode}
+\usepackage{booktabs, multirow}
+\usepackage{graphicx}
+</code></pre>
+  <p>
+    All of these ship with TeXLive-full / MacTeX-full. If you only
+    have texlive-base, install <code>texlive-latex-extra</code> +
+    <code>texlive-science</code> for <code>algpseudocode</code> +
+    <code>booktabs</code> + <code>natbib</code>.
+  </p>
+
+  <h2>Theorem environments</h2>
+  <p>
+    <code>outline.tex</code> declares <code>theorem</code>,
+    <code>proposition</code>, <code>lemma</code>, <code>corollary</code>,
+    <code>assumption</code>, <code>remark</code>, <code>definition</code>.
+    The drafts use all of them. If you swap in a venue-specific
+    template (NeurIPS, ICML, JMLR), make sure these are declared
+    in the new preamble — otherwise compile fails with
+    <em>Undefined environment 'theorem'</em>.
+  </p>
+
+  <h2>Common compile errors and fixes</h2>
+
+  <h3><span class="tag tag-fail">FAIL</span> Undefined references (?, ??)</h3>
+  <p>
+    Missing label for one of the 5 residual forward-refs (see
+    <a href="01-section-map.html">Guide 1</a>). The PDF will compile
+    but show "?" in place of the section/equation number, and pdflatex
+    will print:
+  </p>
+  <pre><code>LaTeX Warning: Reference `prop:pessimistic' on page 4 undefined on input line ...
+</code></pre>
+  <p>
+    Resolve by either (a) adding the missing label at the target site,
+    or (b) changing the citing ref to point at an existing label.
+  </p>
+
+  <h3><span class="tag tag-fail">FAIL</span> "Missing $ inserted"</h3>
+  <p>
+    Usually an underscore in body text. The drafts use
+    <code>\texttt{}</code> for code identifiers (<code>\texttt{w\_max}</code>)
+    so this should be rare. If you see it, search for the offending
+    line in the file mentioned in the error.
+  </p>
+
+  <h3><span class="tag tag-fail">FAIL</span> "Overfull \hbox"</h3>
+  <p>
+    A long URL or unbroken code identifier overflows the column. In
+    body prose, wrap with <code>\sloppy</code> or break the line. In
+    bibliography, <code>biblatex</code>'s <code>backend=biber</code> +
+    <code>\hypersetup{breaklinks=true}</code> handles this better than
+    natbib if it becomes a problem.
+  </p>
+
+  <h3><span class="tag tag-warn">WARN</span> Headers and footers exceed</h3>
+  <p>
+    Some venues (NeurIPS) require strict page limits including
+    references. Use <code>\bibliographystyle{plainnat}</code> with
+    the venue's <code>.bst</code> file. The
+    <code>findings_summary.tex</code> section can be condensed if
+    needed.
+  </p>
+
+  <h2>Merging with the existing <code>main.tex</code> stub</h2>
+  <p>
+    The repo has an existing <code>Manuscript/main.tex</code> stub
+    (problem-setup-only) that predates the drafts. Two options:
+  </p>
+  <ol>
+    <li><strong>Replace</strong>: <code>cp _drafts/outline.tex main.tex</code> and edit the title/author block. Cleanest if the stub's problem-setup material is already in <code>methodology.tex</code>.</li>
+    <li><strong>Merge</strong>: keep <code>main.tex</code> for §4 (problem setup) and have <code>outline.tex</code>'s §4 line read <code>\input{main_problem_setup.tex}</code> (the stub renamed). The outline preamble notes this option in the comment.</li>
+  </ol>
+  <p>
+    Recommended: option 1 (replace). The stub's problem-setup
+    material is shorter and less detailed than what's in
+    <code>methodology.tex</code> + <code>notations.tex</code>.
+  </p>
+
+  <h2>Short-vs-long version flag pattern</h2>
+  <p>
+    For venues with a short main paper + long appendix (most
+    ML venues), use a conditional flag near the preamble:
+  </p>
+  <pre><code>\newif\ifshort
+\shorttrue                    % or \shortfalse for long version
+
+% Then in body:
+\ifshort
+  \input{_drafts/findings_summary.tex}
+\else
+  \input{_drafts/experiments.tex}
+  \input{_drafts/shrinkage_validation.tex}
+  \input{_drafts/w_clip_ablation.tex}
+  \input{_drafts/bootstrap_admission.tex}
+\fi
+</code></pre>
+  <p>
+    Use the same pattern to fold detailed assumptions audit into the
+    appendix for tight page limits.
+  </p>
+
+  <h2>Pre-compile sanity script</h2>
+  <p>Drop this in <code>Manuscript/</code> as <code>check.sh</code>:</p>
+  <pre><code>#!/usr/bin/env bash
+set -e
+cd "$(dirname "$0")"
+
+# 1. Citation consistency
+grep -hoP '@\w+\{\K[a-zA-Z0-9_]+' reflist_drafts.bib | sort -u &gt; /tmp/bib.txt
+grep -hoP '\\cite[tp]?\{\K[^}]+' _drafts/*.tex | tr ',' '\n' | tr -d ' ' | sort -u &gt; /tmp/cit.txt
+broken=$(comm -23 /tmp/cit.txt /tmp/bib.txt)
+[ -z "$broken" ] || { echo "BROKEN CITES:"; echo "$broken"; exit 1; }
+
+# 2. Label consistency
+grep -hoP '\\label\{\K[^}]+' _drafts/*.tex | sort -u &gt; /tmp/lab.txt
+grep -hoP '\\(ref|eqref|cref|autoref)\{\K[^}]+' _drafts/*.tex | sort -u &gt; /tmp/ref.txt
+dangling=$(comm -23 /tmp/ref.txt /tmp/lab.txt)
+[ -z "$dangling" ] || { echo "DANGLING REFS:"; echo "$dangling"; exit 1; }
+
+# 3. Environment balance
+for f in _drafts/*.tex; do
+  open=$(grep -oE '\\begin\{[^}]+\}' "$f" | wc -l)
+  close=$(grep -oE '\\end\{[^}]+\}' "$f" | wc -l)
+  [ "$open" = "$close" ] || { echo "ENV MISMATCH: $f ($open begin / $close end)"; exit 1; }
+done
+
+echo "OK — ready to compile."
+</code></pre>
+
+  <div class="footer">
+    ← <a href="01-section-map.html">1. section map</a> · <a href="./">back to writing guide</a> · next: <a href="03-submission-checklist.html">3. submission checklist →</a>
+  </div>
+</div></main>
+</body>
+</html>

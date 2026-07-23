@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2. Method selection with method='auto' — FaiREE tutorials</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#5b6cab">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="./">FaiREE<span class="brand-sub">· tutorials</span></a>
+    <div class="crumbs">
+      <a href="./">tutorials</a> · 2. auto-recommender
+    </div>
+  </nav>
+</header>
+
+<main id="main"><div class="wrap">
+  <h1>2 · Method selection with <code>method='auto'</code></h1>
+  <p class="lede">
+    Let the recommender pick a FaiREE variant + admission test + buffer
+    setting from your data shape, fairness criterion, and best guess at
+    the missingness pattern. Walk through each routing branch and what
+    the resulting <code>rationale</code> tells you.
+  </p>
+  <p class="meta">Reading time ≈ 5 min · Reproduce time ≈ 2 min</p>
+
+  <h2>One-call usage</h2>
+  <pre><code>from engine.pipelines.runner import run_once
+
+cfg = {
+    "method": "auto",
+    "notion": "DP",                 # 'DP' | 'EOO' | 'both'
+    "miss_pattern": "mild_mnar",    # 'mcar' | 'mar' | 'mild_mnar' | 'heavy_mnar'
+    "alpha": 0.10, "delta": 0.10,
+    "n": 1500, "seed": 0,
+    # ... other generator/data fields
+}
+r = run_once(cfg)
+
+print(r["method"])                    # e.g. fairee_dp_nsc
+for s in cfg["_auto_method_rationale"]:
+    print("  -", s)
+</code></pre>
+
+  <h2>Inputs the recommender uses</h2>
+  <table>
+    <thead><tr><th>cfg key</th><th>type</th><th>what it controls</th></tr></thead>
+    <tbody>
+      <tr><td><code>notion</code></td><td>'DP' / 'EOO' / 'both'</td><td>Fairness criterion. Default <code>EOO</code>.</td></tr>
+      <tr><td><code>n</code></td><td>int</td><td>Total sample (split 40/30/30 train/cal/test). Drives small-vs-large dispatch.</td></tr>
+      <tr><td><code>miss_pattern</code></td><td>str</td><td>Your best guess at the missingness mechanism.</td></tr>
+      <tr><td><code>K_groups</code></td><td>int</td><td>Number of sensitive groups. K ≥ 3 routes to the multigroup classes.</td></tr>
+      <tr><td><code>w_hat_max</code> (optional)</td><td>float</td><td>If you've already fit NSC and seen weights &gt; 5, pass it — triggers a bootstrap-admission warning.</td></tr>
+      <tr><td><code>intrinsic_gap_estimate</code> (optional)</td><td>float</td><td>If the unconstrained gap is &gt; 0.20, warns that the buffer can't shrink an intrinsic gap.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>The 6 routing branches (notion × miss_pattern)</h2>
+  <table>
+    <thead><tr><th>notion</th><th>miss_pattern</th><th>n_cal &gt; 1000</th><th>chosen method</th></tr></thead>
+    <tbody>
+      <tr><td>EOO</td><td>MCAR / MAR</td><td>—</td><td><code>complete_case_eoo</code></td></tr>
+      <tr><td>EOO</td><td>mild MNAR</td><td>yes</td><td><code>fairee_nsc</code></td></tr>
+      <tr><td>EOO</td><td>mild MNAR</td><td>no</td><td><code>fairee_bootstrap</code> (NSC weights + bootstrap admission)</td></tr>
+      <tr><td>EOO</td><td>heavy MNAR</td><td>any</td><td><code>fairee_dr_if_bootstrap</code> (the W-2 closure)</td></tr>
+      <tr><td>DP</td><td>MCAR / MAR</td><td>yes</td><td><code>fairee_dp</code></td></tr>
+      <tr><td>DP</td><td>MCAR / MAR</td><td>no</td><td><code>fairee_dp_bootstrap</code></td></tr>
+      <tr><td>DP</td><td>mild / heavy MNAR</td><td>any</td><td><code>fairee_dp_nsc</code> (+ <code>test='bootstrap'</code> if n_cal &le; 1000)</td></tr>
+      <tr><td>both</td><td>any</td><td>any</td><td>Primary DP, run EOO separately for comparison</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Sample rationale trail</h2>
+  <pre><code>EOO/heavy_mnar @ n=1500:
+  - notion=EOO -&gt; FaiREE-EOO family
+  - miss_pattern=heavy_mnar + EOO -&gt; fairee_dr_if_bootstrap
+    (W-2 closed; finite-sample DR admission)
+  - n_test=450 &lt; 500 -&gt; buffer=0 (would force trivial fallback)
+
+DP/mild_mnar @ n=800:
+  - notion=DP -&gt; FaiREE-DP family
+  - miss_pattern=mild_mnar -&gt; +NSC reweighting -&gt; fairee_dp_nsc
+  - n_cal=240 &lt;= 1000 -&gt; bootstrap admission
+  - n_test=320 &lt; 500 -&gt; buffer=0 (would force trivial fallback)
+</code></pre>
+
+  <h2>What gets bubbled into <code>cfg</code></h2>
+  <p>When you pass <code>method='auto'</code>, <code>run_once</code> mutates <code>cfg</code> in place to surface the recommender's choices:</p>
+  <ul>
+    <li><code>cfg['_auto_method_rationale']</code>: list of human-readable reasoning steps.</li>
+    <li><code>cfg['generalization_buffer']</code>: set to the recommended value if not already.</li>
+    <li><code>cfg['test']</code>: set to <code>'beta'</code> or <code>'bootstrap'</code> if not already.</li>
+  </ul>
+  <p>So you can inspect them after the call.</p>
+
+  <h2>What does NOT get auto-picked</h2>
+  <ul>
+    <li>Multi-group EOO/DP at K ≥ 3 returns <code>method='FaiREEMultiGroupEOO'</code> or <code>FaiREEMultiGroupDP</code> as a class name with a warning that those aren't in the runner dispatch — call them directly.</li>
+    <li>The AIF360 baselines (Hardt EqOdds, calibrated EqOdds, ROC) are reference points only; the recommender never picks them since they don't carry FaiREE's finite-sample guarantee.</li>
+  </ul>
+
+  <h2>When you should override</h2>
+  <p>Pass an explicit <code>method=</code> in <code>cfg</code> when:</p>
+  <ul>
+    <li>You're running a benchmark sweep and want a specific variant for the comparison.</li>
+    <li>You've measured your data's properties (sc_strength, w_max) and want finer control than the recommender's heuristics.</li>
+    <li>You're reproducing a paper's headline number — the paper specifies the method.</li>
+  </ul>
+
+  <h2>Where to go next</h2>
+  <ul>
+    <li>Tutorial 3 — <a href="03-reading-the-audit.html">read the audit</a> that comes out of <code>run_once</code>.</li>
+    <li><a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/FAQ.md">FAQ.md</a> — "I have a single dataset and want to ship a fair classifier. What should I do?"</li>
+  </ul>
+
+  <div class="footer">
+    <a href="./">← back to tutorials</a>
+  </div>
+</div></main>
+</body>
+</html>
