@@ -1,20 +1,17 @@
 ---
-title: Reference Library
-description: Annotated notes on papers I've read — insights, open questions, and reading roadmaps.
+title: AI Reference Library
+description: Curated, annotated literature collections on LLMs, AI safety & fairness, and AGI & agents.
 ---
 
-Each paper gets its own page: what it claims, what convinced me, and
-the questions I left with.
+Rather than keep notes scattered, I maintain a few living,
+annotated literature collections — organized by theme, kept current
+as the field moves. These live on the StatsUpAI platform:
 
-## Inference on inference
+- **[Large Language Models](https://statsupai.org/pages/paper_list_ai/list-AI-LLM.html)**
+  — an overview collection tracking the LLM literature.
 
-- **[Confidence set for discrete argmin](./2025-01-12-argmin-inference.md)**
-  — Zhang et al. (2024), *Winners with Confidence: Discrete Argmin
-  Inference with an Application to Model Selection*.
-  [arXiv:2408.02060](https://arxiv.org/abs/2408.02060)
+- **[AI Safety, Privacy &amp; Fairness](https://statsupai.org/pages/paper_list_ai/list-AI-Safety.html)**
+  — work on safety, trustworthiness, privacy, and fairness.
 
-- **[Comparative model evaluations](./2025-01-14-comparative-eval.md)**
-  — Su et al. (2024), *Analysis of the ICML 2023 Ranking Data: Can
-  Authors&rsquo; Opinions of Their Own Papers Assist Peer Review in
-  Machine Learning?*
-  [arXiv:2408.13430](https://arxiv.org/abs/2408.13430)
+- **[AGI &amp; AI Agents](https://statsupai.org/pages/paper_list_ai/list-AI-Agent.html)**
+  — toward general intelligence, and agentic systems.
