@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>1. Getting started — FaiREE tutorials</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#5b6cab">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="./">FaiREE<span class="brand-sub">· tutorials</span></a>
+    <div class="crumbs">
+      <a href="./">tutorials</a> · 1. getting started
+    </div>
+  </nav>
+</header>
+
+<main id="main"><div class="wrap">
+  <h1>1 · Getting started</h1>
+  <p class="lede">Install the pipeline, run the 5-method quickstart on synthetic MNAR data (Missing-Not-At-Random — missingness depends on the unobserved value itself, e.g. survey nonresponse correlated with the answer), and learn how to read the output.</p>
+  <p class="meta">Reading time ≈ 5 min · Reproduce time ≈ 2 min</p>
+
+  <h2>Install</h2>
+  <pre><code>git clone https://github.com/yulinl2/fairee-experiment.git
+cd fairee-experiment
+make setup            # creates a venv + installs base/dev/exp requirements
+</code></pre>
+  <p>If you don't have <code>make</code>, the equivalent is:</p>
+  <pre><code>python -m venv .venv &amp;&amp; source .venv/bin/activate
+pip install -r requirements/all.txt
+</code></pre>
+
+  <h2>Run the quickstart</h2>
+  <pre><code>PYTHONPATH=src:exp/methods python exp/quickstart.py
+</code></pre>
+  <p>The script:</p>
+  <ul>
+    <li>Generates n = 2000 synthetic rows with mild MNAR on both <code>A</code> and <code>y</code>.</li>
+    <li>Trains a logistic-regression score on a 800-row training split.</li>
+    <li>Runs 5 methods on the 600-row calibration split:
+      <code>naive</code>, <code>complete_case_eoo</code>, <code>fairee_nsc</code>, <code>fairee_dr</code>, <code>fairee_dp</code>.
+    </li>
+    <li>Predicts on the 600-row test split, reports ACC + EOO gap + DP gap + budget status.</li>
+    <li>Shows the audit dict for the <code>fairee_nsc</code> run.</li>
+    <li>Demos the <code>generalization_buffer</code> feature.</li>
+  </ul>
+
+  <h2>Expected output (one seed; numbers will jitter)</h2>
+  <pre><code>Quickstart: n=2000, mild MNAR, alpha=0.1, single seed
+Method                        ACC   EOO gap    DP gap      budget?
+----------------------------------------------------------------------
+naive                       0.722     0.027     0.024  EOO:     in
+complete_case_eoo           0.685     0.006     0.008  EOO:     in
+fairee_nsc                  0.685     0.006     0.008  EOO:     in
+fairee_dr                   0.717     0.127     0.147  EOO:   over
+fairee_dp                   0.718     0.021     0.017  DP:     in
+</code></pre>
+
+  <h2>How to read this table</h2>
+  <ul>
+    <li><strong>ACC</strong>: test-set accuracy.</li>
+    <li><strong>EOO gap</strong>: <code>|TPR_{A=0} − TPR_{A=1}|</code> on the test set.</li>
+    <li><strong>DP gap</strong>: <code>|P(ŷ=1|A=0) − P(ŷ=1|A=1)|</code> on the test set.</li>
+    <li><strong>budget?</strong>: did the method's targeted gap stay below α = 0.10? "in" = yes, "over" = no.</li>
+  </ul>
+
+  <div class="box">
+    <strong>Why does <code>fairee_dr</code> fail the budget here?</strong>
+    <p style="margin-top:6px">By design. <code>fairee_dr</code> uses doubly-robust cell counts but keeps the Beta-quantile admission test, which silently violates its Bernoulli premise on DR-corrected cells. This is the W-2 issue. The fix is <code>fairee_dr_if_bootstrap</code> (the W-2 closure), which uses an influence-function multiplier bootstrap admission with an explicit finite-sample guarantee.</p>
+  </div>
+
+  <h2>Health audit for one run</h2>
+  <pre><code>Health audit for the fairee_nsc run:
+  status: ok
+  - INFO: self-censoring strength 125.36 &gt; 0.30. The data require the
+    Li-self-censoring model (not Sadinle NSC); the current NSCDensityRatio
+    handles this correctly but the convergence may benefit from more
+    BFGS iterations.
+</code></pre>
+  <p>
+    <span class="tag tag-info">INFO</span> messages don't flip the audit status; they're advisories. Only
+    <span class="tag tag-warn">WARN</span> and <span class="tag tag-fail">FAIL</span> do. Full audit
+    catalogue → <a href="03-reading-the-audit.html">tutorial 3</a>.
+  </p>
+
+  <h2>Buffer demo</h2>
+  <pre><code>Buffer demo (test-set guarantee at modest cost):
+  recommended_buffer(n_test=600) = 0.0408
+  No buffer: acc=0.718, DP=0.017
+  Buffer   : acc=0.653, DP=0.002
+</code></pre>
+  <p>
+    The buffer subtracts from α at admission time, leaving headroom for the
+    cal-vs-test sampling gap. Default 0; <code>"auto"</code> resolves to
+    <code>2·√(p(1−p)/n_test)</code>. Empirically: 4–5× test-set fail-rate
+    reduction in the typical regime (see <code>buffer_validation</code>).
+  </p>
+
+  <h2>Where to go next</h2>
+  <ul>
+    <li>Have real data and want the algorithm to pick a variant → <a href="02-auto-recommender.html">tutorial 2</a>.</li>
+    <li>Got a <code>warn</code> or <code>fail</code> in <code>audit_status</code> → <a href="03-reading-the-audit.html">tutorial 3</a>.</li>
+    <li>Want to see headline plots → <a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/FIGURES.md">FIGURES.md</a> in the repo.</li>
+  </ul>
+
+  <div class="footer">
+    <a href="./">← back to tutorials</a>
+  </div>
+</div></main>
+</body>
+</html>

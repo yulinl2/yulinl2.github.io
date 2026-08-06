@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>3. Reading the audit — FaiREE tutorials</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#5b6cab">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="./">FaiREE<span class="brand-sub">· tutorials</span></a>
+    <div class="crumbs">
+      <a href="./">tutorials</a> · 3. reading the audit
+    </div>
+  </nav>
+</header>
+
+<main id="main"><div class="wrap">
+  <h1>3 · Reading the audit</h1>
+  <p class="lede">
+    Every <code>audit_status</code> message the runner can emit, what it
+    means about your run, and what to do about it.
+  </p>
+  <p class="meta">Reading time ≈ 7 min · Refers to <code>src/engine/analysis/audit.py</code>.</p>
+
+  <h2>Anatomy of an audit result</h2>
+  <pre><code>{
+  "status": "warn",                        # ok | warn | fail
+  "warnings": [                            # FAIL: > WARN: > INFO: prefixed
+    "WARN: max IPW weight 12.4 > 10. ...",
+    "INFO: self-censoring strength 0.42 > 0.30. ..."
+  ],
+  "n_min_required": 146                    # sample-size floor for (alpha_eff, delta)
+}
+</code></pre>
+  <p>
+    Status is the worst-severity prefix found in <code>warnings</code>:
+    <span class="tag tag-fail">FAIL</span> bubbles up to <code>fail</code>,
+    <span class="tag tag-warn">WARN</span> to <code>warn</code>, plain
+    <span class="tag tag-info">INFO</span> stays at <code>ok</code>.
+  </p>
+
+  <h2>The 7 checks (in order)</h2>
+
+  <h3>1. <span class="tag tag-fail">FAIL</span> Empirical (test-set) budget compliance</h3>
+  <p>If <code>eoo_gap</code> (or <code>dp_gap</code> when the method targets DP) exceeds <code>α</code> on the test set.</p>
+  <div class="box warn">
+    <strong>Important nuance:</strong> the FaiREE theorem bounds the
+    <em>calibration</em> gap, not the test-set realization. A FAIL here
+    doesn't necessarily mean the algorithm is broken — it can also mean
+    finite-sample noise on the test set pushed the realized gap over
+    budget. Check the cal-gap check (1b) below.
+  </div>
+  <p><strong>Action:</strong> if cal-gap is below α but test-set is over, set <code>generalization_buffer="auto"</code> on retry. The theorem-bounded calibration gap stays valid, and the buffer absorbs the test-set noise (empirically 4–5× reduction in test-set fail rate).</p>
+
+  <h3>1b. <span class="tag tag-warn">WARN</span> Calibration-set fairness gap above α</h3>
+  <p>If <code>diag.cal_deoo</code> (or <code>cal_dp</code>) exceeds α. This is what the theorem actually bounds; over-budget here means the Beta-quantile admission selected a candidate near the boundary.</p>
+  <p><strong>Action:</strong> tighten α, collect more calibration data, or accept that this regime degenerates to the trivial fallback.</p>
+
+  <h3>2. <span class="tag tag-warn">WARN</span> Within-group AIPW spread exceeds 0.05 (M2 diagnostic)</h3>
+  <p>If <code>dr_spread</code> &gt; 0.05. This is your empirical signal for Assumption M2 ("no outcome shift across the missingness pattern indicator ξ").</p>
+  <p><strong>Action:</strong> if you're using <code>fairee_nsc</code> or <code>fairee_dp_nsc</code>, the IPW estimator inherits bias; switch to <code>fairee_dr_if_bootstrap</code> (which is robust to M2 violation as long as one nuisance is correctly specified).</p>
+
+  <h3>3. <span class="tag tag-warn">WARN</span> Max IPW weight exceeds 10 (M3 / weight stability)</h3>
+  <p>If <code>diag.w_max</code> &gt; 10. The slack term in Theorem 1 scales linearly with W; W &gt; 10 makes the bound uninformative.</p>
+  <p><strong>Action:</strong> tighten <code>w_clip</code> in <code>NSCDensityRatio</code> (e.g., 5.0). May trade a small amount of bias for variance.</p>
+
+  <h3>3a. <span class="tag tag-warn">WARN</span> Bootstrap-B too small (for bootstrap-admission methods)</h3>
+  <p>If <code>diag.admission_test</code> ∈ {bootstrap, if_bootstrap} and <code>diag.bootstrap_B</code> &lt; 200. The uniform-in-B slack <code>σ_ψ/(2·φ(z_{1-δ/2})) · √(log(8/δ)/(2B))</code> may dominate the α budget.</p>
+  <p><strong>Action:</strong> bump <code>bootstrap_B</code> to ≥ 500 for the headline regime (δ = 0.10).</p>
+
+  <h3>3b. <span class="tag tag-info">INFO</span> Bernstein-Var tightening recommended</h3>
+  <p>If <code>diag.w_std / diag.w_max</code> &lt; 0.5 — your weight distribution is concentrated and the Hoeffding-W bound is loose by a factor of <code>w_max / w_std</code>.</p>
+  <p><strong>Action:</strong> compute the Bernstein-Var(w) bound from <code>proof_sketch.tex sec:w1_constants</code> "Tightening to Var(w)" paragraph for a sharper per-run slack.</p>
+
+  <h3>4. <span class="tag tag-info">INFO</span> Self-censoring strength exceeds 0.3</h3>
+  <p>If <code>diag.sc_strength = ‖γ̂‖ / ‖α̂‖</code> &gt; 0.3. Your data require the full Li-self-censoring model (not the Sadinle-NSC sub-case at γ=0).</p>
+  <p><strong>Action:</strong> the current <code>NSCDensityRatio</code> handles this correctly via free γ fit, but convergence may benefit from more BFGS iterations (<code>max_iter=160</code>).</p>
+
+  <h3>5. <span class="tag tag-warn">WARN</span> Effective cell size below the sample-size floor</h3>
+  <p>If the minimum effective positive-cell size is below <code>⌈log(δ/4) / log(1 − α_eff/2)⌉</code>. The Beta-test will degenerate to the trivial all-negative predictor.</p>
+  <p><strong>Action:</strong> relax α (e.g., 0.05 → 0.10), collect more cal data, or use the DP variant which has 3–5× larger cells.</p>
+
+  <h2>Common combinations</h2>
+  <table>
+    <thead><tr><th>What you see</th><th>What it usually means</th><th>What to try</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="tag tag-fail">FAIL</span> empirical gap + <span class="tag tag-ok">ok</span> cal gap</td>
+        <td>Test-set noise, not methodology failure</td>
+        <td>Add <code>generalization_buffer="auto"</code></td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-warn">WARN</span> w_max + <span class="tag tag-info">INFO</span> Bernstein</td>
+        <td>NSC fit produced a heavy-tail weight distribution</td>
+        <td>Tighten <code>w_clip</code>; compute Bernstein-Var slack</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-warn">WARN</span> sample-size floor under EOO</td>
+        <td>EOO cells too small at strict α</td>
+        <td>Switch to DP variant (larger cells) or relax α</td>
+      </tr>
+      <tr>
+        <td><span class="tag tag-warn">WARN</span> dr_spread &gt; 0.05</td>
+        <td>M2 (no outcome shift across ξ) potentially violated</td>
+        <td>Use <code>fairee_dr_if_bootstrap</code> (robust to M2)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Calling the audit standalone</h2>
+  <pre><code>from engine.analysis.audit import audit
+report = audit(r, alpha=0.10)        # r is a run_once() result dict
+print(report["status"])              # 'ok' | 'warn' | 'fail'
+for w in report["warnings"]:
+    print(w)
+</code></pre>
+
+  <h2>Where to go next</h2>
+  <ul>
+    <li><a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/PROOF_MAP.md">PROOF_MAP.md</a> — every theorem ↔ assumption ↔ audit-diagnostic mapping in one page.</li>
+    <li><a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/src/engine/analysis/audit.py">audit.py source</a> — the actual checks (97% test coverage).</li>
+    <li><a href="../fairee-audits/">audit reports</a> — the marathon's own consistency-audit results.</li>
+  </ul>
+
+  <div class="footer">
+    <a href="./">← back to tutorials</a>
+  </div>
+</div></main>
+</body>
+</html>

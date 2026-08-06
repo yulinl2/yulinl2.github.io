@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Guide 4 — Reproducibility supplement</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#5b6cab">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="./">FaiREE<span class="brand-sub">· writing guide</span></a>
+    <div class="crumbs">
+      <a href="./">writing</a> · 4. reproducibility supplement
+    </div>
+  </nav>
+</header>
+
+<main id="main"><div class="wrap">
+  <h1>4 · Reproducibility supplement</h1>
+  <p class="lede">
+    Package the code + result-dir snapshot + headline-figure
+    regeneration scripts as a camera-ready supplement that reviewers
+    can run without contacting the authors.
+  </p>
+  <p class="meta">Reading time ≈ 8 min · Packaging time ≈ 30 min once.</p>
+
+  <h2>What goes in the supplement</h2>
+  <table>
+    <thead><tr><th>Item</th><th>Source</th><th>Why it's in the supplement</th></tr></thead>
+    <tbody>
+      <tr><td>Code freeze (tagged release)</td><td>fairee-experiment recovery branch tagged <code>v0.1.0-paper-submission</code></td><td>Reviewer can <code>pip install git+...@tag</code> to get exact code.</td></tr>
+      <tr><td>Result-dir snapshot</td><td><code>exp/results/</code> (32 dirs, ~5,100 runs)</td><td>So reviewers can re-derive headline numbers from the CSVs without re-running the benchmarks (which take ~hours).</td></tr>
+      <tr><td>Locked requirements</td><td><code>pip freeze &gt; requirements/locked.txt</code></td><td>Reproducibility across pip/numpy versions.</td></tr>
+      <tr><td>Headline-regeneration scripts</td><td>Subset of <code>exp/benchmarks/</code> producing the figures + tables in the paper</td><td>Reviewer runs <code>make reproduce-paper</code> and gets the paper's figures regenerated.</td></tr>
+      <tr><td>Reviewer README</td><td>New file at supplement root</td><td>Step-by-step "to reproduce table N, run script X".</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Step 1 — Tag the code freeze</h2>
+  <pre><code>cd fairee-experiment
+git checkout claude/recover-dev-intent-eQY0u
+git tag -a v0.1.0-paper-submission -m "Paper submission snapshot"
+git push origin v0.1.0-paper-submission
+</code></pre>
+  <p>
+    Now the code at that tag is immutable. Cite it in the paper:
+    "Code at <code>github.com/yulinl2/fairee-experiment</code>, tag
+    <code>v0.1.0-paper-submission</code>."
+  </p>
+
+  <h2>Step 2 — Pin requirements</h2>
+  <pre><code>cd fairee-experiment
+source .venv/bin/activate
+pip freeze &gt; requirements/locked.txt
+git add requirements/locked.txt
+git commit -m "supplement: pin requirements at paper-submission snapshot"
+git push
+</code></pre>
+  <p>
+    The <code>locked.txt</code> file is included in the supplement
+    tarball so reviewers can recreate the exact environment.
+  </p>
+
+  <h2>Step 3 — Result-dir snapshot</h2>
+  <pre><code>cd fairee-experiment
+tar -czf supplement-results.tgz \
+    exp/results/ \
+    FIGURES.md PROOF_MAP.md GLOSSARY.md FAQ.md CHANGELOG.md
+# &lt;= 100 MB compressed; fits most supplement-upload limits.
+</code></pre>
+  <p>
+    If 100 MB is too large for the venue (NeurIPS caps at 100 MB,
+    ICML at 50 MB), prune to the headline result dirs only:
+  </p>
+  <pre><code>tar -czf supplement-results-headline.tgz \
+    exp/results/dp_vs_eoo_tight/ \
+    exp/results/adult_dp_full/ \
+    exp/results/compas_dp/ \
+    exp/results/w2_validation/ \
+    exp/results/buffer_validation/ \
+    exp/results/compas_multigroup_dp/ \
+    exp/results/sim_sweep_v6_dp/ \
+    FIGURES.md PROOF_MAP.md
+</code></pre>
+
+  <h2>Step 4 — Headline-regeneration scripts</h2>
+  <p>
+    Create a <code>Makefile</code> target that re-derives every
+    figure + table in the paper:
+  </p>
+  <pre><code># In Makefile, add:
+.PHONY: reproduce-paper
+reproduce-paper:
+	# Headline DP-vs-EOO table (Table 1): 30 seeds, ~10 min
+	PYTHONPATH=src:exp/methods python exp/benchmarks/dp_vs_eoo_sweep.py \
+	    --out exp/results/repro/dp_vs_eoo_tight --reps 30 --n 1500 --alpha 0.05
+
+	# Adult Pareto (Figure 2 / Table 2): 30 runs, ~5 min
+	PYTHONPATH=src:exp/methods python exp/benchmarks/adult_benchmark.py \
+	    --reps 10 --alpha 0.05 0.10 0.15 --miss-A 0.2 \
+	    --methods naive complete_case_eoo fairee_dp fairee_dp_nsc \
+	    --out exp/results/repro/adult_dp_full
+
+	# W-2 fix validation (Table 3): 60 head-to-head runs, ~3 min
+	PYTHONPATH=src:exp/methods python exp/benchmarks/w2_validation.py \
+	    --reps 30 --out exp/results/repro/w2_validation
+
+	# COMPAS DP table (Table 4): 30 runs, ~5 min
+	PYTHONPATH=src:exp/methods python exp/benchmarks/compas_benchmark.py \
+	    --reps 10 --alpha 0.05 0.10 --miss-A 0.2 \
+	    --methods naive fairee_dp_nsc --notion DP \
+	    --out exp/results/repro/compas_dp
+
+	# K=3 COMPAS (Table 5): 10 runs, ~2 min
+	PYTHONPATH=src:exp/methods python exp/benchmarks/compas_multigroup_dp.py \
+	    --reps 10 --out exp/results/repro/compas_multigroup_dp
+
+	# Buffer validation (Figure 3): 20 runs, ~3 min
+	PYTHONPATH=src:exp/methods python exp/benchmarks/buffer_validation.py \
+	    --reps 20 --n 800 --out exp/results/repro/buffer_validation
+
+	@echo
+	@echo 'Re-derived all paper headlines into exp/results/repro/'
+	@echo 'Total wall time: ~30 minutes on a single CPU core.'
+</code></pre>
+
+  <h2>Step 5 — Reviewer README</h2>
+  <p>Drop this at the supplement root as <code>README_REVIEWER.md</code>:</p>
+  <pre><code># FaiREE with Missing Data — Reviewer Reproducibility Supplement
+
+## What's here
+- `code/` — fairee-experiment at tag v0.1.0-paper-submission
+- `requirements-locked.txt` — exact dependency versions
+- `results/` — pre-computed result-dir snapshots from the paper
+- `reproduce.sh` — one-shot script to re-derive every paper figure
+
+## Minimum to verify the headline claims
+~5 minutes, requires Python 3.10+:
+
+```bash
+cd code/
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements-locked.txt
+PYTHONPATH=src:exp/methods python -m pytest tests/  # should report 120 passing
+```
+
+## Full headline reproduction
+~30 minutes on a single CPU core:
+
+```bash
+make reproduce-paper
+# Compare exp/results/repro/ contents to the provided results/ snapshot
+```
+
+## Mapping paper claims to result dirs
+- **Table 1 (headline DP vs EOO)** ← `results/dp_vs_eoo_tight/summary.csv`
+- **Figure 2 (Adult Pareto)** ← `results/adult_dp_full/fig_pareto.png`
+- **Table 3 (W-2 fix: 80% → 0% fail rate)** ← `results/w2_validation/`
+- **Figure 3 (buffer trade-off)** ← `results/buffer_validation/fig_tradeoff.png`
+- **Table 5 (K=3 COMPAS)** ← `results/compas_multigroup_dp/results_agg.csv`
+
+For the complete claim-to-source map, see `FIGURES.md` + `PROOF_MAP.md`
+in the code repo.
+
+## How the audit works (in case results disagree)
+Every result dict from `run_once(cfg)` carries an `audit_status` field
+(ok / warn / fail) and a `audit_warnings` list. See
+`src/engine/analysis/audit.py` for the 7 health checks. The
+[/fairee-tutorials/03-reading-the-audit.html](https://yulinl2.github.io/fairee-tutorials/03-reading-the-audit.html)
+walkthrough explains each.
+
+## Contact
+yulinli@bu.edu
+</code></pre>
+
+  <h2>Step 6 — Final supplement-tarball layout</h2>
+  <pre><code>supplement/
+├── README_REVIEWER.md              ← step-by-step for reviewers
+├── code/                           ← git archive at v0.1.0-paper-submission
+│   ├── src/
+│   ├── exp/
+│   ├── tests/
+│   ├── requirements/
+│   │   └── locked.txt
+│   ├── Makefile                    ← with reproduce-paper target
+│   └── README.md
+├── results/                        ← pre-computed snapshots
+│   ├── dp_vs_eoo_tight/
+│   ├── adult_dp_full/
+│   ├── compas_dp/
+│   ├── w2_validation/
+│   ├── buffer_validation/
+│   └── compas_multigroup_dp/
+└── PROOF_MAP.md FIGURES.md GLOSSARY.md FAQ.md CHANGELOG.md
+</code></pre>
+
+  <h2>Final tarball</h2>
+  <pre><code>tar -czf fairee-missing-supplement.tgz supplement/
+ls -lh fairee-missing-supplement.tgz
+# Target: &lt; 100 MB for most venues
+</code></pre>
+
+  <h2>Cite the supplement in the paper</h2>
+  <p>Add to the Reproducibility statement (already in <code>limitations.tex</code>):</p>
+  <pre><code>All code, tests, locked requirements, pre-computed result-dir
+snapshots, and a one-shot headline-regeneration script are in the
+supplementary material (`fairee-missing-supplement.tgz`). The code
+is also available at github.com/yulinl2/fairee-experiment, tag
+v0.1.0-paper-submission. 120 unit tests pass; audit module is at
+97% line coverage; total headline-reproduction wall time is
+~30 minutes on a single CPU core.</code></pre>
+
+  <div class="footer">
+    ← <a href="03-submission-checklist.html">3. submission checklist</a> · <a href="./">back to writing guide</a>
+  </div>
+</div></main>
+</body>
+</html>
