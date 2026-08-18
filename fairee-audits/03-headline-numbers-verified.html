@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Audit 3 — Headline numbers verified</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#5b6cab">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav" aria-label="Primary">
+    <a class="brand" href="./">FaiREE<span class="brand-sub">· audits</span></a>
+    <div class="crumbs">
+      <a href="./">audits</a> · 3. headline numbers
+    </div>
+  </nav>
+</header>
+
+<main id="main"><div class="wrap">
+  <h1>Audit 3 · Headline numbers verified</h1>
+  <p class="lede">
+    Every empirical claim in TLDR.md, FAQ.md, PROOF_MAP.md, and the
+    manuscript drafts was re-derived from the actual result-dir CSVs
+    on the recovery branch. One real attribution mistake caught and
+    fixed; one loose claim grounded.
+  </p>
+  <p class="meta">
+    Method: for each headline claim, located the source result dir,
+    parsed the relevant CSV/NDJSON, and recomputed the number.
+  </p>
+
+  <h2>The FAQ headline table</h2>
+  <table>
+    <thead><tr><th>Claim</th><th>Source dir</th><th>Verified?</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>DP +9.5pp acc over CC-EOO at α=0.05, n=1500 (30 seeds)</td>
+        <td><code>dp_vs_eoo_tight/</code></td>
+        <td>
+          <span class="tag tag-ok">PASS</span>
+          fairee_dp acc=0.5507, CC-EOO acc=0.4558; delta = 0.0950 = 9.5pp ✓
+        </td>
+      </tr>
+      <tr>
+        <td>K=3 COMPAS, max pairwise DP gap 0.07 at α=0.10</td>
+        <td><code>compas_multigroup_dp/</code></td>
+        <td>
+          <span class="tag tag-ok">PASS</span>
+          max_pairwise_dp_diff_mean = 0.0728 ≈ 0.07 ✓
+        </td>
+      </tr>
+      <tr>
+        <td>W-2 fix: 80% → 0% fail rate at α=0.05, strong MNAR</td>
+        <td><code>w2_validation/</code></td>
+        <td>
+          <span class="tag tag-ok">PASS</span>
+          fairee_dr: 8/10 fail = 80%; fairee_dr_if_bootstrap: 0/10 fail = 0% ✓
+        </td>
+      </tr>
+      <tr>
+        <td>COMPAS DP 0.23 → 0.04 at α=0.05 (10pp acc cost)</td>
+        <td><code>compas_dp/</code></td>
+        <td>
+          <span class="tag tag-ok">PASS</span>
+          naive DP=0.230 / acc=0.677; fairee_dp_nsc DP=0.040 / acc=0.570 ✓
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>The Theorem 1 calibration-vs-test claim</h2>
+  <p>
+    Claim across FAQ.md / GLOSSARY.md / TLDR.md: "Empirically: 4–5×
+    test-set fail-rate reduction in the typical regime."
+  </p>
+  <p>
+    Re-derived from <code>dp_extension.tex</code> table 1 (n=4000, α=0.05):
+    fail rate goes 4/15 → 1/15 = 27% → 7% = 3.86× reduction. The "4–5×"
+    wording is accurate (the table's CI ≈ ± 1, so 3–5× spans the seed-
+    to-seed range).
+  </p>
+  <p>
+    Also re-checked the buffer-validation result dirs: at heavier buffer
+    the reduction is total (45% → 0% at n=800; 20% → 0% at n=4000).
+    The docs now cite both the typical-regime ratio AND the to-zero
+    behavior with the source-table reference, so the claim is precise
+    enough for a reviewer to verify.
+  </p>
+
+  <h2>One real attribution mistake fixed</h2>
+  <p>
+    <span class="tag tag-fail">FIXED</span>
+    PROOF_MAP T-2 originally claimed "<em>fairee_dp_nsc hits DP gap 0.04
+    at 78% accuracy on Adult (vs unconstrained baseline at DP gap 0.23,
+    88% accuracy)</em>". Those numbers are from <strong>COMPAS</strong>, not Adult.
+  </p>
+  <h3>Re-derived from result CSVs</h3>
+  <table>
+    <thead><tr><th>Dataset</th><th>Method</th><th>acc</th><th>DP gap</th></tr></thead>
+    <tbody>
+      <tr><td>Adult (<code>adult_dp_full</code>, ρ_A=0.2, α=0.05)</td><td>naive</td><td>0.849</td><td>0.174</td></tr>
+      <tr><td>Adult (same)</td><td>fairee_dp_nsc</td><td>0.834</td><td>0.060</td></tr>
+      <tr><td>COMPAS (<code>compas_dp</code>, ρ_A=0.2, α=0.05)</td><td>naive</td><td>0.677</td><td>0.230</td></tr>
+      <tr><td>COMPAS (same)</td><td>fairee_dp_nsc</td><td>0.570</td><td>0.040</td></tr>
+    </tbody>
+  </table>
+  <p>
+    PROOF_MAP now cites both with the correct attributions and the
+    operational trade-off (Adult: 3× DP-gap reduction at near-equal
+    accuracy; COMPAS: in-budget at 10pp accuracy cost).
+  </p>
+
+  <h2>Count-style claims re-verified</h2>
+  <table>
+    <thead><tr><th>Claim</th><th>Actual</th><th>Result</th></tr></thead>
+    <tbody>
+      <tr><td>"7 FaiREE algorithm classes"</td><td>7 (verified via <code>fairee.algo.__all__</code>)</td><td><span class="tag tag-ok">PASS</span></td></tr>
+      <tr><td>"120 tests passing"</td><td>120 (last pytest run, post-marathon-2)</td><td><span class="tag tag-ok">PASS</span></td></tr>
+      <tr><td>"~7,500 Python lines"</td><td>7,468 lines</td><td><span class="tag tag-ok">PASS</span></td></tr>
+      <tr><td>"27 .tex files, ~4,100 lines"</td><td>27 files, ~4,100 lines (post-marathon-2)</td><td><span class="tag tag-ok">PASS</span></td></tr>
+      <tr><td>"32 result directories"</td><td>32 dirs under <code>exp/results/</code></td><td><span class="tag tag-ok">PASS</span></td></tr>
+      <tr><td>"13 benchmark scripts (10 with <code>--buffer</code>)"</td><td>13 scripts, 10 with the flag</td><td><span class="tag tag-ok">PASS</span></td></tr>
+      <tr><td>"93 board items, 92 done/closed/decided"</td><td>93 (R-9 only blocked)</td><td><span class="tag tag-ok">PASS</span></td></tr>
+      <tr><td>"~5,100 runs"</td><td>~5,020 by raw CSV/NDJSON row count</td><td><span class="tag tag-ok">PASS</span> (approximate)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Lesson</h2>
+  <p>
+    Empirical claims drift faster than other doc content because the
+    underlying runs are re-executed during marathon iterations. The
+    audit-script approach (re-derive every cited number from the
+    primary CSV) is fast — a 20-line shell script — and catches both
+    typos and silent staleness. Worth re-running before any merge of
+    the recovery branch into <code>main</code>.
+  </p>
+
+  <div class="footer">
+    <a href="./">← back to audits</a>
+  </div>
+</div></main>
+</body>
+</html>

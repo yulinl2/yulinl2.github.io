@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FaiREE × Missing Data — Decision Board</title>
+  <meta name="description" content="Internal hierarchical decision board for the FaiREE-with-missing-data research effort.">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#5b6cab">
+  <link rel="stylesheet" href="assets/css/board.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="wrap nav">
+    <div class="brand">
+      <span class="brand-mark">FaiREE</span><span class="brand-sub">· missing-data board</span>
+    </div>
+    <div class="hdr-tools">
+      <span id="saveState" class="save-state" title="Save state">—</span>
+      <button id="btnExport"   class="btn ghost"  title="Download a JSON snapshot of the current board">Export</button>
+      <button id="btnImport"   class="btn ghost"  title="Replace the current board with a pasted JSON">Import</button>
+      <button id="btnSettings" class="btn ghost"  title="GitHub PAT + target branch">Settings</button>
+      <button id="btnSave"     class="btn primary" title="Commit roadmap.json to GitHub">Save → GitHub</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="intro wrap">
+    <h1>Decision &amp; Roadmap Board</h1>
+    <p class="lede">
+      <strong>What this project does.</strong> FaiREE is a library that takes a trained classifier's scores
+      and a sensitive attribute (e.g. race, gender) and returns per-group thresholds so the group-wise
+      true-positive-rate gap stays below a user-chosen budget &alpha; with provable, finite-sample
+      certainty. This branch extends it to handle the case where the sensitive attribute or outcome is
+      <em>missing for some calibration rows</em> in a way that depends on the unobserved value
+      (Missing-Not-At-Random, MNAR). The board below tracks the work-items closing that extension.
+    </p>
+    <p id="projectSummary" class="lede" style="margin-top:0">—</p>
+    <div class="meta">
+      <span class="chip" id="chipUpdated">updated —</span>
+      <span class="chip" id="chipClosure" title="Share of items in done/closed/decided status">closure —</span>
+      <span class="chip" id="chipManuscript">manuscript —</span>
+      <span class="chip" id="chipBranch">branch —</span>
+      <span class="chip warn" id="chipDirty" hidden>unsaved changes</span>
+    </div>
+    <details class="how">
+      <summary>How this board works</summary>
+      <ul>
+        <li><strong>Edit any item</strong>: click a card. Change status / owner / priority / detail; close the popup to commit it in-memory.</li>
+        <li><strong>Save</strong>: paste a fine-grained PAT once (scoped to <code>yulinl2/yulinl2.github.io</code>, Contents: Read &amp; write). The button commits <code>fairee-board/assets/data/roadmap.json</code> back into the repo on the chosen branch.</li>
+        <li><strong>Autosave</strong>: every change is mirrored to browser <code>localStorage</code> so a refresh doesn't lose work.</li>
+        <li><strong>Export</strong> = download JSON snapshot. <strong>Import</strong> = paste a JSON to replace state (rarely needed).</li>
+      </ul>
+    </details>
+    <details class="how">
+      <summary>New here? Quick links into the project</summary>
+      <ul>
+        <li><a href="../fairee-tutorials/"><strong>Tutorials</strong></a> — 3 hands-on walkthroughs (getting started, auto-recommender, reading the audit).</li>
+        <li><a href="../fairee-audits/"><strong>Audits</strong></a> — consistency reports from the recovery marathon (bibliography health, recommender↔runner, headline numbers verified).</li>
+        <li><a href="../fairee-writing/"><strong>Writing guide</strong></a> — 4 walkthroughs for the manuscript author (section map, compile checklist, submission readiness, reproducibility supplement).</li>
+        <li><a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/TLDR.md"><strong>TLDR.md</strong></a> — 90-second project summary, MDL-ranked contributions.</li>
+        <li><a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/GLOSSARY.md"><strong>GLOSSARY.md</strong></a> — plain-language definitions of every acronym (FaiREE, MNAR, NSC, IPW, EOO/DP, …) and code symbol (<code>alpha_eff</code>, <code>generalization_buffer</code>, <code>sc_strength</code>, …).</li>
+        <li><a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/FIGURES.md"><strong>FIGURES.md</strong></a> — curated gallery of headline plots, each with the claim it supports and the one-line reproduction command.</li>
+        <li><a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/PROOF_MAP.md"><strong>PROOF_MAP.md</strong></a> — every theorem with its assumption set, proof location, and empirical validation.</li>
+        <li><a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/FAQ.md"><strong>FAQ.md</strong></a> — anticipated reviewer/maintainer questions with concrete pointers.</li>
+        <li><a href="https://github.com/yulinl2/fairee-experiment/blob/claude/recover-dev-intent-eQY0u/INDEX.md"><strong>INDEX.md</strong></a> — algorithm catalogue + benchmark catalogue + decision-board state.</li>
+      </ul>
+    </details>
+  </section>
+
+  <section class="controls wrap">
+    <input id="q" type="search" placeholder="Search title, detail, id, refs…" aria-label="Search items">
+    <select id="fGroup"><option value="">All groups</option></select>
+    <select id="fStatus"><option value="">All statuses</option></select>
+    <select id="fOwner"><option value="">All owners</option></select>
+    <select id="fPriority"><option value="">All priorities</option></select>
+    <select id="fRepo"><option value="">All repos</option></select>
+    <label class="toggle"><input id="fViewGroup" type="checkbox"> group by hierarchy</label>
+    <button id="btnNew" class="btn small" title="Add a new item">+ item</button>
+  </section>
+
+  <section class="board wrap">
+    <div id="counts" class="counts"></div>
+    <div id="columns" class="columns"></div>
+  </section>
+</main>
+
+<!-- Edit dialog -->
+<dialog id="editDlg" class="dlg">
+  <form method="dialog" id="editForm">
+    <header><h3 id="edTitle">Edit item</h3><button value="cancel" class="x" aria-label="Close">×</button></header>
+    <div class="row"><label>ID</label><input id="edId" readonly></div>
+    <div class="row"><label>Title</label><input id="edTitleI" required></div>
+    <div class="row two">
+      <span><label>Group</label><select id="edGroup"></select></span>
+      <span><label>Category</label><input id="edCategory"></span>
+    </div>
+    <div class="row three">
+      <span><label>Status</label><select id="edStatus"></select></span>
+      <span><label>Priority</label><select id="edPriority"></select></span>
+      <span><label>Owner</label><select id="edOwner"></select></span>
+    </div>
+    <div class="row"><label>Repo</label><input id="edRepo" placeholder="e.g. fairee-experiment"></div>
+    <div class="row"><label>Refs (comma-separated)</label><input id="edRefs" placeholder="PR #9, issue #5, PORTING.md"></div>
+    <div class="row"><label>Detail</label><textarea id="edDetail" rows="5"></textarea></div>
+    <footer>
+      <button value="delete" class="btn ghost danger" id="edDelete">Delete</button>
+      <button value="cancel" class="btn ghost">Cancel</button>
+      <button value="save"   class="btn primary">Apply</button>
+    </footer>
+  </form>
+</dialog>
+
+<!-- Settings dialog -->
+<dialog id="setDlg" class="dlg">
+  <form method="dialog" id="setForm">
+    <header><h3>Settings</h3><button value="cancel" class="x" aria-label="Close">×</button></header>
+    <p class="hint">PAT is stored in <code>localStorage</code> only. Use a <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">fine-grained token</a> scoped to <code>yulinl2/yulinl2.github.io</code> with <strong>Contents: Read and write</strong>.</p>
+    <div class="row"><label>GitHub PAT</label><input id="setPat" type="password" autocomplete="off" placeholder="github_pat_…"></div>
+    <div class="row two">
+      <span><label>Owner</label><input id="setOwner" value="yulinl2"></span>
+      <span><label>Repo</label><input id="setRepo" value="yulinl2.github.io"></span>
+    </div>
+    <div class="row two">
+      <span><label>Branch</label><input id="setBranch" value="claude/recover-dev-intent-eQY0u"></span>
+      <span><label>Path</label><input id="setPath" value="fairee-board/assets/data/roadmap.json"></span>
+    </div>
+    <div class="row"><label>Commit message template</label><input id="setMsg" value="board: update roadmap.json from web UI"></div>
+    <footer>
+      <button value="forget" class="btn ghost danger" id="setForget">Forget PAT</button>
+      <button value="cancel" class="btn ghost">Cancel</button>
+      <button value="save"   class="btn primary">Save settings</button>
+    </footer>
+  </form>
+</dialog>
+
+<!-- Import dialog -->
+<dialog id="impDlg" class="dlg">
+  <form method="dialog" id="impForm">
+    <header><h3>Import JSON</h3><button value="cancel" class="x" aria-label="Close">×</button></header>
+    <p class="hint">Paste a full roadmap.json. This replaces the in-memory state but does not save until you click Save.</p>
+    <textarea id="impText" rows="14" spellcheck="false"></textarea>
+    <footer>
+      <button value="cancel" class="btn ghost">Cancel</button>
+      <button value="apply"  class="btn primary">Apply</button>
+    </footer>
+  </form>
+</dialog>
+
+<div id="toast" class="toast" hidden></div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <span>FaiREE board · internal, noindex</span>
+    <span><a href="https://github.com/yulinl2/yulinl2.github.io/tree/main/fairee-board" target="_blank" rel="noopener">source on GitHub</a></span>
+  </div>
+</footer>
+
+<script src="assets/js/board.js" defer></script>
+</body>
+</html>
